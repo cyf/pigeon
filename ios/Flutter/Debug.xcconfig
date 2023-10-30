@@ -1,0 +1,2 @@
+#include? "Pods/Target Support Files/Pods-HomingPigeon/Pods-HomingPigeon.debug.xcconfig"
+#include "Generated.xcconfig"
