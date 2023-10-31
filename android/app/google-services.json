@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "335725204791",
-    "project_id": "fafa-runner",
-    "storage_bucket": "fafa-runner.appspot.com"
+    "project_number": "1029812416722",
+    "project_id": "homing-pigeon-ebf6a",
+    "storage_bucket": "homing-pigeon-ebf6a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:335725204791:android:15309d0d6958bf2dd876b2",
+        "mobilesdk_app_id": "1:1029812416722:android:645905cc2d5e5b847e3d0b",
         "android_client_info": {
-          "package_name": "com.chenyifaer.fafarunner"
+          "package_name": "com.chenyifaer.homingpigeon"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "335725204791-445sk0sp9dfnkn04r0tilk3mdojmnuuc.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBJEs2z_sKdolkiCrEWfivF936FiQYEH3I"
+          "current_key": "AIzaSyCdwTj3b67zq4SYwo7VLVeCdIVVS6arbPU"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "335725204791-445sk0sp9dfnkn04r0tilk3mdojmnuuc.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
