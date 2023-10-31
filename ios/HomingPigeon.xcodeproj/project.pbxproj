@@ -215,7 +215,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin";
+			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin\n";
 		};
 		9740EEB61CF901F6004384FC /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -230,7 +230,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
+			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
 		};
 		A1DC9E726F0A167F011478A9 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -368,7 +368,6 @@
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 43V9N6VW8L;
 				ENABLE_BITCODE = NO;
-				FLUTTER_APPLICATION_PATH = /Users/ying/workspace/kjxbyz/cyf/homing_pigeon;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Homing Pigeon";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -507,7 +506,6 @@
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 43V9N6VW8L;
 				ENABLE_BITCODE = NO;
-				FLUTTER_APPLICATION_PATH = /Users/ying/workspace/kjxbyz/cyf/homing_pigeon;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Homing Pigeon";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -540,7 +538,6 @@
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 43V9N6VW8L;
 				ENABLE_BITCODE = NO;
-				FLUTTER_APPLICATION_PATH = /Users/ying/workspace/kjxbyz/cyf/homing_pigeon;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Homing Pigeon";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
