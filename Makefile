@@ -9,13 +9,17 @@ clean: ## Cleans the environment
 	echo "╠ Installing deps..."
 	flutter pub get
 
+icon: ## Generate icons
+	echo "╠ Generate icons..."
+	dart run flutter_native_splash:create
+
 build_watch: ## Watches the files for changes
 	echo "╠ Watching the project..."
-	flutter pub run build_runner watch --delete-conflicting-outputs
+	dart run build_runner watch --delete-conflicting-outputs
 
 build: ## Build the files for changes
 	echo "╠ Building the project..."
-	flutter pub run build_runner build --delete-conflicting-outputs
+	dart run build_runner build --delete-conflicting-outputs
 
 apk: ## Release Apk
 	echo "╠ Releasing Apk..."
