@@ -39,10 +39,10 @@
               "client_type": 3
             },
             {
-              "client_id": "1029812416722-l9inr2b44obuj106478nf26t5sf8pnp1.apps.googleusercontent.com",
+              "client_id": "1029812416722-in81k1042rkii7tp6hfngh4oqht4o1v4.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.chenyifaer.homingpigeon.dev"
+                "bundle_id": "com.chenyifaer.homingpigeon"
               }
             }
           ]
