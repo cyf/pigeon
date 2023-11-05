@@ -4,8 +4,8 @@ import 'package:homing_pigeon/l10n/l10n.dart';
 import 'package:homing_pigeon/modules/home/home.dart';
 import 'package:homing_pigeon/theme/theme.dart';
 
-class MaterialAppView extends StatelessWidget {
-  const MaterialAppView({super.key});
+class AppView extends StatelessWidget {
+  const AppView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class MaterialAppView extends StatelessWidget {
       darkTheme: AppTheme.dark,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const MaterialHomePage(),
+      home: const HomeView(),
     );
   }
 }
