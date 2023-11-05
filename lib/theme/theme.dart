@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AppTheme {
@@ -29,6 +30,18 @@ class AppTheme {
         behavior: SnackBarBehavior.floating,
       ),
       fontFamily: 'Normal',
+    );
+  }
+
+  static CupertinoThemeData get iosLight {
+    return CupertinoThemeData(
+
+    );
+  }
+
+  static CupertinoThemeData get iosDark {
+    return CupertinoThemeData(
+      brightness: Brightness.dark,
     );
   }
 }

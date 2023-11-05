@@ -150,5 +150,5 @@ Future<void> main() async {
     return true;
   };
 
-  runApp(const App());
+  runApp(const AppView());
 }

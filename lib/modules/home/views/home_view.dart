@@ -5,14 +5,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:homing_pigeon/main.dart';
 
-class MaterialHomePage extends StatefulWidget {
-  const MaterialHomePage({super.key});
+class HomeView extends StatefulWidget {
+  const HomeView({super.key});
 
   @override
-  State<MaterialHomePage> createState() => _MaterialHomePageState();
+  State<HomeView> createState() => _HomeViewState();
 }
 
-class _MaterialHomePageState extends State<MaterialHomePage> {
+class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
