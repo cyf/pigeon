@@ -12,7 +12,20 @@
           "package_name": "com.chenyifaer.homingpigeon"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1029812416722-bkp3j4u5anpogai2dkhtman1i5utsqhq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chenyifaer.homingpigeon",
+            "certificate_hash": "4d0ecd6aa418a33812aef661e96c581e22f87ff3"
+          }
+        },
+        {
+          "client_id": "1029812416722-sfltvfs3eqsqfli0cpap7jpc3vbpjfo0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCdwTj3b67zq4SYwo7VLVeCdIVVS6arbPU"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1029812416722-sfltvfs3eqsqfli0cpap7jpc3vbpjfo0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1029812416722-l9inr2b44obuj106478nf26t5sf8pnp1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.chenyifaer.homingpigeon.dev"
+              }
+            }
+          ]
         }
       }
     }
