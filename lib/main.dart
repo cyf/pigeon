@@ -1,56 +1,154 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:homing_pigeon/app/app.dart';
-import 'package:homing_pigeon/constrants/get.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:homing_pigeon/modules/app/app.dart';
 
-Future<void> collectLog(String line) async {
-  log(line);
-  await Sentry.captureMessage(line);
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  await setupFlutterNotifications();
+  // showFlutterNotification(message);
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  log('Handling a background message ${message.messageId}');
 }
 
-Future<void> reportErrorAndLog(FlutterErrorDetails details) async {
-  log(details.exceptionAsString(), stackTrace: details.stack);
-  await Sentry.captureException(details.exception, stackTrace: details.stack);
+@pragma('vm:entry-point')
+void notificationTapBackground(NotificationResponse notificationResponse) {
+  // ignore: avoid_print
+  log('onDidReceiveBackgroundNotificationResponse: notification(${notificationResponse.id}) action tapped: '
+      '${notificationResponse.actionId} with'
+      ' payload: ${notificationResponse.payload}');
+  if (notificationResponse.input?.isNotEmpty ?? false) {
+    // ignore: avoid_print
+    log('notification action tapped with input: ${notificationResponse.input}');
+  }
 }
 
-FlutterErrorDetails makeErrorDetails(Object error, StackTrace stackTrace) {
-  return FlutterErrorDetails(exception: error, stack: stackTrace);
+/// Create a [AndroidNotificationChannel] for heads up notifications
+late AndroidNotificationChannel channel;
+
+bool isFlutterLocalNotificationsInitialized = false;
+
+Future<void> setupFlutterNotifications() async {
+  if (isFlutterLocalNotificationsInitialized) {
+    return;
+  }
+  channel = const AndroidNotificationChannel(
+    'high_importance_channel', // id
+    'High Importance Notifications', // title
+    description:
+        'This channel is used for important notifications.', // description
+    importance: Importance.high,
+  );
+
+  flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+  const initializationSettingsAndroid = AndroidInitializationSettings('splash');
+
+  /// Note: permissions aren't requested here just to demonstrate that can be
+  /// done later
+  const initializationSettingsDarwin = DarwinInitializationSettings(
+    requestAlertPermission: false,
+    requestBadgePermission: false,
+    requestSoundPermission: false,
+  );
+
+  const initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+    iOS: initializationSettingsDarwin,
+  );
+
+  await flutterLocalNotificationsPlugin.initialize(
+    initializationSettings,
+    onDidReceiveNotificationResponse:
+        (NotificationResponse notificationResponse) {
+      log('onDidReceiveNotificationResponse: notification(${notificationResponse.id})'
+          ' action tapped: ${notificationResponse.actionId} with'
+          ' payload: ${notificationResponse.payload}');
+      if (notificationResponse.input?.isNotEmpty ?? false) {
+        // ignore: avoid_print
+        log('notification action tapped with input: ${notificationResponse.input}');
+      }
+    },
+    onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
+  );
+
+  /// Create an Android Notification Channel.
+  ///
+  /// We use this channel in the `AndroidManifest.xml` file to override the
+  /// default FCM channel to enable heads up notifications.
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+
+  /// Update the iOS foreground notification presentation options to allow
+  /// heads up notifications.
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+  isFlutterLocalNotificationsInitialized = true;
 }
+
+void showFlutterNotification(RemoteMessage message) {
+  final notification = message.notification;
+  final android = message.notification?.android;
+  if (notification != null && android != null) {
+    flutterLocalNotificationsPlugin.show(
+      notification.hashCode,
+      notification.title,
+      notification.body,
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          channel.id,
+          channel.name,
+          channelDescription: channel.description,
+          /// add a proper drawable resource to android, for now using
+          /// one that already exists in example app.
+          icon: 'launch_background',
+        ),
+      ),
+      payload: jsonEncode(message.data),
+    );
+  }
+}
+
+/// Initialize the [FlutterLocalNotificationsPlugin] package.
+late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await setupFlutterNotifications();
+  await FirebaseMessaging.instance.requestPermission();
 
   final onError = FlutterError.onError;
   FlutterError.onError = (details) async {
     onError?.call(details);
-    await reportErrorAndLog(details);
+    if (kReleaseMode) {
+      await FirebaseCrashlytics.instance.recordFlutterFatalError(details);
+    }
   };
 
   PlatformDispatcher.instance.onError = (error, stackTrace) {
-    reportErrorAndLog(makeErrorDetails(error, stackTrace));
+    if (!kReleaseMode) {
+      log(error.toString(), stackTrace: stackTrace);
+    } else {
+      FirebaseCrashlytics.instance.recordError(error, stackTrace, fatal: true);
+    }
     return true;
   };
-
-  if (isMobile) {
-    await Firebase.initializeApp();
-  }
-
-  await SentryFlutter.init(
-    (options) {
-      options
-        ..dsn =
-            'https://c0846b730913410f9041993f54e641ec@o513893.ingest.sentry.io/4505132030296064'
-        // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
-        // We recommend adjusting this value in production.
-        ..tracesSampleRate = 1.0;
-    },
-  );
 
   runApp(const App());
 }
