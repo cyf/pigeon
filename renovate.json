@@ -13,6 +13,10 @@
     {
       "matchPackageNames": ["flutter", "dart"],
       "groupName": "flutter"
+    },
+    {
+      "matchPackagePatterns": ["androidx.window"],
+      "groupName": "androidx.window"
     }
   ]
 }
