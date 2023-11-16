@@ -8,5 +8,11 @@
   "ignoreDeps": [
     "flutter_localizations",
     "flutter_test"
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": ["flutter", "dart"],
+      "groupName": "flutter"
+    }
   ]
 }
