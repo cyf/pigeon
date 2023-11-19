@@ -21,11 +21,11 @@ PODS:
   - Firebase/RemoteConfig (10.17.0):
     - Firebase/CoreOnly
     - FirebaseRemoteConfig (~> 10.17.0)
-  - firebase_analytics (10.6.4):
+  - firebase_analytics (10.7.0):
     - Firebase/Analytics (= 10.17.0)
     - firebase_core
     - Flutter
-  - firebase_auth (4.13.0):
+  - firebase_auth (4.14.0):
     - Firebase/Auth (= 10.17.0)
     - firebase_core
     - Flutter
@@ -270,8 +270,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Firebase: f4ac0b02927af9253ae094d23deecf0890da7374
-  firebase_analytics: 9d609f3c43a71319c9112bb01044729305192417
-  firebase_auth: 8b51489f374ea36b8f0aac047738de1d1f02e573
+  firebase_analytics: d6f520c1030d2c1215851f6e332d39a489a30bd2
+  firebase_auth: 6a41305f668ac6f9bcbefdedfcba5aacb8367e92
   firebase_core: efc9455611b8769fa90fbdae5da182600bd6901c
   firebase_crashlytics: 6a564f58db90be49c49d9ac100bc5cc3fcbf8267
   firebase_messaging: 9c697d1ecfe77edf15d995b5048906ffc994c96c
@@ -308,4 +308,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 8d2379e642dbff00d288fe5a6a7d23077dd3f6b1
 
-COCOAPODS: 1.13.0
+COCOAPODS: 1.14.2
