@@ -113,6 +113,7 @@ void showFlutterNotification(RemoteMessage message) {
           channel.id,
           channel.name,
           channelDescription: channel.description,
+
           /// add a proper drawable resource to android, for now using
           /// one that already exists in example app.
           icon: 'launch_background',
@@ -129,6 +130,7 @@ late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await setupFlutterNotifications();
   await FirebaseMessaging.instance.requestPermission();
