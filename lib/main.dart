@@ -7,8 +7,15 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:homing_pigeon/app/bloc_observer.dart';
+import 'package:homing_pigeon/app/manager.dart';
+import 'package:homing_pigeon/common/utils/sp_util.dart';
 import 'package:homing_pigeon/modules/app/app.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -129,7 +136,10 @@ late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load();
   await Firebase.initializeApp();
+
+  EasyLoading.instance.maskType = EasyLoadingMaskType.clear;
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await setupFlutterNotifications();
@@ -152,5 +162,19 @@ Future<void> main() async {
     return true;
   };
 
+  if (!kReleaseMode) {
+    Bloc.observer = AppBlocObserver();
+  }
+
+  await initApp();
+  await SpUtil.getInstance();
+
   runApp(const AppView());
+}
+
+Future<void> initApp() async {
+  final packageInfo = await PackageInfo.fromPlatform();
+  AppManager.instance
+    ..version = packageInfo.version
+    ..buildNumber = packageInfo.buildNumber;
 }
