@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools" package="com.chenyifaer.homingpigeon">
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- 适配Android 13，应用弹出通知必须权限-->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />

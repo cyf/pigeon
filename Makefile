@@ -1,6 +1,6 @@
 
 get:
-	echo "╠ Installing deps..."
+	echo "╠ Installing dependencies..."
 	flutter pub get
 
 outdated:
@@ -10,7 +10,7 @@ outdated:
 clean: ## Cleans the environment
 	echo "╠ Cleaning the project..."
 	flutter clean
-	echo "╠ Installing deps..."
+	echo "╠ Installing dependencies..."
 	flutter pub get
 
 icon: ## Generate icons
