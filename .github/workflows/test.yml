@@ -1,4 +1,4 @@
-name: Test (Mobile)
+name: Test
 on:
   pull_request:
     branches:
@@ -35,6 +35,18 @@ jobs:
 #        env:
 #          ANDROID_NDK_HOME: '/usr/local/lib/android/sdk/ndk'
 
+      - name: Configure .env for development
+        run: |
+          echo "API_PREFIX=$API_PREFIX" >> .env
+          echo "SIGN_KEY=$SIGN_KEY" >> .env
+          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
+          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+        env:
+          API_PREFIX: ${{ secrets.DEV_API_PREFIX }}
+          SIGN_KEY: ${{ secrets.DEV_SIGN_KEY }}
+          CRYPTO_AES_KEY: ${{ secrets.DEV_CRYPTO_AES_KEY }}
+          CRYPTO_AES_IV: ${{ secrets.DEV_CRYPTO_AES_IV }}
+
       - name: Flutter doctor -v
         run: flutter doctor -v
 
@@ -68,7 +80,7 @@ jobs:
           name: apk-artifact
           path: ./*.apk
 
-  ios-build_appstore:
+  ios-build:
     name: Create ios build (appstore)
     runs-on: macos-latest
     steps:
@@ -79,6 +91,18 @@ jobs:
         with:
           channel: 'stable'
           flutter-version: '3.16.0'
+
+      - name: Configure .env for development
+        run: |
+          echo "API_PREFIX=$API_PREFIX" >> .env
+          echo "SIGN_KEY=$SIGN_KEY" >> .env
+          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
+          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+        env:
+          API_PREFIX: ${{ secrets.DEV_API_PREFIX }}
+          SIGN_KEY: ${{ secrets.DEV_SIGN_KEY }}
+          CRYPTO_AES_KEY: ${{ secrets.DEV_CRYPTO_AES_KEY }}
+          CRYPTO_AES_IV: ${{ secrets.DEV_CRYPTO_AES_IV }}
 
       - name: Flutter doctor -v
         run: flutter doctor -v
