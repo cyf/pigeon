@@ -17,6 +17,10 @@
     {
       "matchPackagePatterns": ["androidx.window"],
       "groupName": "androidx.window"
+    },
+    {
+      "matchPackageNames": ["com.android.tools.build:gradle", "gradle"],
+      "groupName": "gradle"
     }
   ]
 }
