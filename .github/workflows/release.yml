@@ -17,6 +17,11 @@ on:
           - development
           - staging
           - production
+      versionSuffix:
+        description: 'Whether to add version suffix?'
+        default: true
+        required: true
+        type: boolean
       mode:
         type: choice
         description: "Which mode are you using? (iOS only)"
@@ -47,6 +52,17 @@ jobs:
         working-directory: build/
 
       - name: Push APK to Releases
+        if: github.event.inputs.versionSuffix == 'true'
+        uses: ncipollo/release-action@v1
+        with:
+          name: ${{ github.event.inputs.version }}+${{ github.event.inputs.env }}
+          artifacts: "./**/*.apk,./**/*.aab,./**/*.ipa"
+          tag: ${{ github.event.inputs.version }}+${{ github.event.inputs.env }}
+          token: ${{ secrets.CYF_BOT_TOKEN }}
+          prerelease: ${{ github.event.inputs.env != 'production' }}
+
+      - name: Push APK to Releases
+        if: github.event.inputs.versionSuffix != 'true'
         uses: ncipollo/release-action@v1
         with:
           name: ${{ github.event.inputs.version }}
@@ -86,11 +102,13 @@ jobs:
           echo "SIGN_KEY=$SIGN_KEY" >> .env
           echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
           echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
         env:
           API_PREFIX: ${{ secrets.DEV_API_PREFIX }}
           SIGN_KEY: ${{ secrets.DEV_SIGN_KEY }}
           CRYPTO_AES_KEY: ${{ secrets.DEV_CRYPTO_AES_KEY }}
           CRYPTO_AES_IV: ${{ secrets.DEV_CRYPTO_AES_IV }}
+          SENTRY_DSN: ${{ secrets.DEV_SENTRY_DSN }}
 
       - name: Configure .env for staging
         if: github.event.inputs.env == 'staging'
@@ -99,11 +117,13 @@ jobs:
           echo "SIGN_KEY=$SIGN_KEY" >> .env
           echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
           echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
         env:
           API_PREFIX: ${{ secrets.STG_API_PREFIX }}
           SIGN_KEY: ${{ secrets.STG_SIGN_KEY }}
           CRYPTO_AES_KEY: ${{ secrets.STG_CRYPTO_AES_KEY }}
           CRYPTO_AES_IV: ${{ secrets.STG_CRYPTO_AES_IV }}
+          SENTRY_DSN: ${{ secrets.STG_SENTRY_DSN }}
 
       - name: Configure .env for production
         if: github.event.inputs.env == 'production'
@@ -112,11 +132,13 @@ jobs:
           echo "SIGN_KEY=$SIGN_KEY" >> .env
           echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
           echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
         env:
           API_PREFIX: ${{ secrets.PROD_API_PREFIX }}
           SIGN_KEY: ${{ secrets.PROD_SIGN_KEY }}
           CRYPTO_AES_KEY: ${{ secrets.PROD_CRYPTO_AES_KEY }}
           CRYPTO_AES_IV: ${{ secrets.PROD_CRYPTO_AES_IV }}
+          SENTRY_DSN: ${{ secrets.PROD_SENTRY_DSN }}
 
       - name: Flutter doctor -v
         run: flutter doctor -v
@@ -139,7 +161,11 @@ jobs:
         working-directory: android
 
       # Build the application.
-      - run: flutter build apk --release --split-per-abi --no-tree-shake-icons
+      - if: github.event.inputs.versionSuffix == 'true'
+        run: bash build-android.sh && flutter build apk --release --split-per-abi --no-tree-shake-icons
+
+      - if: github.event.inputs.versionSuffix != 'true'
+        run: flutter build apk --release --split-per-abi --no-tree-shake-icons
 
       # Package the build.
       - name: Copy build for Android
@@ -182,11 +208,13 @@ jobs:
           echo "SIGN_KEY=$SIGN_KEY" >> .env
           echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
           echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
         env:
           API_PREFIX: ${{ secrets.DEV_API_PREFIX }}
           SIGN_KEY: ${{ secrets.DEV_SIGN_KEY }}
           CRYPTO_AES_KEY: ${{ secrets.DEV_CRYPTO_AES_KEY }}
           CRYPTO_AES_IV: ${{ secrets.DEV_CRYPTO_AES_IV }}
+          SENTRY_DSN: ${{ secrets.DEV_SENTRY_DSN }}
 
       - name: Configure .env for staging
         if: github.event.inputs.env == 'staging'
@@ -195,11 +223,13 @@ jobs:
           echo "SIGN_KEY=$SIGN_KEY" >> .env
           echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
           echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
         env:
           API_PREFIX: ${{ secrets.STG_API_PREFIX }}
           SIGN_KEY: ${{ secrets.STG_SIGN_KEY }}
           CRYPTO_AES_KEY: ${{ secrets.STG_CRYPTO_AES_KEY }}
           CRYPTO_AES_IV: ${{ secrets.STG_CRYPTO_AES_IV }}
+          SENTRY_DSN: ${{ secrets.STG_SENTRY_DSN }}
 
       - name: Configure .env for production
         if: github.event.inputs.env == 'production'
@@ -208,11 +238,13 @@ jobs:
           echo "SIGN_KEY=$SIGN_KEY" >> .env
           echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
           echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
         env:
           API_PREFIX: ${{ secrets.PROD_API_PREFIX }}
           SIGN_KEY: ${{ secrets.PROD_SIGN_KEY }}
           CRYPTO_AES_KEY: ${{ secrets.PROD_CRYPTO_AES_KEY }}
           CRYPTO_AES_IV: ${{ secrets.PROD_CRYPTO_AES_IV }}
+          SENTRY_DSN: ${{ secrets.PROD_SENTRY_DSN }}
 
       - name: Flutter doctor -v
         run: flutter doctor -v
@@ -235,7 +267,11 @@ jobs:
         working-directory: android
 
       # Build the application.
-      - run: flutter build appbundle --release --no-tree-shake-icons
+      - if: github.event.inputs.versionSuffix == 'true'
+        run: bash build-android.sh && flutter build appbundle --release --no-tree-shake-icons
+
+      - if: github.event.inputs.versionSuffix != 'true'
+        run: flutter build appbundle --release --no-tree-shake-icons
 
       # Package the build.
       - name: Copy build for Android
@@ -266,11 +302,13 @@ jobs:
           echo "SIGN_KEY=$SIGN_KEY" >> .env
           echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
           echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
         env:
           API_PREFIX: ${{ secrets.DEV_API_PREFIX }}
           SIGN_KEY: ${{ secrets.DEV_SIGN_KEY }}
           CRYPTO_AES_KEY: ${{ secrets.DEV_CRYPTO_AES_KEY }}
           CRYPTO_AES_IV: ${{ secrets.DEV_CRYPTO_AES_IV }}
+          SENTRY_DSN: ${{ secrets.DEV_SENTRY_DSN }}
 
       - name: Configure .env for staging
         if: github.event.inputs.env == 'staging'
@@ -279,11 +317,13 @@ jobs:
           echo "SIGN_KEY=$SIGN_KEY" >> .env
           echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
           echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
         env:
           API_PREFIX: ${{ secrets.STG_API_PREFIX }}
           SIGN_KEY: ${{ secrets.STG_SIGN_KEY }}
           CRYPTO_AES_KEY: ${{ secrets.STG_CRYPTO_AES_KEY }}
           CRYPTO_AES_IV: ${{ secrets.STG_CRYPTO_AES_IV }}
+          SENTRY_DSN: ${{ secrets.STG_SENTRY_DSN }}
 
       - name: Configure .env for production
         if: github.event.inputs.env == 'production'
@@ -292,11 +332,13 @@ jobs:
           echo "SIGN_KEY=$SIGN_KEY" >> .env
           echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
           echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
         env:
           API_PREFIX: ${{ secrets.PROD_API_PREFIX }}
           SIGN_KEY: ${{ secrets.PROD_SIGN_KEY }}
           CRYPTO_AES_KEY: ${{ secrets.PROD_CRYPTO_AES_KEY }}
           CRYPTO_AES_IV: ${{ secrets.PROD_CRYPTO_AES_IV }}
+          SENTRY_DSN: ${{ secrets.PROD_SENTRY_DSN }}
 
       - name: Flutter doctor -v
         run: flutter doctor -v
@@ -350,6 +392,11 @@ jobs:
           cp $PP_DEV_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
       - name: Build
+        if: github.event.inputs.versionSuffix == 'true'
+        run: bash build-ios.sh && flutter build ipa --release --export-options-plist=ios/ExportOptions-${{ github.event.inputs.mode }}.plist --dart-define-from-file=ios-pgyer.json
+
+      - name: Build
+        if: github.event.inputs.versionSuffix != 'true'
         run: flutter build ipa --release --export-options-plist=ios/ExportOptions-${{ github.event.inputs.mode }}.plist
 
       # Package the build.
