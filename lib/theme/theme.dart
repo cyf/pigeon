@@ -28,7 +28,7 @@ class AppTheme {
         hintStyle: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w400,
-          color: Colors.grey,
+          color: placeholderTextColor,
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
@@ -135,6 +135,7 @@ class AppTheme {
       ),
       bottomSheetTheme: BottomSheetThemeData(
         surfaceTintColor: primaryColor,
+        backgroundColor: secondaryGrayColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -151,7 +152,7 @@ class AppTheme {
         hintStyle: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w400,
-          color: Colors.grey,
+          color: placeholderTextColor,
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
