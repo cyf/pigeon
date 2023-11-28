@@ -93,7 +93,7 @@ class HpHeaders {
         options.queryParameters,
         Constants.signKey,
       ),
-      'x-version': AppManager.instance.version,
+      'x-version': AppManager.instance.prodVersion,
       'x-token':
           StringUtil.isNotBlank(token) ? 'Bearer $token' : StringUtil.empty,
       'x-channel': Platform.isIOS

@@ -21,4 +21,7 @@ class Constants {
   StringUtil.getValue(dotenv.env['CRYPTO_AES_KEY']);
   static String cryptoAESIV = StringUtil.getValue(dotenv.env['CRYPTO_AES_IV']);
 
+  static String sentryDsn = StringUtil.getValue(dotenv.env['SENTRY_DSN']);
+
+  static bool sentryEnabled = StringUtil.isNotBlank(sentryDsn);
 }

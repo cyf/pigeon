@@ -1,8 +1,30 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" package="com.chenyifaer.homingpigeon">
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <!-- 网络权限 （必选）-->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- 适配Android 13，应用弹出通知必须权限-->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- Permissions options for the `storage` group -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32"
+        tools:ignore="ScopedStorage" />
+
+    <!-- Permissions options for the `images` group -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <!--<uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />-->
+    <!--<uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />-->
+
+    <!-- Permissions options for the `camera` group -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:label="Homing Pigeon"
         android:name="${applicationName}"

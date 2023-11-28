@@ -3,7 +3,13 @@ class AppManager {
   /// 私有构造器
   AppManager._();
 
+  /// 版本号
   String? version;
+
+  ///
+  String? prodVersion;
+
+  /// 构建版本
   String? buildNumber;
 
   /// 静态变量指向自身
