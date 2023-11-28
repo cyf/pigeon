@@ -11,14 +11,29 @@ if (flutterRoot == null) {
     throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
 
-def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
-if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
-}
+//def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+//if (flutterVersionCode == null) {
+//    flutterVersionCode = '1'
+//}
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
+    flutterVersionName = '1.0.0'
+}
+
+def gitProperties = new Properties()
+def gitPropertiesFile = rootProject.file('git.properties')
+if (gitPropertiesFile.exists()) {
+    gitPropertiesFile.withReader('UTF-8') { reader ->
+        gitProperties.load(reader)
+    }
+}
+
+def appSuffix = gitProperties.getProperty('app.suffix')
+def appEnv = gitProperties.getProperty('app.env')
+def appVersionNameSuffix = ''
+if (appSuffix && appEnv) {
+    appVersionNameSuffix = "+${appEnv}-${appSuffix}"
 }
 
 def keystoreProperties = new Properties()
@@ -44,6 +59,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
     defaultConfig {
         applicationId "com.chenyifaer.homingpigeon"
         // You can update the following values to match your application needs.
@@ -51,10 +70,10 @@ android {
         minSdkVersion 21
         targetSdkVersion 33
         versionCode 1
-        versionName "1.0.0"
+        versionName flutterVersionName
+        versionNameSuffix appVersionNameSuffix
         multiDexEnabled true
 //        versionCode flutterVersionCode.toInteger()
-//        versionName flutterVersionName
     }
 
     signingConfigs {
@@ -79,7 +98,7 @@ android {
         release {
             signingConfig signingConfigs.release
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt')
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             signingConfig signingConfigs.debug
@@ -93,10 +112,7 @@ flutter {
 
 dependencies {
     // flutter_local_notifications
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
-    implementation 'androidx.window:window:1.2.0'
-    implementation 'androidx.window:window-java:1.2.0'
-
-    // firebase auth for google signin
-    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.9'
+    implementation 'androidx.window:window:1.1.0'
+    implementation 'androidx.window:window-java:1.1.0'
 }

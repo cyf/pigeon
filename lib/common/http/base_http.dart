@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:homing_pigeon/common/constants/constants.dart';
 import 'package:homing_pigeon/common/http/interceptors/error_interceptor.dart';
+import 'package:sentry_dio/sentry_dio.dart';
 
 // 必须是顶层函数
 dynamic _parseAndDecode(String response) {
@@ -23,6 +25,9 @@ abstract class BaseHttp with DioMixin implements Dio {
       ErrorInterceptor(),
     ]);
     init();
+    if (Constants.sentryEnabled && kReleaseMode) {
+      addSentry();
+    }
   }
 
   void init();

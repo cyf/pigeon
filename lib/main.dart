@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -13,9 +12,12 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:homing_pigeon/app/bloc_observer.dart';
 import 'package:homing_pigeon/app/manager.dart';
+import 'package:homing_pigeon/common/constants/constants.dart';
 import 'package:homing_pigeon/common/utils/sp_util.dart';
+import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/modules/app/app.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -134,33 +136,52 @@ void showFlutterNotification(RemoteMessage message) {
 /// Initialize the [FlutterLocalNotificationsPlugin] package.
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
+Future<void> reportErrorAndLog(FlutterErrorDetails details) async {
+  if (Constants.sentryEnabled && kReleaseMode) {
+    await Sentry.captureException(details.exception, stackTrace: details.stack);
+  }
+  if (!kReleaseMode) {
+    log(details.exceptionAsString(), stackTrace: details.stack);
+  }
+}
+
+FlutterErrorDetails makeErrorDetails(Object error, StackTrace stackTrace) {
+  return FlutterErrorDetails(exception: error, stack: stackTrace);
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
-  await Firebase.initializeApp();
 
+  if (Constants.sentryEnabled && kReleaseMode) {
+    await SentryFlutter.init(
+          (options) {
+        options
+          ..dsn = Constants.sentryDsn
+          ..tracesSampleRate = 1.0;
+      },
+    );
+  }
+
+  final onError = FlutterError.onError;
+  FlutterError.onError = (details) {
+    onError?.call(details);
+    reportErrorAndLog(details);
+  };
+
+  /// Pass all uncaught asynchronous errors
+  /// that aren't handled by the Flutter Framework to Sentry
+  PlatformDispatcher.instance.onError = (error, stack) {
+    reportErrorAndLog(makeErrorDetails(error, stack));
+    return true;
+  };
+
+  await Firebase.initializeApp();
   EasyLoading.instance.maskType = EasyLoadingMaskType.clear;
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await setupFlutterNotifications();
   await FirebaseMessaging.instance.requestPermission();
-
-  final onError = FlutterError.onError;
-  FlutterError.onError = (details) async {
-    onError?.call(details);
-    if (kReleaseMode) {
-      await FirebaseCrashlytics.instance.recordFlutterFatalError(details);
-    }
-  };
-
-  PlatformDispatcher.instance.onError = (error, stackTrace) {
-    if (!kReleaseMode) {
-      log(error.toString(), stackTrace: stackTrace);
-    } else {
-      FirebaseCrashlytics.instance.recordError(error, stackTrace, fatal: true);
-    }
-    return true;
-  };
 
   if (!kReleaseMode) {
     Bloc.observer = AppBlocObserver();
@@ -176,5 +197,7 @@ Future<void> initApp() async {
   final packageInfo = await PackageInfo.fromPlatform();
   AppManager.instance
     ..version = packageInfo.version
+    ..prodVersion = packageInfo.version
+        .replaceAll(RegExp(r'\+[0-9-a-z]+'), StringUtil.empty)
     ..buildNumber = packageInfo.buildNumber;
 }

@@ -4,10 +4,10 @@ import 'package:homing_pigeon/common/http/base_http.dart';
 import 'package:homing_pigeon/common/http/interceptors/base_interceptor.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-final EpHttp epHttp = EpHttp();
+final hpHttp = HpHttp();
 
-class EpHttp extends BaseHttp {
-  EpHttp();
+class HpHttp extends BaseHttp {
+  HpHttp();
 
   @override
   void init() {

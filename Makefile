@@ -27,8 +27,20 @@ build_runner: ## Build the files for changes
 
 apk: ## Release Apk
 	echo "╠ Releasing Apk..."
-	flutter build apk --no-tree-shake-icons --target lib/main.dart
+	bash build-android.sh && flutter build apk --no-tree-shake-icons --target lib/main.dart
+
+appbundle_firebase: ## Release Appbundle
+	echo "╠ Releasing Appbundle..."
+	bash build-android.sh && flutter build appbundle --no-tree-shake-icons --target lib/main.dart
 
 appbundle: ## Release Appbundle
 	echo "╠ Releasing Appbundle..."
-	flutter build appbundle --no-tree-shake-icons --target lib/main.dart
+	rm -f android/git.properties && flutter build appbundle --no-tree-shake-icons --target lib/main.dart
+
+ad_hoc:
+	echo "╠ Releasing to pgyer..."
+	bash build-ios.sh && flutter build ipa --release --export-options-plist=ios/ExportOptions-debug.plist --dart-define-from-file=ios-pgyer.json
+
+app_store:
+	echo "╠ Releasing to app store..."
+	flutter build ipa --release --export-options-plist=ios/ExportOptions-release.plist
