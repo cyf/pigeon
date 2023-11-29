@@ -15,7 +15,7 @@ class AppView extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: AppNavigator.key,
       theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
+      darkTheme: AppTheme.light,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       navigatorObservers: [
