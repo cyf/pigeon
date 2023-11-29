@@ -24,6 +24,19 @@ class AppTheme {
       radioTheme: RadioThemeData(
         fillColor: MaterialStateProperty.all(primaryColor),
       ),
+      dividerTheme: const DividerThemeData(
+        color: Colors.transparent,
+      ),
+      cardTheme: CardTheme(
+        clipBehavior: Clip.hardEdge,
+        color: Colors.white,
+        shadowColor: Colors.transparent,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        margin: const EdgeInsets.symmetric(horizontal: 10),
+      ),
       inputDecorationTheme: InputDecorationTheme(
         hintStyle: const TextStyle(
           fontSize: 14,

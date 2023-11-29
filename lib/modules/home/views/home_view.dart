@@ -11,7 +11,9 @@ import 'package:homing_pigeon/app/manager.dart';
 import 'package:homing_pigeon/common/extensions/extensions.dart';
 import 'package:homing_pigeon/common/utils/navigator_util.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
+import 'package:homing_pigeon/l10n/l10n.dart';
 import 'package:homing_pigeon/main.dart';
+import 'package:homing_pigeon/modules/detail/detail.dart';
 import 'package:homing_pigeon/modules/home/home.dart';
 import 'package:homing_pigeon/theme/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -94,7 +96,7 @@ class _HomeViewState extends State<HomeView> {
           backgroundColor: Colors.white,
           expandedHeight: carouselHeight,
           title: isSliverAppBarExpanded
-              ? const Text('pinned header height')
+              ? Text(AppLocalizations.of(context).appName)
               : null,
           // actions: isSliverAppBarExpanded
           //     ? [
@@ -179,7 +181,7 @@ class _HomeViewState extends State<HomeView> {
             SectionItem(
               title: '直播信息/提醒群',
               tips: '直播平台、时间等',
-              onTap: () => {},
+              onTap: () => NavigatorUtil.push(context, const SocialView()),
             ),
             SectionItem(
               title: '小德官方店: 喜瑞斯',
@@ -191,7 +193,7 @@ class _HomeViewState extends State<HomeView> {
             SectionItem(
               title: '小德表情包🐱',
               tips: '欢迎投稿~~',
-              onTap: () => {},
+              onTap: () => NavigatorUtil.push(context, const EmojiView()),
             ),
             SectionItem(
               title: '意见/建议',
@@ -276,7 +278,10 @@ class _HomeViewState extends State<HomeView> {
               if (mounted) {
                 NavigatorUtil.pop(context);
               }
-              await launchUrl(Uri.parse('https://chenyifaer.taobao.com'));
+              final uri = Uri.parse('https://chenyifaer.taobao.com');
+              if (await canLaunchUrl(uri)) {
+                await launchUrl(uri);
+              }
             },
           ),
           TextButton(

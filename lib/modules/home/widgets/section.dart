@@ -23,7 +23,7 @@ class Section extends StatelessWidget {
           .nestedPadding(
             padding: const EdgeInsets.only(top: 20, left: 10, bottom: 6),
           )
-          .nestedColoredBox(color: Colors.transparent),
+          .nestedColoredBox(color: secondaryGrayColor),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, i) => items.elementAt(i),
