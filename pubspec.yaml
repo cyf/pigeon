@@ -40,14 +40,14 @@ dependencies:
   crypto: ^3.0.3
   cupertino_icons: ^1.0.6
   device_info_plus: ^9.1.1
-  dio: ^5.3.4
+  dio: ^5.4.0
   easy_refresh: ^3.3.2+4
   encrypt: ^5.0.3
   equatable: ^2.0.5
   file_picker: ^6.1.1
-  firebase_analytics: ^10.7.1
-  firebase_core: ^2.23.0
-  firebase_messaging: ^14.7.5
+  firebase_analytics: ^10.7.2
+  firebase_core: ^2.24.0
+  firebase_messaging: ^14.7.6
   firebase_performance: ^0.9.3+5
   flutter:
     sdk: flutter
@@ -86,7 +86,7 @@ dependencies:
 
 dev_dependencies:
   bloc_test: ^9.1.5
-  build_runner: ^2.4.6
+  build_runner: ^2.4.7
   flutter_gen_runner: ^5.3.2
   flutter_test:
     sdk: flutter
