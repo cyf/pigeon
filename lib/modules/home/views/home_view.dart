@@ -6,6 +6,7 @@ import 'package:clipboard/clipboard.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:homing_pigeon/app/manager.dart';
 import 'package:homing_pigeon/common/extensions/extensions.dart';
@@ -98,6 +99,11 @@ class _HomeViewState extends State<HomeView> {
           title: isSliverAppBarExpanded
               ? Text(AppLocalizations.of(context).appName)
               : null,
+          systemOverlayStyle: const SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.dark,
+            statusBarBrightness: Brightness.light,
+          ),
           // actions: isSliverAppBarExpanded
           //     ? [
           //         IconButton(
@@ -161,16 +167,16 @@ class _HomeViewState extends State<HomeView> {
             SectionItem(
               title: '电影打分系统',
               tips: '给看过的电影打个分吧~~',
-              onTap: () => {},
+              onTap: () => NavigatorUtil.push(context, const MovieView()),
             ),
             SectionItem(
               title: '直播预告',
               tips: '查看详情',
-              onTap: () => {},
+              onTap: () => NavigatorUtil.push(context, const LiveView()),
             ),
             SectionItem(
               title: '开播通知设置',
-              onTap: () => {},
+              onTap: () => NavigatorUtil.push(context, const LiveView()),
               showBorder: false,
             ),
           ],
@@ -197,7 +203,7 @@ class _HomeViewState extends State<HomeView> {
             ),
             SectionItem(
               title: '意见/建议',
-              onTap: () => {},
+              onTap: () => NavigatorUtil.push(context, const FeedbackView()),
               showBorder: false,
             ),
           ],
@@ -265,7 +271,7 @@ class _HomeViewState extends State<HomeView> {
             }),
           ),
           SectionItem(
-            title: '复制淘宝店地址',
+            title: '打开淘宝店地址',
             tips: '寒潮啦! 来件卫衣吧~~',
             tipsColor: errorTextColor,
             showBack: false,
@@ -325,7 +331,6 @@ class ModalBottomSheetPopup extends StatelessWidget {
   }
 }
 
-@immutable
 class Carousel {
   const Carousel({
     required this.image,

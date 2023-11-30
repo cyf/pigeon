@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
 
-class EmojiView extends StatefulWidget {
-  const EmojiView({super.key});
+class LiveView extends StatefulWidget {
+  const LiveView({super.key});
 
   @override
-  State<EmojiView> createState() => _EmojiViewState();
+  State<LiveView> createState() => _LiveViewState();
 }
 
-class _EmojiViewState extends State<EmojiView> {
+class _LiveViewState extends State<LiveView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: HpAppBar(
-        titleWidget: const Text('Emoji'),
+        titleWidget: const Text('Live'),
       ),
       body: const Center(
-        child: Text('Emoji'),
+        child: Text('Live'),
       ),
     );
   }

@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:homing_pigeon/common/widgets/widgets.dart';
 import 'package:homing_pigeon/modules/detail/detail.dart';
 
 final List<CardItem> cards = [
   CardItem(
     title: 'YouTube',
-    subtitle: '搜"陈一发儿"',
+    subtitles: [
+      const SubTitle(
+        title: '搜"陈一发儿"',
+      ),
+    ],
     descriptions: [
       Description(
         name: '一般周六唱歌｜聊天｜读邮件；周三打游戏～',
@@ -19,7 +24,11 @@ final List<CardItem> cards = [
   ),
   CardItem(
     title: 'Twitch',
-    subtitle: '搜"thebs_chen"',
+    subtitles: [
+      const SubTitle(
+        title: '搜"thebs_chen"',
+      ),
+    ],
     descriptions: [
       Description(
         name: '一般随机时间看电影～',
@@ -34,7 +43,33 @@ final List<CardItem> cards = [
   ),
   CardItem(
     title: '投稿邮箱',
-    subtitle: '长期征稿中! 情感咨询、人生迷思、买房卖房、生理卫生、投资理财、小学以下算术...等问题均可投稿。排忧解惑，治病救人～～',
+    subtitles: [
+      const SubTitle(
+        title: '长期征稿中! 情感咨询、人生迷思、买房卖房、生理卫生、投资理财、小学以下算术...等问题均可投稿。排忧解惑，治病救人～～',
+      ),
+    ],
+    tips: [
+      const Tip(
+        type: LinkType.text,
+        text: '[',
+      ),
+      Tip(
+        type: LinkType.link,
+        text: '查看说明',
+        uri: Uri.parse(
+          'https://dev.chenyifaer.com/homing-pigeon/zh/video/introduce/',
+        ),
+      ),
+      const Tip(
+        type: LinkType.text,
+        text: '（注意音量）',
+        color: 0xFFFF5050,
+      ),
+      const Tip(
+        type: LinkType.text,
+        text: ']',
+      ),
+    ],
     descriptions: [
       Description(
         links: [
@@ -48,7 +83,11 @@ final List<CardItem> cards = [
   ),
   CardItem(
     title: '微博话题',
-    subtitle: '搜"陈一发儿"',
+    subtitles: [
+      const SubTitle(
+        title: '搜"陈一发儿"',
+      ),
+    ],
     descriptions: [
       Description(
         name: '水友们的精神家园',
@@ -65,7 +104,15 @@ final List<CardItem> cards = [
   ),
   CardItem(
     title: '官方淘宝店',
-    subtitle: '搜"喜瑞斯"',
+    subtitles: [
+      const SubTitle(
+        title: '搜"喜瑞斯"',
+      ),
+      const SubTitle(
+        title: '（这次是真的上新了!）',
+        color: 0xFFFF5050,
+      ),
+    ],
     descriptions: [
       Description(
         links: [
@@ -79,7 +126,11 @@ final List<CardItem> cards = [
   ),
   CardItem(
     title: 'Spotify',
-    subtitle: '搜"陈一发儿"',
+    subtitles: [
+      const SubTitle(
+        title: '搜"陈一发儿"',
+      ),
+    ],
     descriptions: [
       Description(
         links: [
@@ -95,7 +146,11 @@ final List<CardItem> cards = [
   ),
   CardItem(
     title: 'Instagram',
-    subtitle: '搜"yifaer_chen"',
+    subtitles: [
+      const SubTitle(
+        title: '搜"yifaer_chen"',
+      ),
+    ],
     descriptions: [
       Description(
         links: [
@@ -143,8 +198,8 @@ class SocialView extends StatelessWidget {
   Widget build(BuildContext context) {
     final bottom = MediaQuery.of(context).padding.bottom;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('社交'),
+      appBar: HpAppBar(
+        titleWidget: const Text('社交'),
       ),
       body: ListView.separated(
         itemCount: cards.length,
@@ -152,7 +207,7 @@ class SocialView extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) =>
             SocialCard(item: cards[index]),
         separatorBuilder: (BuildContext context, int index) =>
-        const Divider(height: 14),
+            const Divider(height: 14),
       ),
     );
   }
