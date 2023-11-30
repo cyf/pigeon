@@ -84,9 +84,6 @@ dependencies:
   wechat_assets_picker: ^8.9.0-dev.1
   wechat_camera_picker: ^4.2.0-dev.2
 
-dependency_overrides:
-  built_value: 8.6.0
-
 dev_dependencies:
   bloc_test: ^9.1.5
   build_runner: ^2.4.6
