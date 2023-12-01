@@ -101,25 +101,23 @@ class _SocialViewState extends State<SocialView>
   }
 
   void _load({Operation operation = Operation.none}) {
-    setState(() => loading = true);
     if (operation == Operation.none) {
+      setState(() => loading = true);
       EasyLoading.show();
     }
     SocialApi.getSocialCardList().then(
       (data) {
-        setState(() {
-          loading = false;
-          items = data;
-        });
         if (operation == Operation.none) {
+          setState(() => loading = false);
           EasyLoading.dismiss();
         } else if (operation == Operation.refresh) {
           _controller.finishRefresh();
         }
+        setState(() => items = data);
       },
     ).onError<RequestedException>((error, stackTrace) {
-      setState(() => loading = false);
       if (operation == Operation.none) {
+        setState(() => loading = false);
         EasyLoading.showError(error.msg);
       } else if (operation == Operation.refresh) {
         _controller.finishRefresh(IndicatorResult.fail);
