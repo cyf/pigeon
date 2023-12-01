@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart' hide Headers;
+import 'package:dio/dio.dart';
 import 'package:homing_pigeon/common/constants/constants.dart';
 import 'package:homing_pigeon/common/http/constants/code.dart';
 import 'package:homing_pigeon/common/http/headers/headers.dart';
@@ -70,5 +70,14 @@ class BaseInterceptor extends InterceptorsWrapper {
       );
     }
     super.onResponse(response, handler);
+  }
+
+  @override
+  void onError(DioException err, ErrorInterceptorHandler handler) {
+    Code.errorHandleFunction(
+      500,
+      err.message,
+    );
+    super.onError(err, handler);
   }
 }
