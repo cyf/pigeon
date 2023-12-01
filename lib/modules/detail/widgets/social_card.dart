@@ -2,8 +2,10 @@ import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:homing_pigeon/common/extensions/extensions.dart';
-import 'package:homing_pigeon/modules/detail/detail.dart';
+import 'package:homing_pigeon/common/models/models.dart';
+import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/theme/colors.dart';
+import 'package:string_to_color/string_to_color.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SocialCard extends StatelessWidget {
@@ -35,7 +37,7 @@ class SocialCard extends StatelessWidget {
                     text: subtitle.title,
                     style: TextStyle(
                       color: subtitle.color != null
-                          ? Color(subtitle.color!)
+                          ? ColorUtils.stringToColor(subtitle.color!)
                           : primaryTextColor,
                       // color: primaryTextColor,
                       fontSize: 18,
@@ -45,6 +47,7 @@ class SocialCard extends StatelessWidget {
                 }),
             ],
           ),
+          scrollPhysics: const NeverScrollableScrollPhysics(),
         ),
         if (item.tips != null && item.tips!.isNotEmpty)
           Text.rich(
@@ -52,10 +55,11 @@ class SocialCard extends StatelessWidget {
               children: item.tips!.map(
                 (tip) {
                   Widget child = Text(
-                    tip.text,
+                    StringUtil.getValue(tip.text),
                     style: TextStyle(
-                      color:
-                          tip.color != null ? Color(tip.color!) : primaryColor,
+                      color: tip.color != null
+                          ? ColorUtils.stringToColor(tip.color!)
+                          : primaryColor,
                       fontSize: 16,
                     ),
                   );
@@ -95,21 +99,23 @@ class SocialCard extends StatelessWidget {
               return [
                 if (description.name != null)
                   Text(
-                    '${description.name}',
+                    description.name!,
                     style:
                         const TextStyle(color: primaryTextColor, fontSize: 18),
                   ).nestedPadding(padding: const EdgeInsets.only(top: 16)),
-                if (description.links.isNotEmpty)
+                if (description.links != null && description.links!.isNotEmpty)
                   ...List.generate(
-                    description.links.length,
+                    description.links!.length,
                     (index) {
-                      final link = description.links[index];
+                      final link = description.links![index];
                       return (link.type == LinkType.link
                               ? TextButton(
                                   onPressed: () async {
-                                    if (link.uri != null &&
-                                        await canLaunchUrl(link.uri!)) {
-                                      await launchUrl(link.uri!);
+                                    if (link.href != null) {
+                                      final uri = Uri.tryParse(link.href!);
+                                      if (uri != null && await canLaunchUrl(uri)) {
+                                        await launchUrl(uri);
+                                      }
                                     }
                                   },
                                   style: ButtonStyle(
@@ -126,7 +132,7 @@ class SocialCard extends StatelessWidget {
                                     tapTargetSize:
                                         MaterialTapTargetSize.shrinkWrap,
                                   ),
-                                  child: Text(link.uri?.toString() ?? ''),
+                                  child: Text(link.href?.toString() ?? ''),
                                 )
                               : SelectableText.rich(
                                   TextSpan(
