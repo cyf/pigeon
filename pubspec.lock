@@ -815,10 +815,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_quill_extensions
-      sha256: "9c60b8ff0c12d1605d016fc356835af5dc98ed182bb9c865af811c7a5a2407fc"
+      sha256: "5b13226df5a376873792169918163eff61dbe4005c659da5fba94c8145890032"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.1"
+    version: "0.7.2"
   flutter_spinkit:
     dependency: transitive
     description:
