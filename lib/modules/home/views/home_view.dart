@@ -16,6 +16,7 @@ import 'package:homing_pigeon/common/extensions/extensions.dart';
 import 'package:homing_pigeon/common/models/models.dart';
 import 'package:homing_pigeon/common/utils/navigator_util.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
+import 'package:homing_pigeon/common/widgets/widgets.dart';
 import 'package:homing_pigeon/l10n/l10n.dart';
 import 'package:homing_pigeon/main.dart';
 import 'package:homing_pigeon/modules/detail/detail.dart';
@@ -322,13 +323,11 @@ class _HomeViewState extends State<HomeView>
   }
 
   void showShopModalBottomSheet() {
-    final bottom = MediaQuery.of(context).padding.bottom;
     const crossAxisAlignment = CrossAxisAlignment.center;
     const padding = EdgeInsets.zero;
     showModalBottomSheet<void>(
       context: context,
-      builder: (BuildContext context) => ModalBottomSheetPopup(
-        physics: const NeverScrollableScrollPhysics(),
+      builder: (BuildContext context) => ModalBottomSheet(
         items: [
           const Text(
             '请选择您的操作',
@@ -384,19 +383,6 @@ class _HomeViewState extends State<HomeView>
               }
             },
           ),
-          TextButton(
-            onPressed: () => NavigatorUtil.pop(context),
-            child: const Text(
-              '取消',
-              style: TextStyle(fontSize: 18, color: primaryTextColor),
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            )
-                .nestedCenter()
-                .nestedSizedBox(height: 64)
-                .nestedPadding(padding: EdgeInsets.only(bottom: bottom)),
-          ).nestedPadding(padding: const EdgeInsets.only(top: 8)),
         ],
       ),
     );
@@ -421,26 +407,4 @@ class _HomeViewState extends State<HomeView>
 
   @override
   bool get wantKeepAlive => true;
-}
-
-class ModalBottomSheetPopup extends StatelessWidget {
-  const ModalBottomSheetPopup({
-    required this.items,
-    this.physics,
-    super.key,
-  });
-
-  final List<Widget> items;
-  final ScrollPhysics? physics;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: EdgeInsets.zero,
-      shrinkWrap: true,
-      itemCount: items.length,
-      physics: physics,
-      itemBuilder: (context, index) => items[index],
-    );
-  }
 }

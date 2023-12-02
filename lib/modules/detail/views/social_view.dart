@@ -86,7 +86,7 @@ class _SocialViewState extends State<SocialView>
                       ),
                       onPressed: _load,
                       child: const Text(
-                        '点击以重新加载',
+                        '没有数据, 点击以重新加载',
                         style: TextStyle(
                           fontSize: 12,
                           color: placeholderTextColor,
