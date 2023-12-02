@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:homing_pigeon/common/extensions/extensions.dart';
 import 'package:homing_pigeon/common/models/models.dart';
+import 'package:homing_pigeon/common/utils/color_util.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/theme/colors.dart';
-import 'package:string_to_color/string_to_color.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SocialCard extends StatelessWidget {
@@ -37,7 +37,8 @@ class SocialCard extends StatelessWidget {
                     text: subtitle.title,
                     style: TextStyle(
                       color: subtitle.color != null
-                          ? ColorUtils.stringToColor(subtitle.color!)
+                          ? ColorUtil.stringToColor(subtitle.color!) ??
+                              primaryTextColor
                           : primaryTextColor,
                       // color: primaryTextColor,
                       fontSize: 18,
@@ -58,7 +59,7 @@ class SocialCard extends StatelessWidget {
                     StringUtil.getValue(tip.text),
                     style: TextStyle(
                       color: tip.color != null
-                          ? ColorUtils.stringToColor(tip.color!)
+                          ? ColorUtil.stringToColor(tip.color!) ?? primaryColor
                           : primaryColor,
                       fontSize: 16,
                     ),

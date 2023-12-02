@@ -14,6 +14,7 @@ import 'package:homing_pigeon/common/api/carousel_api.dart';
 import 'package:homing_pigeon/common/exception/exception.dart';
 import 'package:homing_pigeon/common/extensions/extensions.dart';
 import 'package:homing_pigeon/common/models/models.dart';
+import 'package:homing_pigeon/common/utils/color_util.dart';
 import 'package:homing_pigeon/common/utils/navigator_util.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
@@ -306,8 +307,11 @@ class _HomeViewState extends State<HomeView>
             },
             child: Text(
               carousel.text!,
-              style: const TextStyle(
-                color: primaryTextColor,
+              style: TextStyle(
+                color: StringUtil.isNotBlank(carousel.color)
+                    ? ColorUtil.stringToColor(carousel.color!) ??
+                        primaryTextColor
+                    : primaryTextColor,
                 fontSize: 16,
                 height: 1.5,
                 fontWeight: FontWeight.w500,

@@ -12,6 +12,7 @@ _$CarouselModelImpl _$$CarouselModelImplFromJson(Map<String, dynamic> json) =>
       image: json['image'] as String? ?? '',
       order: json['order'] as int? ?? 0,
       text: json['text'] as String?,
+      color: json['color'] as String?,
       href: json['href'] as String?,
     );
 
@@ -21,5 +22,6 @@ Map<String, dynamic> _$$CarouselModelImplToJson(_$CarouselModelImpl instance) =>
       'image': instance.image,
       'order': instance.order,
       'text': instance.text,
+      'color': instance.color,
       'href': instance.href,
     };

@@ -13,6 +13,7 @@ class CarouselModel with _$CarouselModel {
     @Default(0)
     int order,
     String? text,
+    String? color,
     String? href,
   }) = _CarouselModel;
 
