@@ -6,7 +6,7 @@ import 'package:homing_pigeon/common/http/hp_http.dart';
 import 'package:homing_pigeon/common/models/models.dart';
 
 class SocialApi {
-  ///
+  /// 直播信息/提醒群
   static Future<List<CardItem>> getSocialCardList() async {
     try {
       final res = await hpHttp.get<dynamic>('/api/backend/social/list/');

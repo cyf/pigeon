@@ -3,13 +3,17 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:clipboard/clipboard.dart';
+import 'package:easy_refresh/easy_refresh.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:homing_pigeon/app/manager.dart';
+import 'package:homing_pigeon/common/api/carousel_api.dart';
+import 'package:homing_pigeon/common/exception/exception.dart';
 import 'package:homing_pigeon/common/extensions/extensions.dart';
+import 'package:homing_pigeon/common/models/models.dart';
 import 'package:homing_pigeon/common/utils/navigator_util.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/l10n/l10n.dart';
@@ -28,18 +32,18 @@ class HomeView extends StatefulWidget {
 
 const double carouselHeight = 250;
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewState extends State<HomeView>
+    with AutomaticKeepAliveClientMixin {
+  final EasyRefreshController _controller = EasyRefreshController(
+    controlFinishRefresh: true,
+    controlFinishLoad: true,
+  );
   late ScrollController scrollController;
   bool isSliverAppBarExpanded = false;
 
-  List<Carousel> carousels = List.generate(
-    5,
-    (index) => Carousel(
-      image: 'https://images.unsplash.com/photo-1700902741852-ecf2bd2c26eb',
-      order: index,
-      href: 'https://www.google.com',
-    ),
-  );
+  List<CarouselModel> items = [];
+  bool loading = false;
+  String? error;
 
   @override
   void initState() {
@@ -67,100 +71,33 @@ class _HomeViewState extends State<HomeView> {
         log('A new onMessageOpenedApp event was published!');
       }
     });
+
+    _load();
   }
 
   @override
   void dispose() {
+    _controller.dispose();
     scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: _buildScaffoldBody(),
     );
   }
 
   Widget _buildScaffoldBody() {
-    final statusBarHeight = MediaQuery.of(context).padding.top;
     final bottom = MediaQuery.of(context).padding.bottom;
-    final width = MediaQuery.of(context).size.width;
     final version = AppManager.instance.version;
     return CustomScrollView(
       controller: scrollController,
       slivers: [
         // Add the app bar to the CustomScrollView.
-        SliverAppBar(
-          pinned: true,
-          stretch: true,
-          backgroundColor: Colors.white,
-          expandedHeight: carouselHeight,
-          title: isSliverAppBarExpanded
-              ? Text(AppLocalizations.of(context).appName)
-              : null,
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
-            statusBarIconBrightness: Brightness.dark,
-            statusBarBrightness: Brightness.light,
-          ),
-          // actions: isSliverAppBarExpanded
-          //     ? [
-          //         IconButton(
-          //           onPressed: () => {},
-          //           iconSize: 20,
-          //           color: primaryTextColor,
-          //           icon: const Icon(Icons.account_circle_outlined),
-          //         ),
-          //       ]
-          //     : [],
-          flexibleSpace: FlexibleSpaceBar(
-            // centerTitle: true,
-            collapseMode: CollapseMode.pin,
-            background: CarouselSlider.builder(
-              itemCount: carousels.length,
-              itemBuilder: (
-                BuildContext context,
-                int itemIndex,
-                int pageViewIndex,
-              ) =>
-                  CachedNetworkImage(
-                imageUrl: carousels[itemIndex].image,
-                imageBuilder: (context, imageProvider) => Container(
-                  width: width,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(8),
-                      bottomRight: Radius.circular(8),
-                    ),
-                    image: DecorationImage(
-                      image: imageProvider,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                placeholder: (context, url) => const CircularProgressIndicator(
-                  color: primaryColor,
-                ).nestedSizedBox(width: 40, height: 40).nestedCenter(),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-              ).nestedTap(() async {
-                final carousel = carousels[itemIndex];
-                if (StringUtil.isNotBlank(carousel.href)) {
-                  final uri = Uri.tryParse(carousel.href!);
-                  if (uri != null) {
-                    await launchUrl(uri);
-                  }
-                }
-              }),
-              options: CarouselOptions(
-                autoPlay: true,
-                height: carouselHeight + statusBarHeight,
-                viewportFraction: 1,
-                // enableInfiniteScroll: false,
-              ),
-            ),
-          ),
-        ),
+        _buildSliverAppBar(),
         Section(
           title: '主要功能',
           items: [
@@ -225,6 +162,163 @@ class _HomeViewState extends State<HomeView> {
           ),
       ],
     ).nestedPadding(padding: EdgeInsets.only(bottom: bottom));
+  }
+
+  Widget _buildSliverAppBar() {
+    final statusBarHeight = MediaQuery.of(context).padding.top;
+    Widget? flexibleSpace;
+    double? expandedHeight = carouselHeight;
+    if (!loading) {
+      if (StringUtil.isNotBlank(error)) {
+        // 请求失败，显示错误
+        flexibleSpace = FlexibleSpaceBar(
+          // centerTitle: true,
+          collapseMode: CollapseMode.pin,
+          background: Text(
+            error!,
+            style: const TextStyle(color: errorTextColor, fontSize: 14),
+            maxLines: 5,
+            overflow: TextOverflow.ellipsis,
+          )
+              .nestedCenter()
+              .nestedSizedBox(height: expandedHeight)
+              .nestedPadding(padding: EdgeInsets.only(top: statusBarHeight)),
+        );
+      } else {
+        // 请求成功，显示数据
+        if (items.isNotEmpty) {
+          flexibleSpace = FlexibleSpaceBar(
+            // centerTitle: true,
+            collapseMode: CollapseMode.pin,
+            background: CarouselSlider.builder(
+              itemCount: items.length,
+              itemBuilder: (
+                BuildContext context,
+                int itemIndex,
+                int pageViewIndex,
+              ) =>
+                  _buildCarousel(items[itemIndex]),
+              options: CarouselOptions(
+                autoPlay: true,
+                height: carouselHeight + statusBarHeight,
+                viewportFraction: 1,
+                // enableInfiniteScroll: false,
+              ),
+            ),
+          );
+        } else {
+          expandedHeight = null;
+        }
+      }
+    } else {
+      flexibleSpace = FlexibleSpaceBar(
+        // centerTitle: true,
+        collapseMode: CollapseMode.pin,
+        background: const CircularProgressIndicator(
+          color: primaryColor,
+        )
+            .nestedSizedBox(width: 30, height: 30)
+            .nestedCenter()
+            .nestedPadding(padding: EdgeInsets.only(top: statusBarHeight)),
+      );
+    }
+
+    return SliverAppBar(
+      pinned: true,
+      stretch: true,
+      backgroundColor: Colors.white,
+      expandedHeight: expandedHeight,
+      title: expandedHeight == null || isSliverAppBarExpanded
+          ? Text(AppLocalizations.of(context).appName)
+          : null,
+      systemOverlayStyle: const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.light,
+      ),
+      // actions: isSliverAppBarExpanded
+      //     ? [
+      //         IconButton(
+      //           onPressed: () => {},
+      //           iconSize: 20,
+      //           color: primaryTextColor,
+      //           icon: const Icon(Icons.account_circle_outlined),
+      //         ),
+      //       ]
+      //     : [],
+      flexibleSpace: flexibleSpace,
+    );
+  }
+
+  Widget _buildCarousel(CarouselModel carousel) {
+    final statusBarHeight = MediaQuery.of(context).padding.top;
+    final child = CachedNetworkImage(
+      imageUrl: carousel.image,
+      imageBuilder: (context, imageProvider) => Container(
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(8),
+            bottomRight: Radius.circular(8),
+          ),
+          image: DecorationImage(
+            image: imageProvider,
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+      placeholder: (context, url) => const CircularProgressIndicator(
+        color: primaryColor,
+      )
+          .nestedSizedBox(width: 30, height: 30)
+          .nestedCenter()
+          .nestedPadding(padding: EdgeInsets.only(top: statusBarHeight)),
+      errorWidget: (context, url, error) => const Icon(Icons.error),
+    );
+
+    if (StringUtil.isBlank(carousel.text)) {
+      return child;
+    }
+
+    return Stack(
+      children: [
+        child,
+        Positioned(
+          left: 0,
+          right: 10,
+          bottom: 10,
+          child: TextButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.transparent),
+              minimumSize: MaterialStateProperty.all(Size.zero),
+              padding: MaterialStateProperty.all(EdgeInsets.zero),
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              alignment: Alignment.centerRight,
+            ),
+            onPressed: () async {
+              if (StringUtil.isNotBlank(carousel.href)) {
+                final uri = Uri.tryParse(carousel.href!);
+                if (uri != null) {
+                  await launchUrl(uri);
+                }
+              }
+            },
+            child: Text(
+              carousel.text!,
+              style: const TextStyle(
+                color: primaryTextColor,
+                fontSize: 16,
+                height: 1.5,
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.right,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   void showShopModalBottomSheet() {
@@ -307,6 +401,26 @@ class _HomeViewState extends State<HomeView> {
       ),
     );
   }
+
+  void _load() {
+    setState(() => loading = true);
+    CarouselApi.getCarouselList().then(
+      (data) {
+        setState(() {
+          loading = false;
+          items = data;
+        });
+      },
+    ).onError<RequestedException>((err, stackTrace) {
+      setState(() {
+        loading = false;
+        error = err.msg;
+      });
+    });
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class ModalBottomSheetPopup extends StatelessWidget {
@@ -328,32 +442,5 @@ class ModalBottomSheetPopup extends StatelessWidget {
       physics: physics,
       itemBuilder: (context, index) => items[index],
     );
-  }
-}
-
-class Carousel {
-  const Carousel({
-    required this.image,
-    required this.order,
-    this.href,
-  });
-
-  Carousel.fromJson(Map<String, Object?> json)
-      : this(
-          image: json['image']! as String,
-          order: json['order']! as int,
-          href: json['href']! as String?,
-        );
-
-  final String image;
-  final int order;
-  final String? href;
-
-  Map<String, Object?> toJson() {
-    return {
-      'image': image,
-      'order': order,
-      'href': href,
-    };
   }
 }
