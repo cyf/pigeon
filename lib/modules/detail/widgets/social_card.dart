@@ -65,7 +65,7 @@ class SocialCard extends StatelessWidget {
                   );
                   if (tip.type == LinkType.link) {
                     child = TextButton(
-                      onPressed: () {},
+                      onPressed: () => _launchUri(tip),
                       style: ButtonStyle(
                         minimumSize: MaterialStateProperty.all(Size.zero),
                         foregroundColor:
@@ -110,14 +110,7 @@ class SocialCard extends StatelessWidget {
                       final link = description.links![index];
                       return (link.type == LinkType.link
                               ? TextButton(
-                                  onPressed: () async {
-                                    if (link.href != null) {
-                                      final uri = Uri.tryParse(link.href!);
-                                      if (uri != null && await canLaunchUrl(uri)) {
-                                        await launchUrl(uri);
-                                      }
-                                    }
-                                  },
+                                  onPressed: () => _launchUri(link),
                                   style: ButtonStyle(
                                     minimumSize:
                                         MaterialStateProperty.all(Size.zero),
@@ -137,11 +130,14 @@ class SocialCard extends StatelessWidget {
                               : SelectableText.rich(
                                   TextSpan(
                                     children: <InlineSpan>[
-                                      TextSpan(
-                                        text: link.text ?? '',
-                                        style: const TextStyle(
-                                          color: primaryColor,
-                                          fontSize: 14,
+                                      WidgetSpan(
+                                        alignment: PlaceholderAlignment.middle,
+                                        child: Text(
+                                          StringUtil.getValue(link.text),
+                                          style: const TextStyle(
+                                            color: primaryColor,
+                                            fontSize: 14,
+                                          ),
                                         ),
                                       ),
                                       WidgetSpan(
@@ -150,24 +146,23 @@ class SocialCard extends StatelessWidget {
                                           Icons.copy,
                                           color: primaryColor,
                                           size: 14,
-                                        )
-                                            .nestedTap(
-                                              () =>
-                                                  FlutterClipboard.copy('text')
-                                                      .then((value) {
-                                                EasyLoading.showSuccess(
-                                                  'Copied',
-                                                );
-                                              }),
-                                            )
-                                            .nestedPadding(
-                                              padding: const EdgeInsets.only(
-                                                left: 2,
-                                              ),
-                                            ),
+                                        ).nestedPadding(
+                                          padding: const EdgeInsets.only(
+                                            left: 2,
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),
+                                  onTap: () => FlutterClipboard.copy(
+                                    StringUtil.getValue(link.text),
+                                  ).then((value) {
+                                    EasyLoading.showSuccess(
+                                      'Copied',
+                                    );
+                                  }),
+                                  scrollPhysics:
+                                      const NeverScrollableScrollPhysics(),
                                 ))
                           .nestedPadding(
                         padding: const EdgeInsets.only(top: 10),
@@ -183,5 +178,14 @@ class SocialCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
         )
         .nestedCard();
+  }
+
+  Future<void> _launchUri(Link link) async {
+    if (link.href != null) {
+      final uri = Uri.tryParse(link.href!);
+      if (uri != null && await canLaunchUrl(uri)) {
+        await launchUrl(uri);
+      }
+    }
   }
 }
