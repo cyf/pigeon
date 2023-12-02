@@ -25,14 +25,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.2.0"
-  animations:
-    dependency: "direct main"
-    description:
-      name: animations
-      sha256: ef57563eed3620bd5d75ad96189846aca1e033c0c45fc9a7d26e80ab02b88a70
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.8"
   ansicolor:
     dependency: transitive
     description:
@@ -815,10 +807,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_quill_extensions
-      sha256: "9c60b8ff0c12d1605d016fc356835af5dc98ed182bb9c865af811c7a5a2407fc"
+      sha256: "5b13226df5a376873792169918163eff61dbe4005c659da5fba94c8145890032"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.1"
+    version: "0.7.2"
   flutter_spinkit:
     dependency: transitive
     description:
@@ -827,6 +819,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.2.0"
+  flutter_staggered_grid_view:
+    dependency: "direct main"
+    description:
+      name: flutter_staggered_grid_view
+      sha256: "19e7abb550c96fbfeb546b23f3ff356ee7c59a019a651f8f102a4ba9b7349395"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.0"
   flutter_sticky_header:
     dependency: "direct main"
     description:
@@ -877,14 +877,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.3"
-  get_it:
-    dependency: "direct main"
-    description:
-      name: get_it
-      sha256: f79870884de16d689cf9a7d15eedf31ed61d750e813c538a6efb92660fea83c3
-      url: "https://pub.dev"
-    source: hosted
-    version: "7.6.4"
   glob:
     dependency: transitive
     description:
@@ -1021,22 +1013,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.1+1"
-  injectable:
-    dependency: "direct main"
-    description:
-      name: injectable
-      sha256: cd3c422e13270c81f64ab73c80406b2b2ed563fe59d0ff2093eb7eee63d0bbeb
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.3.2"
-  injectable_generator:
-    dependency: "direct dev"
-    description:
-      name: injectable_generator
-      sha256: f9d3c05f0938403f79ad6c6d23ec8e37a7a05ad980b1bf9399493f3e41845788
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.4.1"
   intl:
     dependency: "direct main"
     description:
@@ -1421,14 +1397,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.1"
-  recase:
-    dependency: transitive
-    description:
-      name: recase
-      sha256: e4eb4ec2dcdee52dcf99cb4ceabaffc631d7424ee55e56f280bc039737f89213
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.1.0"
   rxdart:
     dependency: transitive
     description:
