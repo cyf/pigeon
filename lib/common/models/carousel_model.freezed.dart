@@ -24,6 +24,7 @@ mixin _$CarouselModel {
   String get image => throw _privateConstructorUsedError;
   int get order => throw _privateConstructorUsedError;
   String? get text => throw _privateConstructorUsedError;
+  String? get color => throw _privateConstructorUsedError;
   String? get href => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -38,7 +39,13 @@ abstract class $CarouselModelCopyWith<$Res> {
           CarouselModel value, $Res Function(CarouselModel) then) =
       _$CarouselModelCopyWithImpl<$Res, CarouselModel>;
   @useResult
-  $Res call({String? id, String image, int order, String? text, String? href});
+  $Res call(
+      {String? id,
+      String image,
+      int order,
+      String? text,
+      String? color,
+      String? href});
 }
 
 /// @nodoc
@@ -58,6 +65,7 @@ class _$CarouselModelCopyWithImpl<$Res, $Val extends CarouselModel>
     Object? image = null,
     Object? order = null,
     Object? text = freezed,
+    Object? color = freezed,
     Object? href = freezed,
   }) {
     return _then(_value.copyWith(
@@ -77,6 +85,10 @@ class _$CarouselModelCopyWithImpl<$Res, $Val extends CarouselModel>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String?,
+      color: freezed == color
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as String?,
       href: freezed == href
           ? _value.href
           : href // ignore: cast_nullable_to_non_nullable
@@ -93,7 +105,13 @@ abstract class _$$CarouselModelImplCopyWith<$Res>
       __$$CarouselModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? id, String image, int order, String? text, String? href});
+  $Res call(
+      {String? id,
+      String image,
+      int order,
+      String? text,
+      String? color,
+      String? href});
 }
 
 /// @nodoc
@@ -111,6 +129,7 @@ class __$$CarouselModelImplCopyWithImpl<$Res>
     Object? image = null,
     Object? order = null,
     Object? text = freezed,
+    Object? color = freezed,
     Object? href = freezed,
   }) {
     return _then(_$CarouselModelImpl(
@@ -130,6 +149,10 @@ class __$$CarouselModelImplCopyWithImpl<$Res>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String?,
+      color: freezed == color
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as String?,
       href: freezed == href
           ? _value.href
           : href // ignore: cast_nullable_to_non_nullable
@@ -142,7 +165,12 @@ class __$$CarouselModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$CarouselModelImpl implements _CarouselModel {
   const _$CarouselModelImpl(
-      {this.id, this.image = '', this.order = 0, this.text, this.href});
+      {this.id,
+      this.image = '',
+      this.order = 0,
+      this.text,
+      this.color,
+      this.href});
 
   factory _$CarouselModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$CarouselModelImplFromJson(json);
@@ -158,11 +186,13 @@ class _$CarouselModelImpl implements _CarouselModel {
   @override
   final String? text;
   @override
+  final String? color;
+  @override
   final String? href;
 
   @override
   String toString() {
-    return 'CarouselModel(id: $id, image: $image, order: $order, text: $text, href: $href)';
+    return 'CarouselModel(id: $id, image: $image, order: $order, text: $text, color: $color, href: $href)';
   }
 
   @override
@@ -174,12 +204,14 @@ class _$CarouselModelImpl implements _CarouselModel {
             (identical(other.image, image) || other.image == image) &&
             (identical(other.order, order) || other.order == order) &&
             (identical(other.text, text) || other.text == text) &&
+            (identical(other.color, color) || other.color == color) &&
             (identical(other.href, href) || other.href == href));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, image, order, text, href);
+  int get hashCode =>
+      Object.hash(runtimeType, id, image, order, text, color, href);
 
   @JsonKey(ignore: true)
   @override
@@ -201,6 +233,7 @@ abstract class _CarouselModel implements CarouselModel {
       final String image,
       final int order,
       final String? text,
+      final String? color,
       final String? href}) = _$CarouselModelImpl;
 
   factory _CarouselModel.fromJson(Map<String, dynamic> json) =
@@ -214,6 +247,8 @@ abstract class _CarouselModel implements CarouselModel {
   int get order;
   @override
   String? get text;
+  @override
+  String? get color;
   @override
   String? get href;
   @override
