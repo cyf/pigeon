@@ -88,6 +88,8 @@ class HpHeaders {
 
   static Map<String, dynamic> encryptRequestHeaders(RequestOptions options) {
     final token = SpUtil.getString(Keys.tokenKey);
+    final accept = options.headers['Accept'] as String?;
+    final contentType = options.headers['Content-Type'] as String?;
     return {
       'x-sign': _encodeParametersMd5(
         options.queryParameters,
@@ -99,8 +101,9 @@ class HpHeaders {
       'x-channel': Platform.isIOS
           ? 'MOBILE_IOS_HOMING_PIGEON'
           : 'MOBILE_ANDROID_HOMING_PIGEON',
-      // TODO(kjxbyz): change locale
       'x-locale': 'en',
+      if (StringUtil.isNotBlank(accept)) 'Accept': accept,
+      if (StringUtil.isNotBlank(contentType)) 'Content-Type': contentType,
     };
   }
 
