@@ -11,6 +11,7 @@ _$EmojiModelImpl _$$EmojiModelImplFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String?,
       image: json['image'] as String? ?? '',
       text: json['text'] as String?,
+      color: json['color'] as String?,
     );
 
 Map<String, dynamic> _$$EmojiModelImplToJson(_$EmojiModelImpl instance) =>
@@ -18,4 +19,5 @@ Map<String, dynamic> _$$EmojiModelImplToJson(_$EmojiModelImpl instance) =>
       'id': instance.id,
       'image': instance.image,
       'text': instance.text,
+      'color': instance.color,
     };

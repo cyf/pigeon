@@ -275,7 +275,10 @@ class _HomeViewState extends State<HomeView>
           .nestedSizedBox(width: 30, height: 30)
           .nestedCenter()
           .nestedPadding(padding: EdgeInsets.only(top: statusBarHeight)),
-      errorWidget: (context, url, error) => const Icon(Icons.error),
+      errorWidget: (context, url, error) => const Icon(
+        Icons.error,
+        color: errorTextColor,
+      ),
     );
 
     if (StringUtil.isBlank(carousel.text)) {
@@ -309,8 +312,7 @@ class _HomeViewState extends State<HomeView>
               carousel.text!,
               style: TextStyle(
                 color: StringUtil.isNotBlank(carousel.color)
-                    ? ColorUtil.stringToColor(carousel.color!) ??
-                        primaryTextColor
+                    ? ColorUtil.stringToColor(carousel.color!, primaryTextColor)
                     : primaryTextColor,
                 fontSize: 16,
                 height: 1.5,

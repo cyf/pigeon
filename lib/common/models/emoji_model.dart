@@ -11,6 +11,7 @@ class EmojiModel with _$EmojiModel {
     @Default('')
     String image,
     String? text,
+    String? color,
   }) = _EmojiModel;
 
   /// Deserializes the given json into a [EmojiModel].
