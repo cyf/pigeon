@@ -9,6 +9,7 @@ import 'package:homing_pigeon/common/exception/exception.dart';
 import 'package:homing_pigeon/common/extensions/single.dart';
 import 'package:homing_pigeon/common/models/models.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
+import 'package:homing_pigeon/modules/detail/detail.dart';
 import 'package:homing_pigeon/theme/colors.dart';
 
 class EmojiView extends StatefulWidget {
@@ -43,6 +44,7 @@ class _EmojiViewState extends State<EmojiView> {
 
   @override
   Widget build(BuildContext context) {
+    final bottom = MediaQuery.of(context).padding.bottom;
     return Scaffold(
       appBar: HpAppBar(
         titleWidget: const Text('表情库～'),
@@ -84,7 +86,13 @@ class _EmojiViewState extends State<EmojiView> {
             child: _buildBody(),
           ).nestedExpanded(),
         ],
-      ).nestedPadding(padding: const EdgeInsets.symmetric(horizontal: 10)),
+      ).nestedPadding(
+        padding: EdgeInsets.only(
+          left: 10,
+          right: 10,
+          bottom: bottom,
+        ),
+      ),
     );
   }
 
@@ -97,11 +105,10 @@ class _EmojiViewState extends State<EmojiView> {
         mainAxisSpacing: 20,
         crossAxisSpacing: 20,
         itemCount: items.length,
-        itemBuilder: (context, index) {
-          return Text('$index')
-              .nestedColoredBox(color: Colors.lightBlueAccent)
-              .nestedSizedBox(height: 100);
-        },
+        itemBuilder: (context, index) => EmojiCard(
+          emojis: items,
+          page: index,
+        ),
       );
     }
 
@@ -178,14 +185,14 @@ class _EmojiViewState extends State<EmojiView> {
             loading = false;
             page = data?.page ?? 1;
             total = data?.pageInfo?.total ?? 0;
-            items = List.generate(
-              20,
-              (index) => EmojiModel(
-                id: '$index',
-                text: '$index',
-              ),
-            );
-            // items = data?.items ?? [];
+            // items = List.generate(
+            //   20,
+            //   (index) => EmojiModel(
+            //     id: '$index',
+            //     text: '$index',
+            //   ),
+            // );
+            items = data?.items ?? [];
           });
         } else if (operation == Operation.refresh) {
           _controller.finishRefresh();

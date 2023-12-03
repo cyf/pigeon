@@ -37,8 +37,10 @@ class SocialCard extends StatelessWidget {
                     text: subtitle.title,
                     style: TextStyle(
                       color: subtitle.color != null
-                          ? ColorUtil.stringToColor(subtitle.color!) ??
-                              primaryTextColor
+                          ? ColorUtil.stringToColor(
+                              subtitle.color!,
+                              primaryTextColor,
+                            )
                           : primaryTextColor,
                       // color: primaryTextColor,
                       fontSize: 18,
@@ -59,7 +61,7 @@ class SocialCard extends StatelessWidget {
                     StringUtil.getValue(tip.text),
                     style: TextStyle(
                       color: tip.color != null
-                          ? ColorUtil.stringToColor(tip.color!) ?? primaryColor
+                          ? ColorUtil.stringToColor(tip.color!, primaryColor)
                           : primaryColor,
                       fontSize: 16,
                     ),

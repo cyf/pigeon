@@ -23,6 +23,7 @@ mixin _$EmojiModel {
   String? get id => throw _privateConstructorUsedError;
   String get image => throw _privateConstructorUsedError;
   String? get text => throw _privateConstructorUsedError;
+  String? get color => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +37,7 @@ abstract class $EmojiModelCopyWith<$Res> {
           EmojiModel value, $Res Function(EmojiModel) then) =
       _$EmojiModelCopyWithImpl<$Res, EmojiModel>;
   @useResult
-  $Res call({String? id, String image, String? text});
+  $Res call({String? id, String image, String? text, String? color});
 }
 
 /// @nodoc
@@ -55,6 +56,7 @@ class _$EmojiModelCopyWithImpl<$Res, $Val extends EmojiModel>
     Object? id = freezed,
     Object? image = null,
     Object? text = freezed,
+    Object? color = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -69,6 +71,10 @@ class _$EmojiModelCopyWithImpl<$Res, $Val extends EmojiModel>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String?,
+      color: freezed == color
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -81,7 +87,7 @@ abstract class _$$EmojiModelImplCopyWith<$Res>
       __$$EmojiModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? id, String image, String? text});
+  $Res call({String? id, String image, String? text, String? color});
 }
 
 /// @nodoc
@@ -98,6 +104,7 @@ class __$$EmojiModelImplCopyWithImpl<$Res>
     Object? id = freezed,
     Object? image = null,
     Object? text = freezed,
+    Object? color = freezed,
   }) {
     return _then(_$EmojiModelImpl(
       id: freezed == id
@@ -112,6 +119,10 @@ class __$$EmojiModelImplCopyWithImpl<$Res>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String?,
+      color: freezed == color
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -119,7 +130,7 @@ class __$$EmojiModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$EmojiModelImpl implements _EmojiModel {
-  const _$EmojiModelImpl({this.id, this.image = '', this.text});
+  const _$EmojiModelImpl({this.id, this.image = '', this.text, this.color});
 
   factory _$EmojiModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$EmojiModelImplFromJson(json);
@@ -131,10 +142,12 @@ class _$EmojiModelImpl implements _EmojiModel {
   final String image;
   @override
   final String? text;
+  @override
+  final String? color;
 
   @override
   String toString() {
-    return 'EmojiModel(id: $id, image: $image, text: $text)';
+    return 'EmojiModel(id: $id, image: $image, text: $text, color: $color)';
   }
 
   @override
@@ -144,12 +157,13 @@ class _$EmojiModelImpl implements _EmojiModel {
             other is _$EmojiModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.image, image) || other.image == image) &&
-            (identical(other.text, text) || other.text == text));
+            (identical(other.text, text) || other.text == text) &&
+            (identical(other.color, color) || other.color == color));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, image, text);
+  int get hashCode => Object.hash(runtimeType, id, image, text, color);
 
   @JsonKey(ignore: true)
   @override
@@ -169,7 +183,8 @@ abstract class _EmojiModel implements EmojiModel {
   const factory _EmojiModel(
       {final String? id,
       final String image,
-      final String? text}) = _$EmojiModelImpl;
+      final String? text,
+      final String? color}) = _$EmojiModelImpl;
 
   factory _EmojiModel.fromJson(Map<String, dynamic> json) =
       _$EmojiModelImpl.fromJson;
@@ -180,6 +195,8 @@ abstract class _EmojiModel implements EmojiModel {
   String get image;
   @override
   String? get text;
+  @override
+  String? get color;
   @override
   @JsonKey(ignore: true)
   _$$EmojiModelImplCopyWith<_$EmojiModelImpl> get copyWith =>
