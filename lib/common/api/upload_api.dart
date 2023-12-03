@@ -7,16 +7,12 @@ import 'package:homing_pigeon/common/models/models.dart';
 
 class UploadApi {
   /// 文件上传
-  static Future<FileModel?> uploadFile({
-    required List<int> file,
-    String? filename,
-  }) async {
+  static Future<List<FileModel>> uploadFile(List<List<int>> files) async {
     try {
       final res = await hpHttp.post<dynamic>(
         '/api/backend/upload/',
         data: FormData.fromMap({
-          'file': MultipartFile.fromBytes(file),
-          'filename': filename,
+          'files': files.map(MultipartFile.fromBytes).toList(),
         }),
         options: Options(
           headers: {
@@ -26,8 +22,12 @@ class UploadApi {
         ),
       );
       return res.data == null
-          ? null
-          : FileModel.fromJson(res.data as Map<String, dynamic>);
+          ? []
+          : List<FileModel>.from(
+              (res.data as Iterable).map(
+                (x) => FileModel.fromJson(x as Map<String, dynamic>),
+              ),
+            );
     } on Exception catch (error) {
       throw RequestedException(
         error is DioException ? error.error : error.toString(),

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:homing_pigeon/common/extensions/single.dart';
-import 'package:homing_pigeon/common/utils/navigator_util.dart';
 import 'package:homing_pigeon/theme/colors.dart';
 
 class ModalBottomSheet extends StatelessWidget {
   const ModalBottomSheet({
     required this.items,
+    required this.button,
+    required this.callback,
     this.physics = const NeverScrollableScrollPhysics(),
     this.shrinkWrap = true,
     super.key,
@@ -14,6 +15,9 @@ class ModalBottomSheet extends StatelessWidget {
   final List<Widget> items;
   final ScrollPhysics physics;
   final bool shrinkWrap;
+
+  final String button;
+  final VoidCallback callback;
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +36,10 @@ class ModalBottomSheet extends StatelessWidget {
           right: 0,
           bottom: 0,
           child: TextButton(
-            onPressed: () => NavigatorUtil.pop(context),
-            child: const Text(
-              '取消',
-              style: TextStyle(fontSize: 18, color: primaryTextColor),
+            onPressed: callback,
+            child: Text(
+              button,
+              style: const TextStyle(fontSize: 18, color: primaryTextColor),
               textAlign: TextAlign.center,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

@@ -152,9 +152,11 @@ class _EmojiViewState extends State<EmojiView> {
   void showUploadBottomSheet() {
     showModalBottomSheet<void>(
       context: context,
-      builder: (BuildContext context) => const ModalBottomSheet(
+      builder: (BuildContext context) => ModalBottomSheet(
         shrinkWrap: false,
-        items: [
+        callback: () {},
+        button: '上传',
+        items: const [
           Text('content'),
         ],
       ),
@@ -185,13 +187,6 @@ class _EmojiViewState extends State<EmojiView> {
             loading = false;
             page = data?.page ?? 1;
             total = data?.pageInfo?.total ?? 0;
-            // items = List.generate(
-            //   20,
-            //   (index) => EmojiModel(
-            //     id: '$index',
-            //     text: '$index',
-            //   ),
-            // );
             items = data?.items ?? [];
           });
         } else if (operation == Operation.refresh) {
