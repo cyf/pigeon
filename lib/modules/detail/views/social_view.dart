@@ -46,7 +46,7 @@ class _SocialViewState extends State<SocialView>
     final bottom = MediaQuery.of(context).padding.bottom;
     return Scaffold(
       appBar: HpAppBar(
-        titleWidget: const Text('社交'),
+        titleName: '社交',
       ),
       body: EasyRefresh(
         controller: _controller,

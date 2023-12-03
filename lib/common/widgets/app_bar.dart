@@ -23,9 +23,6 @@ class HpAppBar extends AppBar {
                   titleName,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Colors.black,
-                  ),
                 ),
           centerTitle: true,
           elevation: 0,
