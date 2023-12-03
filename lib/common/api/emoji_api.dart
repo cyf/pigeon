@@ -37,4 +37,50 @@ class EmojiApi {
       );
     }
   }
+
+  /// 新增小德表情包🐱
+  static Future<EmojiModel?> addEmoji({
+    required String image,
+    String? text,
+    String? color,
+  }) async {
+    try {
+      final res = await hpHttp.post<dynamic>(
+        '/api/backend/emoji/add/',
+        data: {
+          'image': image,
+          'text': text,
+          'color': color,
+        },
+      );
+      return res.data == null
+          ? null
+          : EmojiModel.fromJson(res.data as Map<String, dynamic>);
+    } on Exception catch (error) {
+      throw RequestedException(
+        error is DioException ? error.error : error.toString(),
+      );
+    }
+  }
+
+  /// 批量新增小德表情包🐱
+  static Future<void> multiAddEmoji(List<EmojiModel> emojis) async {
+    try {
+      await hpHttp.post<dynamic>(
+        '/api/backend/emoji/multi-add/',
+        data: emojis
+            .map(
+              (emoji) => {
+                'image': emoji.image,
+                'text': emoji.text,
+              },
+            )
+            .toList(),
+      );
+    } on Exception catch (error) {
+      throw RequestedException(
+        error is DioException ? error.error : error.toString(),
+      );
+    }
+  }
 }

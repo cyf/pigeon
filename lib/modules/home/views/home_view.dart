@@ -334,6 +334,8 @@ class _HomeViewState extends State<HomeView>
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) => ModalBottomSheet(
+        button: '取消',
+        callback: () => NavigatorUtil.pop(context),
         items: [
           const Text(
             '请选择您的操作',
