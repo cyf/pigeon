@@ -47,7 +47,7 @@ class _EmojiViewState extends State<EmojiView> {
     final bottom = MediaQuery.of(context).padding.bottom;
     return Scaffold(
       appBar: HpAppBar(
-        titleWidget: const Text('表情库～'),
+        titleName: '表情库～',
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

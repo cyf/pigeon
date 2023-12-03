@@ -13,7 +13,7 @@ class _LiveViewState extends State<LiveView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: HpAppBar(
-        titleWidget: const Text('Live'),
+        titleName: 'Live',
       ),
       body: const Center(
         child: Text('Live'),

@@ -13,7 +13,7 @@ class _MovieViewState extends State<MovieView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: HpAppBar(
-        titleWidget: const Text('Movie'),
+        titleName: 'Movie',
       ),
       body: const Center(
         child: Text('Movie'),
