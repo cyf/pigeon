@@ -15,25 +15,39 @@ import 'package:mime/mime.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class UploadUtil {
-  static Future<FileModel?> uploadFile({
+  static Future<FileModel> uploadFile({
     required FileWrapper fileWrapper,
     String dir = 'homing-pigeon-mobile/',
   }) async {
     final postPolicy = await loadOssParams();
-    if (postPolicy == null) return null;
+    if (postPolicy == null) {
+      throw const RequestedException('Bad request');
+    }
     final now = DateTime.now().millisecondsSinceEpoch;
     final location = tz.getLocation('Asia/Shanghai');
     final beijingTimeStamp = tz.TZDateTime.now(location);
     final beijingTime = DateFormat('yyyy-MM-dd').format(beijingTimeStamp);
     final newFileName = '${now}_${fileWrapper.name}';
-    final key = '${postPolicy.dir}/$dir$beijingTime/$newFileName';
-    final baseUrl = StringUtil.getValue(postPolicy.host);
+    final key =
+        '${StringUtil.isNotBlank(postPolicy.dir) ? '${postPolicy.dir}/' : ''}$dir$beijingTime/$newFileName';
+    if (StringUtil.isBlank(postPolicy.host) ||
+        StringUtil.isBlank(postPolicy.accessId) ||
+        StringUtil.isBlank(postPolicy.policy) ||
+        StringUtil.isBlank(postPolicy.signature)) {
+      throw const RequestedException('Bad request');
+    }
+
+    final baseUrl = postPolicy.host!;
+    final accessKeyId = postPolicy.accessId!;
+    final policy = postPolicy.policy!;
+    final signature = postPolicy.signature!;
+
     await UploadApi.uploadOSS(
       url: baseUrl,
       key: key,
-      accessKeyId: StringUtil.getValue(postPolicy.accessId),
-      policy: StringUtil.getValue(postPolicy.policy),
-      signature: StringUtil.getValue(postPolicy.signature),
+      accessKeyId: accessKeyId,
+      policy: policy,
+      signature: signature,
       file: fileWrapper.file.readAsBytesSync(),
     );
     final url = '$baseUrl/$key';

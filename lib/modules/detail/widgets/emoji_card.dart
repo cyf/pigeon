@@ -69,7 +69,7 @@ class EmojiCard extends StatelessWidget {
         backgroundDecoration: const BoxDecoration(color: Colors.black45),
         heroAttributes: PhotoViewHeroAttributes(tag: emoji.id ?? ''),
         child: CachedNetworkImage(
-          imageUrl: emoji.image,
+          imageUrl: 'https://assets.dev.chenyifaer.com/homing-pigeon-mobile/2023-12-04/1701685604922_IMG_0007.GIF',
           imageBuilder: (context, imageProvider) => Container(
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.only(

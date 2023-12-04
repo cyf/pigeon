@@ -240,8 +240,7 @@ class _EmojiViewState extends State<EmojiView> {
 
         await EasyLoading.show();
         final fileModels =
-            (await Future.wait(uploadFileFutures)).whereNotNull().toList();
-        // print(fileModels);
+            (await Future.wait(uploadFileFutures)).toList();
         if (fileModels.isNotEmpty) {
           final emojis = fileModels
               .map(
