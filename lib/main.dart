@@ -18,6 +18,7 @@ import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/modules/app/app.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:timezone/data/latest_10y.dart' as tz;
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -151,6 +152,7 @@ FlutterErrorDetails makeErrorDetails(Object error, StackTrace stackTrace) {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  tz.initializeTimeZones();
   await dotenv.load();
 
   if (Constants.sentryEnabled && kReleaseMode) {
