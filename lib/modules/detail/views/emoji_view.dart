@@ -211,7 +211,7 @@ class _EmojiViewState extends State<EmojiView> {
     if (assets != null && assets.isNotEmpty) {
       try {
         final fileWrapperFutures = assets.map((asset) async {
-          final file = await asset.file;
+          final file = await asset.originFile;
           final name = await asset.titleAsync;
           return file != null ? FileWrapper(file: file, name: name) : null;
         }).toList();
