@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:homing_pigeon/common/constants/constants.dart';
 import 'package:homing_pigeon/common/http/constants/code.dart';
@@ -5,11 +7,17 @@ import 'package:homing_pigeon/common/http/headers/headers.dart';
 import 'package:homing_pigeon/common/models/models.dart';
 
 class BaseInterceptor extends InterceptorsWrapper {
-  BaseInterceptor(this.baseUrl);
-  final String baseUrl;
+  BaseInterceptor();
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    final accept = options.headers['Accept'] as String? ?? 'application/json';
+    final contentType = options.headers['Content-Type'] as String? ??
+        'application/json; charset=utf-8';
+    final headers = <String, String>{
+      'Accept': accept,
+      'Content-Type': contentType,
+    };
     final queryParameters = HpHeaders.fetchCommonParameters()
       ..addAll(
         options.queryParameters..removeWhere((key, value) => value == null),
@@ -24,7 +32,7 @@ class BaseInterceptor extends InterceptorsWrapper {
 
     final opts = HpHeaders.encodeRequestData(options);
     opts
-      ..baseUrl = baseUrl
+      ..baseUrl = Constants.apiPrefix
       ..connectTimeout =
           const Duration(seconds: Constants.timeOut * 1000) // 60s
       ..receiveTimeout = const Duration(seconds: Constants.timeOut * 1000)
@@ -33,7 +41,7 @@ class BaseInterceptor extends InterceptorsWrapper {
       ..validateStatus = (status) {
         return status! <= 500;
       }
-      ..headers.addAll(Constants.headers)
+      ..headers.addAll(headers)
       ..headers.addAll(HpHeaders.encryptRequestHeaders(opts));
     super.onRequest(opts, handler);
   }
@@ -75,7 +83,7 @@ class BaseInterceptor extends InterceptorsWrapper {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     Code.errorHandleFunction(
-      500,
+      HttpStatus.internalServerError,
       err.message,
     );
     super.onError(err, handler);

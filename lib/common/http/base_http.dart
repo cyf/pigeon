@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:homing_pigeon/common/constants/constants.dart';
+import 'package:homing_pigeon/common/http/interceptors/interceptors.dart';
 import 'package:sentry_dio/sentry_dio.dart';
 
 // 必须是顶层函数
@@ -20,6 +21,7 @@ abstract class BaseHttp with DioMixin implements Dio {
     (transformer as BackgroundTransformer).jsonDecodeCallback = parseJson;
     options = BaseOptions();
     httpClientAdapter = HttpClientAdapter();
+    ErrorInterceptor();
     init();
     if (Constants.sentryEnabled && kReleaseMode) {
       addSentry();

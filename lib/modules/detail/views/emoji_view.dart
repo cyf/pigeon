@@ -1,4 +1,10 @@
+import 'dart:developer';
+
+import 'package:app_settings/app_settings.dart';
+import 'package:collection/collection.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_refresh/easy_refresh.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -8,9 +14,13 @@ import 'package:homing_pigeon/common/enums/enums.dart';
 import 'package:homing_pigeon/common/exception/exception.dart';
 import 'package:homing_pigeon/common/extensions/single.dart';
 import 'package:homing_pigeon/common/models/models.dart';
+import 'package:homing_pigeon/common/utils/navigator_util.dart';
+import 'package:homing_pigeon/common/utils/upload_util.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
 import 'package:homing_pigeon/modules/detail/detail.dart';
 import 'package:homing_pigeon/theme/colors.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class EmojiView extends StatefulWidget {
   const EmojiView({super.key});
@@ -154,14 +164,105 @@ class _EmojiViewState extends State<EmojiView> {
       context: context,
       builder: (BuildContext context) => ModalBottomSheet(
         shrinkWrap: false,
-        callback: () {},
+        callback: _uploadFiles,
         button: '上传',
-        items: const [
-          Text('content'),
+        items: [
+          const Text('content').nestedTap(pickImages),
         ],
       ),
     );
   }
+
+  Future<void> pickImages() async {
+    PermissionStatus status;
+
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      final deviceInfo = DeviceInfoPlugin();
+      final androidInfo = await deviceInfo.androidInfo;
+      if (androidInfo.version.sdkInt >= 33) {
+        status = await Permission.photos.request();
+      } else {
+        status = await Permission.storage.request();
+      }
+    } else {
+      status = await Permission.photos.request();
+    }
+
+    if (status.isPermanentlyDenied) {
+      if (!context.mounted) return;
+      showGalleryPermissionDialog(status);
+      return;
+    }
+
+    if (status.isDenied) {
+      return;
+    }
+
+    await _gotoPickImages();
+  }
+
+  Future<void> _gotoPickImages() async {
+    final assets = await AssetPicker.pickAssets(
+      context,
+      pickerConfig: const AssetPickerConfig(
+        requestType: RequestType.image,
+      ),
+    );
+    if (assets != null && assets.isNotEmpty) {
+      try {
+        final fileWrapperFutures = assets.map((asset) async {
+          final file = await asset.file;
+          final name = await asset.titleAsync;
+          return file != null ? FileWrapper(file: file, name: name) : null;
+        }).toList();
+
+        final fileWrappers =
+            (await Future.wait(fileWrapperFutures)).whereNotNull().toList();
+        final limiter = fileWrappers.firstWhereOrNull(
+          (fileWrapper) {
+            final fileSize = fileWrapper.file.lengthSync();
+            return fileSize < 50 * 1024 || fileSize > 15 * 1024 * 1024;
+          },
+        );
+        if (limiter != null) {
+          await EasyLoading.showToast(
+            'The uploaded image must be between 50KB and 15MB.',
+          );
+          return;
+        }
+
+        final uploadFileFutures = fileWrappers
+            .map(
+              (fileWrapper) async =>
+                  UploadUtil.uploadFile(fileWrapper: fileWrapper),
+            )
+            .toList();
+
+        await EasyLoading.show();
+        final fileModels =
+            (await Future.wait(uploadFileFutures)).whereNotNull().toList();
+        // print(fileModels);
+        if (fileModels.isNotEmpty) {
+          final emojis = fileModels
+              .map(
+                (fileModel) => EmojiModel(
+                  image: fileModel.url,
+                  text: fileModel.oldFileName,
+                ),
+              )
+              .toList();
+          await EmojiApi.multiAddEmoji(emojis);
+          _load();
+        }
+        await EasyLoading.showSuccess('Success');
+      } on RequestedException catch (error, stackTrace) {
+        log(error.msg, stackTrace: stackTrace);
+        await EasyLoading.showError(error.msg);
+      }
+    }
+  }
+
+  Future<void> _uploadFiles() async {}
 
   void _load({Operation operation = Operation.none}) {
     var currentPage = page;
@@ -215,5 +316,84 @@ class _EmojiViewState extends State<EmojiView> {
         _controller.finishLoad(IndicatorResult.fail);
       }
     });
+  }
+
+  void showGalleryPermissionDialog(PermissionStatus status) {
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text(
+          'Allow access to your album',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: primaryTextColor,
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        content: const Text(
+          'Please go to your phone Settings to grant Homing Pigeon the permission to visit your album.',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: secondaryTextColor,
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        actions: [
+          Row(
+            children: [
+              const Text(
+                'Ignore',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: secondaryTextColor,
+                  fontSize: 16,
+                  height: 1.375,
+                ),
+              )
+                  .nestedPadding(
+                padding: const EdgeInsets.only(top: 10, bottom: 10),
+              )
+                  .nestedTap(() {
+                NavigatorUtil.pop(context);
+              }).nestedExpanded(),
+              const Text(
+                'Turn On',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: primaryColor,
+                  fontSize: 16,
+                  height: 1.375,
+                ),
+              )
+                  .nestedPadding(
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  )
+                  .nestedDecoratedBox(
+                    decoration: const BoxDecoration(
+                      border: Border(left: BorderSide(color: borderColor)),
+                    ),
+                  )
+                  .nestedTap(() async {
+                NavigatorUtil.pop(context);
+                await AppSettings.openAppSettings();
+              }).nestedExpanded(),
+            ],
+          ).nestedDecoratedBox(
+            decoration: const BoxDecoration(
+              border: Border(top: BorderSide(color: borderColor)),
+            ),
+          ),
+        ],
+        actionsPadding: EdgeInsets.zero,
+        buttonPadding: EdgeInsets.zero,
+        actionsOverflowButtonSpacing: 0,
+        actionsAlignment: MainAxisAlignment.center,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+    );
   }
 }
