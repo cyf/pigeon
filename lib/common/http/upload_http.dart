@@ -3,16 +3,16 @@ import 'package:homing_pigeon/common/http/base_http.dart';
 import 'package:homing_pigeon/common/http/interceptors/interceptors.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-final hpHttp = HpHttp();
+final UploadHttp uploadHttp = UploadHttp();
 
-class HpHttp extends BaseHttp {
-  HpHttp();
+class UploadHttp extends BaseHttp {
+  UploadHttp();
 
   @override
   void init() {
     // do something
     interceptors.addAll([
-      BaseInterceptor(),
+      UploadInterceptor(),
       if (!kReleaseMode) ...[
         PrettyDioLogger(
           requestHeader: true,

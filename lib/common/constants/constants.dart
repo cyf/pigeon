@@ -16,6 +16,11 @@ class Constants {
     'Content-Type': 'application/json; charset=utf-8',
   };
 
+  static const Map<String, String> uploadHeaders = {
+    'Accept': '*/*',
+    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+  };
+
   static String signKey = StringUtil.getValue(dotenv.env['SIGN_KEY']);
   static String cryptoAESKey =
   StringUtil.getValue(dotenv.env['CRYPTO_AES_KEY']);
