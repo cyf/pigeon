@@ -10,6 +10,7 @@ import 'package:homing_pigeon/common/http/hp_http.dart';
 import 'package:homing_pigeon/common/models/models.dart';
 import 'package:homing_pigeon/common/utils/sp_util.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
 import 'package:mime/mime.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -41,7 +42,10 @@ class UploadUtil {
     final accessKeyId = postPolicy.accessId!;
     final policy = postPolicy.policy!;
     final signature = postPolicy.signature!;
+    final url = '$baseUrl/$key';
 
+    // 获取文件类型
+    final type = StringUtil.getValue(lookupMimeType(fileWrapper.file.path));
     await UploadApi.uploadOSS(
       url: baseUrl,
       key: key,
@@ -49,10 +53,8 @@ class UploadUtil {
       policy: policy,
       signature: signature,
       file: fileWrapper.file.readAsBytesSync(),
+      type: MediaType.parse(type),
     );
-    final url = '$baseUrl/$key';
-    // 获取文件类型
-    final type = StringUtil.getValue(lookupMimeType(fileWrapper.file.path));
     return FileModel(
       oldFileName: fileWrapper.name,
       fileSize: fileWrapper.file.lengthSync(),
