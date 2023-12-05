@@ -6,6 +6,7 @@ import 'package:homing_pigeon/common/constants/constants.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:intl/intl.dart';
 import 'package:mime/mime.dart';
+import 'package:path/path.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class UploadUtil {
@@ -18,20 +19,21 @@ class UploadUtil {
     final beijingTimeStamp = tz.TZDateTime.now(location);
     final beijingTime = DateFormat('yyyy-MM-dd').format(beijingTimeStamp);
     final newFileName = '${now}_${fileWrapper.name}';
-    final path = '$dir$beijingTime/$newFileName';
-    final url = '${Constants.host}/$path';
+    final uuid = basenameWithoutExtension(newFileName);
+    final ext = extension(newFileName);
+    final path = '$dir$beijingTime';
 
     // 获取文件类型
     final type = StringUtil.getValue(lookupMimeType(fileWrapper.file.path));
     await OSSClient().putObject(
-      object: OSSImageObject.fromFile(file: fileWrapper.file),
+      object: OSSImageObject.fromFile(file: fileWrapper.file, uuid: uuid),
       path: path,
     );
     return FileModel(
       oldFileName: fileWrapper.name,
       fileSize: fileWrapper.file.lengthSync(),
       type: type,
-      url: url,
+      url: '${Constants.host}/$path/$uuid${ext.toLowerCase()}',
       name: newFileName,
     );
   }
