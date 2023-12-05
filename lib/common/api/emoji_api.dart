@@ -64,18 +64,11 @@ class EmojiApi {
   }
 
   /// 批量新增小德表情包🐱
-  static Future<void> multiAddEmoji(List<EmojiModel> emojis) async {
+  static Future<void> multiAddEmoji(List<EmojiParam> emojis) async {
     try {
       await hpHttp.post<dynamic>(
         '/api/backend/emoji/multi-add/',
-        data: emojis
-            .map(
-              (emoji) => {
-                'image': emoji.image,
-                'text': emoji.text,
-              },
-            )
-            .toList(),
+        data: emojis.map((emoji) => emoji.toJson()).toList(),
       );
     } on Exception catch (error) {
       throw RequestedException(
