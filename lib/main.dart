@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:aliyun_oss_flutter/aliyun_oss_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -161,6 +162,19 @@ Future<void> main() async {
         options
           ..dsn = Constants.sentryDsn
           ..tracesSampleRate = 1.0;
+      },
+    );
+  }
+
+  if (Constants.ossEnabled) {
+    OSSClient.init(
+      endpoint: Constants.endpoint,
+      bucket: Constants.bucket,
+      credentials: () async {
+        return Credentials(
+          accessKeyId: Constants.accessKeyId,
+          accessKeySecret: Constants.accessKeySecret,
+        );
       },
     );
   }

@@ -23,10 +23,26 @@ class Constants {
 
   static String signKey = StringUtil.getValue(dotenv.env['SIGN_KEY']);
   static String cryptoAESKey =
-  StringUtil.getValue(dotenv.env['CRYPTO_AES_KEY']);
+      StringUtil.getValue(dotenv.env['CRYPTO_AES_KEY']);
   static String cryptoAESIV = StringUtil.getValue(dotenv.env['CRYPTO_AES_IV']);
 
-  static String sentryDsn = StringUtil.getValue(dotenv.env['SENTRY_DSN']);
+  /// aliyun oss
+  static String endpoint =
+      StringUtil.getValue(dotenv.env['ALIYUN_OSS_ENDPOINT']);
+  static String bucket = StringUtil.getValue(dotenv.env['ALIYUN_OSS_BUCKET']);
+  static String accessKeyId =
+      StringUtil.getValue(dotenv.env['ALIYUN_OSS_ACCESS_KEY_ID']);
+  static String accessKeySecret =
+      StringUtil.getValue(dotenv.env['ALIYUN_OSS_ACCESS_KEY_SECRET']);
+  static String host = StringUtil.getValue(
+    dotenv.env['ALIYUN_OSS_HOST'],
+    defaultVal: 'https://$bucket.$endpoint',
+  );
+  static bool ossEnabled = StringUtil.isNotBlank(endpoint) &&
+      StringUtil.isNotBlank(bucket) &&
+      StringUtil.isNotBlank(accessKeyId) &&
+      StringUtil.isNotBlank(accessKeySecret);
 
+  static String sentryDsn = StringUtil.getValue(dotenv.env['SENTRY_DSN']);
   static bool sentryEnabled = StringUtil.isNotBlank(sentryDsn);
 }
