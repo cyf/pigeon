@@ -30,6 +30,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  aliyun_oss_flutter: ^1.1.1
   app_settings: ^5.1.1
   bloc: ^8.1.2
   cached_network_image: ^3.3.0

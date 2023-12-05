@@ -1,13 +1,6 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:homing_pigeon/app/navigator.dart';
-import 'package:homing_pigeon/common/constants/keys.dart';
-import 'package:homing_pigeon/common/exception/exception.dart';
-import 'package:homing_pigeon/common/utils/sp_util.dart';
-import 'package:homing_pigeon/common/utils/upload_util.dart';
 import 'package:homing_pigeon/l10n/l10n.dart';
 import 'package:homing_pigeon/modules/home/home.dart';
 import 'package:homing_pigeon/theme/theme.dart';
@@ -24,12 +17,6 @@ const double offset = 20;
 
 class _AppViewState extends State<AppView> {
   final easyLoading = EasyLoading.init();
-
-  @override
-  void initState() {
-    super.initState();
-    initPostPolicy();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,16 +58,6 @@ class _AppViewState extends State<AppView> {
           ),
         );
       },
-    );
-  }
-
-  void initPostPolicy() {
-    UploadUtil.loadOssParams().then<void>((value) {
-      if (value != null) {
-        SpUtil.putString(Keys.postPolicyKey, json.encode(value.toJson()));
-      }
-    }).onError<RequestedException>(
-      (error, stackTrace) => log(error.msg, stackTrace: stackTrace),
     );
   }
 }
