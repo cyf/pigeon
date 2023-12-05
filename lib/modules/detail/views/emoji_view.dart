@@ -246,6 +246,8 @@ class _EmojiViewState extends State<EmojiView> {
                 (fileModel) => EmojiModel(
                   image: fileModel.url,
                   text: fileModel.oldFileName,
+                  type: fileModel.type,
+                  size: fileModel.fileSize,
                 ),
               )
               .toList();

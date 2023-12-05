@@ -22,6 +22,8 @@ EmojiModel _$EmojiModelFromJson(Map<String, dynamic> json) {
 mixin _$EmojiModel {
   String? get id => throw _privateConstructorUsedError;
   String get image => throw _privateConstructorUsedError;
+  String? get type => throw _privateConstructorUsedError;
+  int? get size => throw _privateConstructorUsedError;
   String? get text => throw _privateConstructorUsedError;
   String? get color => throw _privateConstructorUsedError;
 
@@ -37,7 +39,13 @@ abstract class $EmojiModelCopyWith<$Res> {
           EmojiModel value, $Res Function(EmojiModel) then) =
       _$EmojiModelCopyWithImpl<$Res, EmojiModel>;
   @useResult
-  $Res call({String? id, String image, String? text, String? color});
+  $Res call(
+      {String? id,
+      String image,
+      String? type,
+      int? size,
+      String? text,
+      String? color});
 }
 
 /// @nodoc
@@ -55,6 +63,8 @@ class _$EmojiModelCopyWithImpl<$Res, $Val extends EmojiModel>
   $Res call({
     Object? id = freezed,
     Object? image = null,
+    Object? type = freezed,
+    Object? size = freezed,
     Object? text = freezed,
     Object? color = freezed,
   }) {
@@ -67,6 +77,14 @@ class _$EmojiModelCopyWithImpl<$Res, $Val extends EmojiModel>
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as String,
+      type: freezed == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String?,
+      size: freezed == size
+          ? _value.size
+          : size // ignore: cast_nullable_to_non_nullable
+              as int?,
       text: freezed == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -87,7 +105,13 @@ abstract class _$$EmojiModelImplCopyWith<$Res>
       __$$EmojiModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? id, String image, String? text, String? color});
+  $Res call(
+      {String? id,
+      String image,
+      String? type,
+      int? size,
+      String? text,
+      String? color});
 }
 
 /// @nodoc
@@ -103,6 +127,8 @@ class __$$EmojiModelImplCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? image = null,
+    Object? type = freezed,
+    Object? size = freezed,
     Object? text = freezed,
     Object? color = freezed,
   }) {
@@ -115,6 +141,14 @@ class __$$EmojiModelImplCopyWithImpl<$Res>
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as String,
+      type: freezed == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String?,
+      size: freezed == size
+          ? _value.size
+          : size // ignore: cast_nullable_to_non_nullable
+              as int?,
       text: freezed == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -130,7 +164,8 @@ class __$$EmojiModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$EmojiModelImpl implements _EmojiModel {
-  const _$EmojiModelImpl({this.id, this.image = '', this.text, this.color});
+  const _$EmojiModelImpl(
+      {this.id, this.image = '', this.type, this.size, this.text, this.color});
 
   factory _$EmojiModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$EmojiModelImplFromJson(json);
@@ -141,13 +176,17 @@ class _$EmojiModelImpl implements _EmojiModel {
   @JsonKey()
   final String image;
   @override
+  final String? type;
+  @override
+  final int? size;
+  @override
   final String? text;
   @override
   final String? color;
 
   @override
   String toString() {
-    return 'EmojiModel(id: $id, image: $image, text: $text, color: $color)';
+    return 'EmojiModel(id: $id, image: $image, type: $type, size: $size, text: $text, color: $color)';
   }
 
   @override
@@ -157,13 +196,16 @@ class _$EmojiModelImpl implements _EmojiModel {
             other is _$EmojiModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.image, image) || other.image == image) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.size, size) || other.size == size) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.color, color) || other.color == color));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, image, text, color);
+  int get hashCode =>
+      Object.hash(runtimeType, id, image, type, size, text, color);
 
   @JsonKey(ignore: true)
   @override
@@ -183,6 +225,8 @@ abstract class _EmojiModel implements EmojiModel {
   const factory _EmojiModel(
       {final String? id,
       final String image,
+      final String? type,
+      final int? size,
       final String? text,
       final String? color}) = _$EmojiModelImpl;
 
@@ -193,6 +237,10 @@ abstract class _EmojiModel implements EmojiModel {
   String? get id;
   @override
   String get image;
+  @override
+  String? get type;
+  @override
+  int? get size;
   @override
   String? get text;
   @override

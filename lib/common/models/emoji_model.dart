@@ -10,6 +10,8 @@ class EmojiModel with _$EmojiModel {
     String? id,
     @Default('')
     String image,
+    String? type,
+    int? size,
     String? text,
     String? color,
   }) = _EmojiModel;
