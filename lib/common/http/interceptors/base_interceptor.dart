@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:homing_pigeon/common/constants/constants.dart';
 import 'package:homing_pigeon/common/http/constants/code.dart';
@@ -26,8 +27,16 @@ class BaseInterceptor extends InterceptorsWrapper {
 
     /// 去除post请求中字段值为null的参数
     final data = options.data;
-    if (data != null && data is Map) {
-      options.data = data..removeWhere((key, value) => value == null);
+    if (data != null) {
+      if (data is Map) {
+        options.data = data..removeWhere((key, value) => value == null);
+      } else if (data is List) {
+        options.data = data.whereNotNull().map((element) {
+          return element is Map
+              ? (element..removeWhere((key, value) => value == null))
+              : element;
+        }).toList();
+      }
     }
 
     final opts = HpHeaders.encodeRequestData(options);

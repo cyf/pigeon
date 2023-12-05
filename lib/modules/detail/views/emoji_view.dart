@@ -243,7 +243,7 @@ class _EmojiViewState extends State<EmojiView> {
         if (fileModels.isNotEmpty) {
           final emojis = fileModels
               .map(
-                (fileModel) => EmojiModel(
+                (fileModel) => EmojiParam(
                   image: fileModel.url,
                   text: fileModel.oldFileName,
                   type: fileModel.type,
