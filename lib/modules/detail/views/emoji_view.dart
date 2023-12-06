@@ -9,6 +9,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:homing_pigeon/common/api/emoji_api.dart';
 import 'package:homing_pigeon/common/enums/enums.dart';
 import 'package:homing_pigeon/common/exception/exception.dart';
@@ -19,6 +20,7 @@ import 'package:homing_pigeon/common/utils/upload_util.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
 import 'package:homing_pigeon/modules/detail/detail.dart';
 import 'package:homing_pigeon/theme/colors.dart';
+import 'package:nine_grid_view/nine_grid_view.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
@@ -39,6 +41,11 @@ class _EmojiViewState extends State<EmojiView> {
   bool loading = false;
   int page = 1;
   int total = 0;
+
+  List<FileWrapper> _fileWrappers = [];
+  List<ImageBean> imageList = [];
+  int moveAction = MotionEvent.actionUp;
+  bool _canDelete = false;
 
   @override
   void initState() {
@@ -162,18 +169,83 @@ class _EmojiViewState extends State<EmojiView> {
   void showUploadBottomSheet() {
     showModalBottomSheet<void>(
       context: context,
-      builder: (BuildContext context) => ModalBottomSheet(
-        shrinkWrap: false,
-        callback: _uploadFiles,
-        button: '上传',
-        items: [
-          const Text('content').nestedTap(pickImages),
-        ],
+      builder: (BuildContext context) => StatefulBuilder(
+        builder: (BuildContext context, StateSetter setInnerState) =>
+            ModalBottomSheet(
+          shrinkWrap: false,
+          callback: _uploadFiles,
+          button: '上传',
+          items: [
+            DragSortView(
+              imageList,
+              margin: const EdgeInsets.all(20),
+              itemBuilder: (BuildContext context, int index) {
+                final bean = imageList[index];
+                return Image.asset(
+                  bean.thumbPath!,
+                  errorBuilder: (context, url, error) => const Icon(
+                    Icons.error,
+                    color: errorTextColor,
+                    size: 24,
+                  ),
+                );
+              },
+              initBuilder: (BuildContext context) {
+                return InkWell(
+                  onTap: () => _pickImages(setInnerState),
+                  child: const ColoredBox(
+                    color: Color(0XFFCCCCCC),
+                    child: Center(
+                      child: Icon(
+                        Icons.add,
+                      ),
+                    ),
+                  ),
+                );
+              },
+              onDragListener: (MotionEvent event, double itemWidth) {
+                switch (event.action) {
+                  case MotionEvent.actionDown:
+                    moveAction = event.action!;
+                    setInnerState(() {});
+                  case MotionEvent.actionMove:
+                    final x = event.globalX! + itemWidth;
+                    final y = event.globalY! + itemWidth;
+                    final maxX = MediaQuery.of(context).size.width - 1 * 100;
+                    final maxY = MediaQuery.of(context).size.height - 1 * 100;
+                    if (kDebugMode) {
+                      print('Sky24n maxX: $maxX, maxY: $maxY, x: $x, y: $y');
+                    }
+                    if (_canDelete && (x < maxX || y < maxY)) {
+                      setInnerState(() {
+                        _canDelete = false;
+                      });
+                    } else if (!_canDelete && x > maxX && y > maxY) {
+                      setInnerState(() {
+                        _canDelete = true;
+                      });
+                    }
+                  case MotionEvent.actionUp:
+                    moveAction = event.action!;
+                    if (_canDelete) {
+                      setInnerState(() {
+                        _canDelete = false;
+                      });
+                      return true;
+                    } else {
+                      setInnerState(() {});
+                    }
+                }
+                return false;
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Future<void> pickImages() async {
+  Future<void> _pickImages(StateSetter setInnerState) async {
     PermissionStatus status;
 
     if (defaultTargetPlatform == TargetPlatform.android) {
@@ -198,13 +270,15 @@ class _EmojiViewState extends State<EmojiView> {
       return;
     }
 
-    await _gotoPickImages();
+    await _gotoPickImages(setInnerState);
   }
 
-  Future<void> _gotoPickImages() async {
+  Future<void> _gotoPickImages(StateSetter setInnerState) async {
     final assets = await AssetPicker.pickAssets(
       context,
-      pickerConfig: const AssetPickerConfig(
+      pickerConfig: AssetPickerConfig(
+        selectedAssets:
+            _fileWrappers.map((fileWrapper) => fileWrapper.asset).toList(),
         requestType: RequestType.image,
       ),
     );
@@ -213,7 +287,9 @@ class _EmojiViewState extends State<EmojiView> {
         final fileWrapperFutures = assets.map((asset) async {
           final file = await asset.originFile;
           final name = await asset.titleAsync;
-          return file != null ? FileWrapper(file: file, name: name) : null;
+          return file != null
+              ? FileWrapper(asset: asset, file: file, name: name)
+              : null;
         }).toList();
 
         final fileWrappers =
@@ -231,33 +307,20 @@ class _EmojiViewState extends State<EmojiView> {
           return;
         }
 
-        final uploadFileFutures = fileWrappers
-            .map(
-              (fileWrapper) async =>
-                  UploadUtil.uploadOSS(fileWrapper: fileWrapper),
-            )
-            .toList();
-
-        await EasyLoading.show();
-        final fileModels = (await Future.wait(uploadFileFutures)).toList();
-        if (fileModels.isNotEmpty) {
-          final emojis = fileModels
+        setInnerState(() {
+          _fileWrappers = fileWrappers;
+          imageList = fileWrappers
               .map(
-                (fileModel) => EmojiParam(
-                  image: fileModel.url,
-                  text: fileModel.oldFileName,
-                  type: fileModel.type,
-                  size: fileModel.fileSize,
+                (fileWrapper) => ImageBean(
+                  originPath: fileWrapper.file.path,
+                  middlePath: fileWrapper.file.path,
+                  thumbPath: fileWrapper.file.path,
+                  // originalWidth: i == 0 ? 264 : null,
+                  // originalHeight: i == 0 ? 258 : null,
                 ),
               )
               .toList();
-          await EmojiApi.multiAddEmoji(emojis);
-          if (context.mounted) {
-            NavigatorUtil.pop(context);
-          }
-        }
-        await EasyLoading.showSuccess('Success');
-        _load();
+        });
       } on RequestedException catch (error, stackTrace) {
         log(error.msg, stackTrace: stackTrace);
         await EasyLoading.showError(error.msg);
@@ -265,7 +328,50 @@ class _EmojiViewState extends State<EmojiView> {
     }
   }
 
-  Future<void> _uploadFiles() async {}
+  Future<void> _uploadFiles() async {
+    try {
+      if (_fileWrappers.isEmpty) {
+        await Fluttertoast.showToast(
+          msg: '图片为空, 请选择要上传的图片!',
+          toastLength: Toast.LENGTH_LONG,
+          backgroundColor: backgroundColor,
+          textColor: errorTextColor,
+          gravity: ToastGravity.CENTER,
+        );
+        return;
+      }
+
+      final uploadFileFutures = _fileWrappers
+          .map(
+            (fileWrapper) async =>
+                UploadUtil.uploadOSS(fileWrapper: fileWrapper),
+          )
+          .toList();
+      await EasyLoading.show();
+      final fileModels = (await Future.wait(uploadFileFutures)).toList();
+      if (fileModels.isNotEmpty) {
+        final emojis = fileModels
+            .map(
+              (fileModel) => EmojiParam(
+                image: fileModel.url,
+                text: fileModel.oldFileName,
+                type: fileModel.type,
+                size: fileModel.fileSize,
+              ),
+            )
+            .toList();
+        await EmojiApi.multiAddEmoji(emojis);
+        if (context.mounted) {
+          NavigatorUtil.pop(context);
+        }
+      }
+      await EasyLoading.showSuccess('Success');
+      _load();
+    } on RequestedException catch (error, stackTrace) {
+      log(error.msg, stackTrace: stackTrace);
+      await EasyLoading.showError(error.msg);
+    }
+  }
 
   void _load({Operation operation = Operation.none}) {
     var currentPage = page;
@@ -399,4 +505,31 @@ class _EmojiViewState extends State<EmojiView> {
       ),
     );
   }
+}
+
+class ImageBean extends DragBean {
+  ImageBean({
+    this.originPath,
+    this.middlePath,
+    this.thumbPath,
+    this.originalWidth,
+    this.originalHeight,
+  });
+
+  /// origin picture file path.
+  String? originPath;
+
+  /// middle picture file path.
+  String? middlePath;
+
+  /// thumb picture file path.
+  /// It is recommended to use a thumbnail picture，because the original picture is too large,
+  /// it may cause repeated loading and cause flashing.
+  String? thumbPath;
+
+  /// original image width.
+  int? originalWidth;
+
+  /// original image height.
+  int? originalHeight;
 }

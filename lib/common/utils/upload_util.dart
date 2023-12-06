@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:mime/mime.dart';
 import 'package:path/path.dart';
 import 'package:timezone/timezone.dart' as tz;
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class UploadUtil {
   static Future<FileModel> uploadOSS({
@@ -41,10 +42,12 @@ class UploadUtil {
 
 class FileWrapper {
   const FileWrapper({
+    required this.asset,
     required this.file,
     required this.name,
   });
 
+  final AssetEntity asset;
   final File file;
   final String name;
 }
