@@ -38,9 +38,13 @@ appbundle: ## Release Appbundle
 	rm -f android/git.properties && flutter build appbundle --no-tree-shake-icons --target lib/main.dart
 
 ad_hoc:
+	echo "╠ Removing build products and intermediate files from the build root..."
+	cd ios && xcodebuild clean && cd ..
 	echo "╠ Releasing to pgyer..."
 	bash build-ios.sh && flutter build ipa --release --export-options-plist=ios/ExportOptions-debug.plist --dart-define-from-file=ios-pgyer.json
 
 app_store:
+	echo "╠ Removing build products and intermediate files from the build root..."
+	cd ios && xcodebuild clean && cd ..
 	echo "╠ Releasing to app store..."
 	flutter build ipa --release --export-options-plist=ios/ExportOptions-release.plist
