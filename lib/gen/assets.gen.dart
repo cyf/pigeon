@@ -9,28 +9,15 @@
 
 import 'package:flutter/widgets.dart';
 
-class $LogoGen {
-  const $LogoGen();
-
-  /// File path: logo/logo.png
-  AssetGenImage get logo => const AssetGenImage('logo/logo.png');
-
-  /// File path: logo/logo_round.png
-  AssetGenImage get logoRound => const AssetGenImage('logo/logo_round.png');
-
-  /// List of all assets
-  List<AssetGenImage> get values => [logo, logoRound];
-}
-
 class Assets {
   Assets._();
 
+  static const AssetGenImage info = AssetGenImage('assets/info.png');
   static const AssetGenImage logo = AssetGenImage('assets/logo.png');
   static const AssetGenImage logoRound = AssetGenImage('assets/logo_round.png');
-  static const $LogoGen logo = $LogoGen();
 
   /// List of all assets
-  List<AssetGenImage> get values => [logo, logoRound];
+  List<AssetGenImage> get values => [info, logo, logoRound];
 }
 
 class AssetGenImage {
