@@ -243,36 +243,37 @@ class _FeedbackViewState extends State<FeedbackView> {
                           maxLength: 100,
                           decoration: InputDecoration(
                             suffixIcon: (_isTitleFocus &&
-                                _titleController.text.isNotEmpty)
+                                    _titleController.text.isNotEmpty)
                                 ? Container(
-                              width: 20,
-                              height: 20,
-                              margin: const EdgeInsets.only(right: 10),
-                              decoration: BoxDecoration(
-                                color: primaryGrayColor,
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: IconButton(
-                                padding: EdgeInsets.zero,
-                                splashRadius: 2,
-                                onPressed: () {
-                                  // Clear everything in the text field
-                                  _titleController.clear();
-                                  // Call setState to update the UI
-                                  setInnerState(() {});
-                                },
-                                iconSize: 16,
-                                icon: const Icon(
-                                  Icons.clear,
-                                  color: placeholderTextColor,
-                                ),
-                              ),
-                            )
+                                    width: 20,
+                                    height: 20,
+                                    margin: const EdgeInsets.only(right: 10),
+                                    decoration: BoxDecoration(
+                                      color: primaryGrayColor,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: IconButton(
+                                      padding: EdgeInsets.zero,
+                                      splashRadius: 2,
+                                      onPressed: () {
+                                        // Clear everything in the text field
+                                        _titleController.clear();
+                                        // Call setState to update the UI
+                                        setInnerState(() {});
+                                      },
+                                      iconSize: 16,
+                                      icon: const Icon(
+                                        Icons.clear,
+                                        color: placeholderTextColor,
+                                      ),
+                                    ),
+                                  )
                                 : null,
-                            suffixIconConstraints:
-                            const BoxConstraints(maxWidth: 30, maxHeight: 30),
+                            suffixIconConstraints: const BoxConstraints(
+                              maxWidth: 30,
+                              maxHeight: 30,
+                            ),
                             hintText: '请输入标题',
-                            counterText: StringUtil.empty,
                             contentPadding: const EdgeInsets.all(8),
                             fillColor: secondaryGrayColor,
                             filled: true,
@@ -302,36 +303,37 @@ class _FeedbackViewState extends State<FeedbackView> {
                           maxLength: 500,
                           decoration: InputDecoration(
                             suffixIcon: (_isDescriptionFocus &&
-                                _descriptionController.text.isNotEmpty)
+                                    _descriptionController.text.isNotEmpty)
                                 ? Container(
-                              width: 20,
-                              height: 20,
-                              margin: const EdgeInsets.only(right: 10),
-                              decoration: BoxDecoration(
-                                color: primaryGrayColor,
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: IconButton(
-                                padding: EdgeInsets.zero,
-                                splashRadius: 2,
-                                onPressed: () {
-                                  // Clear everything in the text field
-                                  _descriptionController.clear();
-                                  // Call setState to update the UI
-                                  setInnerState(() {});
-                                },
-                                iconSize: 16,
-                                icon: const Icon(
-                                  Icons.clear,
-                                  color: placeholderTextColor,
-                                ),
-                              ),
-                            )
+                                    width: 20,
+                                    height: 20,
+                                    margin: const EdgeInsets.only(right: 10),
+                                    decoration: BoxDecoration(
+                                      color: primaryGrayColor,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: IconButton(
+                                      padding: EdgeInsets.zero,
+                                      splashRadius: 2,
+                                      onPressed: () {
+                                        // Clear everything in the text field
+                                        _descriptionController.clear();
+                                        // Call setState to update the UI
+                                        setInnerState(() {});
+                                      },
+                                      iconSize: 16,
+                                      icon: const Icon(
+                                        Icons.clear,
+                                        color: placeholderTextColor,
+                                      ),
+                                    ),
+                                  )
                                 : null,
-                            suffixIconConstraints:
-                            const BoxConstraints(maxWidth: 30, maxHeight: 30),
+                            suffixIconConstraints: const BoxConstraints(
+                              maxWidth: 30,
+                              maxHeight: 30,
+                            ),
                             hintText: '请输入描述',
-                            counterText: StringUtil.empty,
                             contentPadding: const EdgeInsets.all(8),
                             fillColor: secondaryGrayColor,
                             filled: true,
