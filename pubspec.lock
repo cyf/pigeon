@@ -1077,6 +1077,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.7.1"
+  keyboard_dismisser:
+    dependency: "direct main"
+    description:
+      name: keyboard_dismisser
+      sha256: f67e032581fc3dd1f77e1cb54c421b089e015d122aeba2490ba001cfcc42a181
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   logging:
     dependency: transitive
     description:
@@ -1141,14 +1149,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
-  nine_grid_view:
-    dependency: "direct main"
-    description:
-      name: nine_grid_view
-      sha256: "40785a2f73ad541536cbf7fd1010a02f06a51d0bd058d05629a5f04df2d1a086"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.0"
   nm:
     dependency: transitive
     description:
@@ -1429,6 +1429,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.1"
+  reorderables:
+    dependency: "direct main"
+    description:
+      name: reorderables
+      sha256: "004a886e4878df1ee27321831c838bc1c976311f4ca6a74ce7d561e506540a77"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.0"
   rxdart:
     dependency: transitive
     description:

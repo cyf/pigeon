@@ -9,6 +9,7 @@ class ModalBottomSheet extends StatelessWidget {
     required this.callback,
     this.physics = const NeverScrollableScrollPhysics(),
     this.shrinkWrap = true,
+    this.padding = EdgeInsets.zero,
     super.key,
   });
 
@@ -18,6 +19,7 @@ class ModalBottomSheet extends StatelessWidget {
 
   final String button;
   final VoidCallback callback;
+  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +27,14 @@ class ModalBottomSheet extends StatelessWidget {
     return Stack(
       children: [
         ListView.builder(
-          padding: EdgeInsets.zero,
+          padding: padding,
           shrinkWrap: shrinkWrap,
           itemCount: items.length,
           physics: physics,
           itemBuilder: (context, index) => items[index],
-        ).nestedPadding(padding: EdgeInsets.only(bottom: bottom + 64 + 16)),
+        )
+            .nestedColoredBox(color: Colors.white)
+            .nestedPadding(padding: EdgeInsets.only(bottom: bottom + 64 + 16)),
         Positioned(
           left: 0,
           right: 0,

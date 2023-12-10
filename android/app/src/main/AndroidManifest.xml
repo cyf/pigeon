@@ -19,7 +19,11 @@
 
     <!-- Permissions options for the `images` group -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <!--<uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />-->
+
+    <!-- Permissions options for the `videos` group -->
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+
+    <!-- Permissions options for the `audios` group -->
     <!--<uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />-->
 
     <!-- Permissions options for the `camera` group -->

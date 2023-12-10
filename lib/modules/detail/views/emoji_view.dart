@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:app_settings/app_settings.dart';
 import 'package:collection/collection.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_refresh/easy_refresh.dart';
@@ -20,8 +19,8 @@ import 'package:homing_pigeon/common/utils/upload_util.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
 import 'package:homing_pigeon/modules/detail/detail.dart';
 import 'package:homing_pigeon/theme/colors.dart';
-import 'package:nine_grid_view/nine_grid_view.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:reorderables/reorderables.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class EmojiView extends StatefulWidget {
@@ -43,9 +42,6 @@ class _EmojiViewState extends State<EmojiView> {
   int total = 0;
 
   List<FileWrapper> _fileWrappers = [];
-  List<ImageBean> imageList = [];
-  int moveAction = MotionEvent.actionUp;
-  bool _canDelete = false;
 
   @override
   void initState() {
@@ -167,106 +163,90 @@ class _EmojiViewState extends State<EmojiView> {
   }
 
   void showUploadBottomSheet() {
+    const spacing = 8.0;
+    const padding = 10.0;
+    final width = MediaQuery.of(context).size.width - padding * 2;
+    final itemWidth = ((width - spacing * 2) / 3).floorToDouble();
+
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) => StatefulBuilder(
-        builder: (BuildContext context, StateSetter setInnerState) =>
-            ModalBottomSheet(
-          shrinkWrap: false,
-          callback: _uploadFiles,
-          button: '上传',
-          items: [
-            DragSortView(
-              imageList,
-              margin: const EdgeInsets.all(20),
-              itemBuilder: (BuildContext context, int index) {
-                final bean = imageList[index];
-                return Image.asset(
-                  bean.thumbPath!,
-                  errorBuilder: (context, url, error) => const Icon(
-                    Icons.error,
-                    color: errorTextColor,
-                    size: 24,
-                  ),
-                );
-              },
-              initBuilder: (BuildContext context) {
-                return InkWell(
-                  onTap: () => _pickImages(setInnerState),
-                  child: const ColoredBox(
-                    color: Color(0XFFCCCCCC),
-                    child: Center(
-                      child: Icon(
-                        Icons.add,
-                      ),
-                    ),
-                  ),
-                );
-              },
-              onDragListener: (MotionEvent event, double itemWidth) {
-                switch (event.action) {
-                  case MotionEvent.actionDown:
-                    moveAction = event.action!;
-                    setInnerState(() {});
-                  case MotionEvent.actionMove:
-                    final x = event.globalX! + itemWidth;
-                    final y = event.globalY! + itemWidth;
-                    final maxX = MediaQuery.of(context).size.width - 1 * 100;
-                    final maxY = MediaQuery.of(context).size.height - 1 * 100;
-                    if (kDebugMode) {
-                      print('Sky24n maxX: $maxX, maxY: $maxY, x: $x, y: $y');
-                    }
-                    if (_canDelete && (x < maxX || y < maxY)) {
-                      setInnerState(() {
-                        _canDelete = false;
-                      });
-                    } else if (!_canDelete && x > maxX && y > maxY) {
-                      setInnerState(() {
-                        _canDelete = true;
-                      });
-                    }
-                  case MotionEvent.actionUp:
-                    moveAction = event.action!;
-                    if (_canDelete) {
-                      setInnerState(() {
-                        _canDelete = false;
-                      });
-                      return true;
-                    } else {
-                      setInnerState(() {});
-                    }
-                }
-                return false;
-              },
-            ),
-          ],
-        ),
+        builder: (BuildContext context, StateSetter setInnerState) {
+          final items = _fileWrappers
+              .map(
+                (element) {
+              return Image.asset(
+                element.file.path,
+                errorBuilder: (context, url, error) => const Icon(
+                  Icons.error,
+                  color: errorTextColor,
+                  size: 24,
+                ),
+              ).nestedSizedBox(width: itemWidth, height: itemWidth);
+            },
+          )
+              .cast<Widget>()
+              .toList();
+
+          if (items.length < 9) {
+            items.add(
+              const Icon(
+                Icons.add,
+                size: 40,
+                color: primaryColor,
+              )
+                  .nestedCenter()
+                  .nestedColoredBox(color: primaryGrayColor)
+                  .nestedSizedBox(width: itemWidth, height: itemWidth)
+                  .nestedInkWell(onTap: () => _pickImages(setInnerState)),
+            );
+          }
+
+          return ModalBottomSheet(
+            shrinkWrap: false,
+            callback: _uploadFiles,
+            button: '上传',
+            items: [
+              ReorderableWrap(
+                spacing: spacing,
+                runSpacing: 4,
+                padding: const EdgeInsets.all(padding),
+                onReorder: _onReorder,
+                children: items,
+              ).nestedSingleChildScrollView(),
+            ],
+          );
+        },
       ),
     );
   }
 
   Future<void> _pickImages(StateSetter setInnerState) async {
-    PermissionStatus status;
-
+    Map<Permission, PermissionStatus> statuses;
     if (defaultTargetPlatform == TargetPlatform.android) {
       final deviceInfo = DeviceInfoPlugin();
       final androidInfo = await deviceInfo.androidInfo;
       if (androidInfo.version.sdkInt >= 33) {
-        status = await Permission.photos.request();
+        statuses = await [Permission.photos, Permission.videos].request();
       } else {
-        status = await Permission.storage.request();
+        statuses = await [Permission.storage].request();
       }
     } else {
-      status = await Permission.photos.request();
+      statuses = await [Permission.photos].request();
     }
 
-    if (status.isPermanentlyDenied) {
+    if (kDebugMode) {
+      print('statuses: $statuses');
+    }
+
+    final statusList = statuses.values.toList();
+    final denied = statusList.every(
+          (status) => [PermissionStatus.permanentlyDenied, PermissionStatus.denied]
+          .contains(status),
+    );
+    if (denied) {
       if (!context.mounted) return;
-      showGalleryPermissionDialog(status);
-      return;
-    }
-
-    if (status.isDenied) {
+      Dialogs.showGalleryPermissionDialog(context);
       return;
     }
 
@@ -307,25 +287,16 @@ class _EmojiViewState extends State<EmojiView> {
           return;
         }
 
-        setInnerState(() {
-          _fileWrappers = fileWrappers;
-          imageList = fileWrappers
-              .map(
-                (fileWrapper) => ImageBean(
-                  originPath: fileWrapper.file.path,
-                  middlePath: fileWrapper.file.path,
-                  thumbPath: fileWrapper.file.path,
-                  // originalWidth: i == 0 ? 264 : null,
-                  // originalHeight: i == 0 ? 258 : null,
-                ),
-              )
-              .toList();
-        });
+        setInnerState(() => _fileWrappers = fileWrappers);
       } on RequestedException catch (error, stackTrace) {
         log(error.msg, stackTrace: stackTrace);
         await EasyLoading.showError(error.msg);
       }
     }
+  }
+
+  void _onReorder(int oldIndex, int newIndex) {
+    setState(() {});
   }
 
   Future<void> _uploadFiles() async {
@@ -426,110 +397,4 @@ class _EmojiViewState extends State<EmojiView> {
       }
     });
   }
-
-  void showGalleryPermissionDialog(PermissionStatus status) {
-    showDialog<void>(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: const Text(
-          'Allow access to your album',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: primaryTextColor,
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        content: const Text(
-          'Please go to your phone Settings to grant Homing Pigeon the permission to visit your album.',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: secondaryTextColor,
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        actions: [
-          Row(
-            children: [
-              const Text(
-                'Ignore',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: secondaryTextColor,
-                  fontSize: 16,
-                  height: 1.375,
-                ),
-              )
-                  .nestedPadding(
-                padding: const EdgeInsets.only(top: 10, bottom: 10),
-              )
-                  .nestedTap(() {
-                NavigatorUtil.pop(context);
-              }).nestedExpanded(),
-              const Text(
-                'Turn On',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: primaryColor,
-                  fontSize: 16,
-                  height: 1.375,
-                ),
-              )
-                  .nestedPadding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  )
-                  .nestedDecoratedBox(
-                    decoration: const BoxDecoration(
-                      border: Border(left: BorderSide(color: borderColor)),
-                    ),
-                  )
-                  .nestedTap(() async {
-                NavigatorUtil.pop(context);
-                await AppSettings.openAppSettings();
-              }).nestedExpanded(),
-            ],
-          ).nestedDecoratedBox(
-            decoration: const BoxDecoration(
-              border: Border(top: BorderSide(color: borderColor)),
-            ),
-          ),
-        ],
-        actionsPadding: EdgeInsets.zero,
-        buttonPadding: EdgeInsets.zero,
-        actionsOverflowButtonSpacing: 0,
-        actionsAlignment: MainAxisAlignment.center,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-    );
-  }
-}
-
-class ImageBean extends DragBean {
-  ImageBean({
-    this.originPath,
-    this.middlePath,
-    this.thumbPath,
-    this.originalWidth,
-    this.originalHeight,
-  });
-
-  /// origin picture file path.
-  String? originPath;
-
-  /// middle picture file path.
-  String? middlePath;
-
-  /// thumb picture file path.
-  /// It is recommended to use a thumbnail picture，because the original picture is too large,
-  /// it may cause repeated loading and cause flashing.
-  String? thumbPath;
-
-  /// original image width.
-  int? originalWidth;
-
-  /// original image height.
-  int? originalHeight;
 }

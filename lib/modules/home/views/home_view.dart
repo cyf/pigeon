@@ -157,7 +157,7 @@ class _HomeViewState extends State<HomeView>
               ).nestedPadding(
                 padding: const EdgeInsets.only(
                   top: 5,
-                  bottom: 10,
+                  bottom: 20,
                 ),
               ),
             ],
