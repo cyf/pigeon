@@ -28,18 +28,20 @@ _$FeedbackFileModelImpl _$$FeedbackFileModelImplFromJson(
         Map<String, dynamic> json) =>
     _$FeedbackFileModelImpl(
       id: json['id'] as String?,
+      feedbackId: json['feedback_id'] as String?,
       url: json['url'] as String?,
       type: json['type'] as String?,
       size: json['size'] as int?,
-      text: json['text'] as String?,
+      title: json['title'] as String?,
     );
 
 Map<String, dynamic> _$$FeedbackFileModelImplToJson(
         _$FeedbackFileModelImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'feedback_id': instance.feedbackId,
       'url': instance.url,
       'type': instance.type,
       'size': instance.size,
-      'text': instance.text,
+      'title': instance.title,
     };

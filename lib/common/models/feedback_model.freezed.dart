@@ -231,10 +231,12 @@ FeedbackFileModel _$FeedbackFileModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$FeedbackFileModel {
   String? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'feedback_id')
+  String? get feedbackId => throw _privateConstructorUsedError;
   String? get url => throw _privateConstructorUsedError;
   String? get type => throw _privateConstructorUsedError;
   int? get size => throw _privateConstructorUsedError;
-  String? get text => throw _privateConstructorUsedError;
+  String? get title => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -248,7 +250,13 @@ abstract class $FeedbackFileModelCopyWith<$Res> {
           FeedbackFileModel value, $Res Function(FeedbackFileModel) then) =
       _$FeedbackFileModelCopyWithImpl<$Res, FeedbackFileModel>;
   @useResult
-  $Res call({String? id, String? url, String? type, int? size, String? text});
+  $Res call(
+      {String? id,
+      @JsonKey(name: 'feedback_id') String? feedbackId,
+      String? url,
+      String? type,
+      int? size,
+      String? title});
 }
 
 /// @nodoc
@@ -265,15 +273,20 @@ class _$FeedbackFileModelCopyWithImpl<$Res, $Val extends FeedbackFileModel>
   @override
   $Res call({
     Object? id = freezed,
+    Object? feedbackId = freezed,
     Object? url = freezed,
     Object? type = freezed,
     Object? size = freezed,
-    Object? text = freezed,
+    Object? title = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      feedbackId: freezed == feedbackId
+          ? _value.feedbackId
+          : feedbackId // ignore: cast_nullable_to_non_nullable
               as String?,
       url: freezed == url
           ? _value.url
@@ -287,9 +300,9 @@ class _$FeedbackFileModelCopyWithImpl<$Res, $Val extends FeedbackFileModel>
           ? _value.size
           : size // ignore: cast_nullable_to_non_nullable
               as int?,
-      text: freezed == text
-          ? _value.text
-          : text // ignore: cast_nullable_to_non_nullable
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -303,7 +316,13 @@ abstract class _$$FeedbackFileModelImplCopyWith<$Res>
       __$$FeedbackFileModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? id, String? url, String? type, int? size, String? text});
+  $Res call(
+      {String? id,
+      @JsonKey(name: 'feedback_id') String? feedbackId,
+      String? url,
+      String? type,
+      int? size,
+      String? title});
 }
 
 /// @nodoc
@@ -318,15 +337,20 @@ class __$$FeedbackFileModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? feedbackId = freezed,
     Object? url = freezed,
     Object? type = freezed,
     Object? size = freezed,
-    Object? text = freezed,
+    Object? title = freezed,
   }) {
     return _then(_$FeedbackFileModelImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      feedbackId: freezed == feedbackId
+          ? _value.feedbackId
+          : feedbackId // ignore: cast_nullable_to_non_nullable
               as String?,
       url: freezed == url
           ? _value.url
@@ -340,9 +364,9 @@ class __$$FeedbackFileModelImplCopyWithImpl<$Res>
           ? _value.size
           : size // ignore: cast_nullable_to_non_nullable
               as int?,
-      text: freezed == text
-          ? _value.text
-          : text // ignore: cast_nullable_to_non_nullable
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -352,7 +376,12 @@ class __$$FeedbackFileModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$FeedbackFileModelImpl implements _FeedbackFileModel {
   const _$FeedbackFileModelImpl(
-      {this.id, this.url, this.type, this.size, this.text});
+      {this.id,
+      @JsonKey(name: 'feedback_id') this.feedbackId,
+      this.url,
+      this.type,
+      this.size,
+      this.title});
 
   factory _$FeedbackFileModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$FeedbackFileModelImplFromJson(json);
@@ -360,17 +389,20 @@ class _$FeedbackFileModelImpl implements _FeedbackFileModel {
   @override
   final String? id;
   @override
+  @JsonKey(name: 'feedback_id')
+  final String? feedbackId;
+  @override
   final String? url;
   @override
   final String? type;
   @override
   final int? size;
   @override
-  final String? text;
+  final String? title;
 
   @override
   String toString() {
-    return 'FeedbackFileModel(id: $id, url: $url, type: $type, size: $size, text: $text)';
+    return 'FeedbackFileModel(id: $id, feedbackId: $feedbackId, url: $url, type: $type, size: $size, title: $title)';
   }
 
   @override
@@ -379,15 +411,18 @@ class _$FeedbackFileModelImpl implements _FeedbackFileModel {
         (other.runtimeType == runtimeType &&
             other is _$FeedbackFileModelImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.feedbackId, feedbackId) ||
+                other.feedbackId == feedbackId) &&
             (identical(other.url, url) || other.url == url) &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.size, size) || other.size == size) &&
-            (identical(other.text, text) || other.text == text));
+            (identical(other.title, title) || other.title == title));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, url, type, size, text);
+  int get hashCode =>
+      Object.hash(runtimeType, id, feedbackId, url, type, size, title);
 
   @JsonKey(ignore: true)
   @override
@@ -407,10 +442,11 @@ class _$FeedbackFileModelImpl implements _FeedbackFileModel {
 abstract class _FeedbackFileModel implements FeedbackFileModel {
   const factory _FeedbackFileModel(
       {final String? id,
+      @JsonKey(name: 'feedback_id') final String? feedbackId,
       final String? url,
       final String? type,
       final int? size,
-      final String? text}) = _$FeedbackFileModelImpl;
+      final String? title}) = _$FeedbackFileModelImpl;
 
   factory _FeedbackFileModel.fromJson(Map<String, dynamic> json) =
       _$FeedbackFileModelImpl.fromJson;
@@ -418,13 +454,16 @@ abstract class _FeedbackFileModel implements FeedbackFileModel {
   @override
   String? get id;
   @override
+  @JsonKey(name: 'feedback_id')
+  String? get feedbackId;
+  @override
   String? get url;
   @override
   String? get type;
   @override
   int? get size;
   @override
-  String? get text;
+  String? get title;
   @override
   @JsonKey(ignore: true)
   _$$FeedbackFileModelImplCopyWith<_$FeedbackFileModelImpl> get copyWith =>

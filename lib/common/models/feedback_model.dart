@@ -23,10 +23,12 @@ class FeedbackModel with _$FeedbackModel {
 class FeedbackFileModel with _$FeedbackFileModel {
   const factory FeedbackFileModel({
     String? id,
+    // ignore: invalid_annotation_target
+    @JsonKey(name: 'feedback_id') String? feedbackId,
     String? url,
     String? type,
     int? size,
-    String? text,
+    String? title,
   }) = _FeedbackFileModel;
 
   /// Deserializes the given json into a [FeedbackFileModel].
