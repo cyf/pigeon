@@ -6,7 +6,7 @@ import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-// import 'package:homing_pigeon/common/api/feedback_api.dart';
+import 'package:homing_pigeon/common/api/feedback_api.dart';
 import 'package:homing_pigeon/common/enums/enums.dart';
 import 'package:homing_pigeon/common/exception/exception.dart';
 import 'package:homing_pigeon/common/extensions/extensions.dart';
@@ -132,11 +132,15 @@ class _FeedbackViewState extends State<FeedbackView> {
   Widget _buildBody() {
     final bottom = MediaQuery.of(context).padding.bottom;
     if (!loading && items.isNotEmpty) {
-      return ListView.builder(
-        padding: EdgeInsets.only(top: 20, bottom: bottom),
+      return ListView.separated(
+        padding: EdgeInsets.only(bottom: bottom),
         itemCount: items.length,
-        itemBuilder: (context, index) => Text('$index'),
-      );
+        itemBuilder: (context, index) =>
+            FeedbackCard(feedback: items.elementAt(index)),
+        separatorBuilder: (context, index) => const Divider(
+          height: 10,
+        ),
+      ).nestedPadding(padding: const EdgeInsets.only(top: 20));
     }
 
     if (!loading && items.isEmpty) {
@@ -482,56 +486,56 @@ class _FeedbackViewState extends State<FeedbackView> {
   }
 
   void _load({Operation operation = Operation.none}) {
-    // var currentPage = page;
-    // if (operation == Operation.none) {
-    //   currentPage = 1;
-    //   setState(() => loading = true);
-    //   EasyLoading.show();
-    // } else if (operation == Operation.refresh) {
-    //   currentPage = 1;
-    // } else if (operation == Operation.load) {
-    //   if (items.length >= total) {
-    //     _controller.finishLoad(IndicatorResult.noMore);
-    //     return;
-    //   }
-    //   currentPage++;
-    // }
-    //
-    // FeedbackApi.getFeedbackList(page: currentPage).then(
-    //   (data) {
-    //     if (operation == Operation.none) {
-    //       EasyLoading.dismiss();
-    //       setState(() {
-    //         loading = false;
-    //         page = data?.page ?? 1;
-    //         total = data?.pageInfo?.total ?? 0;
-    //         items = data?.items ?? [];
-    //       });
-    //     } else if (operation == Operation.refresh) {
-    //       _controller.finishRefresh();
-    //       setState(() {
-    //         page = data?.page ?? 1;
-    //         total = data?.pageInfo?.total ?? 0;
-    //         items = data?.items ?? [];
-    //       });
-    //     } else if (operation == Operation.load) {
-    //       _controller.finishLoad();
-    //       setState(() {
-    //         page = data?.page ?? 1;
-    //         total = data?.pageInfo?.total ?? 0;
-    //         items = items + (data?.items ?? []);
-    //       });
-    //     }
-    //   },
-    // ).onError<RequestedException>((err, stackTrace) {
-    //   if (operation == Operation.none) {
-    //     setState(() => loading = false);
-    //     EasyLoading.showError(err.msg);
-    //   } else if (operation == Operation.refresh) {
-    //     _controller.finishRefresh(IndicatorResult.fail);
-    //   } else if (operation == Operation.load) {
-    //     _controller.finishLoad(IndicatorResult.fail);
-    //   }
-    // });
+    var currentPage = page;
+    if (operation == Operation.none) {
+      currentPage = 1;
+      setState(() => loading = true);
+      EasyLoading.show();
+    } else if (operation == Operation.refresh) {
+      currentPage = 1;
+    } else if (operation == Operation.load) {
+      if (items.length >= total) {
+        _controller.finishLoad(IndicatorResult.noMore);
+        return;
+      }
+      currentPage++;
+    }
+
+    FeedbackApi.getFeedbackList(page: currentPage).then(
+      (data) {
+        if (operation == Operation.none) {
+          EasyLoading.dismiss();
+          setState(() {
+            loading = false;
+            page = data?.page ?? 1;
+            total = data?.pageInfo?.total ?? 0;
+            items = data?.items ?? [];
+          });
+        } else if (operation == Operation.refresh) {
+          _controller.finishRefresh();
+          setState(() {
+            page = data?.page ?? 1;
+            total = data?.pageInfo?.total ?? 0;
+            items = data?.items ?? [];
+          });
+        } else if (operation == Operation.load) {
+          _controller.finishLoad();
+          setState(() {
+            page = data?.page ?? 1;
+            total = data?.pageInfo?.total ?? 0;
+            items = items + (data?.items ?? []);
+          });
+        }
+      },
+    ).onError<RequestedException>((err, stackTrace) {
+      if (operation == Operation.none) {
+        setState(() => loading = false);
+        EasyLoading.showError(err.msg);
+      } else if (operation == Operation.refresh) {
+        _controller.finishRefresh(IndicatorResult.fail);
+      } else if (operation == Operation.load) {
+        _controller.finishLoad(IndicatorResult.fail);
+      }
+    });
   }
 }

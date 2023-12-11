@@ -6,7 +6,7 @@ import 'package:homing_pigeon/common/http/hp_http.dart';
 import 'package:homing_pigeon/common/models/models.dart';
 
 class FeedbackApi {
-  /// 轮播图
+  /// 反馈列表
   static Future<Pager<List<FeedbackModel>>?> getFeedbackList({
     int page = 1,
     int pageSize = 10,
