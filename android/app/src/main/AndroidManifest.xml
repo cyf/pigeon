@@ -5,6 +5,7 @@
         android:name="android.hardware.camera"
         android:required="false" />
 
+    <!-- TODO: add permissions for dx captcha sdk -->
     <!-- 网络权限 （必选）-->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- 适配Android 13，应用弹出通知必须权限-->
@@ -59,8 +60,8 @@
     <!--#enddocregion android-queries-->
 
     <application
+        android:name=".MainApp"
         android:label="Homing Pigeon"
-        android:name="${applicationName}"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
