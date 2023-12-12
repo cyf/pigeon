@@ -98,6 +98,7 @@ android {
         release {
             signingConfig signingConfigs.release
             minifyEnabled true
+            // TODO: add dx captcha proguard rules.
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
@@ -111,6 +112,8 @@ flutter {
 }
 
 dependencies {
+//    implementation(name: 'tls12patch', ext: 'aar')
+
     // flutter_local_notifications
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
     implementation 'androidx.window:window:1.2.0'
