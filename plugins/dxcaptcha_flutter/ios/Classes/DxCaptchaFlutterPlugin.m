@@ -63,11 +63,9 @@
     UIViewController* viewController = [self topViewController];
     UIView* view = viewController.view;
 
-    if (self.captchaView == nil) {
-      CGRect frame = CGRectMake(view.center.x - 150, view.center.y - 100, 300, 200);
-      self.captchaView = [[DXCaptchaView alloc] initWithConfig:config delegate:self frame:frame];
-      self.captchaView.tag = 1234;
-    }
+    CGRect frame = CGRectMake(view.center.x - 150, view.center.y - 100, 300, 200);
+    self.captchaView = [[DXCaptchaView alloc] initWithConfig:config delegate:self frame:frame];
+    self.captchaView.tag = 1234;
 
     // tap
     UITapGestureRecognizer* gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap)];
@@ -98,10 +96,7 @@
     [loadingView addSubview:self.activityIndicator];
     [self.overlayView addSubview:loadingView];
     [self.activityIndicator startAnimating];
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-      [view addSubview:self.captchaView];
-    });
+    [view addSubview:self.captchaView];
 
     result(nil);
   } else {
@@ -119,6 +114,7 @@
     }
     case DXCaptchaEventSuccess:
     {
+      NSLog(@"dxcaptcha success");
       [self.captchaView removeFromSuperview];
       [self.overlayView removeFromSuperview];
       NSString *token = dict[@"token"];
@@ -137,6 +133,8 @@
     case DXCaptchaEventFail:
     {
       NSLog(@"dxcaptcha failure");
+      [self.captchaView removeFromSuperview];
+      [self.overlayView removeFromSuperview];
       NSData *data;
       if (@available(iOS 13.0, *)) {
         data = [NSJSONSerialization dataWithJSONObject:dict options: NSJSONWritingWithoutEscapingSlashes error:nil];
