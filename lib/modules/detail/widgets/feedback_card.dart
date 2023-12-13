@@ -1,9 +1,9 @@
-// import 'package:collection/collection.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:homing_pigeon/common/extensions/extensions.dart';
 import 'package:homing_pigeon/common/models/models.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
-// import 'package:homing_pigeon/common/widgets/widgets.dart';
 import 'package:homing_pigeon/theme/colors.dart';
 
 class FeedbackCard extends StatefulWidget {
@@ -20,8 +20,7 @@ class _FeedbackCardState extends State<FeedbackCard> {
 
   @override
   Widget build(BuildContext context) {
-    // final files = widget.feedback.files ?? <FeedbackFileModel>[];
-
+    final files = widget.feedback.files ?? <FeedbackFileModel>[];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -45,6 +44,43 @@ class _FeedbackCardState extends State<FeedbackCard> {
           maxLines: 10,
           overflow: TextOverflow.ellipsis,
         ).nestedPadding(padding: const EdgeInsets.only(bottom: 10)),
+        if (files.isNotEmpty)
+          StaggeredGrid.count(
+            crossAxisCount: 3,
+            mainAxisSpacing: 5,
+            crossAxisSpacing: 5,
+            children: files
+                .where((file) => file.type?.startsWith('image/') ?? false)
+                .map(
+              (file) {
+                final width = MediaQuery.of(context).size.width - 10 * 2;
+                final itemWidth = ((width - 5 * 2) / 3).floorToDouble();
+                // TODO(kjxbyz): add video preview.
+                return CachedNetworkImage(
+                  imageUrl: StringUtil.getValue(file.url),
+                  imageBuilder: (context, imageProvider) => Container(
+                    width: itemWidth,
+                    height: itemWidth,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(
+                    color: primaryColor,
+                  ).nestedSizedBox(width: 30, height: 30).nestedCenter(),
+                  errorWidget: (context, url, error) => const Icon(
+                    Icons.error,
+                    color: errorTextColor,
+                  ),
+                );
+              },
+            ).toList(),
+          ).nestedPadding(padding: const EdgeInsets.only(bottom: 10)),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -69,7 +105,6 @@ class _FeedbackCardState extends State<FeedbackCard> {
             ),
           ],
         ),
-        // if (files.isNotEmpty) avatarList,
       ],
     ).nestedPadding(padding: const EdgeInsets.all(10)).nestedDecoratedBox(
           decoration: BoxDecoration(
@@ -78,37 +113,4 @@ class _FeedbackCardState extends State<FeedbackCard> {
           ),
         );
   }
-
-  // Widget get avatarList {
-  //   final originFiles = widget.feedback.files ?? <FeedbackFileModel>[];
-  //   return SingleChildScrollView(
-  //     scrollDirection: Axis.horizontal,
-  //     child: GestureDetector(
-  //       onTap: () {
-  //         setState(() {
-  //           expanded = !expanded;
-  //         });
-  //       },
-  //       child: AvatarList(
-  //         leading:
-  //         expanded ? AvatarListLeading.none : AvatarListLeading.tight,
-  //         avatars: (expanded ? originFiles : originFiles.slice(0, 1))
-  //             .map(
-  //               (file) => generateAvatarListItem(
-  //             StringUtil.getValue(file.url),
-  //           ),
-  //         )
-  //             .toList(),
-  //       ).nestedSizedBox(height: 60).nestedPadding(
-  //         padding: const EdgeInsets.symmetric(vertical: 10),
-  //       ),
-  //     ),
-  //   );
-  // }
-  //
-  // Widget generateAvatarListItem(String url) {
-  //   return AvatarListItem(
-  //     imageProvider: NetworkImage(url),
-  //   ).nestedPadding(padding: const EdgeInsets.only(right: 6));
-  // }
 }
