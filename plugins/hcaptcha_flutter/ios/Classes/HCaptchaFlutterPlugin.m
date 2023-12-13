@@ -118,11 +118,11 @@
     }];
 
     [self.hCaptcha validateOn:view resetOnError:NO completion:^(HCaptchaResult *result) {
+      [self.hCaptcha reset];
       NSError *error = nil;
       NSString *token = [result dematerializeAndReturnError: &error];
       NSLog(@"DONE token:%@, error:%@", token, [error description]);
       if (error == nil) {
-        [self.hCaptcha reset];
         NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObject: token forKey: @"token"];
         NSData *data;
         if (@available(iOS 13.0, *)) {
