@@ -43,6 +43,8 @@ dependencies:
   cupertino_icons: ^1.0.6
   device_info_plus: ^9.1.1
   dio: ^5.4.0
+  dxcaptcha_flutter:
+    path: ./plugins/dxcaptcha_flutter
   easy_refresh: ^3.3.3+1
   encrypt: ^5.0.3
   equatable: ^2.0.5
@@ -68,9 +70,13 @@ dependencies:
   flutter_sticky_header: ^0.6.5
   fluttertoast: ^8.2.4
   freezed_annotation: ^2.4.1
+  hcaptcha_flutter:
+    path: ./plugins/hcaptcha_flutter
   http_parser: ^4.0.2
   image_gallery_saver: ^2.0.3
   intl: ^0.18.1
+  jpush_flutter:
+    path: ./plugins/jpush_flutter
   json_annotation: ^4.8.1
   keyboard_dismisser: ^3.0.0
   meta: ^1.10.0
