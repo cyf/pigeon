@@ -41,7 +41,7 @@ android {
 
     dependencies {
         testImplementation 'junit:junit:4.13.2'
-        testImplementation 'org.mockito:mockito-core:5.0.0'
+        testImplementation 'org.mockito:mockito-core:5.8.0'
         implementation "com.google.android.flexbox:flexbox:3.0.0"
         implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.3'
         api 'com.github.hCaptcha:hcaptcha-android-sdk:3.10.0'

@@ -39,7 +39,7 @@ android {
 
     dependencies {
         testImplementation 'junit:junit:4.13.2'
-        testImplementation 'org.mockito:mockito-core:5.0.0'
+        testImplementation 'org.mockito:mockito-core:5.8.0'
         implementation 'androidx.appcompat:appcompat:1.6.1'
         implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.3'
         implementation (name: 'dx-risk-v6.1.22r.09c5c67b', ext: 'aar')
