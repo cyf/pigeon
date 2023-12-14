@@ -75,8 +75,6 @@ dependencies:
   http_parser: ^4.0.2
   image_gallery_saver: ^2.0.3
   intl: ^0.18.1
-  jpush_flutter:
-    path: ./plugins/jpush_flutter
   json_annotation: ^4.8.1
   keyboard_dismisser: ^3.0.0
   meta: ^1.10.0
