@@ -372,6 +372,7 @@ class _HomeViewState extends State<HomeView>
             innerPadding: padding,
             outerPadding: padding,
             crossAxisAlignment: crossAxisAlignment,
+            // TODO(kjxbyz): 新增全局配置下发接口
             onTap: () => FlutterClipboard.copy('text').then((value) {
               EasyLoading.showSuccess('Copied');
               NavigatorUtil.pop();
