@@ -224,7 +224,8 @@ class _FeedbackViewState extends State<FeedbackView> {
             child: ModalBottomSheet(
               shrinkWrap: false,
               physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              margin: const EdgeInsets.symmetric(vertical: 10),
               callback: _submit,
               button: '提交',
               items: [
@@ -235,6 +236,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                       BaseFormItem(
                         title: '标题',
                         showTip: false,
+                        padding: EdgeInsets.zero,
                         child: TextFormField(
                           focusNode: titleFocusNode,
                           controller: _titleController,
@@ -360,8 +362,6 @@ class _FeedbackViewState extends State<FeedbackView> {
                   runSpacing: 4,
                   onReorder: _onReorder,
                   children: items,
-                ).nestedPadding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
                 ),
               ],
             ),
