@@ -3,16 +3,18 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:clipboard/clipboard.dart';
-import 'package:easy_refresh/easy_refresh.dart';
+import 'package:collection/collection.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:homing_pigeon/app/manager.dart';
 import 'package:homing_pigeon/common/api/carousel_api.dart';
 import 'package:homing_pigeon/common/exception/exception.dart';
 import 'package:homing_pigeon/common/extensions/extensions.dart';
+import 'package:homing_pigeon/common/logger/logger.dart';
 import 'package:homing_pigeon/common/models/models.dart';
 import 'package:homing_pigeon/common/utils/color_util.dart';
 import 'package:homing_pigeon/common/utils/navigator_util.dart';
@@ -20,6 +22,7 @@ import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
 import 'package:homing_pigeon/l10n/l10n.dart';
 import 'package:homing_pigeon/main.dart';
+import 'package:homing_pigeon/modules/app/app.dart';
 import 'package:homing_pigeon/modules/detail/detail.dart';
 import 'package:homing_pigeon/modules/home/home.dart';
 import 'package:homing_pigeon/theme/colors.dart';
@@ -36,27 +39,22 @@ const double carouselHeight = 250;
 
 class _HomeViewState extends State<HomeView>
     with AutomaticKeepAliveClientMixin {
-  final EasyRefreshController _controller = EasyRefreshController(
-    controlFinishRefresh: true,
-    controlFinishLoad: true,
-  );
-  late ScrollController scrollController;
+  final ScrollController _scrollController = ScrollController();
   bool isSliverAppBarExpanded = false;
 
-  List<CarouselModel> items = [];
-  bool loading = false;
-  String? error;
+  List<CarouselModel> _carousels = [];
+  bool _loading = false;
+  String? _error;
 
   @override
   void initState() {
     super.initState();
-    scrollController = ScrollController()
-      ..addListener(() {
-        setState(() {
-          isSliverAppBarExpanded = scrollController.hasClients &&
-              scrollController.offset > carouselHeight - kToolbarHeight;
-        });
+    _scrollController.addListener(() {
+      setState(() {
+        isSliverAppBarExpanded = _scrollController.hasClients &&
+            _scrollController.offset > carouselHeight - kToolbarHeight;
       });
+    });
 
     FirebaseMessaging.instance.getInitialMessage().then(
       (RemoteMessage? value) {
@@ -79,8 +77,7 @@ class _HomeViewState extends State<HomeView>
 
   @override
   void dispose() {
-    _controller.dispose();
-    scrollController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -93,10 +90,13 @@ class _HomeViewState extends State<HomeView>
   }
 
   Widget _buildScaffoldBody() {
+    final configs = BlocProvider.of<AppCubit>(context).state.configs;
+    final roadmapConfig =
+        configs.firstWhereOrNull((config) => config.key == 'roadmap');
     final bottom = MediaQuery.of(context).padding.bottom;
     final version = AppManager.instance.version;
     return CustomScrollView(
-      controller: scrollController,
+      controller: _scrollController,
       slivers: [
         // Add the app bar to the CustomScrollView.
         _buildSliverAppBar(),
@@ -145,12 +145,17 @@ class _HomeViewState extends State<HomeView>
               tips: '无论您遇到任何问题、意见或建议, 均可反馈...',
               onTap: () => NavigatorUtil.push(const FeedbackView()),
             ),
-            SectionItem(
-              title: '路线图',
-              tips: '查看开发计划或进度😄',
-              onTap: () => NavigatorUtil.push(const RoadmapView()),
-              showBorder: false,
-            ),
+            if (StringUtil.getValue(
+                  roadmapConfig?.value,
+                  defaultVal: 'disabled',
+                ) ==
+                'enabled')
+              SectionItem(
+                title: '路线图',
+                tips: '查看开发计划或进度😄',
+                onTap: () => NavigatorUtil.push(const RoadmapView()),
+                showBorder: false,
+              ),
           ],
         ),
         if (StringUtil.isNotBlank(version))
@@ -176,14 +181,14 @@ class _HomeViewState extends State<HomeView>
     final statusBarHeight = MediaQuery.of(context).padding.top;
     Widget? flexibleSpace;
     double? expandedHeight = carouselHeight;
-    if (!loading) {
-      if (StringUtil.isNotBlank(error)) {
+    if (!_loading) {
+      if (StringUtil.isNotBlank(_error)) {
         // 请求失败，显示错误
         flexibleSpace = FlexibleSpaceBar(
           // centerTitle: true,
           collapseMode: CollapseMode.pin,
           background: Text(
-            error!,
+            _error!,
             style: const TextStyle(color: errorTextColor, fontSize: 14),
             maxLines: 5,
             overflow: TextOverflow.ellipsis,
@@ -194,18 +199,18 @@ class _HomeViewState extends State<HomeView>
         );
       } else {
         // 请求成功，显示数据
-        if (items.isNotEmpty) {
+        if (_carousels.isNotEmpty) {
           flexibleSpace = FlexibleSpaceBar(
             // centerTitle: true,
             collapseMode: CollapseMode.pin,
             background: CarouselSlider.builder(
-              itemCount: items.length,
+              itemCount: _carousels.length,
               itemBuilder: (
                 BuildContext context,
                 int itemIndex,
                 int pageViewIndex,
               ) =>
-                  _buildCarousel(items[itemIndex]),
+                  _buildCarousel(_carousels[itemIndex]),
               options: CarouselOptions(
                 autoPlay: true,
                 height: carouselHeight + statusBarHeight,
@@ -335,6 +340,10 @@ class _HomeViewState extends State<HomeView>
   }
 
   void showShopModalBottomSheet() {
+    final configs = BlocProvider.of<AppCubit>(context).state.configs;
+    final tbConfig =
+        configs.firstWhereOrNull((config) => config.key == 'taobao');
+
     const crossAxisAlignment = CrossAxisAlignment.center;
     const padding = EdgeInsets.zero;
     showModalBottomSheet<void>(
@@ -364,20 +373,21 @@ class _HomeViewState extends State<HomeView>
                 decoration: const BoxDecoration(color: Colors.white),
               )
               .nestedSizedBox(height: 64),
-          SectionItem(
-            title: '复制淘口令',
-            tips: '直播平台、时间等',
-            showBack: false,
-            contentPadding: padding,
-            innerPadding: padding,
-            outerPadding: padding,
-            crossAxisAlignment: crossAxisAlignment,
-            // TODO(kjxbyz): 新增全局配置下发接口
-            onTap: () => FlutterClipboard.copy('text').then((value) {
-              EasyLoading.showSuccess('Copied');
-              NavigatorUtil.pop();
-            }),
-          ),
+          if (StringUtil.isNotBlank(tbConfig?.value))
+            SectionItem(
+              title: '复制淘口令',
+              tips: '直播平台、时间等',
+              showBack: false,
+              contentPadding: padding,
+              innerPadding: padding,
+              outerPadding: padding,
+              crossAxisAlignment: crossAxisAlignment,
+              onTap: () =>
+                  FlutterClipboard.copy(tbConfig!.value!).then((value) {
+                EasyLoading.showSuccess('Copied');
+                NavigatorUtil.pop();
+              }),
+            ),
           SectionItem(
             title: '打开淘宝店地址',
             tips: '寒潮啦! 来件卫衣吧~~',
@@ -401,21 +411,21 @@ class _HomeViewState extends State<HomeView>
     );
   }
 
-  void _load() {
-    setState(() => loading = true);
-    CarouselApi.getCarouselList().then(
-      (data) {
-        setState(() {
-          loading = false;
-          items = data;
-        });
-      },
-    ).onError<RequestedException>((err, stackTrace) {
+  Future<void> _load() async {
+    try {
+      setState(() => _loading = true);
+      final carousels = await CarouselApi.getCarouselList();
       setState(() {
-        loading = false;
-        error = err.msg;
+        _loading = false;
+        _carousels = carousels;
       });
-    });
+    } on RequestedException catch (error, stackTrace) {
+      printErrorStackLog(error, stackTrace);
+      setState(() {
+        _loading = false;
+        _error = error.msg;
+      });
+    }
   }
 
   @override

@@ -1,4 +1,5 @@
 export 'carousel_model.dart';
+export 'config_model.dart';
 export 'emoji_model.dart';
 export 'feedback_model.dart';
 export 'file_model.dart';

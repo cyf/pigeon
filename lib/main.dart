@@ -14,6 +14,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:homing_pigeon/app/bloc_observer.dart';
 import 'package:homing_pigeon/app/manager.dart';
 import 'package:homing_pigeon/common/constants/constants.dart';
+import 'package:homing_pigeon/common/logger/logger.dart';
 import 'package:homing_pigeon/common/utils/sp_util.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/modules/app/app.dart';
@@ -138,13 +139,8 @@ void showFlutterNotification(RemoteMessage message) {
 /// Initialize the [FlutterLocalNotificationsPlugin] package.
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
-Future<void> reportErrorAndLog(FlutterErrorDetails details) async {
-  if (Constants.sentryEnabled && kReleaseMode) {
-    await Sentry.captureException(details.exception, stackTrace: details.stack);
-  }
-  if (!kReleaseMode) {
-    log(details.exceptionAsString(), stackTrace: details.stack);
-  }
+void reportErrorAndLog(FlutterErrorDetails details) {
+  printErrorStackLog(details.exception, details.stack);
 }
 
 FlutterErrorDetails makeErrorDetails(Object error, StackTrace stackTrace) {
@@ -206,7 +202,7 @@ Future<void> main() async {
   await initApp();
   await SpUtil.getInstance();
 
-  runApp(const AppView());
+  runApp(const App());
 }
 
 Future<void> initApp() async {

@@ -78,6 +78,7 @@ dependencies:
   intl: ^0.18.1
   json_annotation: ^4.8.1
   keyboard_dismisser: ^3.0.0
+  logger: ^2.0.2+1
   markdown: ^7.1.1
   meta: ^1.10.0
   mime: ^1.0.4
