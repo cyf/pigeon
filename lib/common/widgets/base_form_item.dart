@@ -11,6 +11,7 @@ class BaseFormItem extends StatelessWidget {
     required this.child,
     this.required = true,
     this.showTip = true,
+    this.padding = const EdgeInsets.only(top: 10),
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.tipWidget,
     this.onTipTap,
@@ -19,11 +20,12 @@ class BaseFormItem extends StatelessWidget {
 
   final String title;
   final Widget child;
-  final Widget? tipWidget;
   final bool required;
   final bool showTip;
-  final BaseFormItemCallback? onTipTap;
+  final EdgeInsetsGeometry padding;
   final MainAxisAlignment mainAxisAlignment;
+  final Widget? tipWidget;
+  final BaseFormItemCallback? onTipTap;
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +46,7 @@ class BaseFormItem extends StatelessWidget {
               .nestedRow(mainAxisAlignment: mainAxisAlignment),
         child,
       ],
-    ).nestedPadding(
-      padding: const EdgeInsets.only(top: 20),
-    );
+    ).nestedPadding(padding: padding);
   }
 
   Widget get content {
