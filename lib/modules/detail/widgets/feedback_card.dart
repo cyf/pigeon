@@ -4,7 +4,9 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:homing_pigeon/common/extensions/extensions.dart';
 import 'package:homing_pigeon/common/models/models.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
+import 'package:homing_pigeon/modules/detail/detail.dart';
 import 'package:homing_pigeon/theme/colors.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class FeedbackCard extends StatefulWidget {
   const FeedbackCard({required this.feedback, super.key});
@@ -68,6 +70,11 @@ class _FeedbackCardState extends State<FeedbackCard> {
                         fit: BoxFit.cover,
                       ),
                     ),
+                  ).nestedTap(
+                    () => Dialogs.showImagePreviewDialog(
+                      StringUtil.getValue(file.id),
+                      StringUtil.getValue(file.url),
+                    ),
                   ),
                   placeholder: (context, url) =>
                       const CircularProgressIndicator(
@@ -93,16 +100,17 @@ class _FeedbackCardState extends State<FeedbackCard> {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ).nestedFlexible(),
-            const Text(
-              '2023-12-08 12:12:12',
-              style: TextStyle(
-                fontSize: 14,
-                color: secondaryTextColor,
+            if (widget.feedback.createDate != null)
+              Text(
+                timeago.format(widget.feedback.createDate!),
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: secondaryTextColor,
+                ),
+                textAlign: TextAlign.end,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-              textAlign: TextAlign.end,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
           ],
         ),
       ],

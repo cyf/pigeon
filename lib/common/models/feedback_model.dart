@@ -11,6 +11,8 @@ class FeedbackModel with _$FeedbackModel {
     String? title,
     String? description,
     List<FeedbackFileModel>? files,
+    // ignore: invalid_annotation_target
+    @JsonKey(name: 'create_date') DateTime? createDate,
   }) = _FeedbackModel;
 
   /// Deserializes the given json into a [FeedbackModel].

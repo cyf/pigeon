@@ -173,16 +173,46 @@ class _EmojiViewState extends State<EmojiView> {
       builder: (BuildContext context) => StatefulBuilder(
         builder: (BuildContext context, StateSetter setInnerState) {
           final items = _fileWrappers
-              .map(
-                (element) {
-                  return Image.asset(
-                    element.file.path,
-                    errorBuilder: (context, url, error) => const Icon(
-                      Icons.error,
-                      color: errorTextColor,
-                      size: 24,
-                    ),
-                  ).nestedSizedBox(width: itemWidth, height: itemWidth);
+              .mapIndexed(
+                (index, element) {
+                  if (kDebugMode) {
+                    print(element.file.path);
+                  }
+                  return Stack(
+                    children: [
+                      Image.file(
+                        element.file,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, url, error) => const Icon(
+                          Icons.error,
+                          color: errorTextColor,
+                          size: 24,
+                        ),
+                      ).nestedSizedBox(width: itemWidth, height: itemWidth),
+                      Positioned(
+                        top: 2,
+                        right: 2,
+                        child: const Icon(
+                          Icons.clear,
+                          color: warnTextColor,
+                          size: 14,
+                        )
+                            .nestedDecoratedBox(
+                              decoration: BoxDecoration(
+                                color: backgroundColor,
+                                borderRadius: BorderRadius.circular(9),
+                              ),
+                            )
+                            .nestedSizedBox(width: 18, height: 18)
+                            .nestedTap(
+                              () => setInnerState(
+                                () => _fileWrappers = _fileWrappers
+                                  ..removeAt(index),
+                              ),
+                            ),
+                      ),
+                    ],
+                  );
                 },
               )
               .cast<Widget>()
@@ -211,7 +241,8 @@ class _EmojiViewState extends State<EmojiView> {
                 spacing: spacing,
                 runSpacing: 4,
                 padding: const EdgeInsets.all(padding),
-                onReorder: _onReorder,
+                onReorder: (int oldIndex, int newIndex) =>
+                    _onReorder(setInnerState, oldIndex, newIndex),
                 children: items,
               ).nestedSingleChildScrollView(),
             ],
@@ -245,8 +276,7 @@ class _EmojiViewState extends State<EmojiView> {
           .contains(status),
     );
     if (denied) {
-      if (!context.mounted) return;
-      Dialogs.showGalleryPermissionDialog(context);
+      Dialogs.showGalleryPermissionDialog();
       return;
     }
 
@@ -295,8 +325,10 @@ class _EmojiViewState extends State<EmojiView> {
     }
   }
 
-  void _onReorder(int oldIndex, int newIndex) {
-    setState(() {});
+  void _onReorder(StateSetter setInnerState, int oldIndex, int newIndex) {
+    setInnerState(
+      () => _fileWrappers = _fileWrappers..swap(oldIndex, newIndex),
+    );
   }
 
   Future<void> _uploadFiles() async {

@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:homing_pigeon/common/extensions/extensions.dart';
 import 'package:homing_pigeon/common/models/models.dart';
 import 'package:homing_pigeon/common/utils/color_util.dart';
-import 'package:homing_pigeon/common/utils/navigator_util.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
+import 'package:homing_pigeon/modules/detail/detail.dart';
 import 'package:homing_pigeon/theme/colors.dart';
-import 'package:photo_view/photo_view.dart';
 
 class EmojiCard extends StatelessWidget {
   const EmojiCard({
@@ -42,9 +41,12 @@ class EmojiCard extends StatelessWidget {
     );
     return Column(
       children: [
-        child
-            .nestedSizedBox(height: 160)
-            .nestedTap(() => showImagePreviewDialog(context)),
+        child.nestedSizedBox(height: 160).nestedTap(
+              () => Dialogs.showImagePreviewDialog(
+                StringUtil.getValue(emoji.id),
+                emoji.image,
+              ),
+            ),
         if (StringUtil.isNotBlank(emoji.text))
           Text(
             emoji.text!,
@@ -58,40 +60,6 @@ class EmojiCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
       ],
-    );
-  }
-
-  void showImagePreviewDialog(BuildContext context) {
-    final emoji = emojis.elementAt(page);
-    showDialog<void>(
-      context: context,
-      builder: (context) => PhotoView.customChild(
-        backgroundDecoration: const BoxDecoration(color: Colors.black45),
-        heroAttributes: PhotoViewHeroAttributes(tag: emoji.id ?? ''),
-        child: CachedNetworkImage(
-          imageUrl: emoji.image,
-          imageBuilder: (context, imageProvider) => Container(
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(8),
-                bottomRight: Radius.circular(8),
-              ),
-              image: DecorationImage(
-                image: imageProvider,
-                fit: BoxFit.fitWidth,
-              ),
-            ),
-          ),
-          placeholder: (context, url) => const CircularProgressIndicator(
-            color: primaryColor,
-          ).nestedSizedBox(width: 30, height: 30).nestedCenter(),
-          errorWidget: (context, url, error) => const Icon(
-            Icons.error,
-            color: errorTextColor,
-            size: 24,
-          ),
-        ).nestedTap(NavigatorUtil.pop),
-      ),
     );
   }
 }
