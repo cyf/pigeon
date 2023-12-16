@@ -1,11 +1,11 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:dxcaptcha_flutter/src/dxcaptcha_flutter_method_channel.dart';
+// import 'package:dxcaptcha_flutter/src/dxcaptcha_flutter_method_channel.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  MethodChannelDxCaptchaFlutter platform = MethodChannelDxCaptchaFlutter();
+  // MethodChannelDxCaptchaFlutter platform = MethodChannelDxCaptchaFlutter();
   const MethodChannel channel = MethodChannel('plugins.kjxbyz.com/dxcaptcha_flutter_plugin');
 
   setUp(() {
