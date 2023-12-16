@@ -142,7 +142,13 @@ class _HomeViewState extends State<HomeView>
             ),
             SectionItem(
               title: '意见/建议',
+              tips: '无论您遇到任何问题、意见或建议, 均可反馈...',
               onTap: () => NavigatorUtil.push(context, const FeedbackView()),
+            ),
+            SectionItem(
+              title: '路线图',
+              tips: '查看开发计划或进度😄',
+              onTap: () => NavigatorUtil.push(context, const RoadmapView()),
               showBorder: false,
             ),
           ],
@@ -151,7 +157,7 @@ class _HomeViewState extends State<HomeView>
           SliverList.list(
             children: [
               Text(
-                'Version: ${version!}',
+                '版本号: ${version!}',
                 style: const TextStyle(fontSize: 12, color: secondaryTextColor),
                 textAlign: TextAlign.center,
               ).nestedPadding(

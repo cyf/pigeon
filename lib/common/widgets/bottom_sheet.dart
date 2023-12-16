@@ -10,6 +10,7 @@ class ModalBottomSheet extends StatelessWidget {
     this.physics = const NeverScrollableScrollPhysics(),
     this.shrinkWrap = true,
     this.padding = EdgeInsets.zero,
+    this.margin = EdgeInsets.zero,
     super.key,
   });
 
@@ -20,6 +21,7 @@ class ModalBottomSheet extends StatelessWidget {
   final String button;
   final VoidCallback callback;
   final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry margin;
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +35,9 @@ class ModalBottomSheet extends StatelessWidget {
           physics: physics,
           itemBuilder: (context, index) => items[index],
         )
+            .nestedPadding(padding: margin)
             .nestedColoredBox(color: Colors.white)
-            .nestedPadding(padding: EdgeInsets.only(bottom: bottom + 64 + 16)),
+            .nestedPadding(padding: EdgeInsets.only(bottom: bottom + 64 + 8)),
         Positioned(
           left: 0,
           right: 0,
@@ -51,7 +54,7 @@ class ModalBottomSheet extends StatelessWidget {
                 .nestedCenter()
                 .nestedSizedBox(height: 64)
                 .nestedPadding(padding: EdgeInsets.only(bottom: bottom)),
-          ).nestedPadding(padding: const EdgeInsets.only(top: 8)),
+          ),
         ),
       ],
     );

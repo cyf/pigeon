@@ -25,7 +25,7 @@ class _SocialViewState extends State<SocialView>
     controlFinishLoad: true,
   );
 
-  List<CardItem> items = [];
+  List<SocialModel> items = [];
   bool loading = false;
 
   @override

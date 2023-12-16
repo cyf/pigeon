@@ -11,7 +11,7 @@ import 'package:url_launcher/url_launcher.dart';
 class SocialCard extends StatelessWidget {
   const SocialCard({required this.item, super.key});
 
-  final CardItem item;
+  final SocialModel item;
 
   @override
   Widget build(BuildContext context) {
