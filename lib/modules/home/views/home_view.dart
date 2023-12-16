@@ -380,7 +380,6 @@ class _HomeViewState extends State<HomeView>
               showBack: false,
               contentPadding: padding,
               innerPadding: padding,
-              outerPadding: padding,
               crossAxisAlignment: crossAxisAlignment,
               onTap: () =>
                   FlutterClipboard.copy(tbConfig!.value!).then((value) {
@@ -396,7 +395,6 @@ class _HomeViewState extends State<HomeView>
             showBorder: false,
             contentPadding: padding,
             innerPadding: padding,
-            outerPadding: padding,
             crossAxisAlignment: crossAxisAlignment,
             onTap: () async {
               NavigatorUtil.pop();
