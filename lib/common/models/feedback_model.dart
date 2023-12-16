@@ -12,7 +12,13 @@ class FeedbackModel with _$FeedbackModel {
     String? description,
     List<FeedbackFileModel>? files,
     // ignore: invalid_annotation_target
+    @JsonKey(name: 'create_by') String? createBy,
+    // ignore: invalid_annotation_target
     @JsonKey(name: 'create_date') DateTime? createDate,
+    // ignore: invalid_annotation_target
+    @JsonKey(name: 'update_by') String? updateBy,
+    // ignore: invalid_annotation_target
+    @JsonKey(name: 'update_date') DateTime? updateDate,
   }) = _FeedbackModel;
 
   /// Deserializes the given json into a [FeedbackModel].
@@ -31,6 +37,14 @@ class FeedbackFileModel with _$FeedbackFileModel {
     String? type,
     int? size,
     String? title,
+    // ignore: invalid_annotation_target
+    @JsonKey(name: 'create_by') String? createBy,
+    // ignore: invalid_annotation_target
+    @JsonKey(name: 'create_date') DateTime? createDate,
+    // ignore: invalid_annotation_target
+    @JsonKey(name: 'update_by') String? updateBy,
+    // ignore: invalid_annotation_target
+    @JsonKey(name: 'update_date') DateTime? updateDate,
   }) = _FeedbackFileModel;
 
   /// Deserializes the given json into a [FeedbackFileModel].

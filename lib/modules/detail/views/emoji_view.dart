@@ -237,11 +237,13 @@ class _EmojiViewState extends State<EmojiView> {
             shrinkWrap: false,
             callback: _uploadFiles,
             button: '上传',
+            physics: const AlwaysScrollableScrollPhysics(),
             items: [
               ReorderableWrap(
                 spacing: spacing,
                 runSpacing: 4,
                 padding: const EdgeInsets.all(padding),
+                scrollPhysics: const NeverScrollableScrollPhysics(),
                 onReorder: (int oldIndex, int newIndex) =>
                     _onReorder(setInnerState, oldIndex, newIndex),
                 children: items,

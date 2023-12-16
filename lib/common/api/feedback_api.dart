@@ -39,6 +39,27 @@ class FeedbackApi {
     }
   }
 
+  /// 反馈详情
+  static Future<FeedbackModel?> getFeedbackDetail({
+    required String id,
+  }) async {
+    try {
+      final res = await hpHttp.get<dynamic>(
+        '/api/backend/feedback/get/',
+        queryParameters: {
+          'id': id,
+        },
+      );
+      return res.data == null
+          ? null
+          : FeedbackModel.fromJson(res.data as Map<String, dynamic>);
+    } on Exception catch (error) {
+      throw RequestedException(
+        error is DioException ? error.error : error.toString(),
+      );
+    }
+  }
+
   /// 新增反馈
   static Future<FeedbackModel?> addFeedback({
     required String title,

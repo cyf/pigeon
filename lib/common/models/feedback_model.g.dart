@@ -14,9 +14,14 @@ _$FeedbackModelImpl _$$FeedbackModelImplFromJson(Map<String, dynamic> json) =>
       files: (json['files'] as List<dynamic>?)
           ?.map((e) => FeedbackFileModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      createBy: json['create_by'] as String?,
       createDate: json['create_date'] == null
           ? null
           : DateTime.parse(json['create_date'] as String),
+      updateBy: json['update_by'] as String?,
+      updateDate: json['update_date'] == null
+          ? null
+          : DateTime.parse(json['update_date'] as String),
     );
 
 Map<String, dynamic> _$$FeedbackModelImplToJson(_$FeedbackModelImpl instance) =>
@@ -25,7 +30,10 @@ Map<String, dynamic> _$$FeedbackModelImplToJson(_$FeedbackModelImpl instance) =>
       'title': instance.title,
       'description': instance.description,
       'files': instance.files,
+      'create_by': instance.createBy,
       'create_date': instance.createDate?.toIso8601String(),
+      'update_by': instance.updateBy,
+      'update_date': instance.updateDate?.toIso8601String(),
     };
 
 _$FeedbackFileModelImpl _$$FeedbackFileModelImplFromJson(
@@ -37,6 +45,14 @@ _$FeedbackFileModelImpl _$$FeedbackFileModelImplFromJson(
       type: json['type'] as String?,
       size: json['size'] as int?,
       title: json['title'] as String?,
+      createBy: json['create_by'] as String?,
+      createDate: json['create_date'] == null
+          ? null
+          : DateTime.parse(json['create_date'] as String),
+      updateBy: json['update_by'] as String?,
+      updateDate: json['update_date'] == null
+          ? null
+          : DateTime.parse(json['update_date'] as String),
     );
 
 Map<String, dynamic> _$$FeedbackFileModelImplToJson(
@@ -48,4 +64,8 @@ Map<String, dynamic> _$$FeedbackFileModelImplToJson(
       'type': instance.type,
       'size': instance.size,
       'title': instance.title,
+      'create_by': instance.createBy,
+      'create_date': instance.createDate?.toIso8601String(),
+      'update_by': instance.updateBy,
+      'update_date': instance.updateDate?.toIso8601String(),
     };
