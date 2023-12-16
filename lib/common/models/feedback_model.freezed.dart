@@ -25,8 +25,17 @@ mixin _$FeedbackModel {
   String? get description => throw _privateConstructorUsedError;
   List<FeedbackFileModel>? get files =>
       throw _privateConstructorUsedError; // ignore: invalid_annotation_target
+  @JsonKey(name: 'create_by')
+  String? get createBy =>
+      throw _privateConstructorUsedError; // ignore: invalid_annotation_target
   @JsonKey(name: 'create_date')
-  DateTime? get createDate => throw _privateConstructorUsedError;
+  DateTime? get createDate =>
+      throw _privateConstructorUsedError; // ignore: invalid_annotation_target
+  @JsonKey(name: 'update_by')
+  String? get updateBy =>
+      throw _privateConstructorUsedError; // ignore: invalid_annotation_target
+  @JsonKey(name: 'update_date')
+  DateTime? get updateDate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,7 +54,10 @@ abstract class $FeedbackModelCopyWith<$Res> {
       String? title,
       String? description,
       List<FeedbackFileModel>? files,
-      @JsonKey(name: 'create_date') DateTime? createDate});
+      @JsonKey(name: 'create_by') String? createBy,
+      @JsonKey(name: 'create_date') DateTime? createDate,
+      @JsonKey(name: 'update_by') String? updateBy,
+      @JsonKey(name: 'update_date') DateTime? updateDate});
 }
 
 /// @nodoc
@@ -65,7 +77,10 @@ class _$FeedbackModelCopyWithImpl<$Res, $Val extends FeedbackModel>
     Object? title = freezed,
     Object? description = freezed,
     Object? files = freezed,
+    Object? createBy = freezed,
     Object? createDate = freezed,
+    Object? updateBy = freezed,
+    Object? updateDate = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -84,9 +99,21 @@ class _$FeedbackModelCopyWithImpl<$Res, $Val extends FeedbackModel>
           ? _value.files
           : files // ignore: cast_nullable_to_non_nullable
               as List<FeedbackFileModel>?,
+      createBy: freezed == createBy
+          ? _value.createBy
+          : createBy // ignore: cast_nullable_to_non_nullable
+              as String?,
       createDate: freezed == createDate
           ? _value.createDate
           : createDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updateBy: freezed == updateBy
+          ? _value.updateBy
+          : updateBy // ignore: cast_nullable_to_non_nullable
+              as String?,
+      updateDate: freezed == updateDate
+          ? _value.updateDate
+          : updateDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
     ) as $Val);
   }
@@ -105,7 +132,10 @@ abstract class _$$FeedbackModelImplCopyWith<$Res>
       String? title,
       String? description,
       List<FeedbackFileModel>? files,
-      @JsonKey(name: 'create_date') DateTime? createDate});
+      @JsonKey(name: 'create_by') String? createBy,
+      @JsonKey(name: 'create_date') DateTime? createDate,
+      @JsonKey(name: 'update_by') String? updateBy,
+      @JsonKey(name: 'update_date') DateTime? updateDate});
 }
 
 /// @nodoc
@@ -123,7 +153,10 @@ class __$$FeedbackModelImplCopyWithImpl<$Res>
     Object? title = freezed,
     Object? description = freezed,
     Object? files = freezed,
+    Object? createBy = freezed,
     Object? createDate = freezed,
+    Object? updateBy = freezed,
+    Object? updateDate = freezed,
   }) {
     return _then(_$FeedbackModelImpl(
       id: freezed == id
@@ -142,9 +175,21 @@ class __$$FeedbackModelImplCopyWithImpl<$Res>
           ? _value._files
           : files // ignore: cast_nullable_to_non_nullable
               as List<FeedbackFileModel>?,
+      createBy: freezed == createBy
+          ? _value.createBy
+          : createBy // ignore: cast_nullable_to_non_nullable
+              as String?,
       createDate: freezed == createDate
           ? _value.createDate
           : createDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updateBy: freezed == updateBy
+          ? _value.updateBy
+          : updateBy // ignore: cast_nullable_to_non_nullable
+              as String?,
+      updateDate: freezed == updateDate
+          ? _value.updateDate
+          : updateDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
     ));
   }
@@ -158,7 +203,10 @@ class _$FeedbackModelImpl implements _FeedbackModel {
       this.title,
       this.description,
       final List<FeedbackFileModel>? files,
-      @JsonKey(name: 'create_date') this.createDate})
+      @JsonKey(name: 'create_by') this.createBy,
+      @JsonKey(name: 'create_date') this.createDate,
+      @JsonKey(name: 'update_by') this.updateBy,
+      @JsonKey(name: 'update_date') this.updateDate})
       : _files = files;
 
   factory _$FeedbackModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -182,12 +230,24 @@ class _$FeedbackModelImpl implements _FeedbackModel {
 
 // ignore: invalid_annotation_target
   @override
+  @JsonKey(name: 'create_by')
+  final String? createBy;
+// ignore: invalid_annotation_target
+  @override
   @JsonKey(name: 'create_date')
   final DateTime? createDate;
+// ignore: invalid_annotation_target
+  @override
+  @JsonKey(name: 'update_by')
+  final String? updateBy;
+// ignore: invalid_annotation_target
+  @override
+  @JsonKey(name: 'update_date')
+  final DateTime? updateDate;
 
   @override
   String toString() {
-    return 'FeedbackModel(id: $id, title: $title, description: $description, files: $files, createDate: $createDate)';
+    return 'FeedbackModel(id: $id, title: $title, description: $description, files: $files, createBy: $createBy, createDate: $createDate, updateBy: $updateBy, updateDate: $updateDate)';
   }
 
   @override
@@ -200,14 +260,28 @@ class _$FeedbackModelImpl implements _FeedbackModel {
             (identical(other.description, description) ||
                 other.description == description) &&
             const DeepCollectionEquality().equals(other._files, _files) &&
+            (identical(other.createBy, createBy) ||
+                other.createBy == createBy) &&
             (identical(other.createDate, createDate) ||
-                other.createDate == createDate));
+                other.createDate == createDate) &&
+            (identical(other.updateBy, updateBy) ||
+                other.updateBy == updateBy) &&
+            (identical(other.updateDate, updateDate) ||
+                other.updateDate == updateDate));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, description,
-      const DeepCollectionEquality().hash(_files), createDate);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      title,
+      description,
+      const DeepCollectionEquality().hash(_files),
+      createBy,
+      createDate,
+      updateBy,
+      updateDate);
 
   @JsonKey(ignore: true)
   @override
@@ -229,7 +303,10 @@ abstract class _FeedbackModel implements FeedbackModel {
           final String? title,
           final String? description,
           final List<FeedbackFileModel>? files,
-          @JsonKey(name: 'create_date') final DateTime? createDate}) =
+          @JsonKey(name: 'create_by') final String? createBy,
+          @JsonKey(name: 'create_date') final DateTime? createDate,
+          @JsonKey(name: 'update_by') final String? updateBy,
+          @JsonKey(name: 'update_date') final DateTime? updateDate}) =
       _$FeedbackModelImpl;
 
   factory _FeedbackModel.fromJson(Map<String, dynamic> json) =
@@ -244,8 +321,17 @@ abstract class _FeedbackModel implements FeedbackModel {
   @override
   List<FeedbackFileModel>? get files;
   @override // ignore: invalid_annotation_target
+  @JsonKey(name: 'create_by')
+  String? get createBy;
+  @override // ignore: invalid_annotation_target
   @JsonKey(name: 'create_date')
   DateTime? get createDate;
+  @override // ignore: invalid_annotation_target
+  @JsonKey(name: 'update_by')
+  String? get updateBy;
+  @override // ignore: invalid_annotation_target
+  @JsonKey(name: 'update_date')
+  DateTime? get updateDate;
   @override
   @JsonKey(ignore: true)
   _$$FeedbackModelImplCopyWith<_$FeedbackModelImpl> get copyWith =>
@@ -265,7 +351,19 @@ mixin _$FeedbackFileModel {
   String? get url => throw _privateConstructorUsedError;
   String? get type => throw _privateConstructorUsedError;
   int? get size => throw _privateConstructorUsedError;
-  String? get title => throw _privateConstructorUsedError;
+  String? get title =>
+      throw _privateConstructorUsedError; // ignore: invalid_annotation_target
+  @JsonKey(name: 'create_by')
+  String? get createBy =>
+      throw _privateConstructorUsedError; // ignore: invalid_annotation_target
+  @JsonKey(name: 'create_date')
+  DateTime? get createDate =>
+      throw _privateConstructorUsedError; // ignore: invalid_annotation_target
+  @JsonKey(name: 'update_by')
+  String? get updateBy =>
+      throw _privateConstructorUsedError; // ignore: invalid_annotation_target
+  @JsonKey(name: 'update_date')
+  DateTime? get updateDate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -285,7 +383,11 @@ abstract class $FeedbackFileModelCopyWith<$Res> {
       String? url,
       String? type,
       int? size,
-      String? title});
+      String? title,
+      @JsonKey(name: 'create_by') String? createBy,
+      @JsonKey(name: 'create_date') DateTime? createDate,
+      @JsonKey(name: 'update_by') String? updateBy,
+      @JsonKey(name: 'update_date') DateTime? updateDate});
 }
 
 /// @nodoc
@@ -307,6 +409,10 @@ class _$FeedbackFileModelCopyWithImpl<$Res, $Val extends FeedbackFileModel>
     Object? type = freezed,
     Object? size = freezed,
     Object? title = freezed,
+    Object? createBy = freezed,
+    Object? createDate = freezed,
+    Object? updateBy = freezed,
+    Object? updateDate = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -333,6 +439,22 @@ class _$FeedbackFileModelCopyWithImpl<$Res, $Val extends FeedbackFileModel>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String?,
+      createBy: freezed == createBy
+          ? _value.createBy
+          : createBy // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createDate: freezed == createDate
+          ? _value.createDate
+          : createDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updateBy: freezed == updateBy
+          ? _value.updateBy
+          : updateBy // ignore: cast_nullable_to_non_nullable
+              as String?,
+      updateDate: freezed == updateDate
+          ? _value.updateDate
+          : updateDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -351,7 +473,11 @@ abstract class _$$FeedbackFileModelImplCopyWith<$Res>
       String? url,
       String? type,
       int? size,
-      String? title});
+      String? title,
+      @JsonKey(name: 'create_by') String? createBy,
+      @JsonKey(name: 'create_date') DateTime? createDate,
+      @JsonKey(name: 'update_by') String? updateBy,
+      @JsonKey(name: 'update_date') DateTime? updateDate});
 }
 
 /// @nodoc
@@ -371,6 +497,10 @@ class __$$FeedbackFileModelImplCopyWithImpl<$Res>
     Object? type = freezed,
     Object? size = freezed,
     Object? title = freezed,
+    Object? createBy = freezed,
+    Object? createDate = freezed,
+    Object? updateBy = freezed,
+    Object? updateDate = freezed,
   }) {
     return _then(_$FeedbackFileModelImpl(
       id: freezed == id
@@ -397,6 +527,22 @@ class __$$FeedbackFileModelImplCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String?,
+      createBy: freezed == createBy
+          ? _value.createBy
+          : createBy // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createDate: freezed == createDate
+          ? _value.createDate
+          : createDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updateBy: freezed == updateBy
+          ? _value.updateBy
+          : updateBy // ignore: cast_nullable_to_non_nullable
+              as String?,
+      updateDate: freezed == updateDate
+          ? _value.updateDate
+          : updateDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -410,7 +556,11 @@ class _$FeedbackFileModelImpl implements _FeedbackFileModel {
       this.url,
       this.type,
       this.size,
-      this.title});
+      this.title,
+      @JsonKey(name: 'create_by') this.createBy,
+      @JsonKey(name: 'create_date') this.createDate,
+      @JsonKey(name: 'update_by') this.updateBy,
+      @JsonKey(name: 'update_date') this.updateDate});
 
   factory _$FeedbackFileModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$FeedbackFileModelImplFromJson(json);
@@ -429,10 +579,26 @@ class _$FeedbackFileModelImpl implements _FeedbackFileModel {
   final int? size;
   @override
   final String? title;
+// ignore: invalid_annotation_target
+  @override
+  @JsonKey(name: 'create_by')
+  final String? createBy;
+// ignore: invalid_annotation_target
+  @override
+  @JsonKey(name: 'create_date')
+  final DateTime? createDate;
+// ignore: invalid_annotation_target
+  @override
+  @JsonKey(name: 'update_by')
+  final String? updateBy;
+// ignore: invalid_annotation_target
+  @override
+  @JsonKey(name: 'update_date')
+  final DateTime? updateDate;
 
   @override
   String toString() {
-    return 'FeedbackFileModel(id: $id, feedbackId: $feedbackId, url: $url, type: $type, size: $size, title: $title)';
+    return 'FeedbackFileModel(id: $id, feedbackId: $feedbackId, url: $url, type: $type, size: $size, title: $title, createBy: $createBy, createDate: $createDate, updateBy: $updateBy, updateDate: $updateDate)';
   }
 
   @override
@@ -446,13 +612,21 @@ class _$FeedbackFileModelImpl implements _FeedbackFileModel {
             (identical(other.url, url) || other.url == url) &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.size, size) || other.size == size) &&
-            (identical(other.title, title) || other.title == title));
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.createBy, createBy) ||
+                other.createBy == createBy) &&
+            (identical(other.createDate, createDate) ||
+                other.createDate == createDate) &&
+            (identical(other.updateBy, updateBy) ||
+                other.updateBy == updateBy) &&
+            (identical(other.updateDate, updateDate) ||
+                other.updateDate == updateDate));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, feedbackId, url, type, size, title);
+  int get hashCode => Object.hash(runtimeType, id, feedbackId, url, type, size,
+      title, createBy, createDate, updateBy, updateDate);
 
   @JsonKey(ignore: true)
   @override
@@ -471,12 +645,17 @@ class _$FeedbackFileModelImpl implements _FeedbackFileModel {
 
 abstract class _FeedbackFileModel implements FeedbackFileModel {
   const factory _FeedbackFileModel(
-      {final String? id,
-      @JsonKey(name: 'feedback_id') final String? feedbackId,
-      final String? url,
-      final String? type,
-      final int? size,
-      final String? title}) = _$FeedbackFileModelImpl;
+          {final String? id,
+          @JsonKey(name: 'feedback_id') final String? feedbackId,
+          final String? url,
+          final String? type,
+          final int? size,
+          final String? title,
+          @JsonKey(name: 'create_by') final String? createBy,
+          @JsonKey(name: 'create_date') final DateTime? createDate,
+          @JsonKey(name: 'update_by') final String? updateBy,
+          @JsonKey(name: 'update_date') final DateTime? updateDate}) =
+      _$FeedbackFileModelImpl;
 
   factory _FeedbackFileModel.fromJson(Map<String, dynamic> json) =
       _$FeedbackFileModelImpl.fromJson;
@@ -494,6 +673,18 @@ abstract class _FeedbackFileModel implements FeedbackFileModel {
   int? get size;
   @override
   String? get title;
+  @override // ignore: invalid_annotation_target
+  @JsonKey(name: 'create_by')
+  String? get createBy;
+  @override // ignore: invalid_annotation_target
+  @JsonKey(name: 'create_date')
+  DateTime? get createDate;
+  @override // ignore: invalid_annotation_target
+  @JsonKey(name: 'update_by')
+  String? get updateBy;
+  @override // ignore: invalid_annotation_target
+  @JsonKey(name: 'update_date')
+  DateTime? get updateDate;
   @override
   @JsonKey(ignore: true)
   _$$FeedbackFileModelImplCopyWith<_$FeedbackFileModelImpl> get copyWith =>

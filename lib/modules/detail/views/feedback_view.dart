@@ -145,13 +145,22 @@ class _FeedbackViewState extends State<FeedbackView> {
   }
 
   Widget _buildBody() {
-    final bottom = MediaQuery.of(context).padding.bottom;
     if (!loading && items.isNotEmpty) {
       return ListView.separated(
-        padding: EdgeInsets.only(bottom: bottom),
+        padding: EdgeInsets.zero,
         itemCount: items.length,
-        itemBuilder: (context, index) =>
-            FeedbackCard(feedback: items.elementAt(index)),
+        itemBuilder: (context, index) {
+          final item = items.elementAt(index);
+          return FeedbackCard(
+            feedback: item,
+          ).nestedTap(
+            () => NavigatorUtil.push(
+              FeedbackDetailView(
+                id: StringUtil.getValue(item.id),
+              ),
+            ),
+          );
+        },
         separatorBuilder: (context, index) => const Divider(
           height: 10,
         ),
@@ -407,6 +416,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                   runSpacing: 4,
                   onReorder: (int oldIndex, int newIndex) =>
                       _onReorder(setInnerState, oldIndex, newIndex),
+                  scrollPhysics: const NeverScrollableScrollPhysics(),
                   children: items,
                 ),
               ],
