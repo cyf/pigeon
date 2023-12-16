@@ -27,10 +27,36 @@ class FeedbackApi {
                   ? <FeedbackModel>[]
                   : List<FeedbackModel>.from(
                       (json as Iterable).map(
-                        (x) => FeedbackModel.fromJson(x as Map<String, dynamic>),
+                        (x) =>
+                            FeedbackModel.fromJson(x as Map<String, dynamic>),
                       ),
                     ),
             );
+    } on Exception catch (error) {
+      throw RequestedException(
+        error is DioException ? error.error : error.toString(),
+      );
+    }
+  }
+
+  /// 新增反馈
+  static Future<FeedbackModel?> addFeedback({
+    required String title,
+    required String description,
+    List<Map<String, dynamic>>? files,
+  }) async {
+    try {
+      final res = await hpHttp.post<dynamic>(
+        '/api/backend/feedback/add/',
+        data: {
+          'title': title,
+          'description': description,
+          'files': files,
+        },
+      );
+      return res.data == null
+          ? null
+          : FeedbackModel.fromJson(res.data as Map<String, dynamic>);
     } on Exception catch (error) {
       throw RequestedException(
         error is DioException ? error.error : error.toString(),

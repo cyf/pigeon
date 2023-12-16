@@ -40,11 +40,10 @@ class Dialogs {
                 ),
               )
                   .nestedPadding(
-                padding: const EdgeInsets.only(top: 20, bottom: 20),
-              )
-                  .nestedTap(() {
-                NavigatorUtil.pop(context);
-              }).nestedExpanded(),
+                    padding: const EdgeInsets.only(top: 20, bottom: 20),
+                  )
+                  .nestedTap(NavigatorUtil.pop)
+                  .nestedExpanded(),
               const Text(
                 'Turn On',
                 textAlign: TextAlign.center,
@@ -55,15 +54,15 @@ class Dialogs {
                 ),
               )
                   .nestedPadding(
-                padding: const EdgeInsets.only(top: 20, bottom: 20),
-              )
+                    padding: const EdgeInsets.only(top: 20, bottom: 20),
+                  )
                   .nestedDecoratedBox(
-                decoration: const BoxDecoration(
-                  border: Border(left: BorderSide(color: borderColor)),
-                ),
-              )
+                    decoration: const BoxDecoration(
+                      border: Border(left: BorderSide(color: borderColor)),
+                    ),
+                  )
                   .nestedTap(() async {
-                NavigatorUtil.pop(context);
+                NavigatorUtil.pop();
                 await AppSettings.openAppSettings();
               }).nestedExpanded(),
             ],

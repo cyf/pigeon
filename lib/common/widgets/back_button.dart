@@ -9,7 +9,7 @@ class HpBackButton extends StatelessWidget {
 
   void onIconButtonPress(BuildContext context) {
     if (onPressed == null) {
-      NavigatorUtil.pop(context);
+      NavigatorUtil.pop();
     } else {
       onPressed!();
     }

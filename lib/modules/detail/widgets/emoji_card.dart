@@ -90,7 +90,7 @@ class EmojiCard extends StatelessWidget {
             color: errorTextColor,
             size: 24,
           ),
-        ).nestedTap(() => NavigatorUtil.pop(context)),
+        ).nestedTap(NavigatorUtil.pop),
       ),
     );
   }

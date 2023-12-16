@@ -175,16 +175,16 @@ class _EmojiViewState extends State<EmojiView> {
           final items = _fileWrappers
               .map(
                 (element) {
-              return Image.asset(
-                element.file.path,
-                errorBuilder: (context, url, error) => const Icon(
-                  Icons.error,
-                  color: errorTextColor,
-                  size: 24,
-                ),
-              ).nestedSizedBox(width: itemWidth, height: itemWidth);
-            },
-          )
+                  return Image.asset(
+                    element.file.path,
+                    errorBuilder: (context, url, error) => const Icon(
+                      Icons.error,
+                      color: errorTextColor,
+                      size: 24,
+                    ),
+                  ).nestedSizedBox(width: itemWidth, height: itemWidth);
+                },
+              )
               .cast<Widget>()
               .toList();
 
@@ -241,7 +241,7 @@ class _EmojiViewState extends State<EmojiView> {
 
     final statusList = statuses.values.toList();
     final denied = statusList.every(
-          (status) => [PermissionStatus.permanentlyDenied, PermissionStatus.denied]
+      (status) => [PermissionStatus.permanentlyDenied, PermissionStatus.denied]
           .contains(status),
     );
     if (denied) {
@@ -332,9 +332,7 @@ class _EmojiViewState extends State<EmojiView> {
             )
             .toList();
         await EmojiApi.multiAddEmoji(emojis);
-        if (context.mounted) {
-          NavigatorUtil.pop(context);
-        }
+        NavigatorUtil.pop();
       }
       await EasyLoading.showSuccess('Success');
       _load();

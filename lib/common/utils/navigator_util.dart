@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:homing_pigeon/app/navigator.dart';
 
 ///
 class NavigatorUtil {
   static void push<T extends Object?>(
-    BuildContext context,
     Widget widget, {
     RouteSettings? settings,
     bool maintainState = true,
@@ -11,7 +11,7 @@ class NavigatorUtil {
     String? barrierLabel,
   }) {
     Navigator.push<T>(
-      context,
+      AppNavigator.key.currentContext!,
       MaterialPageRoute<T>(
         builder: (BuildContext context) => widget,
         settings: settings,
@@ -22,7 +22,6 @@ class NavigatorUtil {
   }
 
   static void pushAndRemoveUntil<T extends Object?>(
-    BuildContext context,
     Widget widget,
     RoutePredicate predicate, {
     RouteSettings? settings,
@@ -31,7 +30,7 @@ class NavigatorUtil {
     String? barrierLabel,
   }) {
     Navigator.pushAndRemoveUntil<T>(
-      context,
+      AppNavigator.key.currentContext!,
       MaterialPageRoute<T>(
         builder: (BuildContext context) => widget,
         settings: settings,
@@ -43,7 +42,6 @@ class NavigatorUtil {
   }
 
   static void pushReplacement<T extends Object?, TO extends Object?>(
-    BuildContext context,
     Widget widget, {
     RouteSettings? settings,
     bool maintainState = true,
@@ -51,7 +49,7 @@ class NavigatorUtil {
     String? barrierLabel,
   }) {
     Navigator.pushReplacement<T, TO>(
-      context,
+      AppNavigator.key.currentContext!,
       MaterialPageRoute<T>(
         builder: (BuildContext context) => widget,
         settings: settings,
@@ -61,7 +59,7 @@ class NavigatorUtil {
     );
   }
 
-  static void pop(BuildContext context) {
-    Navigator.pop(context);
+  static void pop() {
+    Navigator.pop(AppNavigator.key.currentContext!);
   }
 }

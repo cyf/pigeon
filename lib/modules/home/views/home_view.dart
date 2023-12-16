@@ -106,16 +106,16 @@ class _HomeViewState extends State<HomeView>
             SectionItem(
               title: '电影打分系统',
               tips: '给看过的电影打个分吧~~',
-              onTap: () => NavigatorUtil.push(context, const MovieView()),
+              onTap: () => NavigatorUtil.push(const MovieView()),
             ),
             SectionItem(
               title: '直播预告',
               tips: '查看详情',
-              onTap: () => NavigatorUtil.push(context, const LiveView()),
+              onTap: () => NavigatorUtil.push(const LiveView()),
             ),
             SectionItem(
               title: '开播通知设置',
-              onTap: () => NavigatorUtil.push(context, const LiveView()),
+              onTap: () => NavigatorUtil.push(const LiveView()),
               showBorder: false,
             ),
           ],
@@ -126,7 +126,7 @@ class _HomeViewState extends State<HomeView>
             SectionItem(
               title: '直播信息/提醒群',
               tips: '直播平台、时间等',
-              onTap: () => NavigatorUtil.push(context, const SocialView()),
+              onTap: () => NavigatorUtil.push(const SocialView()),
             ),
             SectionItem(
               title: '小德官方店: 喜瑞斯',
@@ -138,17 +138,17 @@ class _HomeViewState extends State<HomeView>
             SectionItem(
               title: '小德表情包🐱',
               tips: '欢迎投稿~~',
-              onTap: () => NavigatorUtil.push(context, const EmojiView()),
+              onTap: () => NavigatorUtil.push(const EmojiView()),
             ),
             SectionItem(
               title: '意见/建议',
               tips: '无论您遇到任何问题、意见或建议, 均可反馈...',
-              onTap: () => NavigatorUtil.push(context, const FeedbackView()),
+              onTap: () => NavigatorUtil.push(const FeedbackView()),
             ),
             SectionItem(
               title: '路线图',
               tips: '查看开发计划或进度😄',
-              onTap: () => NavigatorUtil.push(context, const RoadmapView()),
+              onTap: () => NavigatorUtil.push(const RoadmapView()),
               showBorder: false,
             ),
           ],
@@ -341,7 +341,7 @@ class _HomeViewState extends State<HomeView>
       context: context,
       builder: (BuildContext context) => ModalBottomSheet(
         button: '取消',
-        callback: () => NavigatorUtil.pop(context),
+        callback: NavigatorUtil.pop,
         items: [
           const Text(
             '请选择您的操作',
@@ -374,7 +374,7 @@ class _HomeViewState extends State<HomeView>
             crossAxisAlignment: crossAxisAlignment,
             onTap: () => FlutterClipboard.copy('text').then((value) {
               EasyLoading.showSuccess('Copied');
-              NavigatorUtil.pop(context);
+              NavigatorUtil.pop();
             }),
           ),
           SectionItem(
@@ -388,9 +388,7 @@ class _HomeViewState extends State<HomeView>
             outerPadding: padding,
             crossAxisAlignment: crossAxisAlignment,
             onTap: () async {
-              if (mounted) {
-                NavigatorUtil.pop(context);
-              }
+              NavigatorUtil.pop();
               final uri = Uri.parse('https://chenyifaer.taobao.com');
               if (await canLaunchUrl(uri)) {
                 await launchUrl(uri);
