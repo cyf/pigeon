@@ -21,13 +21,22 @@ class Section extends StatelessWidget {
         style: const TextStyle(color: secondaryTextColor, fontSize: 16),
       )
           .nestedPadding(
-            padding: const EdgeInsets.only(top: 20, left: 10, bottom: 6),
+            padding: const EdgeInsets.only(top: 10, left: 10, bottom: 6),
           )
           .nestedColoredBox(color: secondaryGrayColor),
-      sliver: SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (context, i) => items.elementAt(i),
-          childCount: items.length,
+      sliver: SliverPadding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        sliver: DecoratedSliver(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          sliver: SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, i) => items.elementAt(i),
+              childCount: items.length,
+            ),
+          ),
         ),
       ),
     );
@@ -45,8 +54,8 @@ class SectionItem extends StatelessWidget {
     this.tipsColor = placeholderTextColor,
     this.crossAxisAlignment = CrossAxisAlignment.start,
     this.contentPadding = const EdgeInsets.only(right: 10),
-    this.outerPadding = const EdgeInsets.only(left: 10, right: 4),
-    this.innerPadding = const EdgeInsets.only(left: 10, right: 20),
+    this.outerPadding = const EdgeInsets.symmetric(horizontal: 5),
+    this.innerPadding = const EdgeInsets.symmetric(horizontal: 10),
     this.tips,
     this.onTap,
     super.key,
@@ -76,6 +85,7 @@ class SectionItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(0),
           ),
         ),
+        backgroundColor: MaterialStateProperty.all(Colors.transparent),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
