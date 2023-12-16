@@ -114,16 +114,9 @@ class _RoadmapViewState extends State<RoadmapView> {
             if (kDebugMode) {
               print('${viewChangedDetails.visibleDates}');
             }
-            if(visibleDates.isNotEmpty) {
+            if (visibleDates.isNotEmpty) {
               final startDate = visibleDates.first;
               _load(year: startDate.year, month: startDate.month);
-            }
-          },
-          onSelectionChanged: (
-            CalendarSelectionDetails calendarSelectionDetails,
-          ) {
-            if (kDebugMode) {
-              print('${calendarSelectionDetails.resource}, ${calendarSelectionDetails.date}');
             }
           },
           onTap: (CalendarTapDetails calendarTapDetails) {
@@ -195,7 +188,7 @@ class _RoadmapViewState extends State<RoadmapView> {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         margin: const EdgeInsets.symmetric(vertical: 10),
         physics: const AlwaysScrollableScrollPhysics(),
-        callback: () => NavigatorUtil.pop(context),
+        callback: NavigatorUtil.pop,
         items: [
           Markdown(
             controller: _scrollController,

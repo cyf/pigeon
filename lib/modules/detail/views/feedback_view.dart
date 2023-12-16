@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:homing_pigeon/common/api/feedback_api.dart';
@@ -11,6 +12,7 @@ import 'package:homing_pigeon/common/enums/enums.dart';
 import 'package:homing_pigeon/common/exception/exception.dart';
 import 'package:homing_pigeon/common/extensions/extensions.dart';
 import 'package:homing_pigeon/common/models/models.dart';
+import 'package:homing_pigeon/common/utils/navigator_util.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/common/utils/upload_util.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
@@ -85,31 +87,45 @@ class _FeedbackViewState extends State<FeedbackView> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            '无论您遇到任何问题、意见或建议，均可点击如下按钮进行反馈。',
-            style: TextStyle(
+          Text.rich(
+            TextSpan(
+              children: [
+                const TextSpan(text: '无论您遇到任何问题、意见或建议，均可'),
+                TextSpan(
+                  text: '点击此处',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    color: primaryColor,
+                  ),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = showUploadBottomSheet,
+                ),
+                const TextSpan(text: '进行反馈。'),
+              ],
+            ),
+            style: const TextStyle(
               fontSize: 18,
               color: primaryTextColor,
             ),
           ).nestedPadding(
-            padding: const EdgeInsets.only(top: 20, bottom: 16),
+            padding: const EdgeInsets.symmetric(vertical: 10),
           ),
-          TextButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(primaryColor),
-              foregroundColor: MaterialStateProperty.all(Colors.white),
-              minimumSize: MaterialStateProperty.all(Size.zero),
-              padding: MaterialStateProperty.all(
-                const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-              ),
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-            onPressed: showUploadBottomSheet,
-            child: const Text(
-              '点击反馈',
-              style: TextStyle(fontSize: 16),
-            ),
-          ).nestedCenter(),
+          // TextButton(
+          //   style: ButtonStyle(
+          //     backgroundColor: MaterialStateProperty.all(primaryColor),
+          //     foregroundColor: MaterialStateProperty.all(Colors.white),
+          //     minimumSize: MaterialStateProperty.all(Size.zero),
+          //     padding: MaterialStateProperty.all(
+          //       const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+          //     ),
+          //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          //   ),
+          //   onPressed: showUploadBottomSheet,
+          //   child: const Text(
+          //     '点击反馈',
+          //     style: TextStyle(fontSize: 16),
+          //   ),
+          // ).nestedCenter(),
           EasyRefresh(
             controller: _controller,
             header: const ClassicHeader(),
@@ -140,7 +156,7 @@ class _FeedbackViewState extends State<FeedbackView> {
         separatorBuilder: (context, index) => const Divider(
           height: 10,
         ),
-      ).nestedPadding(padding: const EdgeInsets.only(top: 20));
+      );
     }
 
     if (!loading && items.isEmpty) {
@@ -191,16 +207,46 @@ class _FeedbackViewState extends State<FeedbackView> {
       builder: (BuildContext context) => StatefulBuilder(
         builder: (BuildContext context, StateSetter setInnerState) {
           final items = _fileWrappers
-              .map(
-                (element) {
-                  return Image.asset(
-                    element.file.path,
-                    errorBuilder: (context, url, error) => const Icon(
-                      Icons.error,
-                      color: errorTextColor,
-                      size: 24,
-                    ),
-                  ).nestedSizedBox(width: itemWidth, height: itemWidth);
+              .mapIndexed(
+                (index, element) {
+                  if (kDebugMode) {
+                    print(element.file.path);
+                  }
+                  return Stack(
+                    children: [
+                      Image.file(
+                        element.file,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, url, error) => const Icon(
+                          Icons.error,
+                          color: errorTextColor,
+                          size: 24,
+                        ),
+                      ).nestedSizedBox(width: itemWidth, height: itemWidth),
+                      Positioned(
+                        top: 2,
+                        right: 2,
+                        child: const Icon(
+                          Icons.clear,
+                          color: warnTextColor,
+                          size: 14,
+                        )
+                            .nestedDecoratedBox(
+                              decoration: BoxDecoration(
+                                color: backgroundColor,
+                                borderRadius: BorderRadius.circular(9),
+                              ),
+                            )
+                            .nestedSizedBox(width: 18, height: 18)
+                            .nestedTap(
+                              () => setInnerState(
+                                () => _fileWrappers = _fileWrappers
+                                  ..removeAt(index),
+                              ),
+                            ),
+                      ),
+                    ],
+                  );
                 },
               )
               .cast<Widget>()
@@ -360,7 +406,8 @@ class _FeedbackViewState extends State<FeedbackView> {
                 ReorderableWrap(
                   spacing: spacing,
                   runSpacing: 4,
-                  onReorder: _onReorder,
+                  onReorder: (int oldIndex, int newIndex) =>
+                      _onReorder(setInnerState, oldIndex, newIndex),
                   children: items,
                 ),
               ],
@@ -448,7 +495,7 @@ class _FeedbackViewState extends State<FeedbackView> {
     if (_formKey.currentState?.validate() ?? false) {
       try {
         await EasyLoading.show();
-        final files = <EmojiParam>[];
+        final files = <Map<String, dynamic>>[];
         if (_fileWrappers.isNotEmpty) {
           final uploadFileFutures = _fileWrappers
               .map(
@@ -460,20 +507,30 @@ class _FeedbackViewState extends State<FeedbackView> {
           if (fileModels.isNotEmpty) {
             files.addAll(
               fileModels.map(
-                (fileModel) => EmojiParam(
-                  image: fileModel.url,
-                  text: fileModel.oldFileName,
-                  type: fileModel.type,
-                  size: fileModel.fileSize,
-                ),
+                (fileModel) => {
+                  'url': fileModel.url,
+                  'type': fileModel.type,
+                  'size': fileModel.fileSize,
+                  'title': fileModel.oldFileName,
+                },
               ),
             );
           }
         }
-        // TODO(kjxbyz): submit api
 
-        await EasyLoading.showSuccess('Success');
-        _load();
+        final feedback = await FeedbackApi.addFeedback(
+          title: _titleController.text,
+          description: _descriptionController.text,
+          files: files.isEmpty ? null : files,
+        );
+        await EasyLoading.dismiss();
+        if (feedback != null) {
+          NavigatorUtil.pop();
+          _titleController.clear();
+          _descriptionController.clear();
+          setState(() => _fileWrappers = []);
+          _load();
+        }
       } on RequestedException catch (error, stackTrace) {
         log(error.msg, stackTrace: stackTrace);
         await EasyLoading.showError(error.msg);
@@ -481,8 +538,10 @@ class _FeedbackViewState extends State<FeedbackView> {
     }
   }
 
-  void _onReorder(int oldIndex, int newIndex) {
-    setState(() {});
+  void _onReorder(StateSetter setInnerState, int oldIndex, int newIndex) {
+    setInnerState(
+      () => _fileWrappers = _fileWrappers..swap(oldIndex, newIndex),
+    );
   }
 
   void _load({Operation operation = Operation.none}) {
