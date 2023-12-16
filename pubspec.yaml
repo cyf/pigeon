@@ -93,6 +93,7 @@ dependencies:
   shared_preferences: ^2.2.2
   syncfusion_flutter_calendar: ^23.2.7
   synchronized: ^3.1.0
+  timeago: ^3.6.0
   timezone: ^0.9.2
   url_launcher: ^6.2.2
   version: ^3.0.2

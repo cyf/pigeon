@@ -1,13 +1,16 @@
 import 'package:app_settings/app_settings.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:homing_pigeon/app/navigator.dart';
 import 'package:homing_pigeon/common/extensions/single.dart';
 import 'package:homing_pigeon/common/utils/navigator_util.dart';
 import 'package:homing_pigeon/theme/colors.dart';
+import 'package:photo_view/photo_view.dart';
 
 class Dialogs {
-  static void showGalleryPermissionDialog(BuildContext context) {
+  static void showGalleryPermissionDialog() {
     showDialog<void>(
-      context: context,
+      context: AppNavigator.key.currentContext!,
       builder: (BuildContext context) => AlertDialog(
         title: const Text(
           'Allow access to your album',
@@ -79,6 +82,39 @@ class Dialogs {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
+      ),
+    );
+  }
+
+  static void showImagePreviewDialog(String id, String url) {
+    showDialog<void>(
+      context: AppNavigator.key.currentContext!,
+      builder: (context) => PhotoView.customChild(
+        backgroundDecoration: const BoxDecoration(color: Colors.black45),
+        heroAttributes: PhotoViewHeroAttributes(tag: id),
+        child: CachedNetworkImage(
+          imageUrl: url,
+          imageBuilder: (context, imageProvider) => Container(
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(8),
+                bottomRight: Radius.circular(8),
+              ),
+              image: DecorationImage(
+                image: imageProvider,
+                fit: BoxFit.fitWidth,
+              ),
+            ),
+          ),
+          placeholder: (context, url) => const CircularProgressIndicator(
+            color: primaryColor,
+          ).nestedSizedBox(width: 30, height: 30).nestedCenter(),
+          errorWidget: (context, url, error) => const Icon(
+            Icons.error,
+            color: errorTextColor,
+            size: 24,
+          ),
+        ).nestedTap(NavigatorUtil.pop),
       ),
     );
   }

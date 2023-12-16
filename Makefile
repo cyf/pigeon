@@ -25,6 +25,10 @@ build_runner: ## Build the files for changes
 	echo "╠ Building the project..."
 	dart run build_runner build --delete-conflicting-outputs
 
+clean_runner: ## Deleting cache and generated source files
+	echo "╠ Deleting cache and generated source files..."
+	dart run build_runner clean
+
 apk: ## Release Apk
 	echo "╠ Releasing Apk..."
 	bash build-android.sh && flutter build apk --no-tree-shake-icons --target lib/main.dart

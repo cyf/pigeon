@@ -92,7 +92,7 @@ class _FeedbackViewState extends State<FeedbackView> {
               children: [
                 const TextSpan(text: '无论您遇到任何问题、意见或建议，均可'),
                 TextSpan(
-                  text: '点击此处',
+                  text: '[点击此处]',
                   style: const TextStyle(
                     fontSize: 18,
                     color: primaryColor,
@@ -442,8 +442,7 @@ class _FeedbackViewState extends State<FeedbackView> {
           .contains(status),
     );
     if (denied) {
-      if (!context.mounted) return;
-      Dialogs.showGalleryPermissionDialog(context);
+      Dialogs.showGalleryPermissionDialog();
       return;
     }
 

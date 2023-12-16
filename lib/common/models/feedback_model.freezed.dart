@@ -23,7 +23,10 @@ mixin _$FeedbackModel {
   String? get id => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
-  List<FeedbackFileModel>? get files => throw _privateConstructorUsedError;
+  List<FeedbackFileModel>? get files =>
+      throw _privateConstructorUsedError; // ignore: invalid_annotation_target
+  @JsonKey(name: 'create_date')
+  DateTime? get createDate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,7 +44,8 @@ abstract class $FeedbackModelCopyWith<$Res> {
       {String? id,
       String? title,
       String? description,
-      List<FeedbackFileModel>? files});
+      List<FeedbackFileModel>? files,
+      @JsonKey(name: 'create_date') DateTime? createDate});
 }
 
 /// @nodoc
@@ -61,6 +65,7 @@ class _$FeedbackModelCopyWithImpl<$Res, $Val extends FeedbackModel>
     Object? title = freezed,
     Object? description = freezed,
     Object? files = freezed,
+    Object? createDate = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -79,6 +84,10 @@ class _$FeedbackModelCopyWithImpl<$Res, $Val extends FeedbackModel>
           ? _value.files
           : files // ignore: cast_nullable_to_non_nullable
               as List<FeedbackFileModel>?,
+      createDate: freezed == createDate
+          ? _value.createDate
+          : createDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -95,7 +104,8 @@ abstract class _$$FeedbackModelImplCopyWith<$Res>
       {String? id,
       String? title,
       String? description,
-      List<FeedbackFileModel>? files});
+      List<FeedbackFileModel>? files,
+      @JsonKey(name: 'create_date') DateTime? createDate});
 }
 
 /// @nodoc
@@ -113,6 +123,7 @@ class __$$FeedbackModelImplCopyWithImpl<$Res>
     Object? title = freezed,
     Object? description = freezed,
     Object? files = freezed,
+    Object? createDate = freezed,
   }) {
     return _then(_$FeedbackModelImpl(
       id: freezed == id
@@ -131,6 +142,10 @@ class __$$FeedbackModelImplCopyWithImpl<$Res>
           ? _value._files
           : files // ignore: cast_nullable_to_non_nullable
               as List<FeedbackFileModel>?,
+      createDate: freezed == createDate
+          ? _value.createDate
+          : createDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -142,7 +157,8 @@ class _$FeedbackModelImpl implements _FeedbackModel {
       {this.id,
       this.title,
       this.description,
-      final List<FeedbackFileModel>? files})
+      final List<FeedbackFileModel>? files,
+      @JsonKey(name: 'create_date') this.createDate})
       : _files = files;
 
   factory _$FeedbackModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -164,9 +180,14 @@ class _$FeedbackModelImpl implements _FeedbackModel {
     return EqualUnmodifiableListView(value);
   }
 
+// ignore: invalid_annotation_target
+  @override
+  @JsonKey(name: 'create_date')
+  final DateTime? createDate;
+
   @override
   String toString() {
-    return 'FeedbackModel(id: $id, title: $title, description: $description, files: $files)';
+    return 'FeedbackModel(id: $id, title: $title, description: $description, files: $files, createDate: $createDate)';
   }
 
   @override
@@ -178,13 +199,15 @@ class _$FeedbackModelImpl implements _FeedbackModel {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
-            const DeepCollectionEquality().equals(other._files, _files));
+            const DeepCollectionEquality().equals(other._files, _files) &&
+            (identical(other.createDate, createDate) ||
+                other.createDate == createDate));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, title, description,
-      const DeepCollectionEquality().hash(_files));
+      const DeepCollectionEquality().hash(_files), createDate);
 
   @JsonKey(ignore: true)
   @override
@@ -202,10 +225,12 @@ class _$FeedbackModelImpl implements _FeedbackModel {
 
 abstract class _FeedbackModel implements FeedbackModel {
   const factory _FeedbackModel(
-      {final String? id,
-      final String? title,
-      final String? description,
-      final List<FeedbackFileModel>? files}) = _$FeedbackModelImpl;
+          {final String? id,
+          final String? title,
+          final String? description,
+          final List<FeedbackFileModel>? files,
+          @JsonKey(name: 'create_date') final DateTime? createDate}) =
+      _$FeedbackModelImpl;
 
   factory _FeedbackModel.fromJson(Map<String, dynamic> json) =
       _$FeedbackModelImpl.fromJson;
@@ -218,6 +243,9 @@ abstract class _FeedbackModel implements FeedbackModel {
   String? get description;
   @override
   List<FeedbackFileModel>? get files;
+  @override // ignore: invalid_annotation_target
+  @JsonKey(name: 'create_date')
+  DateTime? get createDate;
   @override
   @JsonKey(ignore: true)
   _$$FeedbackModelImplCopyWith<_$FeedbackModelImpl> get copyWith =>

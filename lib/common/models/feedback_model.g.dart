@@ -14,6 +14,9 @@ _$FeedbackModelImpl _$$FeedbackModelImplFromJson(Map<String, dynamic> json) =>
       files: (json['files'] as List<dynamic>?)
           ?.map((e) => FeedbackFileModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      createDate: json['create_date'] == null
+          ? null
+          : DateTime.parse(json['create_date'] as String),
     );
 
 Map<String, dynamic> _$$FeedbackModelImplToJson(_$FeedbackModelImpl instance) =>
@@ -22,6 +25,7 @@ Map<String, dynamic> _$$FeedbackModelImplToJson(_$FeedbackModelImpl instance) =>
       'title': instance.title,
       'description': instance.description,
       'files': instance.files,
+      'create_date': instance.createDate?.toIso8601String(),
     };
 
 _$FeedbackFileModelImpl _$$FeedbackFileModelImplFromJson(
