@@ -7,15 +7,29 @@ import 'package:homing_pigeon/common/models/models.dart';
 
 class SocialApi {
   /// 直播信息/提醒群
-  static Future<List<SocialModel>> getSocialCardList() async {
+  static Future<Pager<List<SocialModel>>?> getSocialCardList({
+    int page = 1,
+    int pageSize = 20,
+  }) async {
     try {
-      final res = await hpHttp.get<dynamic>('/api/backend/social/list/');
+      final res = await hpHttp.get<dynamic>(
+        '/api/backend/social/list/',
+        queryParameters: {
+          'page': page,
+          'page_size': pageSize,
+        },
+      );
       return res.data == null
-          ? []
-          : List<SocialModel>.from(
-              (res.data as Iterable).map(
-                (x) => SocialModel.fromJson(x as Map<String, dynamic>),
-              ),
+          ? null
+          : Pager.fromJson(
+              res.data as Map<String, dynamic>,
+              (json) => json == null
+                  ? <SocialModel>[]
+                  : List<SocialModel>.from(
+                      (json as Iterable).map(
+                        (x) => SocialModel.fromJson(x as Map<String, dynamic>),
+                      ),
+                    ),
             );
     } on Exception catch (error) {
       throw RequestedException(

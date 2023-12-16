@@ -27,6 +27,8 @@ class _SocialViewState extends State<SocialView>
 
   List<SocialModel> items = [];
   bool loading = false;
+  int page = 1;
+  int total = 0;
 
   @override
   void initState() {
@@ -52,6 +54,7 @@ class _SocialViewState extends State<SocialView>
         controller: _controller,
         header: const ClassicHeader(),
         onRefresh: () => _load(operation: Operation.refresh),
+        onLoad: () => _load(operation: Operation.load),
         child: !loading && items.isNotEmpty
             ? ListView.separated(
                 itemCount: items.length,
@@ -100,26 +103,55 @@ class _SocialViewState extends State<SocialView>
   }
 
   void _load({Operation operation = Operation.none}) {
+    var currentPage = page;
     if (operation == Operation.none) {
+      currentPage = 1;
       setState(() => loading = true);
       EasyLoading.show();
+    } else if (operation == Operation.refresh) {
+      currentPage = 1;
+    } else if (operation == Operation.load) {
+      if (items.length >= total) {
+        _controller.finishLoad(IndicatorResult.noMore);
+        return;
+      }
+      currentPage++;
     }
-    SocialApi.getSocialCardList().then(
+
+    SocialApi.getSocialCardList(page: currentPage).then(
       (data) {
         if (operation == Operation.none) {
-          setState(() => loading = false);
           EasyLoading.dismiss();
+          setState(() {
+            loading = false;
+            page = data?.page ?? 1;
+            total = data?.pageInfo?.total ?? 0;
+            items = data?.items ?? [];
+          });
         } else if (operation == Operation.refresh) {
           _controller.finishRefresh();
+          setState(() {
+            page = data?.page ?? 1;
+            total = data?.pageInfo?.total ?? 0;
+            items = data?.items ?? [];
+          });
+        } else if (operation == Operation.load) {
+          _controller.finishLoad();
+          setState(() {
+            page = data?.page ?? 1;
+            total = data?.pageInfo?.total ?? 0;
+            items = items + (data?.items ?? []);
+          });
         }
-        setState(() => items = data);
       },
-    ).onError<RequestedException>((error, stackTrace) {
+    ).onError<RequestedException>((err, stackTrace) {
       if (operation == Operation.none) {
         setState(() => loading = false);
-        EasyLoading.showError(error.msg);
+        EasyLoading.showError(err.msg);
       } else if (operation == Operation.refresh) {
         _controller.finishRefresh(IndicatorResult.fail);
+      } else if (operation == Operation.load) {
+        _controller.finishLoad(IndicatorResult.fail);
       }
     });
   }
