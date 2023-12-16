@@ -6,6 +6,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:homing_pigeon/common/api/social_api.dart';
 import 'package:homing_pigeon/common/enums/enums.dart';
 import 'package:homing_pigeon/common/exception/exception.dart';
+import 'package:homing_pigeon/common/logger/logger.dart';
 import 'package:homing_pigeon/common/models/models.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
 import 'package:homing_pigeon/modules/detail/detail.dart';
@@ -144,10 +145,11 @@ class _SocialViewState extends State<SocialView>
           });
         }
       },
-    ).onError<RequestedException>((err, stackTrace) {
+    ).onError<RequestedException>((error, stackTrace) {
+      printErrorStackLog(error, stackTrace);
       if (operation == Operation.none) {
         setState(() => loading = false);
-        EasyLoading.showError(err.msg);
+        EasyLoading.showError(error.msg);
       } else if (operation == Operation.refresh) {
         _controller.finishRefresh(IndicatorResult.fail);
       } else if (operation == Operation.load) {

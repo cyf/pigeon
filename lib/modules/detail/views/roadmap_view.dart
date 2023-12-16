@@ -10,6 +10,7 @@ import 'package:homing_pigeon/common/api/roadmap_api.dart';
 import 'package:homing_pigeon/common/enums/enums.dart';
 import 'package:homing_pigeon/common/exception/exception.dart';
 import 'package:homing_pigeon/common/extensions/single.dart';
+import 'package:homing_pigeon/common/logger/logger.dart';
 import 'package:homing_pigeon/common/models/models.dart';
 import 'package:homing_pigeon/common/utils/color_util.dart';
 import 'package:homing_pigeon/common/utils/navigator_util.dart';
@@ -167,6 +168,7 @@ class _RoadmapViewState extends State<RoadmapView> {
         setState(() => items = data);
       },
     ).onError<RequestedException>((error, stackTrace) {
+      printErrorStackLog(error, stackTrace);
       setState(() => items = []);
       if (operation == Operation.none) {
         EasyLoading.showError(error.msg);
