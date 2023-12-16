@@ -230,7 +230,8 @@ FeedbackFileModel _$FeedbackFileModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$FeedbackFileModel {
-  String? get id => throw _privateConstructorUsedError;
+  String? get id =>
+      throw _privateConstructorUsedError; // ignore: invalid_annotation_target
   @JsonKey(name: 'feedback_id')
   String? get feedbackId => throw _privateConstructorUsedError;
   String? get url => throw _privateConstructorUsedError;
@@ -388,6 +389,7 @@ class _$FeedbackFileModelImpl implements _FeedbackFileModel {
 
   @override
   final String? id;
+// ignore: invalid_annotation_target
   @override
   @JsonKey(name: 'feedback_id')
   final String? feedbackId;
@@ -453,7 +455,7 @@ abstract class _FeedbackFileModel implements FeedbackFileModel {
 
   @override
   String? get id;
-  @override
+  @override // ignore: invalid_annotation_target
   @JsonKey(name: 'feedback_id')
   String? get feedbackId;
   @override

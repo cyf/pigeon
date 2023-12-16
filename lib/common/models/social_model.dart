@@ -5,17 +5,17 @@ part 'social_model.g.dart';
 
 @immutable
 @freezed
-class CardItem with _$CardItem {
-  const factory CardItem({
+class SocialModel with _$SocialModel {
+  const factory SocialModel({
     String? title,
     List<SubTitle>? subtitles,
     List<Link>? tips,
     List<Description>? descriptions,
-  }) = _CardItem;
+  }) = _SocialModel;
 
-  /// Deserializes the given json into a [CardItem].
-  factory CardItem.fromJson(Map<String, dynamic> json) =>
-      _$CardItemFromJson(json);
+  /// Deserializes the given json into a [SocialModel].
+  factory SocialModel.fromJson(Map<String, dynamic> json) =>
+      _$SocialModelFromJson(json);
 }
 
 @immutable

@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-CardItem _$CardItemFromJson(Map<String, dynamic> json) {
-  return _CardItem.fromJson(json);
+SocialModel _$SocialModelFromJson(Map<String, dynamic> json) {
+  return _SocialModel.fromJson(json);
 }
 
 /// @nodoc
-mixin _$CardItem {
+mixin _$SocialModel {
   String? get title => throw _privateConstructorUsedError;
   List<SubTitle>? get subtitles => throw _privateConstructorUsedError;
   List<Link>? get tips => throw _privateConstructorUsedError;
@@ -27,14 +27,15 @@ mixin _$CardItem {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $CardItemCopyWith<CardItem> get copyWith =>
+  $SocialModelCopyWith<SocialModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $CardItemCopyWith<$Res> {
-  factory $CardItemCopyWith(CardItem value, $Res Function(CardItem) then) =
-      _$CardItemCopyWithImpl<$Res, CardItem>;
+abstract class $SocialModelCopyWith<$Res> {
+  factory $SocialModelCopyWith(
+          SocialModel value, $Res Function(SocialModel) then) =
+      _$SocialModelCopyWithImpl<$Res, SocialModel>;
   @useResult
   $Res call(
       {String? title,
@@ -44,9 +45,9 @@ abstract class $CardItemCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$CardItemCopyWithImpl<$Res, $Val extends CardItem>
-    implements $CardItemCopyWith<$Res> {
-  _$CardItemCopyWithImpl(this._value, this._then);
+class _$SocialModelCopyWithImpl<$Res, $Val extends SocialModel>
+    implements $SocialModelCopyWith<$Res> {
+  _$SocialModelCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -83,11 +84,11 @@ class _$CardItemCopyWithImpl<$Res, $Val extends CardItem>
 }
 
 /// @nodoc
-abstract class _$$CardItemImplCopyWith<$Res>
-    implements $CardItemCopyWith<$Res> {
-  factory _$$CardItemImplCopyWith(
-          _$CardItemImpl value, $Res Function(_$CardItemImpl) then) =
-      __$$CardItemImplCopyWithImpl<$Res>;
+abstract class _$$SocialModelImplCopyWith<$Res>
+    implements $SocialModelCopyWith<$Res> {
+  factory _$$SocialModelImplCopyWith(
+          _$SocialModelImpl value, $Res Function(_$SocialModelImpl) then) =
+      __$$SocialModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -98,11 +99,11 @@ abstract class _$$CardItemImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$CardItemImplCopyWithImpl<$Res>
-    extends _$CardItemCopyWithImpl<$Res, _$CardItemImpl>
-    implements _$$CardItemImplCopyWith<$Res> {
-  __$$CardItemImplCopyWithImpl(
-      _$CardItemImpl _value, $Res Function(_$CardItemImpl) _then)
+class __$$SocialModelImplCopyWithImpl<$Res>
+    extends _$SocialModelCopyWithImpl<$Res, _$SocialModelImpl>
+    implements _$$SocialModelImplCopyWith<$Res> {
+  __$$SocialModelImplCopyWithImpl(
+      _$SocialModelImpl _value, $Res Function(_$SocialModelImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -113,7 +114,7 @@ class __$$CardItemImplCopyWithImpl<$Res>
     Object? tips = freezed,
     Object? descriptions = freezed,
   }) {
-    return _then(_$CardItemImpl(
+    return _then(_$SocialModelImpl(
       title: freezed == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -136,8 +137,8 @@ class __$$CardItemImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$CardItemImpl implements _CardItem {
-  const _$CardItemImpl(
+class _$SocialModelImpl implements _SocialModel {
+  const _$SocialModelImpl(
       {this.title,
       final List<SubTitle>? subtitles,
       final List<Link>? tips,
@@ -146,8 +147,8 @@ class _$CardItemImpl implements _CardItem {
         _tips = tips,
         _descriptions = descriptions;
 
-  factory _$CardItemImpl.fromJson(Map<String, dynamic> json) =>
-      _$$CardItemImplFromJson(json);
+  factory _$SocialModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SocialModelImplFromJson(json);
 
   @override
   final String? title;
@@ -183,14 +184,14 @@ class _$CardItemImpl implements _CardItem {
 
   @override
   String toString() {
-    return 'CardItem(title: $title, subtitles: $subtitles, tips: $tips, descriptions: $descriptions)';
+    return 'SocialModel(title: $title, subtitles: $subtitles, tips: $tips, descriptions: $descriptions)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CardItemImpl &&
+            other is _$SocialModelImpl &&
             (identical(other.title, title) || other.title == title) &&
             const DeepCollectionEquality()
                 .equals(other._subtitles, _subtitles) &&
@@ -211,26 +212,26 @@ class _$CardItemImpl implements _CardItem {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$CardItemImplCopyWith<_$CardItemImpl> get copyWith =>
-      __$$CardItemImplCopyWithImpl<_$CardItemImpl>(this, _$identity);
+  _$$SocialModelImplCopyWith<_$SocialModelImpl> get copyWith =>
+      __$$SocialModelImplCopyWithImpl<_$SocialModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$CardItemImplToJson(
+    return _$$SocialModelImplToJson(
       this,
     );
   }
 }
 
-abstract class _CardItem implements CardItem {
-  const factory _CardItem(
+abstract class _SocialModel implements SocialModel {
+  const factory _SocialModel(
       {final String? title,
       final List<SubTitle>? subtitles,
       final List<Link>? tips,
-      final List<Description>? descriptions}) = _$CardItemImpl;
+      final List<Description>? descriptions}) = _$SocialModelImpl;
 
-  factory _CardItem.fromJson(Map<String, dynamic> json) =
-      _$CardItemImpl.fromJson;
+  factory _SocialModel.fromJson(Map<String, dynamic> json) =
+      _$SocialModelImpl.fromJson;
 
   @override
   String? get title;
@@ -242,7 +243,7 @@ abstract class _CardItem implements CardItem {
   List<Description>? get descriptions;
   @override
   @JsonKey(ignore: true)
-  _$$CardItemImplCopyWith<_$CardItemImpl> get copyWith =>
+  _$$SocialModelImplCopyWith<_$SocialModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

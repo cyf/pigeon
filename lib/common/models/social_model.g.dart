@@ -6,8 +6,8 @@ part of 'social_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$CardItemImpl _$$CardItemImplFromJson(Map<String, dynamic> json) =>
-    _$CardItemImpl(
+_$SocialModelImpl _$$SocialModelImplFromJson(Map<String, dynamic> json) =>
+    _$SocialModelImpl(
       title: json['title'] as String?,
       subtitles: (json['subtitles'] as List<dynamic>?)
           ?.map((e) => SubTitle.fromJson(e as Map<String, dynamic>))
@@ -20,7 +20,7 @@ _$CardItemImpl _$$CardItemImplFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$$CardItemImplToJson(_$CardItemImpl instance) =>
+Map<String, dynamic> _$$SocialModelImplToJson(_$SocialModelImpl instance) =>
     <String, dynamic>{
       'title': instance.title,
       'subtitles': instance.subtitles,
