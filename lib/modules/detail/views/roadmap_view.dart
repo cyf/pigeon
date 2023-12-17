@@ -185,11 +185,12 @@ class _RoadmapViewState extends State<RoadmapView> {
     showModalBottomSheet<void>(
       context: context,
       isDismissible: false,
+      isScrollControlled: true,
+      enableDrag: false,
       builder: (BuildContext context) => ModalBottomSheet(
-        button: '关闭',
+        buttonText: '关闭',
         padding: const EdgeInsets.symmetric(horizontal: 10),
         margin: const EdgeInsets.symmetric(vertical: 10),
-        physics: const AlwaysScrollableScrollPhysics(),
         callback: NavigatorUtil.pop,
         items: [
           Markdown(
