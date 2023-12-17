@@ -207,11 +207,18 @@ class _FeedbackViewState extends State<FeedbackView> {
   void showUploadBottomSheet() {
     const spacing = 8.0;
     const padding = 10.0;
-    final width = MediaQuery.of(context).size.width - padding * 2;
-    final itemWidth = ((width - spacing * 2) / 3).floorToDouble();
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+    final top = MediaQuery.of(context).padding.top;
+    final bottom = MediaQuery.of(context).padding.bottom;
+    final contentWidth = width - padding * 2;
+    final itemWidth = ((contentWidth - spacing * 2) / 3).floorToDouble();
 
     showModalBottomSheet<void>(
       context: context,
+      isDismissible: false,
+      isScrollControlled: true,
+      enableDrag: false,
       builder: (BuildContext context) => StatefulBuilder(
         builder: (BuildContext context, StateSetter setInnerState) {
           final items = _fileWrappers
@@ -276,13 +283,64 @@ class _FeedbackViewState extends State<FeedbackView> {
 
           return KeyboardDismisser(
             child: ModalBottomSheet(
-              shrinkWrap: false,
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              margin: const EdgeInsets.symmetric(vertical: 10),
+              constraints: BoxConstraints(maxHeight: height - top - bottom),
               callback: _submit,
-              button: '提交',
+              buttonText: '提交',
               items: [
+                Row(
+                  children: [
+                    const Text(
+                      '请填写反馈内容',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: primaryTextColor,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    )
+                        .nestedPadding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                        )
+                        .nestedExpanded(),
+                    IconButton.outlined(
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all(
+                          const EdgeInsets.all(5),
+                        ),
+                        backgroundColor:
+                            MaterialStateProperty.all(secondaryGrayColor),
+                        minimumSize:
+                            MaterialStateProperty.all(const Size(24, 24)),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      onPressed: NavigatorUtil.pop,
+                      icon: const Icon(
+                        Icons.clear,
+                        color: borderColor,
+                        size: 14,
+                      ),
+                    ).nestedPadding(padding: const EdgeInsets.only(right: 10)),
+                  ],
+                )
+                    .nestedPadding(
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                    )
+                    .nestedDecoratedBox(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: primaryGrayColor,
+                          ),
+                        ),
+                      ),
+                    )
+                    .nestedDecoratedBox(
+                      decoration: const BoxDecoration(color: Colors.white),
+                    )
+                    .nestedSizedBox(width: width)
+                    .nestedConstrainedBox(
+                      constraints: const BoxConstraints(minHeight: 64),
+                    ),
                 Form(
                   key: _formKey,
                   child: Column(
@@ -410,14 +468,56 @@ class _FeedbackViewState extends State<FeedbackView> {
                       ),
                     ],
                   ),
+                ).nestedPadding(
+                  padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
                 ),
-                ReorderableWrap(
-                  spacing: spacing,
-                  runSpacing: 4,
-                  onReorder: (int oldIndex, int newIndex) =>
-                      _onReorder(setInnerState, oldIndex, newIndex),
-                  scrollPhysics: const NeverScrollableScrollPhysics(),
-                  children: items,
+                BaseFormItem(
+                  title: '图片或视频',
+                  showTip: false,
+                  required: false,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(text: '您最多可以上传9张图片或视频('),
+                            TextSpan(
+                              text: '图片大小必须在50KB到15MB之间, 视频大小必须在50KB到20MB之间',
+                              style: TextStyle(
+                                color: warnTextColor,
+                              ),
+                            ),
+                            TextSpan(text: ')'),
+                          ],
+                        ),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: placeholderTextColor,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      ReorderableWrap(
+                        spacing: spacing,
+                        runSpacing: 4,
+                        onReorder: (int oldIndex, int newIndex) =>
+                            _onReorder(setInnerState, oldIndex, newIndex),
+                        scrollPhysics: const NeverScrollableScrollPhysics(),
+                        children: items,
+                      ).nestedPadding(
+                        padding: const EdgeInsets.only(top: 8),
+                      ),
+                    ],
+                  ).nestedPadding(
+                    padding: const EdgeInsets.only(top: 8),
+                  ),
+                ).nestedPadding(
+                  padding: const EdgeInsets.only(
+                    left: 10,
+                    right: 10,
+                    bottom: 10,
+                  ),
                 ),
               ],
             ),
@@ -476,19 +576,31 @@ class _FeedbackViewState extends State<FeedbackView> {
               : null;
         }).toList();
 
+        bool tester(FileWrapper fileWrapper) {
+          final fileSize = fileWrapper.file.lengthSync();
+          if (fileWrapper.asset.type == AssetType.image) {
+            return fileSize < 50 * 1024 || fileSize > 15 * 1024 * 1024;
+          } else if (fileWrapper.asset.type == AssetType.video) {
+            return fileSize < 50 * 1024 || fileSize > 20 * 1024 * 1024;
+          }
+          return false;
+        }
+
         final fileWrappers =
             (await Future.wait(fileWrapperFutures)).whereNotNull().toList();
-        final limiter = fileWrappers.firstWhereOrNull(
-          (fileWrapper) {
-            final fileSize = fileWrapper.file.lengthSync();
-            return fileSize < 50 * 1024 || fileSize > 20 * 1024 * 1024;
-          },
-        );
+        final limiter = fileWrappers.firstWhereOrNull(tester);
         if (limiter != null) {
-          await EasyLoading.showToast(
-            'The uploaded images or videos must be between 50KB and 20MB.',
-          );
-          return;
+          if (limiter.asset.type == AssetType.image) {
+            await EasyLoading.showToast(
+              '上传的图片必须在15KB至15MB之间.',
+            );
+            return;
+          } else if (limiter.asset.type == AssetType.video) {
+            await EasyLoading.showToast(
+              '上传的视频必须在15KB至20MB之间.',
+            );
+            return;
+          }
         }
 
         setInnerState(() => _fileWrappers = fileWrappers);

@@ -348,13 +348,16 @@ class _HomeViewState extends State<HomeView>
     const padding = EdgeInsets.zero;
     showModalBottomSheet<void>(
       context: context,
+      isDismissible: false,
+      isScrollControlled: true,
+      enableDrag: false,
       builder: (BuildContext context) => ModalBottomSheet(
-        button: '取消',
+        buttonText: '取消',
         callback: NavigatorUtil.pop,
         items: [
           const Text(
             '请选择您的操作',
-            style: TextStyle(fontSize: 16, color: placeholderTextColor),
+            style: TextStyle(fontSize: 16, color: primaryTextColor),
             textAlign: TextAlign.center,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,

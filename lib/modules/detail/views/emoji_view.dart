@@ -166,11 +166,15 @@ class _EmojiViewState extends State<EmojiView> {
   void showUploadBottomSheet() {
     const spacing = 8.0;
     const padding = 10.0;
-    final width = MediaQuery.of(context).size.width - padding * 2;
-    final itemWidth = ((width - spacing * 2) / 3).floorToDouble();
+    final width = MediaQuery.of(context).size.width;
+    final contentWidth = width - padding * 2;
+    final itemWidth = ((contentWidth - spacing * 2) / 3).floorToDouble();
 
     showModalBottomSheet<void>(
       context: context,
+      isDismissible: false,
+      isScrollControlled: true,
+      enableDrag: false,
       builder: (BuildContext context) => StatefulBuilder(
         builder: (BuildContext context, StateSetter setInnerState) {
           final items = _fileWrappers
@@ -234,11 +238,89 @@ class _EmojiViewState extends State<EmojiView> {
           }
 
           return ModalBottomSheet(
-            shrinkWrap: false,
             callback: _uploadFiles,
-            button: '上传',
-            physics: const AlwaysScrollableScrollPhysics(),
+            buttonText: '上传',
+            constraints: const BoxConstraints(minHeight: 350),
             items: [
+              Row(
+                children: [
+                  const Text(
+                    '请选择要上传的表情',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: primaryTextColor,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                      .nestedPadding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                      )
+                      .nestedExpanded(),
+                  IconButton.outlined(
+                    style: ButtonStyle(
+                      padding:
+                          MaterialStateProperty.all(const EdgeInsets.all(5)),
+                      backgroundColor:
+                          MaterialStateProperty.all(secondaryGrayColor),
+                      minimumSize:
+                          MaterialStateProperty.all(const Size(24, 24)),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    onPressed: NavigatorUtil.pop,
+                    icon: const Icon(
+                      Icons.clear,
+                      color: borderColor,
+                      size: 14,
+                    ),
+                  ).nestedPadding(padding: const EdgeInsets.only(right: 10)),
+                ],
+              )
+                  .nestedPadding(
+                    padding: const EdgeInsets.symmetric(vertical: 6),
+                  )
+                  .nestedDecoratedBox(
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: primaryGrayColor,
+                        ),
+                      ),
+                    ),
+                  )
+                  .nestedDecoratedBox(
+                    decoration: const BoxDecoration(color: Colors.white),
+                  )
+                  .nestedSizedBox(width: width)
+                  .nestedConstrainedBox(
+                    constraints: const BoxConstraints(minHeight: 64),
+                  ),
+              const Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(text: '您最多可以上传9张图片('),
+                    TextSpan(
+                      text: '图片大小必须在50KB到15MB之间',
+                      style: TextStyle(
+                        color: warnTextColor,
+                      ),
+                    ),
+                    TextSpan(text: ')'),
+                  ],
+                ),
+                style: TextStyle(
+                  fontSize: 12,
+                  color: placeholderTextColor,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ).nestedPadding(
+                padding: const EdgeInsets.only(
+                  left: padding,
+                  top: padding,
+                  right: padding,
+                ),
+              ),
               ReorderableWrap(
                 spacing: spacing,
                 runSpacing: 4,
@@ -315,7 +397,7 @@ class _EmojiViewState extends State<EmojiView> {
         );
         if (limiter != null) {
           await EasyLoading.showToast(
-            'The uploaded image must be between 50KB and 15MB.',
+            '上传的图片必须在15KB至15MB之间.',
           );
           return;
         }
