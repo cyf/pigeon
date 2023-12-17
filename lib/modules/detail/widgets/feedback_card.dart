@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:homing_pigeon/common/extensions/extensions.dart';
 import 'package:homing_pigeon/common/models/models.dart';
+import 'package:homing_pigeon/common/utils/dialog_util.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
-import 'package:homing_pigeon/modules/detail/detail.dart';
 import 'package:homing_pigeon/theme/colors.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -71,7 +71,7 @@ class _FeedbackCardState extends State<FeedbackCard> {
                       ),
                     ),
                   ).nestedTap(
-                    () => Dialogs.showImagePreviewDialog(
+                    () => DialogUtil.showImagePreviewDialog(
                       StringUtil.getValue(file.id),
                       StringUtil.getValue(file.url),
                     ),

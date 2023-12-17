@@ -1,3 +1,4 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:collection/collection.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_refresh/easy_refresh.dart';
@@ -11,6 +12,7 @@ import 'package:homing_pigeon/common/exception/exception.dart';
 import 'package:homing_pigeon/common/extensions/extensions.dart';
 import 'package:homing_pigeon/common/logger/logger.dart';
 import 'package:homing_pigeon/common/models/models.dart';
+import 'package:homing_pigeon/common/utils/dialog_util.dart';
 import 'package:homing_pigeon/common/utils/navigator_util.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/common/utils/upload_util.dart';
@@ -551,7 +553,17 @@ class _FeedbackViewState extends State<FeedbackView> {
           .contains(status),
     );
     if (denied) {
-      Dialogs.showGalleryPermissionDialog();
+      DialogUtil.showCustomDialog(
+        title: 'Allow access to your album',
+        content:
+            'Please go to your phone Settings to grant Homing Pigeon the permission to visit your album.',
+        cancelText: 'Ignore',
+        okText: 'Turn On',
+        onOK: () async {
+          NavigatorUtil.pop();
+          await AppSettings.openAppSettings();
+        },
+      );
       return;
     }
 
