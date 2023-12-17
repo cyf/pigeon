@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:homing_pigeon/common/extensions/extensions.dart';
 import 'package:homing_pigeon/common/models/models.dart';
 import 'package:homing_pigeon/common/utils/color_util.dart';
+import 'package:homing_pigeon/common/utils/dialog_util.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
-import 'package:homing_pigeon/modules/detail/detail.dart';
 import 'package:homing_pigeon/theme/colors.dart';
 
 class EmojiCard extends StatelessWidget {
@@ -42,7 +42,7 @@ class EmojiCard extends StatelessWidget {
     return Column(
       children: [
         child.nestedSizedBox(height: 160).nestedTap(
-              () => Dialogs.showImagePreviewDialog(
+              () => DialogUtil.showImagePreviewDialog(
                 StringUtil.getValue(emoji.id),
                 emoji.image,
               ),

@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'package:app_settings/app_settings.dart';
 import 'package:collection/collection.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_refresh/easy_refresh.dart';
@@ -15,6 +14,7 @@ import 'package:homing_pigeon/common/exception/exception.dart';
 import 'package:homing_pigeon/common/extensions/single.dart';
 import 'package:homing_pigeon/common/logger/logger.dart';
 import 'package:homing_pigeon/common/models/models.dart';
+import 'package:homing_pigeon/common/utils/dialog_util.dart';
 import 'package:homing_pigeon/common/utils/navigator_util.dart';
 import 'package:homing_pigeon/common/utils/upload_util.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
@@ -361,7 +361,17 @@ class _EmojiViewState extends State<EmojiView> {
           .contains(status),
     );
     if (denied) {
-      Dialogs.showGalleryPermissionDialog();
+      DialogUtil.showCustomDialog(
+        title: 'Allow access to your album',
+        content:
+        'Please go to your phone Settings to grant Homing Pigeon the permission to visit your album.',
+        cancelText: 'Ignore',
+        okText: 'Turn On',
+        onOK: () async {
+          NavigatorUtil.pop();
+          await AppSettings.openAppSettings();
+        },
+      );
       return;
     }
 
@@ -404,7 +414,7 @@ class _EmojiViewState extends State<EmojiView> {
 
         setInnerState(() => _fileWrappers = fileWrappers);
       } on RequestedException catch (error, stackTrace) {
-        log(error.msg, stackTrace: stackTrace);
+        printErrorLog(error.msg, stackTrace: stackTrace);
         await EasyLoading.showError(error.msg);
       }
     }
@@ -454,7 +464,7 @@ class _EmojiViewState extends State<EmojiView> {
       await EasyLoading.showSuccess('Success');
       _load();
     } on RequestedException catch (error, stackTrace) {
-      log(error.msg, stackTrace: stackTrace);
+      printErrorLog(error.msg, stackTrace: stackTrace);
       await EasyLoading.showError(error.msg);
     }
   }

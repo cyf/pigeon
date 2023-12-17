@@ -13,6 +13,7 @@ class BaseFormItem extends StatelessWidget {
     this.showTip = true,
     this.padding = const EdgeInsets.only(top: 10),
     this.mainAxisAlignment = MainAxisAlignment.start,
+    this.mainAxisSize = MainAxisSize.max,
     this.tipWidget,
     this.onTipTap,
     super.key,
@@ -24,6 +25,7 @@ class BaseFormItem extends StatelessWidget {
   final bool showTip;
   final EdgeInsetsGeometry padding;
   final MainAxisAlignment mainAxisAlignment;
+  final MainAxisSize mainAxisSize;
   final Widget? tipWidget;
   final BaseFormItemCallback? onTipTap;
 
@@ -31,6 +33,7 @@ class BaseFormItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: mainAxisSize,
       children: [
         if (!showTip)
           content
