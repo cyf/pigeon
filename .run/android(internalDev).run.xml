@@ -1,6 +1,7 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="android" type="FlutterRunConfigurationType" factoryName="Flutter">
-    <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
+  <configuration default="false" name="android(internalDev)" type="FlutterRunConfigurationType" factoryName="Flutter">
+    <option name="buildFlavor" value="internalDev" />
+    <option name="filePath" value="$PROJECT_DIR$/lib/main_internal.dart" />
     <method v="2">
       <option name="RunConfigurationTask" enabled="true" run_configuration_name="build-android" run_configuration_type="ShConfigurationType" />
     </method>
