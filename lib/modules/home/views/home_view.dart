@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:homing_pigeon/app/config.dart';
 import 'package:homing_pigeon/app/manager.dart';
 import 'package:homing_pigeon/app/navigator.dart';
 import 'package:homing_pigeon/common/api/carousel_api.dart';
@@ -20,7 +21,7 @@ import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
 import 'package:homing_pigeon/gen/assets.gen.dart';
 import 'package:homing_pigeon/l10n/l10n.dart';
-import 'package:homing_pigeon/main.dart';
+import 'package:homing_pigeon/main_common.dart';
 import 'package:homing_pigeon/modules/app/app.dart';
 import 'package:homing_pigeon/modules/detail/detail.dart';
 import 'package:homing_pigeon/modules/home/home.dart';
@@ -197,7 +198,7 @@ class _HomeViewState extends State<HomeView>
           SliverList.list(
             children: [
               Text(
-                '版本号: ${version!}',
+                '版本号: ${version!}-${AppConfig.shared.flavor.name}',
                 style: const TextStyle(fontSize: 12, color: secondaryTextColor),
                 textAlign: TextAlign.center,
               ).nestedPadding(

@@ -63,6 +63,10 @@ android {
         jvmTarget = '1.8'
     }
 
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
     defaultConfig {
         applicationId "com.chenyifaer.homingpigeon"
         // You can update the following values to match your application needs.
@@ -71,9 +75,33 @@ android {
         targetSdkVersion 33
         versionCode 1
         versionName flutterVersionName
-        versionNameSuffix appVersionNameSuffix
         multiDexEnabled true
 //        versionCode flutterVersionCode.toInteger()
+    }
+
+    flavorDimensions "default"
+    productFlavors {
+        // 国内分发
+        internalDev {
+            dimension "default"
+            applicationIdSuffix ".dev"
+            versionNameSuffix appVersionNameSuffix
+        }
+        internalProd {
+            dimension "default"
+            applicationIdSuffix ""
+        }
+
+        // 国外分发
+        externalDev {
+            dimension "default"
+            applicationIdSuffix ".dev"
+            versionNameSuffix appVersionNameSuffix
+        }
+        externalProd {
+            dimension "default"
+            applicationIdSuffix ""
+        }
     }
 
     signingConfigs {

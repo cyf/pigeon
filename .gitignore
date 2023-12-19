@@ -47,4 +47,4 @@ app.*.map.json
 .env*.local
 .env
 
-ios-pgyer.json
+adhoc.json
