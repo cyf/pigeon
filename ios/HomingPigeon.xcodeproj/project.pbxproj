@@ -588,10 +588,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.chenyifaer.homingpigeon;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chenyifaer.homingpigeon.internal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = homing_pigeon_appstore;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = homing_pigeon_internal_appstore;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -768,10 +768,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.chenyifaer.homingpigeon;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chenyifaer.homingpigeon.internal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = homing_pigeon_dev;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = homing_pigeon_internal_dev;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -884,10 +884,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.chenyifaer.homingpigeon;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chenyifaer.homingpigeon.internal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = homing_pigeon_appstore;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = homing_pigeon_internal_appstore;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -996,10 +996,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.chenyifaer.homingpigeon;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chenyifaer.homingpigeon.internal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = homing_pigeon_appstore;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = homing_pigeon_internal_appstore;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1165,10 +1165,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.chenyifaer.homingpigeon;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chenyifaer.homingpigeon.internal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = homing_pigeon_dev;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = homing_pigeon_internal_dev;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1197,10 +1197,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.chenyifaer.homingpigeon;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chenyifaer.homingpigeon.internal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = homing_pigeon_appstore;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = homing_pigeon_internal_appstore;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
