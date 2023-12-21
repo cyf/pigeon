@@ -24,14 +24,7 @@ void main(List<String> arguments) {
 
   final argResults = parser.parse(arguments);
   final flavor = argResults[flavorArgName] as String;
-  if (!['external', 'internal'].contains(flavor)) {
-    throw Exception('The value of flavor must be `external` or `internal`');
-  }
-
   final buildMode = argResults[buildModeArgName] as String;
-  if (!['debug', 'release'].contains(buildMode)) {
-    throw Exception('The value of build mode must be `debug` or `release`');
-  }
 
   final commonConfigFile = File('ios/Flutter/Common.xcconfig');
   if (commonConfigFile.existsSync()) {
