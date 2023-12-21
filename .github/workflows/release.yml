@@ -85,7 +85,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          flutter-version: '3.16.4'
+          flutter-version: '3.16.5'
 
 #      - name: Setup NDK
 #        uses: nttld/setup-ndk@v1
@@ -191,7 +191,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          flutter-version: '3.16.4'
+          flutter-version: '3.16.5'
 
       #      - name: Setup NDK
       #        uses: nttld/setup-ndk@v1
@@ -293,7 +293,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          flutter-version: '3.16.4'
+          flutter-version: '3.16.5'
 
       - name: Configure .env for development
         if: github.event.inputs.env == 'development'
