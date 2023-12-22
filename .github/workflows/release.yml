@@ -43,7 +43,7 @@ jobs:
       - aab-build
       - ios-build
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           path: build/
 
@@ -172,7 +172,7 @@ jobs:
         run: cp *.apk $GITHUB_WORKSPACE/
         working-directory: build/app/outputs/flutter-apk
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: apk-artifact
           path: ./*.apk
@@ -278,7 +278,7 @@ jobs:
         run: cp *.aab $GITHUB_WORKSPACE/
         working-directory: build/app/outputs/bundle/release
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: aab-artifact
           path: ./*.aab
@@ -404,7 +404,7 @@ jobs:
         run: cp *.ipa $GITHUB_WORKSPACE/
         working-directory: build/ios/ipa
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: ios-artifact
           path: ./*.ipa
