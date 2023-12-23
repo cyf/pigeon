@@ -9,7 +9,7 @@ class CarouselApi {
   /// 轮播图
   static Future<List<CarouselModel>> getCarouselList() async {
     try {
-      final res = await hpHttp.get<dynamic>('/api/backend/carousel/list/');
+      final res = await hpHttp.get<dynamic>('/api/backend/carousel');
       return res.data == null
           ? []
           : List<CarouselModel>.from(

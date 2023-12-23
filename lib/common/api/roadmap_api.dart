@@ -11,7 +11,7 @@ class RoadmapApi {
   }) async {
     try {
       final res = await hpHttp.get<dynamic>(
-        '/api/backend/roadmap/list/',
+        '/api/backend/roadmap',
         queryParameters: {
           'year': year,
           'month': month,

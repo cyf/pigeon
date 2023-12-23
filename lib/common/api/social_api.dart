@@ -13,7 +13,7 @@ class SocialApi {
   }) async {
     try {
       final res = await hpHttp.get<dynamic>(
-        '/api/backend/social/list/',
+        '/api/backend/social',
         queryParameters: {
           'page': page,
           'page_size': pageSize,

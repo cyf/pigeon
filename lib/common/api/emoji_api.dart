@@ -13,7 +13,7 @@ class EmojiApi {
   }) async {
     try {
       final res = await hpHttp.get<dynamic>(
-        '/api/backend/emoji/list/',
+        '/api/backend/emoji',
         queryParameters: {
           'page': page,
           'page_size': pageSize,
@@ -46,7 +46,7 @@ class EmojiApi {
   }) async {
     try {
       final res = await hpHttp.post<dynamic>(
-        '/api/backend/emoji/add/',
+        '/api/backend/emoji',
         data: {
           'image': image,
           'text': text,
@@ -67,7 +67,7 @@ class EmojiApi {
   static Future<void> multiAddEmoji(List<EmojiParam> emojis) async {
     try {
       await hpHttp.post<dynamic>(
-        '/api/backend/emoji/multi-add/',
+        '/api/backend/emoji/all',
         data: emojis.map((emoji) => emoji.toJson()).toList(),
       );
     } on Exception catch (error) {
