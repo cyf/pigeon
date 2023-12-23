@@ -13,7 +13,7 @@ class FeedbackApi {
   }) async {
     try {
       final res = await hpHttp.get<dynamic>(
-        '/api/backend/feedback/list/',
+        '/api/backend/feedback',
         queryParameters: {
           'page': page,
           'page_size': pageSize,
@@ -45,10 +45,7 @@ class FeedbackApi {
   }) async {
     try {
       final res = await hpHttp.get<dynamic>(
-        '/api/backend/feedback/get/',
-        queryParameters: {
-          'id': id,
-        },
+        '/api/backend/feedback/$id',
       );
       return res.data == null
           ? null
@@ -68,7 +65,7 @@ class FeedbackApi {
   }) async {
     try {
       final res = await hpHttp.post<dynamic>(
-        '/api/backend/feedback/add/',
+        '/api/backend/feedback',
         data: {
           'title': title,
           'description': description,

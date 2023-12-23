@@ -9,7 +9,7 @@ class ConfigApi {
   /// 全局配置
   static Future<List<ConfigModel>> getConfigList() async {
     try {
-      final res = await hpHttp.get<dynamic>('/api/backend/config/list/');
+      final res = await hpHttp.get<dynamic>('/api/backend/config');
       return res.data == null
           ? []
           : List<ConfigModel>.from(

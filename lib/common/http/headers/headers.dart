@@ -7,6 +7,7 @@ import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:encrypt/encrypt.dart';
+import 'package:homing_pigeon/app/config.dart';
 import 'package:homing_pigeon/app/manager.dart';
 import 'package:homing_pigeon/common/constants/constants.dart';
 import 'package:homing_pigeon/common/constants/keys.dart';
@@ -96,9 +97,8 @@ class HpHeaders {
       'x-version': AppManager.instance.prodVersion,
       'x-token':
           StringUtil.isNotBlank(token) ? 'Bearer $token' : StringUtil.empty,
-      'x-channel': Platform.isIOS
-          ? 'MOBILE_IOS_HOMING_PIGEON'
-          : 'MOBILE_ANDROID_HOMING_PIGEON',
+      'x-channel': Platform.isIOS ? 'MOBILE_IOS' : 'MOBILE_ANDROID',
+      'x-flavor': AppConfig.shared.flavor.name,
       'x-locale': 'en',
     };
   }
