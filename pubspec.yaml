@@ -93,6 +93,7 @@ dependencies:
   sentry_dio: ^7.14.0
   sentry_flutter: ^7.14.0
   shared_preferences: ^2.2.2
+  socket_io_client: ^2.0.3+1
   syncfusion_flutter_calendar: ^24.1.41
   synchronized: ^3.1.0+1
   timeago: ^3.6.0
