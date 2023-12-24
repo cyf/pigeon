@@ -75,13 +75,7 @@ class _RoadmapViewState extends State<RoadmapView> {
   final ScrollController _scrollController = ScrollController();
 
   List<RoadmapModel> items = [];
-  final _current = DateTime.now();
-
-  @override
-  void initState() {
-    super.initState();
-    _load(year: _current.year, month: _current.month);
-  }
+  DateTime _current = DateTime.now();
 
   @override
   void dispose() {
@@ -113,10 +107,12 @@ class _RoadmapViewState extends State<RoadmapView> {
           onViewChanged: (ViewChangedDetails viewChangedDetails) {
             final visibleDates = viewChangedDetails.visibleDates;
             if (kDebugMode) {
-              print('${viewChangedDetails.visibleDates}');
+              print('visibleDates: ${viewChangedDetails.visibleDates}');
             }
             if (visibleDates.isNotEmpty) {
               final startDate = visibleDates.first;
+              printDebugLog('startDate: $startDate');
+              setState(() => _current = startDate);
               _load(year: startDate.year, month: startDate.month);
             }
           },
@@ -158,7 +154,7 @@ class _RoadmapViewState extends State<RoadmapView> {
     if (operation == Operation.none) {
       EasyLoading.show();
     }
-    RoadmapApi.getRoadmapList(year: year, month: month).then(
+    RoadmapApi.getRoadmapList(year: year, month: month - 1).then(
       (data) {
         if (operation == Operation.none) {
           EasyLoading.dismiss();
