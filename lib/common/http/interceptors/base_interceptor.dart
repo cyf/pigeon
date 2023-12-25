@@ -60,7 +60,7 @@ class BaseInterceptor extends InterceptorsWrapper {
     Response<dynamic> response,
     ResponseInterceptorHandler handler,
   ) {
-    if (response.statusCode != 200) {
+    if (![200, 201].contains(response.statusCode)) {
       return handler.reject(
         DioException(
           requestOptions: response.requestOptions,
