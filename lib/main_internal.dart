@@ -13,6 +13,7 @@ import 'package:homing_pigeon/app/bloc_observer.dart';
 import 'package:homing_pigeon/app/config.dart';
 import 'package:homing_pigeon/common/constants/constants.dart';
 import 'package:homing_pigeon/common/logger/logger.dart';
+import 'package:homing_pigeon/common/utils/log_util.dart';
 import 'package:homing_pigeon/common/utils/sp_util.dart';
 import 'package:homing_pigeon/main_common.dart';
 import 'package:homing_pigeon/modules/app/app.dart';
@@ -36,6 +37,9 @@ Future<void> main() async {
       },
     );
   }
+
+  await SpUtil.getInstance();
+  await LogUtil.getInstance();
 
   final socket = socket_io.io(
     '${Constants.apiPrefix}/ws',
