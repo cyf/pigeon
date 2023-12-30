@@ -18,6 +18,7 @@ import 'package:homing_pigeon/common/models/models.dart';
 import 'package:homing_pigeon/common/utils/color_util.dart';
 import 'package:homing_pigeon/common/utils/navigator_util.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
+import 'package:homing_pigeon/common/widgets/header.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
 import 'package:homing_pigeon/gen/assets.gen.dart';
 import 'package:homing_pigeon/l10n/l10n.dart';
@@ -586,28 +587,8 @@ class _HomeViewState extends State<HomeView>
       builder: (BuildContext context) => ModalBottomSheet(
         buttonText: '取消',
         callback: NavigatorUtil.pop,
+        header: const HpHeader(title: '请选择您的操作', hideCancel: true),
         items: [
-          const Text(
-            '请选择您的操作',
-            style: TextStyle(fontSize: 16, color: primaryTextColor),
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          )
-              .nestedCenter()
-              .nestedDecoratedBox(
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: primaryGrayColor,
-                    ),
-                  ),
-                ),
-              )
-              .nestedDecoratedBox(
-                decoration: const BoxDecoration(color: Colors.white),
-              )
-              .nestedSizedBox(height: 64),
           if (StringUtil.isNotBlank(tbConfig?.value))
             SectionItem(
               title: '复制淘口令',

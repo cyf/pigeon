@@ -16,6 +16,7 @@ import 'package:homing_pigeon/common/utils/dialog_util.dart';
 import 'package:homing_pigeon/common/utils/navigator_util.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/common/utils/upload_util.dart';
+import 'package:homing_pigeon/common/widgets/header.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
 import 'package:homing_pigeon/modules/detail/detail.dart';
 import 'package:homing_pigeon/theme/colors.dart';
@@ -285,64 +286,12 @@ class _FeedbackViewState extends State<FeedbackView> {
 
           return KeyboardDismisser(
             child: ModalBottomSheet(
-              constraints: BoxConstraints(maxHeight: height - top - bottom),
+              constraints:
+                  BoxConstraints(maxHeight: (height - top - bottom) * 0.7),
               callback: _submit,
               buttonText: '提交',
+              header: const HpHeader(title: '请填写反馈内容'),
               items: [
-                Row(
-                  children: [
-                    const Text(
-                      '请填写反馈内容',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: primaryTextColor,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    )
-                        .nestedPadding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                        )
-                        .nestedExpanded(),
-                    IconButton.outlined(
-                      style: ButtonStyle(
-                        padding: MaterialStateProperty.all(
-                          const EdgeInsets.all(5),
-                        ),
-                        backgroundColor:
-                            MaterialStateProperty.all(secondaryGrayColor),
-                        minimumSize:
-                            MaterialStateProperty.all(const Size(24, 24)),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                      onPressed: NavigatorUtil.pop,
-                      icon: const Icon(
-                        Icons.clear,
-                        color: borderColor,
-                        size: 14,
-                      ),
-                    ).nestedPadding(padding: const EdgeInsets.only(right: 10)),
-                  ],
-                )
-                    .nestedPadding(
-                      padding: const EdgeInsets.symmetric(vertical: 6),
-                    )
-                    .nestedDecoratedBox(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: primaryGrayColor,
-                          ),
-                        ),
-                      ),
-                    )
-                    .nestedDecoratedBox(
-                      decoration: const BoxDecoration(color: Colors.white),
-                    )
-                    .nestedSizedBox(width: width)
-                    .nestedConstrainedBox(
-                      constraints: const BoxConstraints(minHeight: 64),
-                    ),
                 Form(
                   key: _formKey,
                   child: Column(

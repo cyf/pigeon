@@ -9,6 +9,7 @@ class ModalBottomSheet extends StatelessWidget {
     required this.items,
     required this.buttonText,
     required this.callback,
+    this.header,
     this.mainAxisSize = MainAxisSize.max,
     this.padding = EdgeInsets.zero,
     this.physics = const AlwaysScrollableScrollPhysics(),
@@ -20,6 +21,7 @@ class ModalBottomSheet extends StatelessWidget {
   final List<Widget> items;
   final MainAxisSize mainAxisSize;
 
+  final Widget? header;
   final EdgeInsetsGeometry padding;
   final ScrollPhysics physics;
 
@@ -33,38 +35,44 @@ class ModalBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final bottom = MediaQuery.of(context).padding.bottom;
-    return Stack(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: mainAxisSize,
-          children: items,
-        )
-            .nestedSingleChildScrollView(physics: physics, padding: padding)
-            .nestedPadding(padding: margin)
-            .nestedColoredBox(color: Colors.white)
-            .nestedPadding(
-              padding: EdgeInsets.only(bottom: bottom + _buttonHeight + 8),
+        if (header != null) header!,
+        Stack(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: mainAxisSize,
+              children: items,
             )
-            .nestedSizedBox(width: width)
-            .nestedConstrainedBox(constraints: constraints),
-        Positioned(
-          left: 0,
-          right: 0,
-          bottom: 0,
-          child: TextButton(
-            onPressed: callback,
-            child: Text(
-              buttonText,
-              style: const TextStyle(fontSize: 18, color: primaryTextColor),
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            )
-                .nestedCenter()
-                .nestedSizedBox(height: _buttonHeight)
-                .nestedPadding(padding: EdgeInsets.only(bottom: bottom)),
-          ),
+                .nestedSingleChildScrollView(physics: physics, padding: padding)
+                .nestedPadding(padding: margin)
+                .nestedColoredBox(color: Colors.white)
+                .nestedPadding(
+                  padding: EdgeInsets.only(bottom: bottom + _buttonHeight + 8),
+                )
+                .nestedSizedBox(width: width)
+                .nestedConstrainedBox(constraints: constraints),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: TextButton(
+                onPressed: callback,
+                child: Text(
+                  buttonText,
+                  style: const TextStyle(fontSize: 18, color: primaryTextColor),
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                )
+                    .nestedCenter()
+                    .nestedSizedBox(height: _buttonHeight)
+                    .nestedPadding(padding: EdgeInsets.only(bottom: bottom)),
+              ),
+            ),
+          ],
         ),
       ],
     );
