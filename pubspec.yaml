@@ -46,7 +46,7 @@ dependencies:
   dio: ^5.4.0
   dxcaptcha_flutter:
     path: ./plugins/dxcaptcha_flutter
-  easy_refresh: ^3.3.3+1
+  easy_refresh: ^3.3.4
   encrypt: ^5.0.3
   equatable: ^2.0.5
   file_picker: ^6.1.1
@@ -60,8 +60,8 @@ dependencies:
   flutter_dotenv: ^5.1.0
   flutter_easyloading: ^3.0.5
   flutter_inappwebview: ^5.8.0
-  flutter_intro: ^3.0.3
-  flutter_local_notifications: ^16.2.0
+  flutter_intro: ^3.0.4
+  flutter_local_notifications: ^16.3.0
   flutter_localizations:
     sdk: flutter
   flutter_markdown: ^0.6.18+2
@@ -94,7 +94,7 @@ dependencies:
   sentry_flutter: ^7.14.0
   shared_preferences: ^2.2.2
   socket_io_client: ^2.0.3+1
-  syncfusion_flutter_calendar: ^24.1.41
+  syncfusion_flutter_calendar: ^24.1.43
   synchronized: ^3.1.0+1
   timeago: ^3.6.0
   timezone: ^0.9.2
