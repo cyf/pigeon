@@ -43,19 +43,19 @@ clean_runner: ## Deleting cache and generated source files
 
 internal_apk: ## Release Apk
 	echo "╠ Releasing Apk..."
-	bash build-android.sh && flutter build apk --no-tree-shake-icons --flavor internalDev --target lib/main_internal.dart
+	bash build-android.sh && flutter build apk --debug --no-tree-shake-icons --flavor internal --target lib/main_internal.dart
 
 internal_appbundle: ## Release Appbundle
 	echo "╠ Releasing Appbundle..."
-	rm -f android/git.properties && flutter build appbundle --no-tree-shake-icons --flavor internalProd --target lib/main_internal.dart
+	rm -f android/git.properties && flutter build appbundle --no-tree-shake-icons --flavor internal --target lib/main_internal.dart
 
 external_apk: ## Release Apk
 	echo "╠ Releasing Apk..."
-	bash build-android.sh && flutter build apk --no-tree-shake-icons --flavor externalDev --target lib/main_external.dart
+	bash build-android.sh && flutter build apk --debug --no-tree-shake-icons --flavor external --target lib/main_external.dart
 
 external_appbundle: ## Release Appbundle
 	echo "╠ Releasing Appbundle..."
-	rm -f android/git.properties && flutter build appbundle --no-tree-shake-icons --flavor externalProd --target lib/main_external.dart
+	rm -f android/git.properties && flutter build appbundle --no-tree-shake-icons --flavor external --target lib/main_external.dart
 
 internal_adhoc:
 	echo "╠ Removing build products and intermediate files from the build root..."
