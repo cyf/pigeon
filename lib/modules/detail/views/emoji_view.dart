@@ -17,6 +17,7 @@ import 'package:homing_pigeon/common/models/models.dart';
 import 'package:homing_pigeon/common/utils/dialog_util.dart';
 import 'package:homing_pigeon/common/utils/navigator_util.dart';
 import 'package:homing_pigeon/common/utils/upload_util.dart';
+import 'package:homing_pigeon/common/widgets/header.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
 import 'package:homing_pigeon/modules/detail/detail.dart';
 import 'package:homing_pigeon/theme/colors.dart';
@@ -167,6 +168,9 @@ class _EmojiViewState extends State<EmojiView> {
     const spacing = 8.0;
     const padding = 10.0;
     final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+    final top = MediaQuery.of(context).padding.top;
+    final bottom = MediaQuery.of(context).padding.bottom;
     final contentWidth = width - padding * 2;
     final itemWidth = ((contentWidth - spacing * 2) / 3).floorToDouble();
 
@@ -240,61 +244,12 @@ class _EmojiViewState extends State<EmojiView> {
           return ModalBottomSheet(
             callback: _uploadFiles,
             buttonText: '上传',
-            constraints: const BoxConstraints(minHeight: 350),
+            constraints: BoxConstraints(
+              minHeight: 350,
+              maxHeight: (height - top - bottom) * 0.7,
+            ),
+            header: const HpHeader(title: '请选择要上传的表情'),
             items: [
-              Row(
-                children: [
-                  const Text(
-                    '请选择要上传的表情',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: primaryTextColor,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  )
-                      .nestedPadding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                      )
-                      .nestedExpanded(),
-                  IconButton.outlined(
-                    style: ButtonStyle(
-                      padding:
-                          MaterialStateProperty.all(const EdgeInsets.all(5)),
-                      backgroundColor:
-                          MaterialStateProperty.all(secondaryGrayColor),
-                      minimumSize:
-                          MaterialStateProperty.all(const Size(24, 24)),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    ),
-                    onPressed: NavigatorUtil.pop,
-                    icon: const Icon(
-                      Icons.clear,
-                      color: borderColor,
-                      size: 14,
-                    ),
-                  ).nestedPadding(padding: const EdgeInsets.only(right: 10)),
-                ],
-              )
-                  .nestedPadding(
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                  )
-                  .nestedDecoratedBox(
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: primaryGrayColor,
-                        ),
-                      ),
-                    ),
-                  )
-                  .nestedDecoratedBox(
-                    decoration: const BoxDecoration(color: Colors.white),
-                  )
-                  .nestedSizedBox(width: width)
-                  .nestedConstrainedBox(
-                    constraints: const BoxConstraints(minHeight: 64),
-                  ),
               const Text.rich(
                 TextSpan(
                   children: [
@@ -364,7 +319,7 @@ class _EmojiViewState extends State<EmojiView> {
       DialogUtil.showCustomDialog(
         title: 'Allow access to your album',
         content:
-        'Please go to your phone Settings to grant Homing Pigeon the permission to visit your album.',
+            'Please go to your phone Settings to grant Homing Pigeon the permission to visit your album.',
         cancelText: 'Ignore',
         okText: 'Turn On',
         onOK: () async {
