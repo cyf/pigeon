@@ -74,8 +74,15 @@ class _RoadmapViewState extends State<RoadmapView> {
   final QuillController _quillController = QuillController.basic();
   final ScrollController _scrollController = ScrollController();
 
-  List<RoadmapModel> items = [];
+  List<RoadmapModel> _items = [];
   DateTime _current = DateTime.now();
+  bool _initialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _load(year: _current.year, month: _current.month);
+  }
 
   @override
   void dispose() {
@@ -103,13 +110,13 @@ class _RoadmapViewState extends State<RoadmapView> {
         ),
         child: SfCalendar(
           view: CalendarView.timelineMonth,
-          dataSource: RoadmapDataSource(items),
+          dataSource: RoadmapDataSource(_items),
           onViewChanged: (ViewChangedDetails viewChangedDetails) {
             final visibleDates = viewChangedDetails.visibleDates;
             if (kDebugMode) {
               print('visibleDates: ${viewChangedDetails.visibleDates}');
             }
-            if (visibleDates.isNotEmpty) {
+            if (visibleDates.isNotEmpty && _initialized) {
               final startDate = visibleDates.first;
               printDebugLog('startDate: $startDate');
               setState(() => _current = startDate);
@@ -128,11 +135,11 @@ class _RoadmapViewState extends State<RoadmapView> {
               }
             }
           },
-          showNavigationArrow: true,
-          showDatePickerButton: true,
-          showTodayButton: true,
+          showNavigationArrow: _initialized,
+          showDatePickerButton: _initialized,
+          showTodayButton: _initialized,
           // allowViewNavigation: true,
-          showWeekNumber: true,
+          showWeekNumber: _initialized,
           // allowAppointmentResize: true,
           headerDateFormat: 'MM/yyyy',
           monthViewSettings: const MonthViewSettings(
@@ -161,11 +168,14 @@ class _RoadmapViewState extends State<RoadmapView> {
         } else if (operation == Operation.refresh) {
           _controller.finishRefresh();
         }
-        setState(() => items = data);
+        setState(() {
+          _initialized = true;
+          _items = data;
+        });
       },
     ).onError<RequestedException>((error, stackTrace) {
       printErrorStackLog(error, stackTrace);
-      setState(() => items = []);
+      setState(() => _items = []);
       if (operation == Operation.none) {
         EasyLoading.showError(error.msg);
       } else if (operation == Operation.refresh) {
