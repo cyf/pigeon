@@ -48,6 +48,42 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1029812416722:android:1a1a8dcb38b6e18a7e3d0b",
+        "android_client_info": {
+          "package_name": "com.chenyifaer.homingpigeon.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1029812416722-sfltvfs3eqsqfli0cpap7jpc3vbpjfo0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdwTj3b67zq4SYwo7VLVeCdIVVS6arbPU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1029812416722-sfltvfs3eqsqfli0cpap7jpc3vbpjfo0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1029812416722-in81k1042rkii7tp6hfngh4oqht4o1v4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.chenyifaer.homingpigeon"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

@@ -1,7 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="android(externalProd)" type="FlutterRunConfigurationType" factoryName="Flutter">
-    <option name="buildFlavor" value="externalProd" />
-    <option name="filePath" value="$PROJECT_DIR$/lib/main_external.dart" />
-    <method v="2" />
-  </configuration>
-</component>

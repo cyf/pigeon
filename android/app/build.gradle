@@ -82,25 +82,13 @@ android {
     flavorDimensions "default"
     productFlavors {
         // 国内分发
-        internalDev {
+        internal {
             dimension "default"
-            applicationIdSuffix ".dev"
-            versionNameSuffix appVersionNameSuffix
-        }
-        internalProd {
-            dimension "default"
-            applicationIdSuffix ""
         }
 
         // 国外分发
-        externalDev {
+        external {
             dimension "default"
-            applicationIdSuffix ".dev"
-            versionNameSuffix appVersionNameSuffix
-        }
-        externalProd {
-            dimension "default"
-            applicationIdSuffix ""
         }
     }
 
@@ -130,6 +118,8 @@ android {
         }
         debug {
             signingConfig signingConfigs.debug
+            applicationIdSuffix ".dev"
+            versionNameSuffix appVersionNameSuffix
         }
     }
 }
