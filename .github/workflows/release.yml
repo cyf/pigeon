@@ -37,7 +37,7 @@ permissions: read-all
 jobs:
   draft-release:
     name: Draft Github release
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs:
       - apk-build
       - aab-build
@@ -73,7 +73,7 @@ jobs:
 
   apk-build:
     name: Create apk build
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -179,7 +179,7 @@ jobs:
 
   aab-build:
     name: Create appbundle build
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -285,7 +285,7 @@ jobs:
 
   ios-build:
     name: Create ios build
-    runs-on: macos-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
 
