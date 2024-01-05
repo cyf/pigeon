@@ -428,9 +428,11 @@ packages:
   dxcaptcha_flutter:
     dependency: "direct main"
     description:
-      path: "plugins/dxcaptcha_flutter"
-      relative: true
-    source: path
+      path: "."
+      ref: "v0.0.1"
+      resolved-ref: "14e09d019c86b3ef3ab30c8e98b55be01d74d0b8"
+      url: "git@github.com:FlutterFleet/dxcaptcha_flutter.git"
+    source: git
     version: "0.0.1"
   easy_refresh:
     dependency: "direct main"
@@ -935,9 +937,11 @@ packages:
   hcaptcha_flutter:
     dependency: "direct main"
     description:
-      path: "plugins/hcaptcha_flutter"
-      relative: true
-    source: path
+      path: "."
+      ref: "v0.0.2"
+      resolved-ref: "6f04dd476c6842b413b56516a371bdce539da982"
+      url: "git@github.com:FlutterFleet/hcaptcha_flutter.git"
+    source: git
     version: "0.0.1"
   html:
     dependency: transitive
