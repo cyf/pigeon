@@ -45,7 +45,9 @@ dependencies:
   device_info_plus: ^9.1.1
   dio: ^5.4.0
   dxcaptcha_flutter:
-    path: ./plugins/dxcaptcha_flutter
+    git:
+      url: git@github.com:FlutterFleet/dxcaptcha_flutter.git
+      ref: v0.0.1
   easy_refresh: ^3.3.4
   encrypt: ^5.0.3
   equatable: ^2.0.5
@@ -73,7 +75,9 @@ dependencies:
   fluttertoast: ^8.2.4
   freezed_annotation: ^2.4.1
   hcaptcha_flutter:
-    path: ./plugins/hcaptcha_flutter
+    git:
+      url: git@github.com:FlutterFleet/hcaptcha_flutter.git
+      ref: v0.0.2
   http_parser: ^4.0.2
   image_gallery_saver: ^2.0.3
   intl: ^0.18.1
