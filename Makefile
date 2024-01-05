@@ -47,7 +47,7 @@ internal_apk: ## Release Apk
 
 internal_appbundle: ## Release Appbundle
 	echo "╠ Releasing Appbundle..."
-	rm -f android/git.properties && flutter build appbundle --no-tree-shake-icons --flavor internal --target lib/main_internal.dart
+	flutter build appbundle --no-tree-shake-icons --flavor internal --target lib/main_internal.dart
 
 external_apk: ## Release Apk
 	echo "╠ Releasing Apk..."
@@ -55,7 +55,7 @@ external_apk: ## Release Apk
 
 external_appbundle: ## Release Appbundle
 	echo "╠ Releasing Appbundle..."
-	rm -f android/git.properties && flutter build appbundle --no-tree-shake-icons --flavor external --target lib/main_external.dart
+	flutter build appbundle --no-tree-shake-icons --flavor external --target lib/main_external.dart
 
 internal_adhoc:
 	echo "╠ Removing build products and intermediate files from the build root..."
