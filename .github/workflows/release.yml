@@ -589,7 +589,7 @@ jobs:
           rm -f .env
 
   external-ios:
-    name: Create ios (internal)
+    name: Create ios (external)
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
