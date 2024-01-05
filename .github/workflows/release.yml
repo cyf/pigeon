@@ -585,7 +585,10 @@ jobs:
       - name: Clean up
         if: ${{ always() }}
         run: |
-          security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+          if [ -f "$RUNNER_TEMP/app-signing.keychain-db" ]; then
+            echo "$RUNNER_TEMP/app-signing.keychain-db"
+            security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+          fi
           rm -f .env
 
   external-ios:
@@ -741,5 +744,8 @@ jobs:
       - name: Clean up
         if: ${{ always() }}
         run: |
-          security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+          if [ -f "$RUNNER_TEMP/app-signing.keychain-db" ]; then
+            echo "$RUNNER_TEMP/app-signing.keychain-db"
+            security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+          fi
           rm -f .env
