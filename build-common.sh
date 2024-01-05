@@ -2,11 +2,17 @@
 
 function getEnv() {
   env=""
-  if [ "$(awk '/dev.chenyifaer.com/{print $0}' .env)" ]; then
+  if [ "$(awk '/dev.external.homing-pigeon.chenyifaer.com/{print $0}' .env)" ]; then
       env="development"
-  elif [ "$(awk '/stg.chenyifaer.com/{print $0}' .env)" ]; then
+  elif [ "$(awk '/dev.internal.homing-pigeon.chenyifaer.com/{print $0}' .env)" ]; then
+      env="development"
+  elif [ "$(awk '/stg.external.homing-pigeon.chenyifaer.com/{print $0}' .env)" ]; then
       env="staging"
-  elif [ "$(awk '/www.chenyifaer.com/{print $0}' .env)" ]; then
+  elif [ "$(awk '/stg.internal.homing-pigeon.chenyifaer.com/{print $0}' .env)" ]; then
+      env="staging"
+  elif [ "$(awk '/external.homing-pigeon.chenyifaer.com/{print $0}' .env)" ]; then
+      env="production"
+  elif [ "$(awk '/internal.homing-pigeon.chenyifaer.com/{print $0}' .env)" ]; then
       env="production"
   fi
   echo "$env"
