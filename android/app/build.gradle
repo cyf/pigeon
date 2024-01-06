@@ -85,6 +85,7 @@ android {
         internal {
             dimension "default"
             applicationIdSuffix ".internal"
+            proguardFile 'dx-proguard-rules.pro'
         }
 
         // 国外分发
@@ -115,7 +116,7 @@ android {
         release {
             signingConfig signingConfigs.release
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', 'dx-proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             signingConfig signingConfigs.debug
