@@ -157,15 +157,18 @@ jobs:
 
       - name: Install ossutil
         run: |
-          curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
+          if ! command -v ossutil >/dev/null 2>&1; then
+            echo "ossutil not exists"
+            curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
+          fi
           ossutil help
 
       - name: Upload to oss
         run: |
-          ossutil cp -r -f ./*.apk oss://$INTERNAL_ARTIFACT_OSS_BUCKET/$ENV/$VERSION/ \
-            --access-key-id=$INTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID \
-            --access-key-secret=$INTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET \
-            --endpoint=$INTERNAL_ARTIFACT_OSS_ENDPOINT
+          ossutil cp -r -f ./*.apk "oss://$INTERNAL_ARTIFACT_OSS_BUCKET/$ENV/$VERSION/" \
+            --access-key-id="$INTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID" \
+            --access-key-secret="$INTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET" \
+            --endpoint="$INTERNAL_ARTIFACT_OSS_ENDPOINT"
         env:
           ENV: ${{ github.event.inputs.env }}
           VERSION: ${{ github.event.inputs.env == 'production' && '${{ github.event.inputs.version }}' || '${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}' }}
@@ -306,15 +309,18 @@ jobs:
 
       - name: Install ossutil
         run: |
-          curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
+          if ! command -v ossutil >/dev/null 2>&1; then
+            echo "ossutil not exists"
+            curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
+          fi
           ossutil help
 
       - name: Upload to oss
         run: |
-          ossutil cp -r -f ./*.apk oss://$EXTERNAL_ARTIFACT_OSS_BUCKET/$ENV/$VERSION/ \
-            --access-key-id=$EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID \
-            --access-key-secret=$EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET \
-            --endpoint=$EXTERNAL_ARTIFACT_OSS_ENDPOINT
+          ossutil cp -r -f ./*.apk "oss://$EXTERNAL_ARTIFACT_OSS_BUCKET/$ENV/$VERSION/" \
+            --access-key-id="$EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID" \
+            --access-key-secret="$EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET" \
+            --endpoint="$EXTERNAL_ARTIFACT_OSS_ENDPOINT"
         env:
           ENV: ${{ github.event.inputs.env }}
           VERSION: ${{ github.event.inputs.env == 'production' && '${{ github.event.inputs.version }}' || '${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}' }}
@@ -401,15 +407,18 @@ jobs:
 
       - name: Install ossutil
         run: |
-          curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
+          if ! command -v ossutil >/dev/null 2>&1; then
+            echo "ossutil not exists"
+            curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
+          fi
           ossutil help
 
       - name: Upload to oss
         run: |
-          ossutil cp -r -f ./*.aab oss://$INTERNAL_ARTIFACT_OSS_BUCKET/$ENV/$VERSION/ \
-            --access-key-id=$INTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID \
-            --access-key-secret=$INTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET \
-            --endpoint=$INTERNAL_ARTIFACT_OSS_ENDPOINT
+          ossutil cp -r -f ./*.aab "oss://$INTERNAL_ARTIFACT_OSS_BUCKET/$ENV/$VERSION/" \
+            --access-key-id="$INTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID" \
+            --access-key-secret="$INTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET" \
+            --endpoint="$INTERNAL_ARTIFACT_OSS_ENDPOINT"
         env:
           ENV: ${{ github.event.inputs.env }}
           VERSION: ${{ github.event.inputs.version }}
@@ -496,15 +505,18 @@ jobs:
 
       - name: Install ossutil
         run: |
-          curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
+          if ! command -v ossutil >/dev/null 2>&1; then
+            echo "ossutil not exists"
+            curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
+          fi
           ossutil help
 
       - name: Upload to oss
         run: |
-          ossutil cp -r -f ./*.aab oss://$EXTERNAL_ARTIFACT_OSS_BUCKET/$ENV/$VERSION/ \
-            --access-key-id=$EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID \
-            --access-key-secret=$EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET \
-            --endpoint=$EXTERNAL_ARTIFACT_OSS_ENDPOINT
+          ossutil cp -r -f ./*.aab "oss://$EXTERNAL_ARTIFACT_OSS_BUCKET/$ENV/$VERSION/" \
+            --access-key-id="$EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID" \
+            --access-key-secret="$EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET" \
+            --endpoint="$EXTERNAL_ARTIFACT_OSS_ENDPOINT"
         env:
           ENV: ${{ github.event.inputs.env }}
           VERSION: ${{ github.event.inputs.version }}
@@ -697,15 +709,18 @@ jobs:
 
       - name: Install ossutil
         run: |
-          curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
+          if ! command -v ossutil >/dev/null 2>&1; then
+            echo "ossutil not exists"
+            curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
+          fi
           ossutil help
 
       - name: Upload to oss
         run: |
-          ossutil cp -r -f ./*.ipa oss://$INTERNAL_ARTIFACT_OSS_BUCKET/$ENV/$VERSION/ \
-            --access-key-id=$INTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID \
-            --access-key-secret=$INTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET \
-            --endpoint=$INTERNAL_ARTIFACT_OSS_ENDPOINT
+          ossutil cp -r -f ./*.ipa "oss://$INTERNAL_ARTIFACT_OSS_BUCKET/$ENV/$VERSION/" \
+            --access-key-id="$INTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID" \
+            --access-key-secret="$INTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET" \
+            --endpoint="$INTERNAL_ARTIFACT_OSS_ENDPOINT"
         env:
           ENV: ${{ github.event.inputs.env }}
           VERSION: ${{ github.event.inputs.env == 'production' && '${{ github.event.inputs.version }}' || '${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}' }}
@@ -900,15 +915,18 @@ jobs:
 
       - name: Install ossutil
         run: |
-          curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
+          if ! command -v ossutil >/dev/null 2>&1; then
+            echo "ossutil not exists"
+            curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
+          fi
           ossutil help
 
       - name: Upload to oss
         run: |
-          ossutil cp -r -f ./*.ipa oss://$EXTERNAL_ARTIFACT_OSS_BUCKET/$ENV/$VERSION/ \
-            --access-key-id=$EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID \
-            --access-key-secret=$EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET \
-            --endpoint=$EXTERNAL_ARTIFACT_OSS_ENDPOINT
+          ossutil cp -r -f ./*.ipa "oss://$EXTERNAL_ARTIFACT_OSS_BUCKET/$ENV/$VERSION/" \
+            --access-key-id="$EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID" \
+            --access-key-secret="$EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET" \
+            --endpoint="$EXTERNAL_ARTIFACT_OSS_ENDPOINT"
         env:
           ENV: ${{ github.event.inputs.env }}
           VERSION: ${{ github.event.inputs.env == 'production' && '${{ github.event.inputs.version }}' || '${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}' }}
