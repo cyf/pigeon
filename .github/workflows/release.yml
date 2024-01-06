@@ -22,54 +22,6 @@ on:
 permissions: read-all
 
 jobs:
-  draft-release:
-    name: Draft Github release
-    runs-on: self-hosted
-    needs:
-      - internal-apk
-      - external-apk
-      - internal-aab
-      - external-aab
-      - internal-ios
-      - external-ios
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          path: build/
-
-      - name: Display structure of downloaded files
-        run: ls -R
-        working-directory: build/
-
-      - name: Set outputs
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
-
-      - name: Check outputs
-        run: echo ${{ steps.vars.outputs.sha_short }}
-
-      - name: Create release (${{ github.event.inputs.env }})
-        if: ${{ github.event.inputs.env == 'development' || github.event.inputs.env == 'staging' }}
-        uses: ncipollo/release-action@v1
-        with:
-          name: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
-          artifacts: "./**/*.apk,./**/*.aab,./**/*.ipa"
-          tag: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
-          token: ${{ secrets.CYF_BOT_TOKEN }}
-          body: "env: ${{ github.event.inputs.env }}"
-          prerelease: true
-
-      - name: Create release (${{ github.event.inputs.env }})
-        if: github.event.inputs.env == 'production'
-        uses: ncipollo/release-action@v1
-        with:
-          name: ${{ github.event.inputs.version }}
-          artifacts: "./**/*.apk,./**/*.aab,./**/*.ipa"
-          tag: ${{ github.event.inputs.version }}
-          token: ${{ secrets.CYF_BOT_TOKEN }}
-          body: "env: ${{ github.event.inputs.env }}"
-          prerelease: false
-
   cleanup-ios:
     name: Clean up (ios)
     if: ${{ always() }}
@@ -173,10 +125,24 @@ jobs:
         run: cp *.apk $GITHUB_WORKSPACE/
         working-directory: build/app/outputs/flutter-apk
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: internal-apk-artifact
-          path: ./*.apk
+      - name: Install ossutil
+        run: |
+          sudo -v ; curl https://gosspublic.alicdn.com/ossutil/install.sh | sudo bash
+          ossutil help
+
+      - name: Upload to oss
+        run: |
+          ossutil cp -r -f ./*.apk oss://$INTERNAL_ARTIFACT_OSS_BUCKET/$ENV/$VERSION/ \
+            --access-key-id=$INTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID \
+            --access-key-secret=$INTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET \
+            --endpoint=$INTERNAL_ARTIFACT_OSS_ENDPOINT
+        env:
+          ENV: ${{ github.event.inputs.env }}
+          VERSION: ${{ github.event.inputs.env == 'production' && '${{ github.event.inputs.version }}' || '${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}' }}
+          INTERNAL_ARTIFACT_OSS_BUCKET: ${{ secrets.INTERNAL_ARTIFACT_OSS_BUCKET }}
+          INTERNAL_ARTIFACT_OSS_ENDPOINT: ${{ secrets.INTERNAL_ARTIFACT_OSS_ENDPOINT }}
+          INTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID: ${{ secrets.INTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID }}
+          INTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET: ${{ secrets.INTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET }}
 
       - name: Clean up
         if: ${{ always() }}
@@ -278,10 +244,24 @@ jobs:
         run: cp *.apk $GITHUB_WORKSPACE/
         working-directory: build/app/outputs/flutter-apk
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: external-apk-artifact
-          path: ./*.apk
+      - name: Install ossutil
+        run: |
+          sudo -v ; curl https://gosspublic.alicdn.com/ossutil/install.sh | sudo bash
+          ossutil help
+
+      - name: Upload to oss
+        run: |
+          ossutil cp -r -f ./*.apk oss://$EXTERNAL_ARTIFACT_OSS_BUCKET/$ENV/$VERSION/ \
+            --access-key-id=$EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID \
+            --access-key-secret=$EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET \
+            --endpoint=$EXTERNAL_ARTIFACT_OSS_ENDPOINT
+        env:
+          ENV: ${{ github.event.inputs.env }}
+          VERSION: ${{ github.event.inputs.env == 'production' && '${{ github.event.inputs.version }}' || '${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}' }}
+          EXTERNAL_ARTIFACT_OSS_BUCKET: ${{ secrets.EXTERNAL_ARTIFACT_OSS_BUCKET }}
+          EXTERNAL_ARTIFACT_OSS_ENDPOINT: ${{ secrets.EXTERNAL_ARTIFACT_OSS_ENDPOINT }}
+          EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID: ${{ secrets.EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID }}
+          EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET: ${{ secrets.EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET }}
 
       - name: Clean up
         if: ${{ always() }}
@@ -349,10 +329,24 @@ jobs:
         run: cp *.aab $GITHUB_WORKSPACE/
         working-directory: build/app/outputs/bundle/release
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: internal-aab-artifact
-          path: ./*.aab
+      - name: Install ossutil
+        run: |
+          sudo -v ; curl https://gosspublic.alicdn.com/ossutil/install.sh | sudo bash
+          ossutil help
+
+      - name: Upload to oss
+        run: |
+          ossutil cp -r -f ./*.aab oss://$INTERNAL_ARTIFACT_OSS_BUCKET/$ENV/$VERSION/ \
+            --access-key-id=$INTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID \
+            --access-key-secret=$INTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET \
+            --endpoint=$INTERNAL_ARTIFACT_OSS_ENDPOINT
+        env:
+          ENV: ${{ github.event.inputs.env }}
+          VERSION: ${{ github.event.inputs.version }}
+          INTERNAL_ARTIFACT_OSS_BUCKET: ${{ secrets.INTERNAL_ARTIFACT_OSS_BUCKET }}
+          INTERNAL_ARTIFACT_OSS_ENDPOINT: ${{ secrets.INTERNAL_ARTIFACT_OSS_ENDPOINT }}
+          INTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID: ${{ secrets.INTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID }}
+          INTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET: ${{ secrets.INTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET }}
 
       - name: Clean up
         if: ${{ always() }}
@@ -420,10 +414,24 @@ jobs:
         run: cp *.aab $GITHUB_WORKSPACE/
         working-directory: build/app/outputs/bundle/release
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: external-aab-artifact
-          path: ./*.aab
+      - name: Install ossutil
+        run: |
+          sudo -v ; curl https://gosspublic.alicdn.com/ossutil/install.sh | sudo bash
+          ossutil help
+
+      - name: Upload to oss
+        run: |
+          ossutil cp -r -f ./*.aab oss://$EXTERNAL_ARTIFACT_OSS_BUCKET/$ENV/$VERSION/ \
+            --access-key-id=$EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID \
+            --access-key-secret=$EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET \
+            --endpoint=$EXTERNAL_ARTIFACT_OSS_ENDPOINT
+        env:
+          ENV: ${{ github.event.inputs.env }}
+          VERSION: ${{ github.event.inputs.version }}
+          EXTERNAL_ARTIFACT_OSS_BUCKET: ${{ secrets.EXTERNAL_ARTIFACT_OSS_BUCKET }}
+          EXTERNAL_ARTIFACT_OSS_ENDPOINT: ${{ secrets.EXTERNAL_ARTIFACT_OSS_ENDPOINT }}
+          EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID: ${{ secrets.EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID }}
+          EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET: ${{ secrets.EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET }}
 
       - name: Clean up
         if: ${{ always() }}
@@ -577,10 +585,24 @@ jobs:
         run: cp *.ipa $GITHUB_WORKSPACE/Homing\ Pigeon-internal.ipa
         working-directory: build/ios/ipa
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: internal-ios-artifact
-          path: ./*.ipa
+      - name: Install ossutil
+        run: |
+          sudo -v ; curl https://gosspublic.alicdn.com/ossutil/install.sh | sudo bash
+          ossutil help
+
+      - name: Upload to oss
+        run: |
+          ossutil cp -r -f ./*.ipa oss://$INTERNAL_ARTIFACT_OSS_BUCKET/$ENV/$VERSION/ \
+            --access-key-id=$INTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID \
+            --access-key-secret=$INTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET \
+            --endpoint=$INTERNAL_ARTIFACT_OSS_ENDPOINT
+        env:
+          ENV: ${{ github.event.inputs.env }}
+          VERSION: ${{ github.event.inputs.env == 'production' && '${{ github.event.inputs.version }}' || '${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}' }}
+          INTERNAL_ARTIFACT_OSS_BUCKET: ${{ secrets.INTERNAL_ARTIFACT_OSS_BUCKET }}
+          INTERNAL_ARTIFACT_OSS_ENDPOINT: ${{ secrets.INTERNAL_ARTIFACT_OSS_ENDPOINT }}
+          INTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID: ${{ secrets.INTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID }}
+          INTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET: ${{ secrets.INTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET }}
 
       - name: Clean up
         if: ${{ always() }}
@@ -736,10 +758,24 @@ jobs:
         run: cp *.ipa $GITHUB_WORKSPACE/Homing\ Pigeon-external.ipa
         working-directory: build/ios/ipa
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: external-ios-artifact
-          path: ./*.ipa
+      - name: Install ossutil
+        run: |
+          sudo -v ; curl https://gosspublic.alicdn.com/ossutil/install.sh | sudo bash
+          ossutil help
+
+      - name: Upload to oss
+        run: |
+          ossutil cp -r -f ./*.ipa oss://$EXTERNAL_ARTIFACT_OSS_BUCKET/$ENV/$VERSION/ \
+            --access-key-id=$EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID \
+            --access-key-secret=$EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET \
+            --endpoint=$EXTERNAL_ARTIFACT_OSS_ENDPOINT
+        env:
+          ENV: ${{ github.event.inputs.env }}
+          VERSION: ${{ github.event.inputs.env == 'production' && '${{ github.event.inputs.version }}' || '${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}' }}
+          EXTERNAL_ARTIFACT_OSS_BUCKET: ${{ secrets.EXTERNAL_ARTIFACT_OSS_BUCKET }}
+          EXTERNAL_ARTIFACT_OSS_ENDPOINT: ${{ secrets.EXTERNAL_ARTIFACT_OSS_ENDPOINT }}
+          EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID: ${{ secrets.EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID }}
+          EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET: ${{ secrets.EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET }}
 
       - name: Clean up
         if: ${{ always() }}
