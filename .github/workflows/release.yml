@@ -147,7 +147,7 @@ jobs:
       - if: ${{ github.event.inputs.env == 'development' || github.event.inputs.env == 'staging' }}
         run: bash build-android.sh && flutter build apk --debug --no-tree-shake-icons --flavor internal --target lib/main_internal.dart
 
-      - if: github.event.inputs.env != 'production'
+      - if: github.event.inputs.env == 'production'
         run: flutter build apk --release --no-tree-shake-icons --flavor internal --target lib/main_internal.dart
 
       # Package the build.
@@ -157,7 +157,7 @@ jobs:
 
       - name: Install ossutil
         run: |
-          sudo -v ; curl https://gosspublic.alicdn.com/ossutil/install.sh | sudo bash
+          curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
           ossutil help
 
       - name: Upload to oss
@@ -296,7 +296,7 @@ jobs:
       - if: ${{ github.event.inputs.env == 'development' || github.event.inputs.env == 'staging' }}
         run: bash build-android.sh && flutter build apk --debug --no-tree-shake-icons --flavor external --target lib/main_external.dart
 
-      - if: github.event.inputs.env != 'production'
+      - if: github.event.inputs.env == 'production'
         run: flutter build apk --release --no-tree-shake-icons --flavor external --target lib/main_external.dart
 
       # Package the build.
@@ -306,7 +306,7 @@ jobs:
 
       - name: Install ossutil
         run: |
-          sudo -v ; curl https://gosspublic.alicdn.com/ossutil/install.sh | sudo bash
+          curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
           ossutil help
 
       - name: Upload to oss
@@ -401,7 +401,7 @@ jobs:
 
       - name: Install ossutil
         run: |
-          sudo -v ; curl https://gosspublic.alicdn.com/ossutil/install.sh | sudo bash
+          curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
           ossutil help
 
       - name: Upload to oss
@@ -496,7 +496,7 @@ jobs:
 
       - name: Install ossutil
         run: |
-          sudo -v ; curl https://gosspublic.alicdn.com/ossutil/install.sh | sudo bash
+          curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
           ossutil help
 
       - name: Upload to oss
@@ -697,7 +697,7 @@ jobs:
 
       - name: Install ossutil
         run: |
-          sudo -v ; curl https://gosspublic.alicdn.com/ossutil/install.sh | sudo bash
+          curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
           ossutil help
 
       - name: Upload to oss
@@ -900,7 +900,7 @@ jobs:
 
       - name: Install ossutil
         run: |
-          sudo -v ; curl https://gosspublic.alicdn.com/ossutil/install.sh | sudo bash
+          curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
           ossutil help
 
       - name: Upload to oss
