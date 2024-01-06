@@ -84,6 +84,7 @@ android {
         // 国内分发
         internal {
             dimension "default"
+            applicationIdSuffix ".internal"
         }
 
         // 国外分发
