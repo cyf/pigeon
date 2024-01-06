@@ -44,8 +44,11 @@ if (keystorePropertiesFile.exists()) {
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.google.gms.google-services'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+if (getGradle().getStartParameter().getTaskRequests()
+        .toString().contains("External")){
+    apply plugin: 'com.google.gms.google-services'
+}
 
 android {
     compileSdk 34
