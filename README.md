@@ -1,5 +1,7 @@
 # Homing Pigeon
 
+[![Release](https://github.com/cyf/homing_pigeon/actions/workflows/release.yml/badge.svg)](https://github.com/cyf/homing_pigeon/actions/workflows/release.yml)
+
 ## iOS
 
 ```shell
