@@ -1,0 +1,22 @@
+{
+  "name": "homing-pigeon",
+  "private": true,
+  "description": "Homing Pigeon",
+  "scripts": {
+    "latest-commits": "tsx ./gen-latest-commits.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "packageManager": "pnpm@8.14.1",
+  "engines": {
+    "node": ">= 18"
+  },
+  "devDependencies": {
+    "@types/node": "18.19.6",
+    "tsx": "^4.7.0"
+  },
+  "dependencies": {
+    "simple-git": "^3.22.0"
+  }
+}
