@@ -46,7 +46,6 @@ jobs:
       - name: Create a release
         run: |
           RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
-          gh auth login --git-protocol https --hostname GitHub.com --with-token
           if [ "$ENV" == "production" ]; then
             gh release create "$RELEASE" --latest --title "$RELEASE" --notes "Env: $ENV <br /> Version: $RELEASE"
           else
@@ -90,7 +89,6 @@ jobs:
         - name: Remove a release
           run: |
             RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
-            gh auth login --git-protocol https --hostname GitHub.com --with-token
             gh release delete -y --cleanup-tag "$RELEASE"
           env:
             ENV: ${{ github.event.inputs.env }}
@@ -251,7 +249,6 @@ jobs:
       - name: Upload assets
         run: |
           RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
-          gh auth login --git-protocol https --hostname GitHub.com --with-token
           gh release upload "$RELEASE" ./*.apk
         env:
           ENV: ${{ github.event.inputs.env }}
@@ -409,7 +406,6 @@ jobs:
       - name: Upload assets
         run: |
           RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
-          gh auth login --git-protocol https --hostname GitHub.com --with-token
           gh release upload "$RELEASE" ./*.apk
         env:
           ENV: ${{ github.event.inputs.env }}
@@ -513,7 +509,6 @@ jobs:
       - name: Upload assets
         run: |
           RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
-          gh auth login --git-protocol https --hostname GitHub.com --with-token
           gh release upload "$RELEASE" ./*.aab
         env:
           ENV: ${{ github.event.inputs.env }}
@@ -617,7 +612,6 @@ jobs:
       - name: Upload assets
         run: |
           RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
-          gh auth login --git-protocol https --hostname GitHub.com --with-token
           gh release upload "$RELEASE" ./*.aab
         env:
           ENV: ${{ github.event.inputs.env }}
@@ -827,7 +821,6 @@ jobs:
       - name: Upload assets
         run: |
           RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
-          gh auth login --git-protocol https --hostname GitHub.com --with-token
           gh release upload "$RELEASE" ./*.ipa
         env:
           ENV: ${{ github.event.inputs.env }}
@@ -1039,7 +1032,6 @@ jobs:
       - name: Upload assets
         run: |
           RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
-          gh auth login --git-protocol https --hostname GitHub.com --with-token
           gh release upload "$RELEASE" ./*.ipa
         env:
           ENV: ${{ github.event.inputs.env }}
