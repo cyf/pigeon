@@ -32,6 +32,112 @@ jobs:
     steps:
       - run: rm -f ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision
 
+  internal-latest-commits:
+    name: Gen latest 10 commits (internal)
+    runs-on: self-hosted
+    needs:
+      - internal-apk
+      - internal-aab
+      - internal-ios
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: true
+
+      - name: Gen latest 10 commits
+        run: pnpm run latest-commits
+
+      - name: Install ossutil
+        run: |
+          if ! command -v ossutil >/dev/null 2>&1; then
+            echo "ossutil not exists"
+            curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
+          fi
+          ossutil help
+
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Check outputs
+        run: echo ${{ steps.vars.outputs.sha_short }}
+
+      - name: Upload to oss
+        run: |
+          RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
+          ossutil cp -r -f ./latest-commits.json "oss://$INTERNAL_ARTIFACT_OSS_BUCKET/$ENV/$RELEASE/" \
+            --access-key-id="$INTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID" \
+            --access-key-secret="$INTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET" \
+            --endpoint="$INTERNAL_ARTIFACT_OSS_ENDPOINT"
+        env:
+          ENV: ${{ github.event.inputs.env }}
+          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
+          VERSION: ${{ github.event.inputs.version }}
+          INTERNAL_ARTIFACT_OSS_BUCKET: ${{ secrets.INTERNAL_ARTIFACT_OSS_BUCKET }}
+          INTERNAL_ARTIFACT_OSS_ENDPOINT: ${{ secrets.INTERNAL_ARTIFACT_OSS_ENDPOINT }}
+          INTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID: ${{ secrets.INTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID }}
+          INTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET: ${{ secrets.INTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET }}
+
+  external-latest-commits:
+    name: Gen latest 10 commits (external)
+    runs-on: self-hosted
+    needs:
+      - external-apk
+      - external-aab
+      - external-ios
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: true
+
+      - name: Gen latest 10 commits
+        run: pnpm run latest-commits
+
+      - name: Install ossutil
+        run: |
+          if ! command -v ossutil >/dev/null 2>&1; then
+            echo "ossutil not exists"
+            curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
+          fi
+          ossutil help
+
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Check outputs
+        run: echo ${{ steps.vars.outputs.sha_short }}
+
+      - name: Upload to oss
+        run: |
+          RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
+          ossutil cp -r -f ./latest-commits.json "oss://$EXTERNAL_ARTIFACT_OSS_BUCKET/$ENV/$RELEASE/" \
+            --access-key-id="$EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID" \
+            --access-key-secret="$EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET" \
+            --endpoint="$EXTERNAL_ARTIFACT_OSS_ENDPOINT"
+        env:
+          ENV: ${{ github.event.inputs.env }}
+          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
+          VERSION: ${{ github.event.inputs.version }}
+          EXTERNAL_ARTIFACT_OSS_BUCKET: ${{ secrets.EXTERNAL_ARTIFACT_OSS_BUCKET }}
+          EXTERNAL_ARTIFACT_OSS_ENDPOINT: ${{ secrets.EXTERNAL_ARTIFACT_OSS_ENDPOINT }}
+          EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID: ${{ secrets.EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID }}
+          EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET: ${{ secrets.EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET }}
+
   internal-apk:
     name: Create apk (internal)
     runs-on: self-hosted

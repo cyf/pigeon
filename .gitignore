@@ -47,4 +47,7 @@ app.*.map.json
 .env*.local
 .env
 
+node_modules/
+
 adhoc.json
+latest-commits.json

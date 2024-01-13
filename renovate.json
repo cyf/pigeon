@@ -7,9 +7,14 @@
   "prHourlyLimit": 0,
   "ignoreDeps": [
     "flutter_localizations",
-    "flutter_test"
+    "flutter_test",
+    "node"
   ],
   "packageRules": [
+    {
+      "allowedVersions": "18",
+      "matchPackageNames": ["@types/node"]
+    },
     {
       "matchPackageNames": ["flutter", "dart"],
       "groupName": "flutter"
