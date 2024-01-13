@@ -1,0 +1,1057 @@
+name: Release to GitHub
+on:
+  # Enable manual run
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Tag to create (e.g. v2.10.0)."
+        required: true
+        default: "v1.0.0"
+        type: string
+      env:
+        type: choice
+        description: "Which environment are you using?"
+        required: true
+        default: "development"
+        options:
+          - development
+          - staging
+          - production
+
+# Declare default permissions as read only.
+permissions: read-all
+
+jobs:
+  create-release:
+    name: Create release
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Check outputs
+        run: echo ${{ steps.vars.outputs.sha_short }}
+
+      - name: Install gh
+        run: |
+          if ! command -v gh >/dev/null 2>&1; then
+            echo "gh not exists"
+            brew install gh
+          fi
+          gh --version
+
+      - name: Create a release
+        run: |
+          RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
+          gh auth login --git-protocol https --hostname GitHub.com --with-token
+          if [ "$ENV" == "production" ]; then
+            gh release create "$RELEASE" --latest --title "$RELEASE" --notes "Env: $ENV <br /> Version: $RELEASE"
+          else
+            gh release create "$RELEASE" --prerelease --title "$RELEASE" --notes "Env: $ENV <br /> Version: $RELEASE"
+          fi
+        env:
+          ENV: ${{ github.event.inputs.env }}
+          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
+          VERSION: ${{ github.event.inputs.version }}
+          GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
+
+  remove-release:
+      name: Remove release
+      if: ${{ cancelled() || failure() }}
+      runs-on: self-hosted
+      needs:
+        - internal-apk
+        - internal-aab
+        - internal-ios
+        - external-apk
+        - external-aab
+        - external-ios
+      steps:
+        - uses: actions/checkout@v4
+
+        - name: Set outputs
+          id: vars
+          run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
+
+        - name: Check outputs
+          run: echo ${{ steps.vars.outputs.sha_short }}
+
+        - name: Install gh
+          run: |
+            if ! command -v gh >/dev/null 2>&1; then
+              echo "gh not exists"
+              brew install gh
+            fi
+            gh --version
+
+        - name: Remove a release
+          run: |
+            RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
+            gh auth login --git-protocol https --hostname GitHub.com --with-token
+            gh release delete -y --cleanup-tag "$RELEASE"
+          env:
+            ENV: ${{ github.event.inputs.env }}
+            VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
+            VERSION: ${{ github.event.inputs.version }}
+            GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
+
+  cleanup-ios:
+    name: Clean up (ios)
+    if: ${{ always() }}
+    runs-on: self-hosted
+    needs:
+      - internal-ios
+      - external-ios
+    steps:
+      - run: rm -f ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision
+
+  internal-apk:
+    name: Create apk (internal)
+    runs-on: self-hosted
+    needs:
+      - create-release
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: "17.x"
+          distribution: 'temurin'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: '3.16.7'
+
+      - name: Configure .env for development
+        if: github.event.inputs.env == 'development'
+        run: |
+          echo "API_PREFIX=$API_PREFIX" >> .env
+          echo "SIGN_KEY=$SIGN_KEY" >> .env
+          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
+          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
+          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
+          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
+          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+        env:
+          API_PREFIX: ${{ secrets.DEV_INTERNAL_API_PREFIX }}
+          SIGN_KEY: ${{ secrets.DEV_SIGN_KEY }}
+          CRYPTO_AES_KEY: ${{ secrets.DEV_CRYPTO_AES_KEY }}
+          CRYPTO_AES_IV: ${{ secrets.DEV_CRYPTO_AES_IV }}
+          ALIYUN_OSS_HOST: ${{ secrets.DEV_INTERNAL_ALIYUN_OSS_HOST }}
+          ALIYUN_OSS_ENDPOINT: ${{ secrets.DEV_INTERNAL_ALIYUN_OSS_ENDPOINT }}
+          ALIYUN_OSS_BUCKET: ${{ secrets.DEV_INTERNAL_ALIYUN_OSS_BUCKET }}
+          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.DEV_INTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
+          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.DEV_INTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
+          SENTRY_DSN: ${{ secrets.DEV_SENTRY_DSN }}
+
+      - name: Configure .env for staging
+        if: github.event.inputs.env == 'staging'
+        run: |
+          echo "API_PREFIX=$API_PREFIX" >> .env
+          echo "SIGN_KEY=$SIGN_KEY" >> .env
+          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
+          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
+          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
+          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
+          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+        env:
+          API_PREFIX: ${{ secrets.STG_INTERNAL_API_PREFIX }}
+          SIGN_KEY: ${{ secrets.STG_SIGN_KEY }}
+          CRYPTO_AES_KEY: ${{ secrets.STG_CRYPTO_AES_KEY }}
+          CRYPTO_AES_IV: ${{ secrets.STG_CRYPTO_AES_IV }}
+          ALIYUN_OSS_HOST: ${{ secrets.STG_INTERNAL_ALIYUN_OSS_HOST }}
+          ALIYUN_OSS_ENDPOINT: ${{ secrets.STG_INTERNAL_ALIYUN_OSS_ENDPOINT }}
+          ALIYUN_OSS_BUCKET: ${{ secrets.STG_INTERNAL_ALIYUN_OSS_BUCKET }}
+          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.STG_INTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
+          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.STG_INTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
+          SENTRY_DSN: ${{ secrets.STG_SENTRY_DSN }}
+
+      - name: Configure .env for production
+        if: github.event.inputs.env == 'production'
+        run: |
+          echo "API_PREFIX=$API_PREFIX" >> .env
+          echo "SIGN_KEY=$SIGN_KEY" >> .env
+          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
+          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
+          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
+          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
+          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+        env:
+          API_PREFIX: ${{ secrets.PROD_INTERNAL_API_PREFIX }}
+          SIGN_KEY: ${{ secrets.PROD_SIGN_KEY }}
+          CRYPTO_AES_KEY: ${{ secrets.PROD_CRYPTO_AES_KEY }}
+          CRYPTO_AES_IV: ${{ secrets.PROD_CRYPTO_AES_IV }}
+          ALIYUN_OSS_HOST: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_HOST }}
+          ALIYUN_OSS_ENDPOINT: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_ENDPOINT }}
+          ALIYUN_OSS_BUCKET: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_BUCKET }}
+          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
+          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
+          SENTRY_DSN: ${{ secrets.PROD_SENTRY_DSN }}
+
+      - name: Flutter doctor -v
+        run: flutter doctor -v
+
+      - name: Install Deps
+        run: flutter pub get
+
+      - name: Configure Keystore for Android
+        run: |
+          echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > app/upload-keystore.jks
+          echo "storeFile=upload-keystore.jks" >> key.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
+        env:
+          PLAY_STORE_UPLOAD_KEY: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
+          KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
+        working-directory: android
+
+      # Build the application.
+      - if: ${{ github.event.inputs.env == 'development' || github.event.inputs.env == 'staging' }}
+        run: bash build-android.sh && flutter build apk --debug --no-tree-shake-icons --flavor internal --target lib/main_internal.dart
+
+      - if: github.event.inputs.env == 'production'
+        run: flutter build apk --release --no-tree-shake-icons --flavor internal --target lib/main_internal.dart
+
+      # Package the build.
+      - name: Copy build for Android
+        run: cp *.apk $GITHUB_WORKSPACE/
+        working-directory: build/app/outputs/flutter-apk
+
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Check outputs
+        run: echo ${{ steps.vars.outputs.sha_short }}
+
+      - name: Install gh
+        run: |
+          if ! command -v gh >/dev/null 2>&1; then
+            echo "gh not exists"
+            brew install gh
+          fi
+          gh --version
+
+      - name: Upload assets
+        run: |
+          RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
+          gh auth login --git-protocol https --hostname GitHub.com --with-token
+          gh release upload "$RELEASE" ./*.apk
+        env:
+          ENV: ${{ github.event.inputs.env }}
+          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
+          VERSION: ${{ github.event.inputs.version }}
+          GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
+
+      - name: Clean up
+        if: ${{ always() }}
+        run: |
+          rm -f android/app/upload-keystore.jks
+          rm -f android/key.properties
+          rm -f .env
+
+  external-apk:
+    name: Create apk (external)
+    runs-on: self-hosted
+    needs:
+      - create-release
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: "17.x"
+          distribution: 'temurin'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: '3.16.7'
+
+      - name: Configure .env for development
+        if: github.event.inputs.env == 'development'
+        run: |
+          echo "API_PREFIX=$API_PREFIX" >> .env
+          echo "SIGN_KEY=$SIGN_KEY" >> .env
+          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
+          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
+          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
+          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
+          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+        env:
+          API_PREFIX: ${{ secrets.DEV_EXTERNAL_API_PREFIX }}
+          SIGN_KEY: ${{ secrets.DEV_SIGN_KEY }}
+          CRYPTO_AES_KEY: ${{ secrets.DEV_CRYPTO_AES_KEY }}
+          CRYPTO_AES_IV: ${{ secrets.DEV_CRYPTO_AES_IV }}
+          ALIYUN_OSS_HOST: ${{ secrets.DEV_EXTERNAL_ALIYUN_OSS_HOST }}
+          ALIYUN_OSS_ENDPOINT: ${{ secrets.DEV_EXTERNAL_ALIYUN_OSS_ENDPOINT }}
+          ALIYUN_OSS_BUCKET: ${{ secrets.DEV_EXTERNAL_ALIYUN_OSS_BUCKET }}
+          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.DEV_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
+          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.DEV_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
+          SENTRY_DSN: ${{ secrets.DEV_SENTRY_DSN }}
+
+      - name: Configure .env for staging
+        if: github.event.inputs.env == 'staging'
+        run: |
+          echo "API_PREFIX=$API_PREFIX" >> .env
+          echo "SIGN_KEY=$SIGN_KEY" >> .env
+          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
+          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
+          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
+          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
+          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+        env:
+          API_PREFIX: ${{ secrets.STG_EXTERNAL_API_PREFIX }}
+          SIGN_KEY: ${{ secrets.STG_SIGN_KEY }}
+          CRYPTO_AES_KEY: ${{ secrets.STG_CRYPTO_AES_KEY }}
+          CRYPTO_AES_IV: ${{ secrets.STG_CRYPTO_AES_IV }}
+          ALIYUN_OSS_HOST: ${{ secrets.STG_EXTERNAL_ALIYUN_OSS_HOST }}
+          ALIYUN_OSS_ENDPOINT: ${{ secrets.STG_EXTERNAL_ALIYUN_OSS_ENDPOINT }}
+          ALIYUN_OSS_BUCKET: ${{ secrets.STG_EXTERNAL_ALIYUN_OSS_BUCKET }}
+          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.STG_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
+          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.STG_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
+          SENTRY_DSN: ${{ secrets.STG_SENTRY_DSN }}
+
+      - name: Configure .env for production
+        if: github.event.inputs.env == 'production'
+        run: |
+          echo "API_PREFIX=$API_PREFIX" >> .env
+          echo "SIGN_KEY=$SIGN_KEY" >> .env
+          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
+          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
+          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
+          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
+          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+        env:
+          API_PREFIX: ${{ secrets.PROD_EXTERNAL_API_PREFIX }}
+          SIGN_KEY: ${{ secrets.PROD_SIGN_KEY }}
+          CRYPTO_AES_KEY: ${{ secrets.PROD_CRYPTO_AES_KEY }}
+          CRYPTO_AES_IV: ${{ secrets.PROD_CRYPTO_AES_IV }}
+          ALIYUN_OSS_HOST: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_HOST }}
+          ALIYUN_OSS_ENDPOINT: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_ENDPOINT }}
+          ALIYUN_OSS_BUCKET: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_BUCKET }}
+          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
+          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
+          SENTRY_DSN: ${{ secrets.PROD_SENTRY_DSN }}
+
+      - name: Flutter doctor -v
+        run: flutter doctor -v
+
+      - name: Install Deps
+        run: flutter pub get
+
+      - name: Configure Keystore for Android
+        run: |
+          echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > app/upload-keystore.jks
+          echo "storeFile=upload-keystore.jks" >> key.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
+        env:
+          PLAY_STORE_UPLOAD_KEY: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
+          KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
+        working-directory: android
+
+      # Build the application.
+      - if: ${{ github.event.inputs.env == 'development' || github.event.inputs.env == 'staging' }}
+        run: bash build-android.sh && flutter build apk --debug --no-tree-shake-icons --flavor external --target lib/main_external.dart
+
+      - if: github.event.inputs.env == 'production'
+        run: flutter build apk --release --no-tree-shake-icons --flavor external --target lib/main_external.dart
+
+      # Package the build.
+      - name: Copy build for Android
+        run: cp *.apk $GITHUB_WORKSPACE/
+        working-directory: build/app/outputs/flutter-apk
+
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Check outputs
+        run: echo ${{ steps.vars.outputs.sha_short }}
+
+      - name: Install gh
+        run: |
+          if ! command -v gh >/dev/null 2>&1; then
+            echo "gh not exists"
+            brew install gh
+          fi
+          gh --version
+
+      - name: Upload assets
+        run: |
+          RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
+          gh auth login --git-protocol https --hostname GitHub.com --with-token
+          gh release upload "$RELEASE" ./*.apk
+        env:
+          ENV: ${{ github.event.inputs.env }}
+          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
+          VERSION: ${{ github.event.inputs.version }}
+          GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
+
+      - name: Clean up
+        if: ${{ always() }}
+        run: |
+          rm -f android/app/upload-keystore.jks
+          rm -f android/key.properties
+          rm -f .env
+
+  internal-aab:
+    name: Create appbundle (internal)
+    if: github.event.inputs.env == 'production'
+    runs-on: self-hosted
+    needs:
+      - create-release
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: "17.x"
+          distribution: 'temurin'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: '3.16.7'
+
+      - name: Configure .env for production
+        run: |
+          echo "API_PREFIX=$API_PREFIX" >> .env
+          echo "SIGN_KEY=$SIGN_KEY" >> .env
+          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
+          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
+          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
+          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
+          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+        env:
+          API_PREFIX: ${{ secrets.PROD_INTERNAL_API_PREFIX }}
+          SIGN_KEY: ${{ secrets.PROD_SIGN_KEY }}
+          CRYPTO_AES_KEY: ${{ secrets.PROD_CRYPTO_AES_KEY }}
+          CRYPTO_AES_IV: ${{ secrets.PROD_CRYPTO_AES_IV }}
+          ALIYUN_OSS_HOST: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_HOST }}
+          ALIYUN_OSS_ENDPOINT: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_ENDPOINT }}
+          ALIYUN_OSS_BUCKET: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_BUCKET }}
+          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
+          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
+          SENTRY_DSN: ${{ secrets.PROD_SENTRY_DSN }}
+
+      - name: Flutter doctor -v
+        run: flutter doctor -v
+
+      - name: Install Deps
+        run: flutter pub get
+
+      - name: Configure Keystore for Android
+        run: |
+          echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > app/upload-keystore.jks
+          echo "storeFile=upload-keystore.jks" >> key.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
+        env:
+          PLAY_STORE_UPLOAD_KEY: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
+          KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
+        working-directory: android
+
+      - name: Build appbundle
+        run: flutter build appbundle --release --no-tree-shake-icons --flavor internal --target lib/main_internal.dart
+
+      # Package the build.
+      - name: Copy build for Android
+        run: cp *.aab $GITHUB_WORKSPACE/
+        working-directory: build/app/outputs/bundle/release
+
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Check outputs
+        run: echo ${{ steps.vars.outputs.sha_short }}
+
+      - name: Install gh
+        run: |
+          if ! command -v gh >/dev/null 2>&1; then
+            echo "gh not exists"
+            brew install gh
+          fi
+          gh --version
+
+      - name: Upload assets
+        run: |
+          RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
+          gh auth login --git-protocol https --hostname GitHub.com --with-token
+          gh release upload "$RELEASE" ./*.aab
+        env:
+          ENV: ${{ github.event.inputs.env }}
+          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
+          VERSION: ${{ github.event.inputs.version }}
+          GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
+
+      - name: Clean up
+        if: ${{ always() }}
+        run: |
+          rm -f android/app/upload-keystore.jks
+          rm -f android/key.properties
+          rm -f .env
+
+  external-aab:
+    name: Create appbundle (external)
+    if: github.event.inputs.env == 'production'
+    runs-on: self-hosted
+    needs:
+      - create-release
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: "17.x"
+          distribution: 'temurin'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: '3.16.7'
+
+      - name: Configure .env for production
+        run: |
+          echo "API_PREFIX=$API_PREFIX" >> .env
+          echo "SIGN_KEY=$SIGN_KEY" >> .env
+          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
+          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
+          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
+          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
+          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+        env:
+          API_PREFIX: ${{ secrets.PROD_EXTERNAL_API_PREFIX }}
+          SIGN_KEY: ${{ secrets.PROD_SIGN_KEY }}
+          CRYPTO_AES_KEY: ${{ secrets.PROD_CRYPTO_AES_KEY }}
+          CRYPTO_AES_IV: ${{ secrets.PROD_CRYPTO_AES_IV }}
+          ALIYUN_OSS_HOST: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_HOST }}
+          ALIYUN_OSS_ENDPOINT: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_ENDPOINT }}
+          ALIYUN_OSS_BUCKET: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_BUCKET }}
+          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
+          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
+          SENTRY_DSN: ${{ secrets.PROD_SENTRY_DSN }}
+
+      - name: Flutter doctor -v
+        run: flutter doctor -v
+
+      - name: Install Deps
+        run: flutter pub get
+
+      - name: Configure Keystore for Android
+        run: |
+          echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > app/upload-keystore.jks
+          echo "storeFile=upload-keystore.jks" >> key.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
+        env:
+          PLAY_STORE_UPLOAD_KEY: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
+          KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
+        working-directory: android
+
+      - name: Build appbundle
+        run: flutter build appbundle --release --no-tree-shake-icons --flavor external --target lib/main_external.dart
+
+      # Package the build.
+      - name: Copy build for Android
+        run: cp *.aab $GITHUB_WORKSPACE/
+        working-directory: build/app/outputs/bundle/release
+
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Check outputs
+        run: echo ${{ steps.vars.outputs.sha_short }}
+
+      - name: Install gh
+        run: |
+          if ! command -v gh >/dev/null 2>&1; then
+            echo "gh not exists"
+            brew install gh
+          fi
+          gh --version
+
+      - name: Upload assets
+        run: |
+          RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
+          gh auth login --git-protocol https --hostname GitHub.com --with-token
+          gh release upload "$RELEASE" ./*.aab
+        env:
+          ENV: ${{ github.event.inputs.env }}
+          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
+          VERSION: ${{ github.event.inputs.version }}
+          GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
+
+      - name: Clean up
+        if: ${{ always() }}
+        run: |
+          rm -f android/app/upload-keystore.jks
+          rm -f android/key.properties
+          rm -f .env
+
+  internal-ios:
+    name: Create ios (internal)
+    runs-on: self-hosted
+    needs:
+      - create-release
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: '3.16.7'
+
+      - name: Configure .env for development
+        if: github.event.inputs.env == 'development'
+        run: |
+          echo "API_PREFIX=$API_PREFIX" >> .env
+          echo "SIGN_KEY=$SIGN_KEY" >> .env
+          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
+          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
+          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
+          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
+          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+        env:
+          API_PREFIX: ${{ secrets.DEV_INTERNAL_API_PREFIX }}
+          SIGN_KEY: ${{ secrets.DEV_SIGN_KEY }}
+          CRYPTO_AES_KEY: ${{ secrets.DEV_CRYPTO_AES_KEY }}
+          CRYPTO_AES_IV: ${{ secrets.DEV_CRYPTO_AES_IV }}
+          ALIYUN_OSS_HOST: ${{ secrets.DEV_INTERNAL_ALIYUN_OSS_HOST }}
+          ALIYUN_OSS_ENDPOINT: ${{ secrets.DEV_INTERNAL_ALIYUN_OSS_ENDPOINT }}
+          ALIYUN_OSS_BUCKET: ${{ secrets.DEV_INTERNAL_ALIYUN_OSS_BUCKET }}
+          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.DEV_INTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
+          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.DEV_INTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
+          SENTRY_DSN: ${{ secrets.DEV_SENTRY_DSN }}
+
+      - name: Configure .env for staging
+        if: github.event.inputs.env == 'staging'
+        run: |
+          echo "API_PREFIX=$API_PREFIX" >> .env
+          echo "SIGN_KEY=$SIGN_KEY" >> .env
+          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
+          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
+          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
+          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
+          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+        env:
+          API_PREFIX: ${{ secrets.STG_INTERNAL_API_PREFIX }}
+          SIGN_KEY: ${{ secrets.STG_SIGN_KEY }}
+          CRYPTO_AES_KEY: ${{ secrets.STG_CRYPTO_AES_KEY }}
+          CRYPTO_AES_IV: ${{ secrets.STG_CRYPTO_AES_IV }}
+          ALIYUN_OSS_HOST: ${{ secrets.STG_INTERNAL_ALIYUN_OSS_HOST }}
+          ALIYUN_OSS_ENDPOINT: ${{ secrets.STG_INTERNAL_ALIYUN_OSS_ENDPOINT }}
+          ALIYUN_OSS_BUCKET: ${{ secrets.STG_INTERNAL_ALIYUN_OSS_BUCKET }}
+          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.STG_INTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
+          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.STG_INTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
+          SENTRY_DSN: ${{ secrets.STG_SENTRY_DSN }}
+
+      - name: Configure .env for production
+        if: github.event.inputs.env == 'production'
+        run: |
+          echo "API_PREFIX=$API_PREFIX" >> .env
+          echo "SIGN_KEY=$SIGN_KEY" >> .env
+          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
+          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
+          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
+          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
+          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+        env:
+          API_PREFIX: ${{ secrets.PROD_INTERNAL_API_PREFIX }}
+          SIGN_KEY: ${{ secrets.PROD_SIGN_KEY }}
+          CRYPTO_AES_KEY: ${{ secrets.PROD_CRYPTO_AES_KEY }}
+          CRYPTO_AES_IV: ${{ secrets.PROD_CRYPTO_AES_IV }}
+          ALIYUN_OSS_HOST: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_HOST }}
+          ALIYUN_OSS_ENDPOINT: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_ENDPOINT }}
+          ALIYUN_OSS_BUCKET: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_BUCKET }}
+          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
+          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
+          SENTRY_DSN: ${{ secrets.PROD_SENTRY_DSN }}
+
+      - name: Flutter doctor -v
+        run: flutter doctor -v
+
+      - name: Install Deps
+        run: flutter pub get
+
+      - name: Install the Apple certificate and provisioning profile
+        env:
+          CERT_BASE64: ${{ secrets.CERT_BASE64 }}
+          CERT_DEV_BASE64: ${{ secrets.CERT_DEV_BASE64 }}
+          P12_BASE64: ${{ secrets.P12_BASE64 }}
+          P12_DEV_BASE64: ${{ secrets.P12_DEV_BASE64 }}
+          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+          INTERNAL_PROVISION_PROFILE_BASE64: ${{ secrets.INTERNAL_PROVISION_PROFILE_BASE64 }}
+          INTERNAL_PROVISION_PROFILE_DEV_BASE64: ${{ secrets.INTERNAL_PROVISION_PROFILE_DEV_BASE64 }}
+          EXTERNAL_PROVISION_PROFILE_BASE64: ${{ secrets.EXTERNAL_PROVISION_PROFILE_BASE64 }}
+          EXTERNAL_PROVISION_PROFILE_DEV_BASE64: ${{ secrets.EXTERNAL_PROVISION_PROFILE_DEV_BASE64 }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+        run: |
+          # create variables
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          CERTIFICATE_DEV_PATH=$RUNNER_TEMP/build_certificate_dev.p12
+          CERT_PATH=$RUNNER_TEMP/ios_distribution.cer
+          CERT_DEV_PATH=$RUNNER_TEMP/development.cer
+          INTERNAL_PP_PATH=$RUNNER_TEMP/homing_pigeon_internal_appstore.mobileprovision
+          INTERNAL_PP_DEV_PATH=$RUNNER_TEMP/homing_pigeon_internal_dev.mobileprovision
+          EXTERNAL_PP_PATH=$RUNNER_TEMP/homing_pigeon_appstore.mobileprovision
+          EXTERNAL_PP_DEV_PATH=$RUNNER_TEMP/homing_pigeon_dev.mobileprovision
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+
+          # import certificate and provisioning profile from secrets
+          echo -n "$P12_BASE64" | base64 --decode --output $CERTIFICATE_PATH
+          echo -n "$P12_DEV_BASE64" | base64 --decode --output $CERTIFICATE_DEV_PATH
+          echo -n "$CERT_BASE64" | base64 --decode --output $CERT_PATH
+          echo -n "$CERT_DEV_BASE64" | base64 --decode --output $CERT_DEV_PATH
+          echo -n "$INTERNAL_PROVISION_PROFILE_BASE64" | base64 --decode --output $INTERNAL_PP_PATH
+          echo -n "$INTERNAL_PROVISION_PROFILE_DEV_BASE64" | base64 --decode --output $INTERNAL_PP_DEV_PATH
+          echo -n "$EXTERNAL_PROVISION_PROFILE_BASE64" | base64 --decode --output $EXTERNAL_PP_PATH
+          echo -n "$EXTERNAL_PROVISION_PROFILE_DEV_BASE64" | base64 --decode --output $EXTERNAL_PP_DEV_PATH
+
+          # create temporary keychain
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+          # import certificate to keychain
+          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security import $CERTIFICATE_DEV_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security import $CERT_PATH -P "$P12_PASSWORD" -A -t cert -k $KEYCHAIN_PATH
+          security import $CERT_DEV_PATH -P "$P12_PASSWORD" -A -t cert -k $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+
+          # apply provisioning profile
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          mv $INTERNAL_PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+          mv $INTERNAL_PP_DEV_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+          mv $EXTERNAL_PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+          mv $EXTERNAL_PP_DEV_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+
+      - name: Build
+        if: ${{ github.event.inputs.env == 'development' || github.event.inputs.env == 'staging' }}
+        run: |
+          echo "╠ Removing build products and intermediate files from the build root..."
+          cd ios && xcodebuild clean && cd ..
+          echo "╠ Regenerate Common.xcconfig..."
+          dart run scripts/gen_xcconfig.dart -f internal -m release
+          echo "╠ Resolving ios dependencies..."
+          cd ios && pod install && cd ..
+          echo "╠ Releasing to adhoc..."
+          bash build-ios.sh && flutter build ipa --release --flavor internal --target lib/main_internal.dart --export-options-plist=ios/ExportOptions-internal-debug.plist --dart-define-from-file=adhoc.json
+
+      - name: Build
+        if: github.event.inputs.env == 'production'
+        run: |
+          echo "╠ Removing build products and intermediate files from the build root..."
+          cd ios && xcodebuild clean && cd ..
+          echo "╠ Regenerate Common.xcconfig..."
+          dart run scripts/gen_xcconfig.dart -f internal -m release
+          echo "╠ Resolving ios dependencies..."
+          cd ios && pod install && cd ..
+          echo "╠ Releasing to app store..."
+          flutter build ipa --release --flavor internal --target lib/main_internal.dart --export-options-plist=ios/ExportOptions-internal-release.plist
+
+      # Package the build.
+      - name: Copy build for iOS
+        run: cp *.ipa $GITHUB_WORKSPACE/Homing\ Pigeon-internal.ipa
+        working-directory: build/ios/ipa
+
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Check outputs
+        run: echo ${{ steps.vars.outputs.sha_short }}
+
+      - name: Install gh
+        run: |
+          if ! command -v gh >/dev/null 2>&1; then
+            echo "gh not exists"
+            brew install gh
+          fi
+          gh --version
+
+      - name: Upload assets
+        run: |
+          RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
+          gh auth login --git-protocol https --hostname GitHub.com --with-token
+          gh release upload "$RELEASE" ./*.ipa
+        env:
+          ENV: ${{ github.event.inputs.env }}
+          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
+          VERSION: ${{ github.event.inputs.version }}
+          GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
+
+      - name: Clean up
+        if: ${{ always() }}
+        run: |
+          if [ -f "$RUNNER_TEMP/app-signing.keychain-db" ]; then
+            echo "$RUNNER_TEMP/app-signing.keychain-db"
+            security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+          fi
+          rm -f .env
+
+  external-ios:
+    name: Create ios (external)
+    runs-on: self-hosted
+    needs:
+      - create-release
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: '3.16.7'
+
+      - name: Configure .env for development
+        if: github.event.inputs.env == 'development'
+        run: |
+          echo "API_PREFIX=$API_PREFIX" >> .env
+          echo "SIGN_KEY=$SIGN_KEY" >> .env
+          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
+          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
+          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
+          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
+          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+        env:
+          API_PREFIX: ${{ secrets.DEV_EXTERNAL_API_PREFIX }}
+          SIGN_KEY: ${{ secrets.DEV_SIGN_KEY }}
+          CRYPTO_AES_KEY: ${{ secrets.DEV_CRYPTO_AES_KEY }}
+          CRYPTO_AES_IV: ${{ secrets.DEV_CRYPTO_AES_IV }}
+          ALIYUN_OSS_HOST: ${{ secrets.DEV_EXTERNAL_ALIYUN_OSS_HOST }}
+          ALIYUN_OSS_ENDPOINT: ${{ secrets.DEV_EXTERNAL_ALIYUN_OSS_ENDPOINT }}
+          ALIYUN_OSS_BUCKET: ${{ secrets.DEV_EXTERNAL_ALIYUN_OSS_BUCKET }}
+          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.DEV_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
+          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.DEV_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
+          SENTRY_DSN: ${{ secrets.DEV_SENTRY_DSN }}
+
+      - name: Configure .env for staging
+        if: github.event.inputs.env == 'staging'
+        run: |
+          echo "API_PREFIX=$API_PREFIX" >> .env
+          echo "SIGN_KEY=$SIGN_KEY" >> .env
+          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
+          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
+          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
+          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
+          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+        env:
+          API_PREFIX: ${{ secrets.STG_EXTERNAL_API_PREFIX }}
+          SIGN_KEY: ${{ secrets.STG_SIGN_KEY }}
+          CRYPTO_AES_KEY: ${{ secrets.STG_CRYPTO_AES_KEY }}
+          CRYPTO_AES_IV: ${{ secrets.STG_CRYPTO_AES_IV }}
+          ALIYUN_OSS_HOST: ${{ secrets.STG_EXTERNAL_ALIYUN_OSS_HOST }}
+          ALIYUN_OSS_ENDPOINT: ${{ secrets.STG_EXTERNAL_ALIYUN_OSS_ENDPOINT }}
+          ALIYUN_OSS_BUCKET: ${{ secrets.STG_EXTERNAL_ALIYUN_OSS_BUCKET }}
+          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.STG_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
+          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.STG_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
+          SENTRY_DSN: ${{ secrets.STG_SENTRY_DSN }}
+
+      - name: Configure .env for production
+        if: github.event.inputs.env == 'production'
+        run: |
+          echo "API_PREFIX=$API_PREFIX" >> .env
+          echo "SIGN_KEY=$SIGN_KEY" >> .env
+          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
+          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
+          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
+          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
+          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
+          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
+          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+        env:
+          API_PREFIX: ${{ secrets.PROD_EXTERNAL_API_PREFIX }}
+          SIGN_KEY: ${{ secrets.PROD_SIGN_KEY }}
+          CRYPTO_AES_KEY: ${{ secrets.PROD_CRYPTO_AES_KEY }}
+          CRYPTO_AES_IV: ${{ secrets.PROD_CRYPTO_AES_IV }}
+          ALIYUN_OSS_HOST: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_HOST }}
+          ALIYUN_OSS_ENDPOINT: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_ENDPOINT }}
+          ALIYUN_OSS_BUCKET: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_BUCKET }}
+          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
+          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
+          SENTRY_DSN: ${{ secrets.PROD_SENTRY_DSN }}
+
+      - name: Flutter doctor -v
+        run: flutter doctor -v
+
+      - name: Install Deps
+        run: flutter pub get
+
+      - name: Install the Apple certificate and provisioning profile
+        env:
+          CERT_BASE64: ${{ secrets.CERT_BASE64 }}
+          CERT_DEV_BASE64: ${{ secrets.CERT_DEV_BASE64 }}
+          P12_BASE64: ${{ secrets.P12_BASE64 }}
+          P12_DEV_BASE64: ${{ secrets.P12_DEV_BASE64 }}
+          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+          INTERNAL_PROVISION_PROFILE_BASE64: ${{ secrets.INTERNAL_PROVISION_PROFILE_BASE64 }}
+          INTERNAL_PROVISION_PROFILE_DEV_BASE64: ${{ secrets.INTERNAL_PROVISION_PROFILE_DEV_BASE64 }}
+          EXTERNAL_PROVISION_PROFILE_BASE64: ${{ secrets.EXTERNAL_PROVISION_PROFILE_BASE64 }}
+          EXTERNAL_PROVISION_PROFILE_DEV_BASE64: ${{ secrets.EXTERNAL_PROVISION_PROFILE_DEV_BASE64 }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+        run: |
+          # create variables
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          CERTIFICATE_DEV_PATH=$RUNNER_TEMP/build_certificate_dev.p12
+          CERT_PATH=$RUNNER_TEMP/ios_distribution.cer
+          CERT_DEV_PATH=$RUNNER_TEMP/development.cer
+          INTERNAL_PP_PATH=$RUNNER_TEMP/homing_pigeon_internal_appstore.mobileprovision
+          INTERNAL_PP_DEV_PATH=$RUNNER_TEMP/homing_pigeon_internal_dev.mobileprovision
+          EXTERNAL_PP_PATH=$RUNNER_TEMP/homing_pigeon_appstore.mobileprovision
+          EXTERNAL_PP_DEV_PATH=$RUNNER_TEMP/homing_pigeon_dev.mobileprovision
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+
+          # import certificate and provisioning profile from secrets
+          echo -n "$P12_BASE64" | base64 --decode --output $CERTIFICATE_PATH
+          echo -n "$P12_DEV_BASE64" | base64 --decode --output $CERTIFICATE_DEV_PATH
+          echo -n "$CERT_BASE64" | base64 --decode --output $CERT_PATH
+          echo -n "$CERT_DEV_BASE64" | base64 --decode --output $CERT_DEV_PATH
+          echo -n "$INTERNAL_PROVISION_PROFILE_BASE64" | base64 --decode --output $INTERNAL_PP_PATH
+          echo -n "$INTERNAL_PROVISION_PROFILE_DEV_BASE64" | base64 --decode --output $INTERNAL_PP_DEV_PATH
+          echo -n "$EXTERNAL_PROVISION_PROFILE_BASE64" | base64 --decode --output $EXTERNAL_PP_PATH
+          echo -n "$EXTERNAL_PROVISION_PROFILE_DEV_BASE64" | base64 --decode --output $EXTERNAL_PP_DEV_PATH
+
+          # create temporary keychain
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+          # import certificate to keychain
+          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security import $CERTIFICATE_DEV_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security import $CERT_PATH -P "$P12_PASSWORD" -A -t cert -k $KEYCHAIN_PATH
+          security import $CERT_DEV_PATH -P "$P12_PASSWORD" -A -t cert -k $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+
+          # apply provisioning profile
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          mv $INTERNAL_PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+          mv $INTERNAL_PP_DEV_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+          mv $EXTERNAL_PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+          mv $EXTERNAL_PP_DEV_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+
+      - name: Build
+        if: ${{ github.event.inputs.env == 'development' || github.event.inputs.env == 'staging' }}
+        run: |
+          echo "╠ Removing build products and intermediate files from the build root..."
+          cd ios && xcodebuild clean && cd ..
+          echo "╠ Regenerate Common.xcconfig..."
+          dart run scripts/gen_xcconfig.dart -f external -m release
+          echo "╠ Resolving ios dependencies..."
+          cd ios && pod install && cd ..
+          echo "╠ Releasing to adhoc..."
+          bash build-ios.sh && flutter build ipa --release --flavor external --target lib/main_external.dart --export-options-plist=ios/ExportOptions-external-debug.plist --dart-define-from-file=adhoc.json
+
+      - name: Build
+        if: github.event.inputs.env == 'production'
+        run: |
+          echo "╠ Removing build products and intermediate files from the build root..."
+          cd ios && xcodebuild clean && cd ..
+          echo "╠ Regenerate Common.xcconfig..."
+          dart run scripts/gen_xcconfig.dart -f external -m release
+          echo "╠ Resolving ios dependencies..."
+          cd ios && pod install && cd ..
+          echo "╠ Releasing to app store..."
+          flutter build ipa --release --flavor external --target lib/main_external.dart --export-options-plist=ios/ExportOptions-external-release.plist
+
+      # Package the build.
+      - name: Copy build for iOS
+        run: cp *.ipa $GITHUB_WORKSPACE/Homing\ Pigeon-external.ipa
+        working-directory: build/ios/ipa
+
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Check outputs
+        run: echo ${{ steps.vars.outputs.sha_short }}
+
+      - name: Install gh
+        run: |
+          if ! command -v gh >/dev/null 2>&1; then
+            echo "gh not exists"
+            brew install gh
+          fi
+          gh --version
+
+      - name: Upload assets
+        run: |
+          RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
+          gh auth login --git-protocol https --hostname GitHub.com --with-token
+          gh release upload "$RELEASE" ./*.ipa
+        env:
+          ENV: ${{ github.event.inputs.env }}
+          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
+          VERSION: ${{ github.event.inputs.version }}
+          GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
+
+      - name: Clean up
+        if: ${{ always() }}
+        run: |
+          if [ -f "$RUNNER_TEMP/app-signing.keychain-db" ]; then
+            echo "$RUNNER_TEMP/app-signing.keychain-db"
+            security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+          fi
+          rm -f .env
