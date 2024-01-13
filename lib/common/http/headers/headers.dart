@@ -1,7 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
@@ -13,8 +12,11 @@ import 'package:homing_pigeon/common/constants/constants.dart';
 import 'package:homing_pigeon/common/constants/keys.dart';
 import 'package:homing_pigeon/common/utils/sp_util.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
+import 'package:uuid/uuid.dart';
 
 class HpHeaders {
+  static const _uuid = Uuid();
+
   static const _encryptDefUrls = [''];
 
   static const _encryptKeys = ['password', 'newPassword', 'oldPassword'];
@@ -106,18 +108,7 @@ class HpHeaders {
   static Map<String, dynamic> fetchCommonParameters() {
     return {
       'datestamp': DateTime.now().millisecondsSinceEpoch,
-      'nonce': _randomStrings(),
+      'nonce': _uuid.v4(),
     };
-  }
-
-  static String _randomStrings({int length = 10}) {
-    final random = Random();
-    const availableChars = 'abcdefghijklmnopqrstuvwxyz';
-    final randomString = List.generate(
-      length,
-      (index) => availableChars[random.nextInt(availableChars.length)],
-    ).join();
-
-    return randomString;
   }
 }
