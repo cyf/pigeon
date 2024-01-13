@@ -34,6 +34,7 @@ jobs:
 
   internal-latest-commits:
     name: Gen latest 10 commits (internal)
+    if: ${{ !cancelled() && !failure() }}
     runs-on: self-hosted
     needs:
       - internal-apk
@@ -87,6 +88,7 @@ jobs:
 
   external-latest-commits:
     name: Gen latest 10 commits (external)
+    if: ${{ !cancelled() && !failure() }}
     runs-on: self-hosted
     needs:
       - external-apk
