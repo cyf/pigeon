@@ -489,7 +489,7 @@ jobs:
       # Package the build.
       - name: Copy build for Android
         run: cp *.aab $GITHUB_WORKSPACE/
-        working-directory: build/app/outputs/bundle/release
+        working-directory: build/app/outputs/bundle/internalRelease
 
       - name: Set outputs
         id: vars
@@ -592,7 +592,7 @@ jobs:
       # Package the build.
       - name: Copy build for Android
         run: cp *.aab $GITHUB_WORKSPACE/
-        working-directory: build/app/outputs/bundle/release
+        working-directory: build/app/outputs/bundle/externalRelease
 
       - name: Set outputs
         id: vars
