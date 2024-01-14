@@ -16,8 +16,6 @@
 		2E77E7092B31DD750058EC04 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		2E77E70A2B31DD750058EC04 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		2E77E7202B31DEF30058EC04 /* External.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2E77E71F2B31DEF30058EC04 /* External.plist */; };
-		2E77E7222B31DF890058EC04 /* Common.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2E77E7212B31DF890058EC04 /* Common.xcconfig */; };
-		2E77E7232B31DF890058EC04 /* Common.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2E77E7212B31DF890058EC04 /* Common.xcconfig */; };
 		2E77E7242B31E1130058EC04 /* Internal.plist in Resources */ = {isa = PBXBuildFile; fileRef = 97C147021CF9000F007C117D /* Internal.plist */; };
 		2ECD45DD2A89117300EB2785 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2ECD45DC2A89117300EB2785 /* GoogleService-Info.plist */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
@@ -61,7 +59,18 @@
 		285EBBBAD055CDFDA8A19311 /* Pods-internal.profile-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-internal.profile-internal.xcconfig"; path = "Target Support Files/Pods-internal/Pods-internal.profile-internal.xcconfig"; sourceTree = "<group>"; };
 		2E77E7132B31DD750058EC04 /* external.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = external.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E77E71F2B31DEF30058EC04 /* External.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = External.plist; sourceTree = "<group>"; };
-		2E77E7212B31DF890058EC04 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = Flutter/Common.xcconfig; sourceTree = "<group>"; };
+		2ECD3CED2B539C290043D562 /* Release-internal-internal.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Release-internal-internal.xcconfig"; path = "Flutter/Release-internal-internal.xcconfig"; sourceTree = "<group>"; };
+		2ECD3CEE2B539C290043D562 /* Debug-internal-internal.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Debug-internal-internal.xcconfig"; path = "Flutter/Debug-internal-internal.xcconfig"; sourceTree = "<group>"; };
+		2ECD3CEF2B539C290043D562 /* Profile-external-external.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Profile-external-external.xcconfig"; path = "Flutter/Profile-external-external.xcconfig"; sourceTree = "<group>"; };
+		2ECD3CF02B539C290043D562 /* Debug-internal-external.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Debug-internal-external.xcconfig"; path = "Flutter/Debug-internal-external.xcconfig"; sourceTree = "<group>"; };
+		2ECD3CF12B539C290043D562 /* Release-external-external.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Release-external-external.xcconfig"; path = "Flutter/Release-external-external.xcconfig"; sourceTree = "<group>"; };
+		2ECD3CF22B539C290043D562 /* Profile-internal-external.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Profile-internal-external.xcconfig"; path = "Flutter/Profile-internal-external.xcconfig"; sourceTree = "<group>"; };
+		2ECD3CF32B539C2A0043D562 /* Profile-external-internal.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Profile-external-internal.xcconfig"; path = "Flutter/Profile-external-internal.xcconfig"; sourceTree = "<group>"; };
+		2ECD3CF42B539C2A0043D562 /* Debug-external-internal.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Debug-external-internal.xcconfig"; path = "Flutter/Debug-external-internal.xcconfig"; sourceTree = "<group>"; };
+		2ECD3CF52B539C2A0043D562 /* Profile-internal-internal.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Profile-internal-internal.xcconfig"; path = "Flutter/Profile-internal-internal.xcconfig"; sourceTree = "<group>"; };
+		2ECD3CF62B539C2A0043D562 /* Debug-external-external.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Debug-external-external.xcconfig"; path = "Flutter/Debug-external-external.xcconfig"; sourceTree = "<group>"; };
+		2ECD3CF72B539C2A0043D562 /* Release-external-internal.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Release-external-internal.xcconfig"; path = "Flutter/Release-external-internal.xcconfig"; sourceTree = "<group>"; };
+		2ECD3CF82B539C2A0043D562 /* Release-internal-external.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Release-internal-external.xcconfig"; path = "Flutter/Release-internal-external.xcconfig"; sourceTree = "<group>"; };
 		2ECD45DC2A89117300EB2785 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2EEEF2722AF75D0000E02055 /* HomingPigeon.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HomingPigeon.entitlements; sourceTree = "<group>"; };
 		30BCD100165EFB588D6B4811 /* Pods-internal.release-external.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-internal.release-external.xcconfig"; path = "Target Support Files/Pods-internal/Pods-internal.release-external.xcconfig"; sourceTree = "<group>"; };
@@ -129,7 +138,18 @@
 		9740EEB11CF90186004384FC /* Flutter */ = {
 			isa = PBXGroup;
 			children = (
-				2E77E7212B31DF890058EC04 /* Common.xcconfig */,
+				2ECD3CF62B539C2A0043D562 /* Debug-external-external.xcconfig */,
+				2ECD3CF42B539C2A0043D562 /* Debug-external-internal.xcconfig */,
+				2ECD3CF02B539C290043D562 /* Debug-internal-external.xcconfig */,
+				2ECD3CEE2B539C290043D562 /* Debug-internal-internal.xcconfig */,
+				2ECD3CEF2B539C290043D562 /* Profile-external-external.xcconfig */,
+				2ECD3CF32B539C2A0043D562 /* Profile-external-internal.xcconfig */,
+				2ECD3CF22B539C290043D562 /* Profile-internal-external.xcconfig */,
+				2ECD3CF52B539C2A0043D562 /* Profile-internal-internal.xcconfig */,
+				2ECD3CF12B539C290043D562 /* Release-external-external.xcconfig */,
+				2ECD3CF72B539C2A0043D562 /* Release-external-internal.xcconfig */,
+				2ECD3CF82B539C2A0043D562 /* Release-internal-external.xcconfig */,
+				2ECD3CED2B539C290043D562 /* Release-internal-internal.xcconfig */,
 				3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */,
 				9740EEB21CF90195004384FC /* Debug.xcconfig */,
 				7AFA3C8E1D35360C0083082E /* Release.xcconfig */,
@@ -278,7 +298,6 @@
 				2E77E7082B31DD750058EC04 /* GoogleService-Info.plist in Resources */,
 				2E77E7202B31DEF30058EC04 /* External.plist in Resources */,
 				2E77E7092B31DD750058EC04 /* Assets.xcassets in Resources */,
-				2E77E7232B31DF890058EC04 /* Common.xcconfig in Resources */,
 				2E77E70A2B31DD750058EC04 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -291,7 +310,6 @@
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				2ECD45DD2A89117300EB2785 /* GoogleService-Info.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
-				2E77E7222B31DF890058EC04 /* Common.xcconfig in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 				2E77E7242B31E1130058EC04 /* Internal.plist in Resources */,
 			);
@@ -569,7 +587,7 @@
 		};
 		249021D4217E4FDB00AE95B9 /* Profile-internal */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
+			baseConfigurationReference = 2ECD3CF52B539C2A0043D562 /* Profile-internal-internal.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -600,7 +618,7 @@
 		};
 		2E77E7102B31DD750058EC04 /* Debug-internal */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
+			baseConfigurationReference = 2ECD3CF02B539C290043D562 /* Debug-internal-external.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -632,7 +650,7 @@
 		};
 		2E77E7112B31DD750058EC04 /* Release-internal */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
+			baseConfigurationReference = 2ECD3CF82B539C2A0043D562 /* Release-internal-external.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -663,7 +681,7 @@
 		};
 		2E77E7122B31DD750058EC04 /* Profile-internal */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
+			baseConfigurationReference = 2ECD3CF22B539C290043D562 /* Profile-internal-external.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -749,7 +767,7 @@
 		};
 		2E77E7162B31DDF70058EC04 /* Debug-external */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
+			baseConfigurationReference = 2ECD3CF42B539C2A0043D562 /* Debug-external-internal.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -781,7 +799,7 @@
 		};
 		2E77E7172B31DDF70058EC04 /* Debug-external */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
+			baseConfigurationReference = 2ECD3CF62B539C2A0043D562 /* Debug-external-external.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -865,7 +883,7 @@
 		};
 		2E77E7192B31DDFC0058EC04 /* Release-external */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
+			baseConfigurationReference = 2ECD3CF72B539C2A0043D562 /* Release-external-internal.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -896,7 +914,7 @@
 		};
 		2E77E71A2B31DDFC0058EC04 /* Release-external */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
+			baseConfigurationReference = 2ECD3CF12B539C290043D562 /* Release-external-external.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -977,7 +995,7 @@
 		};
 		2E77E71C2B31DE000058EC04 /* Profile-external */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
+			baseConfigurationReference = 2ECD3CF32B539C2A0043D562 /* Profile-external-internal.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1008,7 +1026,7 @@
 		};
 		2E77E71D2B31DE000058EC04 /* Profile-external */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
+			baseConfigurationReference = 2ECD3CEF2B539C290043D562 /* Profile-external-external.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1146,7 +1164,7 @@
 		};
 		97C147061CF9000F007C117D /* Debug-internal */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
+			baseConfigurationReference = 2ECD3CEE2B539C290043D562 /* Debug-internal-internal.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1178,7 +1196,7 @@
 		};
 		97C147071CF9000F007C117D /* Release-internal */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
+			baseConfigurationReference = 2ECD3CED2B539C290043D562 /* Release-internal-internal.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

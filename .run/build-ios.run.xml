@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="genConfig(external)" type="ShConfigurationType">
-    <option name="SCRIPT_TEXT" value="dart run scripts/gen_xcconfig.dart -f external &amp;&amp; cd ios &amp;&amp; pod install &amp;&amp; cd .. &amp;&amp; bash build-ios.sh" />
+  <configuration default="false" name="build-ios" type="ShConfigurationType">
+    <option name="SCRIPT_TEXT" value="cd ios &amp;&amp; pod install &amp;&amp; cd .. &amp;&amp; bash build-ios.sh" />
     <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
     <option name="SCRIPT_PATH" value="" />
     <option name="SCRIPT_OPTIONS" value="" />
