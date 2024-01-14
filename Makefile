@@ -13,15 +13,7 @@ clean: ## Cleans the environment
 	echo "╠ Installing dependencies..."
 	flutter pub get
 
-internal_install: ## Installing ios dependencies
-	echo "╠ Regenerate Common.xcconfig..."
-	dart run scripts/gen_xcconfig.dart
-	echo "╠ Resolving ios dependencies..."
-	cd ios && pod install && cd ..
-
-external_install: ## Installing ios dependencies
-	echo "╠ Regenerate Common.xcconfig..."
-	dart run scripts/gen_xcconfig.dart -f external
+install: ## Installing ios dependencies
 	echo "╠ Resolving ios dependencies..."
 	cd ios && pod install && cd ..
 
@@ -60,8 +52,6 @@ external_appbundle: ## Release Appbundle
 internal_adhoc:
 	echo "╠ Removing build products and intermediate files from the build root..."
 	cd ios && xcodebuild clean && cd ..
-	echo "╠ Regenerate Common.xcconfig..."
-	dart run scripts/gen_xcconfig.dart -f internal -m release
 	echo "╠ Resolving ios dependencies..."
 	cd ios && pod install && cd ..
 	echo "╠ Releasing to adhoc..."
@@ -70,8 +60,6 @@ internal_adhoc:
 internal_appstore:
 	echo "╠ Removing build products and intermediate files from the build root..."
 	cd ios && xcodebuild clean && cd ..
-	echo "╠ Regenerate Common.xcconfig..."
-	dart run scripts/gen_xcconfig.dart -f internal -m release
 	echo "╠ Resolving ios dependencies..."
 	cd ios && pod install && cd ..
 	echo "╠ Releasing to app store..."
@@ -80,8 +68,6 @@ internal_appstore:
 external_adhoc:
 	echo "╠ Removing build products and intermediate files from the build root..."
 	cd ios && xcodebuild clean && cd ..
-	echo "╠ Regenerate Common.xcconfig..."
-	dart run scripts/gen_xcconfig.dart -f external -m release
 	echo "╠ Resolving ios dependencies..."
 	cd ios && pod install && cd ..
 	echo "╠ Releasing to adhoc..."
@@ -90,8 +76,6 @@ external_adhoc:
 external_appstore:
 	echo "╠ Removing build products and intermediate files from the build root..."
 	cd ios && xcodebuild clean && cd ..
-	echo "╠ Regenerate Common.xcconfig..."
-	dart run scripts/gen_xcconfig.dart -f external -m release
 	echo "╠ Resolving ios dependencies..."
 	cd ios && pod install && cd ..
 	echo "╠ Releasing to app store..."

@@ -5,9 +5,12 @@
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
 project 'HomingPigeon', {
-  'Debug' => :debug,
-  'Profile' => :release,
-  'Release' => :release,
+  'Debug-internal' => :debug,
+  'Debug-external' => :debug,
+  'Profile-internal' => :release,
+  'Profile-external' => :release,
+  'Release-internal' => :release,
+  'Release-external' => :release,
 }
 
 def flutter_root

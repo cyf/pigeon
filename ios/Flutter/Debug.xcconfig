@@ -1,3 +1,5 @@
-#include? "Pods/Target Support Files/Pods-HomingPigeon/Pods-HomingPigeon.debug.xcconfig"
-#include "Common.xcconfig"
+#include? "Pods/Target Support Files/Pods-internal/Pods-internal.debug-internal.xcconfig"
+#include? "Pods/Target Support Files/Pods-internal/Pods-internal.debug-external.xcconfig"
+#include? "Pods/Target Support Files/Pods-external/Pods-external.debug-internal.xcconfig"
+#include? "Pods/Target Support Files/Pods-external/Pods-external.debug-external.xcconfig"
 #include "Generated.xcconfig"
