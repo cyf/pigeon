@@ -42,6 +42,7 @@ dependencies:
   convert: ^3.1.1
   crypto: ^3.0.3
   cupertino_icons: ^1.0.6
+  deep_collection: ^1.0.2
   device_info_plus: ^9.1.1
   dio: ^5.4.0
   dxcaptcha_flutter:
@@ -98,6 +99,7 @@ dependencies:
   sentry_flutter: ^7.14.0
   shared_preferences: ^2.2.2
   socket_io_client: ^2.0.3+1
+  sortedmap: ^0.5.3
   syncfusion_flutter_calendar: ^24.1.45
   synchronized: ^3.1.0+1
   timeago: ^3.6.0
