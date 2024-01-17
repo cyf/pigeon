@@ -1095,6 +1095,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  jpush_flutter:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "v0.0.2"
+      resolved-ref: d7bc567fab8901eed4e6853d5311b4606f3a481d
+      url: "https://github.com/FlutterFleet/jpush_flutter"
+    source: git
+    version: "0.0.1"
   js:
     dependency: transitive
     description:

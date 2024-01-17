@@ -80,6 +80,11 @@ android {
         versionName flutterVersionName
         multiDexEnabled true
 //        versionCode flutterVersionCode.toInteger()
+
+        manifestPlaceholders = manifestPlaceholders + [
+            JPUSH_APPKEY : "", // JPush 上注册的包名对应的 App Key.
+            JPUSH_CHANNEL : "", // 暂时填写默认值即可.
+        ]
     }
 
     flavorDimensions "default"
@@ -87,7 +92,6 @@ android {
         // 国内分发
         internal {
             dimension "default"
-            applicationIdSuffix ".internal"
             proguardFile 'dx-proguard-rules.pro'
         }
 
@@ -120,11 +124,13 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = manifestPlaceholders + [ JPUSH_PKGNAME : "com.chenyifaer.homingpigeon" ]
         }
         debug {
             signingConfig signingConfigs.debug
             applicationIdSuffix ".dev"
             versionNameSuffix appVersionNameSuffix
+            manifestPlaceholders = manifestPlaceholders + [ JPUSH_PKGNAME : "com.chenyifaer.homingpigeon.dev" ]
         }
     }
 }
