@@ -55,7 +55,7 @@ internal_adhoc:
 	echo "╠ Resolving ios dependencies..."
 	cd ios && pod install && cd ..
 	echo "╠ Releasing to adhoc..."
-	bash build-ios.sh && flutter build ipa --release --flavor internal --target lib/main_internal.dart --export-options-plist=ios/ExportOptions-internal-debug.plist --dart-define-from-file=adhoc.json
+	bash build-ios.sh && flutter build ipa --release --flavor internal --target lib/main_internal.dart --export-options-plist=ios/ExportOptions-internal-debug.plist --dart-define-from-file=versioning.json
 
 internal_appstore:
 	echo "╠ Removing build products and intermediate files from the build root..."
@@ -71,7 +71,7 @@ external_adhoc:
 	echo "╠ Resolving ios dependencies..."
 	cd ios && pod install && cd ..
 	echo "╠ Releasing to adhoc..."
-	bash build-ios.sh && flutter build ipa --release --flavor external --target lib/main_external.dart --export-options-plist=ios/ExportOptions-external-debug.plist --dart-define-from-file=adhoc.json
+	bash build-ios.sh && flutter build ipa --release --flavor external --target lib/main_external.dart --export-options-plist=ios/ExportOptions-external-debug.plist --dart-define-from-file=versioning.json
 
 external_appstore:
 	echo "╠ Removing build products and intermediate files from the build root..."
