@@ -82,6 +82,10 @@ dependencies:
   http_parser: ^4.0.2
   image_gallery_saver: ^2.0.3
   intl: ^0.18.1
+  jpush_flutter:
+    git:
+      url: https://github.com/FlutterFleet/jpush_flutter
+      ref: v0.0.2
   json_annotation: ^4.8.1
   keyboard_dismisser: ^3.0.0
   logger: ^2.0.2+1
