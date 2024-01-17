@@ -6,11 +6,11 @@ env=$(getEnv $?)
 echo "env: $env"
 
 git_commit=$(git rev-parse --short=8 HEAD)
-if [ -f "android/git.properties" ]; then
-    echo "Delete android/git.properties"
-    rm -f android/git.properties
+if [ -f "android/versioning.properties" ]; then
+    echo "Delete android/versioning.properties"
+    rm -f android/versioning.properties
 fi
 
-echo "Create android/git.properties"
-echo "app.env=$env" >> android/git.properties
-echo "app.suffix=$git_commit" >> android/git.properties
+echo "Create android/versioning.properties"
+echo "app.env=$env" >> android/versioning.properties
+echo "app.suffix=$git_commit" >> android/versioning.properties
