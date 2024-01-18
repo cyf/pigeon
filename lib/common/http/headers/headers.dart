@@ -114,7 +114,7 @@ class HpHeaders {
 
   static Map<String, dynamic> fetchCommonParameters() {
     return {
-      'datestamp': DateTime.now().millisecondsSinceEpoch,
+      'timestamp': DateTime.now().millisecondsSinceEpoch,
       'nonce': _uuid.v4(),
     };
   }
