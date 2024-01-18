@@ -87,7 +87,7 @@ android {
         ]
     }
 
-    flavorDimensions "default"
+    flavorDimensions "default", "env"
     productFlavors {
         // 国内分发
         internal {
@@ -98,6 +98,18 @@ android {
         // 国外分发
         external {
             dimension "default"
+        }
+
+        staging {
+            dimension "env"
+            applicationIdSuffix ".dev"
+            versionNameSuffix appVersionNameSuffix
+            manifestPlaceholders = manifestPlaceholders + [ JPUSH_PKGNAME : "com.chenyifaer.homingpigeon.dev" ]
+        }
+
+        production {
+            dimension "env"
+            manifestPlaceholders = manifestPlaceholders + [ JPUSH_PKGNAME : "com.chenyifaer.homingpigeon" ]
         }
     }
 
@@ -124,13 +136,9 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            manifestPlaceholders = manifestPlaceholders + [ JPUSH_PKGNAME : "com.chenyifaer.homingpigeon" ]
         }
         debug {
             signingConfig signingConfigs.debug
-            applicationIdSuffix ".dev"
-            versionNameSuffix appVersionNameSuffix
-            manifestPlaceholders = manifestPlaceholders + [ JPUSH_PKGNAME : "com.chenyifaer.homingpigeon.dev" ]
         }
     }
 }
