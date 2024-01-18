@@ -122,7 +122,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          flutter-version: '3.16.7'
+          flutter-version: '3.16.8'
 
       - name: Configure .env for development
         if: github.event.inputs.env == 'development'
@@ -279,7 +279,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          flutter-version: '3.16.7'
+          flutter-version: '3.16.8'
 
       - name: Configure .env for development
         if: github.event.inputs.env == 'development'
@@ -437,7 +437,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          flutter-version: '3.16.7'
+          flutter-version: '3.16.8'
 
       - name: Configure .env for production
         run: |
@@ -540,7 +540,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          flutter-version: '3.16.7'
+          flutter-version: '3.16.8'
 
       - name: Configure .env for production
         run: |
@@ -638,7 +638,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          flutter-version: '3.16.7'
+          flutter-version: '3.16.8'
 
       - name: Configure .env for development
         if: github.event.inputs.env == 'development'
@@ -841,7 +841,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          flutter-version: '3.16.7'
+          flutter-version: '3.16.8'
 
       - name: Configure .env for development
         if: github.event.inputs.env == 'development'
