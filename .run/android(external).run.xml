@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="android(external)" type="FlutterRunConfigurationType" factoryName="Flutter">
-    <option name="buildFlavor" value="external" />
+    <option name="buildFlavor" value="externalStaging" />
     <option name="filePath" value="$PROJECT_DIR$/lib/main_external.dart" />
     <method v="2">
       <option name="RunConfigurationTask" enabled="true" run_configuration_name="build-android" run_configuration_type="ShConfigurationType" />
