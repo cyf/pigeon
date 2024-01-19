@@ -22,24 +22,48 @@ on:
 permissions: read-all
 
 jobs:
-  cleanup-ios:
+  add_outputs:
+    name: Add outputs
+    runs-on: self-hosted
+    outputs:
+      sha_short: ${{ steps.sha_short_step.outputs.sha_short }}
+      timestamp: ${{ steps.timestamp_step.outputs.timestamp }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set outputs
+        id: sha_short_step
+        run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Check outputs
+        run: echo ${{ steps.sha_short_step.outputs.sha_short }}
+
+      - name: Set timestamp
+        id: timestamp_step
+        run: echo "timestamp=$(date +%s)" >> $GITHUB_OUTPUT
+
+      - name: Check outputs
+        run: echo ${{ steps.timestamp_step.outputs.timestamp }}
+
+  cleanup_ios:
     name: Clean up (ios)
     if: ${{ always() }}
     runs-on: self-hosted
     needs:
-      - internal-ios
-      - external-ios
+      - internal_ios
+      - external_ios
     steps:
       - run: rm -f ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision
 
-  internal-latest-commits:
+  internal_latest_commits:
     name: Gen latest 10 commits (internal)
     if: ${{ !cancelled() && !failure() }}
     runs-on: self-hosted
     needs:
-      - internal-apk
-      - internal-aab
-      - internal-ios
+      - add_outputs
+      - internal_apk
+      - internal_aab
+      - internal_ios
     steps:
       - uses: actions/checkout@v4
       - name: Use Node
@@ -62,13 +86,6 @@ jobs:
             curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
           fi
           ossutil help
-
-      - name: Set outputs
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
-
-      - name: Check outputs
-        run: echo ${{ steps.vars.outputs.sha_short }}
 
       - name: Upload to oss
         run: |
@@ -79,21 +96,22 @@ jobs:
             --endpoint="$INTERNAL_ARTIFACT_OSS_ENDPOINT"
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
+          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ needs.add_outputs.outputs.timestamp }}-${{ needs.add_outputs.outputs.sha_short }}
           VERSION: ${{ github.event.inputs.version }}
           INTERNAL_ARTIFACT_OSS_BUCKET: ${{ secrets.INTERNAL_ARTIFACT_OSS_BUCKET }}
           INTERNAL_ARTIFACT_OSS_ENDPOINT: ${{ secrets.INTERNAL_ARTIFACT_OSS_ENDPOINT }}
           INTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID: ${{ secrets.INTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID }}
           INTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET: ${{ secrets.INTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET }}
 
-  external-latest-commits:
+  external_latest_commits:
     name: Gen latest 10 commits (external)
     if: ${{ !cancelled() && !failure() }}
     runs-on: self-hosted
     needs:
-      - external-apk
-      - external-aab
-      - external-ios
+      - add_outputs
+      - external_apk
+      - external_aab
+      - external_ios
     steps:
       - uses: actions/checkout@v4
       - name: Use Node
@@ -117,13 +135,6 @@ jobs:
           fi
           ossutil help
 
-      - name: Set outputs
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
-
-      - name: Check outputs
-        run: echo ${{ steps.vars.outputs.sha_short }}
-
       - name: Upload to oss
         run: |
           RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
@@ -133,16 +144,18 @@ jobs:
             --endpoint="$EXTERNAL_ARTIFACT_OSS_ENDPOINT"
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
+          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ needs.add_outputs.outputs.timestamp }}-${{ needs.add_outputs.outputs.sha_short }}
           VERSION: ${{ github.event.inputs.version }}
           EXTERNAL_ARTIFACT_OSS_BUCKET: ${{ secrets.EXTERNAL_ARTIFACT_OSS_BUCKET }}
           EXTERNAL_ARTIFACT_OSS_ENDPOINT: ${{ secrets.EXTERNAL_ARTIFACT_OSS_ENDPOINT }}
           EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID: ${{ secrets.EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_ID }}
           EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET: ${{ secrets.EXTERNAL_ARTIFACT_OSS_ACCESS_KEY_SECRET }}
 
-  internal-apk:
+  internal_apk:
     name: Create apk (internal)
     runs-on: self-hosted
+    needs:
+      - add_outputs
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -271,13 +284,6 @@ jobs:
           fi
           ossutil help
 
-      - name: Set outputs
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
-
-      - name: Check outputs
-        run: echo ${{ steps.vars.outputs.sha_short }}
-
       - name: Upload to oss
         run: |
           RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
@@ -287,7 +293,7 @@ jobs:
             --endpoint="$INTERNAL_ARTIFACT_OSS_ENDPOINT"
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
+          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ needs.add_outputs.outputs.timestamp }}-${{ needs.add_outputs.outputs.sha_short }}
           VERSION: ${{ github.event.inputs.version }}
           INTERNAL_ARTIFACT_OSS_BUCKET: ${{ secrets.INTERNAL_ARTIFACT_OSS_BUCKET }}
           INTERNAL_ARTIFACT_OSS_ENDPOINT: ${{ secrets.INTERNAL_ARTIFACT_OSS_ENDPOINT }}
@@ -301,9 +307,11 @@ jobs:
           rm -f android/key.properties
           rm -f .env
 
-  external-apk:
+  external_apk:
     name: Create apk (external)
     runs-on: self-hosted
+    needs:
+      - add_outputs
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -432,13 +440,6 @@ jobs:
           fi
           ossutil help
 
-      - name: Set outputs
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
-
-      - name: Check outputs
-        run: echo ${{ steps.vars.outputs.sha_short }}
-
       - name: Upload to oss
         run: |
           RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
@@ -448,7 +449,7 @@ jobs:
             --endpoint="$EXTERNAL_ARTIFACT_OSS_ENDPOINT"
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
+          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ needs.add_outputs.outputs.timestamp }}-${{ needs.add_outputs.outputs.sha_short }}
           VERSION: ${{ github.event.inputs.version }}
           EXTERNAL_ARTIFACT_OSS_BUCKET: ${{ secrets.EXTERNAL_ARTIFACT_OSS_BUCKET }}
           EXTERNAL_ARTIFACT_OSS_ENDPOINT: ${{ secrets.EXTERNAL_ARTIFACT_OSS_ENDPOINT }}
@@ -462,10 +463,12 @@ jobs:
           rm -f android/key.properties
           rm -f .env
 
-  internal-aab:
+  internal_aab:
     name: Create appbundle (internal)
     if: github.event.inputs.env == 'production'
     runs-on: self-hosted
+    needs:
+      - add_outputs
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -560,10 +563,12 @@ jobs:
           rm -f android/key.properties
           rm -f .env
 
-  external-aab:
+  external_aab:
     name: Create appbundle (external)
     if: github.event.inputs.env == 'production'
     runs-on: self-hosted
+    needs:
+      - add_outputs
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -658,9 +663,11 @@ jobs:
           rm -f android/key.properties
           rm -f .env
 
-  internal-ios:
+  internal_ios:
     name: Create ios (internal)
     runs-on: self-hosted
+    needs:
+      - add_outputs
     steps:
       - uses: actions/checkout@v4
 
@@ -833,13 +840,6 @@ jobs:
           fi
           ossutil help
 
-      - name: Set outputs
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
-
-      - name: Check outputs
-        run: echo ${{ steps.vars.outputs.sha_short }}
-
       - name: Upload to oss
         run: |
           RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
@@ -849,7 +849,7 @@ jobs:
             --endpoint="$INTERNAL_ARTIFACT_OSS_ENDPOINT"
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
+          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ needs.add_outputs.outputs.timestamp }}-${{ needs.add_outputs.outputs.sha_short }}
           VERSION: ${{ github.event.inputs.version }}
           INTERNAL_ARTIFACT_OSS_BUCKET: ${{ secrets.INTERNAL_ARTIFACT_OSS_BUCKET }}
           INTERNAL_ARTIFACT_OSS_ENDPOINT: ${{ secrets.INTERNAL_ARTIFACT_OSS_ENDPOINT }}
@@ -865,9 +865,11 @@ jobs:
           fi
           rm -f .env
 
-  external-ios:
+  external_ios:
     name: Create ios (external)
     runs-on: self-hosted
+    needs:
+      - add_outputs
     steps:
       - uses: actions/checkout@v4
 
@@ -1040,13 +1042,6 @@ jobs:
           fi
           ossutil help
 
-      - name: Set outputs
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
-
-      - name: Check outputs
-        run: echo ${{ steps.vars.outputs.sha_short }}
-
       - name: Upload to oss
         run: |
           RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
@@ -1056,7 +1051,7 @@ jobs:
             --endpoint="$EXTERNAL_ARTIFACT_OSS_ENDPOINT"
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
+          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ needs.add_outputs.outputs.timestamp }}-${{ needs.add_outputs.outputs.sha_short }}
           VERSION: ${{ github.event.inputs.version }}
           EXTERNAL_ARTIFACT_OSS_BUCKET: ${{ secrets.EXTERNAL_ARTIFACT_OSS_BUCKET }}
           EXTERNAL_ARTIFACT_OSS_ENDPOINT: ${{ secrets.EXTERNAL_ARTIFACT_OSS_ENDPOINT }}

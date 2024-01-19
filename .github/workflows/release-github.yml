@@ -22,18 +22,28 @@ on:
 permissions: read-all
 
 jobs:
-  create-release:
+  create_release:
     name: Create release
     runs-on: self-hosted
+    outputs:
+      sha_short: ${{ steps.sha_short_step.outputs.sha_short }}
+      timestamp: ${{ steps.timestamp_step.outputs.timestamp }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Set outputs
-        id: vars
+        id: sha_short_step
         run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
 
       - name: Check outputs
-        run: echo ${{ steps.vars.outputs.sha_short }}
+        run: echo ${{ steps.sha_short_step.outputs.sha_short }}
+
+      - name: Set timestamp
+        id: timestamp_step
+        run: echo "timestamp=$(date +%s)" >> $GITHUB_OUTPUT
+
+      - name: Check outputs
+        run: echo ${{ steps.timestamp_step.outputs.timestamp }}
 
       - name: Install gh
         run: |
@@ -53,30 +63,24 @@ jobs:
           fi
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
+          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.timestamp_step.outputs.timestamp }}-${{ steps.sha_short_step.outputs.sha_short }}
           VERSION: ${{ github.event.inputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
-  remove-release:
+  remove_release:
       name: Remove release
       if: ${{ cancelled() || failure() }}
       runs-on: self-hosted
       needs:
-        - internal-apk
-        - internal-aab
-        - internal-ios
-        - external-apk
-        - external-aab
-        - external-ios
+        - create_release
+        - internal_apk
+        - internal_aab
+        - internal_ios
+        - external_apk
+        - external_aab
+        - external_ios
       steps:
         - uses: actions/checkout@v4
-
-        - name: Set outputs
-          id: vars
-          run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
-
-        - name: Check outputs
-          run: echo ${{ steps.vars.outputs.sha_short }}
 
         - name: Install gh
           run: |
@@ -92,25 +96,25 @@ jobs:
             gh release delete -y --cleanup-tag "$RELEASE"
           env:
             ENV: ${{ github.event.inputs.env }}
-            VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
+            VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}
             VERSION: ${{ github.event.inputs.version }}
             GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
-  cleanup-ios:
+  cleanup_ios:
     name: Clean up (ios)
     if: ${{ always() }}
     runs-on: self-hosted
     needs:
-      - internal-ios
-      - external-ios
+      - internal_ios
+      - external_ios
     steps:
       - run: rm -f ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision
 
-  internal-apk:
+  internal_apk:
     name: Create apk (internal)
     runs-on: self-hosted
     needs:
-      - create-release
+      - create_release
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -231,13 +235,6 @@ jobs:
         run: cp *.apk $GITHUB_WORKSPACE/
         working-directory: build/app/outputs/flutter-apk
 
-      - name: Set outputs
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
-
-      - name: Check outputs
-        run: echo ${{ steps.vars.outputs.sha_short }}
-
       - name: Install gh
         run: |
           if ! command -v gh >/dev/null 2>&1; then
@@ -252,7 +249,7 @@ jobs:
           gh release upload "$RELEASE" ./*.apk
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
+          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}
           VERSION: ${{ github.event.inputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
@@ -263,11 +260,11 @@ jobs:
           rm -f android/key.properties
           rm -f .env
 
-  external-apk:
+  external_apk:
     name: Create apk (external)
     runs-on: self-hosted
     needs:
-      - create-release
+      - create_release
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -388,13 +385,6 @@ jobs:
         run: cp *.apk $GITHUB_WORKSPACE/
         working-directory: build/app/outputs/flutter-apk
 
-      - name: Set outputs
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
-
-      - name: Check outputs
-        run: echo ${{ steps.vars.outputs.sha_short }}
-
       - name: Install gh
         run: |
           if ! command -v gh >/dev/null 2>&1; then
@@ -409,7 +399,7 @@ jobs:
           gh release upload "$RELEASE" ./*.apk
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
+          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}
           VERSION: ${{ github.event.inputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
@@ -420,12 +410,12 @@ jobs:
           rm -f android/key.properties
           rm -f .env
 
-  internal-aab:
+  internal_aab:
     name: Create appbundle (internal)
     if: github.event.inputs.env == 'production'
     runs-on: self-hosted
     needs:
-      - create-release
+      - create_release
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -491,13 +481,6 @@ jobs:
         run: cp *.aab $GITHUB_WORKSPACE/
         working-directory: build/app/outputs/bundle/internalProductionRelease
 
-      - name: Set outputs
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
-
-      - name: Check outputs
-        run: echo ${{ steps.vars.outputs.sha_short }}
-
       - name: Install gh
         run: |
           if ! command -v gh >/dev/null 2>&1; then
@@ -512,7 +495,7 @@ jobs:
           gh release upload "$RELEASE" ./*.aab
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
+          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}
           VERSION: ${{ github.event.inputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
@@ -523,12 +506,12 @@ jobs:
           rm -f android/key.properties
           rm -f .env
 
-  external-aab:
+  external_aab:
     name: Create appbundle (external)
     if: github.event.inputs.env == 'production'
     runs-on: self-hosted
     needs:
-      - create-release
+      - create_release
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -594,13 +577,6 @@ jobs:
         run: cp *.aab $GITHUB_WORKSPACE/
         working-directory: build/app/outputs/bundle/externalProductionRelease
 
-      - name: Set outputs
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
-
-      - name: Check outputs
-        run: echo ${{ steps.vars.outputs.sha_short }}
-
       - name: Install gh
         run: |
           if ! command -v gh >/dev/null 2>&1; then
@@ -615,7 +591,7 @@ jobs:
           gh release upload "$RELEASE" ./*.aab
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
+          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}
           VERSION: ${{ github.event.inputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
@@ -626,11 +602,11 @@ jobs:
           rm -f android/key.properties
           rm -f .env
 
-  internal-ios:
+  internal_ios:
     name: Create ios (internal)
     runs-on: self-hosted
     needs:
-      - create-release
+      - create_release
     steps:
       - uses: actions/checkout@v4
 
@@ -795,13 +771,6 @@ jobs:
         run: cp *.ipa $GITHUB_WORKSPACE/Homing\ Pigeon-internal.ipa
         working-directory: build/ios/ipa
 
-      - name: Set outputs
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
-
-      - name: Check outputs
-        run: echo ${{ steps.vars.outputs.sha_short }}
-
       - name: Install gh
         run: |
           if ! command -v gh >/dev/null 2>&1; then
@@ -816,7 +785,7 @@ jobs:
           gh release upload "$RELEASE" ./*.ipa
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
+          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}
           VERSION: ${{ github.event.inputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
@@ -829,11 +798,11 @@ jobs:
           fi
           rm -f .env
 
-  external-ios:
+  external_ios:
     name: Create ios (external)
     runs-on: self-hosted
     needs:
-      - create-release
+      - create_release
     steps:
       - uses: actions/checkout@v4
 
@@ -998,13 +967,6 @@ jobs:
         run: cp *.ipa $GITHUB_WORKSPACE/Homing\ Pigeon-external.ipa
         working-directory: build/ios/ipa
 
-      - name: Set outputs
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
-
-      - name: Check outputs
-        run: echo ${{ steps.vars.outputs.sha_short }}
-
       - name: Install gh
         run: |
           if ! command -v gh >/dev/null 2>&1; then
@@ -1019,7 +981,7 @@ jobs:
           gh release upload "$RELEASE" ./*.ipa
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.vars.outputs.sha_short }}
+          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}
           VERSION: ${{ github.event.inputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
