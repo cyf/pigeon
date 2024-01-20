@@ -11,5 +11,9 @@ class AppConfig {
 
   final Flavor flavor;
 
+  bool get isExternal => flavor == Flavor.external;
+
+  bool get isInternal => flavor == Flavor.internal;
+
   static AppConfig shared = AppConfig.create();
 }

@@ -11,6 +11,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:homing_pigeon/app/bloc_observer.dart';
+import 'package:homing_pigeon/app/config.dart';
 import 'package:homing_pigeon/app/manager.dart';
 import 'package:homing_pigeon/common/constants/constants.dart';
 import 'package:homing_pigeon/common/logger/logger.dart';
@@ -18,6 +19,7 @@ import 'package:homing_pigeon/common/utils/log_util.dart';
 import 'package:homing_pigeon/common/utils/sp_util.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/modules/app/app.dart';
+import 'package:minio/minio.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:socket_io_client/socket_io_client.dart' as socket_io;
@@ -36,12 +38,15 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 @pragma('vm:entry-point')
 void notificationTapBackground(NotificationResponse notificationResponse) {
   // ignore: avoid_print
-  printDebugLog('onDidReceiveBackgroundNotificationResponse: notification(${notificationResponse.id}) action tapped: '
+  printDebugLog(
+      'onDidReceiveBackgroundNotificationResponse: notification(${notificationResponse.id}) action tapped: '
       '${notificationResponse.actionId} with'
       ' payload: ${notificationResponse.payload}');
   if (notificationResponse.input?.isNotEmpty ?? false) {
     // ignore: avoid_print
-    printDebugLog('notification action tapped with input: ${notificationResponse.input}');
+    printDebugLog(
+      'notification action tapped with input: ${notificationResponse.input}',
+    );
   }
 }
 
@@ -58,7 +63,7 @@ Future<void> setupFlutterNotifications() async {
     'high_importance_channel', // id
     'High Importance Notifications', // title
     description:
-    'This channel is used for important notifications.', // description
+        'This channel is used for important notifications.', // description
     importance: Importance.high,
   );
 
@@ -83,12 +88,15 @@ Future<void> setupFlutterNotifications() async {
     initializationSettings,
     onDidReceiveNotificationResponse:
         (NotificationResponse notificationResponse) {
-      printDebugLog('onDidReceiveNotificationResponse: notification(${notificationResponse.id})'
+      printDebugLog(
+          'onDidReceiveNotificationResponse: notification(${notificationResponse.id})'
           ' action tapped: ${notificationResponse.actionId} with'
           ' payload: ${notificationResponse.payload}');
       if (notificationResponse.input?.isNotEmpty ?? false) {
         // ignore: avoid_print
-        printDebugLog('notification action tapped with input: ${notificationResponse.input}');
+        printDebugLog(
+          'notification action tapped with input: ${notificationResponse.input}',
+        );
       }
     },
     onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
@@ -100,7 +108,7 @@ Future<void> setupFlutterNotifications() async {
   /// default FCM channel to enable heads up notifications.
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
-      AndroidFlutterLocalNotificationsPlugin>()
+          AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
 
   /// Update the iOS foreground notification presentation options to allow
@@ -154,7 +162,7 @@ Future<void> runMainApp() async {
 
   if (Constants.sentryEnabled && kReleaseMode) {
     await SentryFlutter.init(
-          (options) {
+      (options) {
         options
           ..dsn = Constants.sentryDsn
           ..tracesSampleRate = 1.0;
@@ -193,16 +201,25 @@ Future<void> runMainApp() async {
     ..onError(printErrorLog);
 
   if (Constants.ossEnabled) {
-    OSSClient.init(
-      endpoint: Constants.endpoint,
-      bucket: Constants.bucket,
-      credentials: () async {
-        return Credentials(
-          accessKeyId: Constants.accessKeyId,
-          accessKeySecret: Constants.accessKeySecret,
-        );
-      },
-    );
+    if (AppConfig.shared.isExternal) {
+      Minio.init(
+        endPoint: '${Constants.region}.${Constants.endpoint}',
+        accessKey: Constants.accessKeyId,
+        secretKey: Constants.accessKeySecret,
+        region: Constants.region,
+      );
+    } else if (AppConfig.shared.isInternal) {
+      OSSClient.init(
+        endpoint: '${Constants.region}.${Constants.endpoint}',
+        bucket: Constants.bucket,
+        credentials: () async {
+          return Credentials(
+            accessKeyId: Constants.accessKeyId,
+            accessKeySecret: Constants.accessKeySecret,
+          );
+        },
+      );
+    }
   }
 
   final onError = FlutterError.onError;
