@@ -26,19 +26,20 @@ class Constants {
       StringUtil.getValue(dotenv.env['CRYPTO_AES_KEY']);
   static String cryptoAESIV = StringUtil.getValue(dotenv.env['CRYPTO_AES_IV']);
 
-  /// aliyun oss
-  static String endpoint =
-      StringUtil.getValue(dotenv.env['ALIYUN_OSS_ENDPOINT']);
-  static String bucket = StringUtil.getValue(dotenv.env['ALIYUN_OSS_BUCKET']);
+  /// oss
+  static String region = StringUtil.getValue(dotenv.env['ASSETS_REGION']);
+  static String endpoint = StringUtil.getValue(dotenv.env['ASSETS_ENDPOINT']);
+  static String bucket = StringUtil.getValue(dotenv.env['ASSETS_BUCKET']);
   static String accessKeyId =
-      StringUtil.getValue(dotenv.env['ALIYUN_OSS_ACCESS_KEY_ID']);
+      StringUtil.getValue(dotenv.env['ASSETS_ACCESS_KEY_ID']);
   static String accessKeySecret =
-      StringUtil.getValue(dotenv.env['ALIYUN_OSS_ACCESS_KEY_SECRET']);
+      StringUtil.getValue(dotenv.env['ASSETS_ACCESS_KEY_SECRET']);
   static String host = StringUtil.getValue(
-    dotenv.env['ALIYUN_OSS_HOST'],
-    defaultVal: 'https://$bucket.$endpoint',
+    dotenv.env['ASSETS_HOST'],
+    defaultVal: 'https://$bucket.$region.$endpoint',
   );
-  static bool ossEnabled = StringUtil.isNotBlank(endpoint) &&
+  static bool ossEnabled = StringUtil.isNotBlank(region) &&
+      StringUtil.isNotBlank(endpoint) &&
       StringUtil.isNotBlank(bucket) &&
       StringUtil.isNotBlank(accessKeyId) &&
       StringUtil.isNotBlank(accessKeySecret);

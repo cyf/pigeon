@@ -131,77 +131,23 @@ jobs:
       - name: Configure .env for development
         if: github.event.inputs.env == 'development'
         run: |
-          echo "API_PREFIX=$API_PREFIX" >> .env
-          echo "SIGN_KEY=$SIGN_KEY" >> .env
-          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
-          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
-          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
-          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
-          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
-          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+          echo "$ENV_KEY" | base64 --decode > .env
         env:
-          API_PREFIX: ${{ secrets.DEV_INTERNAL_API_PREFIX }}
-          SIGN_KEY: ${{ secrets.DEV_SIGN_KEY }}
-          CRYPTO_AES_KEY: ${{ secrets.DEV_CRYPTO_AES_KEY }}
-          CRYPTO_AES_IV: ${{ secrets.DEV_CRYPTO_AES_IV }}
-          ALIYUN_OSS_HOST: ${{ secrets.DEV_INTERNAL_ALIYUN_OSS_HOST }}
-          ALIYUN_OSS_ENDPOINT: ${{ secrets.DEV_INTERNAL_ALIYUN_OSS_ENDPOINT }}
-          ALIYUN_OSS_BUCKET: ${{ secrets.DEV_INTERNAL_ALIYUN_OSS_BUCKET }}
-          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.DEV_INTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
-          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.DEV_INTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
-          SENTRY_DSN: ${{ secrets.DEV_SENTRY_DSN }}
+          ENV_KEY: ${{ secrets.DEV_INTERNAL_ENV_KEY }}
 
       - name: Configure .env for staging
         if: github.event.inputs.env == 'staging'
         run: |
-          echo "API_PREFIX=$API_PREFIX" >> .env
-          echo "SIGN_KEY=$SIGN_KEY" >> .env
-          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
-          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
-          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
-          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
-          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
-          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+          echo "$ENV_KEY" | base64 --decode > .env
         env:
-          API_PREFIX: ${{ secrets.STG_INTERNAL_API_PREFIX }}
-          SIGN_KEY: ${{ secrets.STG_SIGN_KEY }}
-          CRYPTO_AES_KEY: ${{ secrets.STG_CRYPTO_AES_KEY }}
-          CRYPTO_AES_IV: ${{ secrets.STG_CRYPTO_AES_IV }}
-          ALIYUN_OSS_HOST: ${{ secrets.STG_INTERNAL_ALIYUN_OSS_HOST }}
-          ALIYUN_OSS_ENDPOINT: ${{ secrets.STG_INTERNAL_ALIYUN_OSS_ENDPOINT }}
-          ALIYUN_OSS_BUCKET: ${{ secrets.STG_INTERNAL_ALIYUN_OSS_BUCKET }}
-          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.STG_INTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
-          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.STG_INTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
-          SENTRY_DSN: ${{ secrets.STG_SENTRY_DSN }}
+          ENV_KEY: ${{ secrets.STG_INTERNAL_ENV_KEY }}
 
       - name: Configure .env for production
         if: github.event.inputs.env == 'production'
         run: |
-          echo "API_PREFIX=$API_PREFIX" >> .env
-          echo "SIGN_KEY=$SIGN_KEY" >> .env
-          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
-          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
-          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
-          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
-          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
-          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+          echo "$ENV_KEY" | base64 --decode > .env
         env:
-          API_PREFIX: ${{ secrets.PROD_INTERNAL_API_PREFIX }}
-          SIGN_KEY: ${{ secrets.PROD_SIGN_KEY }}
-          CRYPTO_AES_KEY: ${{ secrets.PROD_CRYPTO_AES_KEY }}
-          CRYPTO_AES_IV: ${{ secrets.PROD_CRYPTO_AES_IV }}
-          ALIYUN_OSS_HOST: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_HOST }}
-          ALIYUN_OSS_ENDPOINT: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_ENDPOINT }}
-          ALIYUN_OSS_BUCKET: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_BUCKET }}
-          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
-          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
-          SENTRY_DSN: ${{ secrets.PROD_SENTRY_DSN }}
+          ENV_KEY: ${{ secrets.PROD_INTERNAL_ENV_KEY }}
 
       - name: Flutter doctor -v
         run: flutter doctor -v
@@ -281,77 +227,23 @@ jobs:
       - name: Configure .env for development
         if: github.event.inputs.env == 'development'
         run: |
-          echo "API_PREFIX=$API_PREFIX" >> .env
-          echo "SIGN_KEY=$SIGN_KEY" >> .env
-          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
-          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
-          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
-          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
-          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
-          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+          echo "$ENV_KEY" | base64 --decode > .env
         env:
-          API_PREFIX: ${{ secrets.DEV_EXTERNAL_API_PREFIX }}
-          SIGN_KEY: ${{ secrets.DEV_SIGN_KEY }}
-          CRYPTO_AES_KEY: ${{ secrets.DEV_CRYPTO_AES_KEY }}
-          CRYPTO_AES_IV: ${{ secrets.DEV_CRYPTO_AES_IV }}
-          ALIYUN_OSS_HOST: ${{ secrets.DEV_EXTERNAL_ALIYUN_OSS_HOST }}
-          ALIYUN_OSS_ENDPOINT: ${{ secrets.DEV_EXTERNAL_ALIYUN_OSS_ENDPOINT }}
-          ALIYUN_OSS_BUCKET: ${{ secrets.DEV_EXTERNAL_ALIYUN_OSS_BUCKET }}
-          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.DEV_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
-          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.DEV_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
-          SENTRY_DSN: ${{ secrets.DEV_SENTRY_DSN }}
+          ENV_KEY: ${{ secrets.DEV_EXTERNAL_ENV_KEY }}
 
       - name: Configure .env for staging
         if: github.event.inputs.env == 'staging'
         run: |
-          echo "API_PREFIX=$API_PREFIX" >> .env
-          echo "SIGN_KEY=$SIGN_KEY" >> .env
-          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
-          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
-          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
-          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
-          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
-          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+          echo "$ENV_KEY" | base64 --decode > .env
         env:
-          API_PREFIX: ${{ secrets.STG_EXTERNAL_API_PREFIX }}
-          SIGN_KEY: ${{ secrets.STG_SIGN_KEY }}
-          CRYPTO_AES_KEY: ${{ secrets.STG_CRYPTO_AES_KEY }}
-          CRYPTO_AES_IV: ${{ secrets.STG_CRYPTO_AES_IV }}
-          ALIYUN_OSS_HOST: ${{ secrets.STG_EXTERNAL_ALIYUN_OSS_HOST }}
-          ALIYUN_OSS_ENDPOINT: ${{ secrets.STG_EXTERNAL_ALIYUN_OSS_ENDPOINT }}
-          ALIYUN_OSS_BUCKET: ${{ secrets.STG_EXTERNAL_ALIYUN_OSS_BUCKET }}
-          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.STG_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
-          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.STG_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
-          SENTRY_DSN: ${{ secrets.STG_SENTRY_DSN }}
+          ENV_KEY: ${{ secrets.STG_EXTERNAL_ENV_KEY }}
 
       - name: Configure .env for production
         if: github.event.inputs.env == 'production'
         run: |
-          echo "API_PREFIX=$API_PREFIX" >> .env
-          echo "SIGN_KEY=$SIGN_KEY" >> .env
-          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
-          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
-          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
-          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
-          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
-          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+          echo "$ENV_KEY" | base64 --decode > .env
         env:
-          API_PREFIX: ${{ secrets.PROD_EXTERNAL_API_PREFIX }}
-          SIGN_KEY: ${{ secrets.PROD_SIGN_KEY }}
-          CRYPTO_AES_KEY: ${{ secrets.PROD_CRYPTO_AES_KEY }}
-          CRYPTO_AES_IV: ${{ secrets.PROD_CRYPTO_AES_IV }}
-          ALIYUN_OSS_HOST: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_HOST }}
-          ALIYUN_OSS_ENDPOINT: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_ENDPOINT }}
-          ALIYUN_OSS_BUCKET: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_BUCKET }}
-          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
-          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
-          SENTRY_DSN: ${{ secrets.PROD_SENTRY_DSN }}
+          ENV_KEY: ${{ secrets.PROD_EXTERNAL_ENV_KEY }}
 
       - name: Flutter doctor -v
         run: flutter doctor -v
@@ -429,29 +321,11 @@ jobs:
           channel: 'stable'
           flutter-version: '3.16.8'
 
-      - name: Configure .env for production
+      - name: Configure .env
         run: |
-          echo "API_PREFIX=$API_PREFIX" >> .env
-          echo "SIGN_KEY=$SIGN_KEY" >> .env
-          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
-          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
-          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
-          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
-          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
-          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+          echo "$ENV_KEY" | base64 --decode > .env
         env:
-          API_PREFIX: ${{ secrets.PROD_INTERNAL_API_PREFIX }}
-          SIGN_KEY: ${{ secrets.PROD_SIGN_KEY }}
-          CRYPTO_AES_KEY: ${{ secrets.PROD_CRYPTO_AES_KEY }}
-          CRYPTO_AES_IV: ${{ secrets.PROD_CRYPTO_AES_IV }}
-          ALIYUN_OSS_HOST: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_HOST }}
-          ALIYUN_OSS_ENDPOINT: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_ENDPOINT }}
-          ALIYUN_OSS_BUCKET: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_BUCKET }}
-          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
-          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
-          SENTRY_DSN: ${{ secrets.PROD_SENTRY_DSN }}
+          ENV_KEY: ${{ secrets.PROD_INTERNAL_ENV_KEY }}
 
       - name: Flutter doctor -v
         run: flutter doctor -v
@@ -525,29 +399,11 @@ jobs:
           channel: 'stable'
           flutter-version: '3.16.8'
 
-      - name: Configure .env for production
+      - name: Configure .env
         run: |
-          echo "API_PREFIX=$API_PREFIX" >> .env
-          echo "SIGN_KEY=$SIGN_KEY" >> .env
-          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
-          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
-          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
-          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
-          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
-          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+          echo "$ENV_KEY" | base64 --decode > .env
         env:
-          API_PREFIX: ${{ secrets.PROD_EXTERNAL_API_PREFIX }}
-          SIGN_KEY: ${{ secrets.PROD_SIGN_KEY }}
-          CRYPTO_AES_KEY: ${{ secrets.PROD_CRYPTO_AES_KEY }}
-          CRYPTO_AES_IV: ${{ secrets.PROD_CRYPTO_AES_IV }}
-          ALIYUN_OSS_HOST: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_HOST }}
-          ALIYUN_OSS_ENDPOINT: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_ENDPOINT }}
-          ALIYUN_OSS_BUCKET: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_BUCKET }}
-          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
-          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
-          SENTRY_DSN: ${{ secrets.PROD_SENTRY_DSN }}
+          ENV_KEY: ${{ secrets.PROD_EXTERNAL_ENV_KEY }}
 
       - name: Flutter doctor -v
         run: flutter doctor -v
@@ -619,77 +475,23 @@ jobs:
       - name: Configure .env for development
         if: github.event.inputs.env == 'development'
         run: |
-          echo "API_PREFIX=$API_PREFIX" >> .env
-          echo "SIGN_KEY=$SIGN_KEY" >> .env
-          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
-          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
-          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
-          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
-          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
-          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+          echo "$ENV_KEY" | base64 --decode > .env
         env:
-          API_PREFIX: ${{ secrets.DEV_INTERNAL_API_PREFIX }}
-          SIGN_KEY: ${{ secrets.DEV_SIGN_KEY }}
-          CRYPTO_AES_KEY: ${{ secrets.DEV_CRYPTO_AES_KEY }}
-          CRYPTO_AES_IV: ${{ secrets.DEV_CRYPTO_AES_IV }}
-          ALIYUN_OSS_HOST: ${{ secrets.DEV_INTERNAL_ALIYUN_OSS_HOST }}
-          ALIYUN_OSS_ENDPOINT: ${{ secrets.DEV_INTERNAL_ALIYUN_OSS_ENDPOINT }}
-          ALIYUN_OSS_BUCKET: ${{ secrets.DEV_INTERNAL_ALIYUN_OSS_BUCKET }}
-          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.DEV_INTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
-          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.DEV_INTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
-          SENTRY_DSN: ${{ secrets.DEV_SENTRY_DSN }}
+          ENV_KEY: ${{ secrets.DEV_INTERNAL_ENV_KEY }}
 
       - name: Configure .env for staging
         if: github.event.inputs.env == 'staging'
         run: |
-          echo "API_PREFIX=$API_PREFIX" >> .env
-          echo "SIGN_KEY=$SIGN_KEY" >> .env
-          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
-          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
-          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
-          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
-          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
-          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+          echo "$ENV_KEY" | base64 --decode > .env
         env:
-          API_PREFIX: ${{ secrets.STG_INTERNAL_API_PREFIX }}
-          SIGN_KEY: ${{ secrets.STG_SIGN_KEY }}
-          CRYPTO_AES_KEY: ${{ secrets.STG_CRYPTO_AES_KEY }}
-          CRYPTO_AES_IV: ${{ secrets.STG_CRYPTO_AES_IV }}
-          ALIYUN_OSS_HOST: ${{ secrets.STG_INTERNAL_ALIYUN_OSS_HOST }}
-          ALIYUN_OSS_ENDPOINT: ${{ secrets.STG_INTERNAL_ALIYUN_OSS_ENDPOINT }}
-          ALIYUN_OSS_BUCKET: ${{ secrets.STG_INTERNAL_ALIYUN_OSS_BUCKET }}
-          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.STG_INTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
-          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.STG_INTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
-          SENTRY_DSN: ${{ secrets.STG_SENTRY_DSN }}
+          ENV_KEY: ${{ secrets.STG_INTERNAL_ENV_KEY }}
 
       - name: Configure .env for production
         if: github.event.inputs.env == 'production'
         run: |
-          echo "API_PREFIX=$API_PREFIX" >> .env
-          echo "SIGN_KEY=$SIGN_KEY" >> .env
-          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
-          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
-          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
-          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
-          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
-          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+          echo "$ENV_KEY" | base64 --decode > .env
         env:
-          API_PREFIX: ${{ secrets.PROD_INTERNAL_API_PREFIX }}
-          SIGN_KEY: ${{ secrets.PROD_SIGN_KEY }}
-          CRYPTO_AES_KEY: ${{ secrets.PROD_CRYPTO_AES_KEY }}
-          CRYPTO_AES_IV: ${{ secrets.PROD_CRYPTO_AES_IV }}
-          ALIYUN_OSS_HOST: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_HOST }}
-          ALIYUN_OSS_ENDPOINT: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_ENDPOINT }}
-          ALIYUN_OSS_BUCKET: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_BUCKET }}
-          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
-          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.PROD_INTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
-          SENTRY_DSN: ${{ secrets.PROD_SENTRY_DSN }}
+          ENV_KEY: ${{ secrets.PROD_INTERNAL_ENV_KEY }}
 
       - name: Flutter doctor -v
         run: flutter doctor -v
@@ -815,77 +617,23 @@ jobs:
       - name: Configure .env for development
         if: github.event.inputs.env == 'development'
         run: |
-          echo "API_PREFIX=$API_PREFIX" >> .env
-          echo "SIGN_KEY=$SIGN_KEY" >> .env
-          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
-          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
-          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
-          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
-          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
-          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+          echo "$ENV_KEY" | base64 --decode > .env
         env:
-          API_PREFIX: ${{ secrets.DEV_EXTERNAL_API_PREFIX }}
-          SIGN_KEY: ${{ secrets.DEV_SIGN_KEY }}
-          CRYPTO_AES_KEY: ${{ secrets.DEV_CRYPTO_AES_KEY }}
-          CRYPTO_AES_IV: ${{ secrets.DEV_CRYPTO_AES_IV }}
-          ALIYUN_OSS_HOST: ${{ secrets.DEV_EXTERNAL_ALIYUN_OSS_HOST }}
-          ALIYUN_OSS_ENDPOINT: ${{ secrets.DEV_EXTERNAL_ALIYUN_OSS_ENDPOINT }}
-          ALIYUN_OSS_BUCKET: ${{ secrets.DEV_EXTERNAL_ALIYUN_OSS_BUCKET }}
-          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.DEV_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
-          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.DEV_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
-          SENTRY_DSN: ${{ secrets.DEV_SENTRY_DSN }}
+          ENV_KEY: ${{ secrets.DEV_EXTERNAL_ENV_KEY }}
 
       - name: Configure .env for staging
         if: github.event.inputs.env == 'staging'
         run: |
-          echo "API_PREFIX=$API_PREFIX" >> .env
-          echo "SIGN_KEY=$SIGN_KEY" >> .env
-          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
-          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
-          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
-          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
-          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
-          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+          echo "$ENV_KEY" | base64 --decode > .env
         env:
-          API_PREFIX: ${{ secrets.STG_EXTERNAL_API_PREFIX }}
-          SIGN_KEY: ${{ secrets.STG_SIGN_KEY }}
-          CRYPTO_AES_KEY: ${{ secrets.STG_CRYPTO_AES_KEY }}
-          CRYPTO_AES_IV: ${{ secrets.STG_CRYPTO_AES_IV }}
-          ALIYUN_OSS_HOST: ${{ secrets.STG_EXTERNAL_ALIYUN_OSS_HOST }}
-          ALIYUN_OSS_ENDPOINT: ${{ secrets.STG_EXTERNAL_ALIYUN_OSS_ENDPOINT }}
-          ALIYUN_OSS_BUCKET: ${{ secrets.STG_EXTERNAL_ALIYUN_OSS_BUCKET }}
-          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.STG_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
-          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.STG_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
-          SENTRY_DSN: ${{ secrets.STG_SENTRY_DSN }}
+          ENV_KEY: ${{ secrets.STG_EXTERNAL_ENV_KEY }}
 
       - name: Configure .env for production
         if: github.event.inputs.env == 'production'
         run: |
-          echo "API_PREFIX=$API_PREFIX" >> .env
-          echo "SIGN_KEY=$SIGN_KEY" >> .env
-          echo "CRYPTO_AES_KEY=$CRYPTO_AES_KEY" >> .env
-          echo "CRYPTO_AES_IV=$CRYPTO_AES_IV" >> .env
-          echo "ALIYUN_OSS_HOST=$ALIYUN_OSS_HOST" >> .env
-          echo "ALIYUN_OSS_ENDPOINT=$ALIYUN_OSS_ENDPOINT" >> .env
-          echo "ALIYUN_OSS_BUCKET=$ALIYUN_OSS_BUCKET" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_ID=$ALIYUN_OSS_ACCESS_KEY_ID" >> .env
-          echo "ALIYUN_OSS_ACCESS_KEY_SECRET=$ALIYUN_OSS_ACCESS_KEY_SECRET" >> .env
-          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+          echo "$ENV_KEY" | base64 --decode > .env
         env:
-          API_PREFIX: ${{ secrets.PROD_EXTERNAL_API_PREFIX }}
-          SIGN_KEY: ${{ secrets.PROD_SIGN_KEY }}
-          CRYPTO_AES_KEY: ${{ secrets.PROD_CRYPTO_AES_KEY }}
-          CRYPTO_AES_IV: ${{ secrets.PROD_CRYPTO_AES_IV }}
-          ALIYUN_OSS_HOST: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_HOST }}
-          ALIYUN_OSS_ENDPOINT: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_ENDPOINT }}
-          ALIYUN_OSS_BUCKET: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_BUCKET }}
-          ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_ID }}
-          ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.PROD_EXTERNAL_ALIYUN_OSS_ACCESS_KEY_SECRET }}
-          SENTRY_DSN: ${{ secrets.PROD_SENTRY_DSN }}
+          ENV_KEY: ${{ secrets.PROD_EXTERNAL_ENV_KEY }}
 
       - name: Flutter doctor -v
         run: flutter doctor -v

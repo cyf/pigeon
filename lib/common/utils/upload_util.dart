@@ -2,15 +2,31 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:aliyun_oss_flutter/aliyun_oss_flutter.dart';
+import 'package:homing_pigeon/app/config.dart';
 import 'package:homing_pigeon/common/constants/constants.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:intl/intl.dart';
 import 'package:mime/mime.dart';
+import 'package:minio/minio.dart';
 import 'package:path/path.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class UploadUtil {
+  static Future<FileModel?> upload({
+    required FileWrapper fileWrapper,
+    String dir = 'homing-pigeon-mobile/',
+  }) async {
+    if (Constants.ossEnabled) {
+      if (AppConfig.shared.isExternal) {
+        return uploadAwsS3(fileWrapper: fileWrapper, dir: dir);
+      } else if (AppConfig.shared.isInternal) {
+        return uploadOSS(fileWrapper: fileWrapper, dir: dir);
+      }
+    }
+    return null;
+  }
+
   static Future<FileModel> uploadOSS({
     required FileWrapper fileWrapper,
     String dir = 'homing-pigeon-mobile/',
@@ -35,6 +51,34 @@ class UploadUtil {
       fileSize: fileWrapper.file.lengthSync(),
       type: type,
       url: '${Constants.host}/$path/$uuid${ext.toLowerCase()}',
+      name: newFileName,
+    );
+  }
+
+  static Future<FileModel> uploadAwsS3({
+    required FileWrapper fileWrapper,
+    String dir = 'homing-pigeon-mobile/',
+  }) async {
+    final now = DateTime.now().millisecondsSinceEpoch;
+    final location = tz.getLocation('Asia/Shanghai');
+    final beijingTimeStamp = tz.TZDateTime.now(location);
+    final beijingTime = DateFormat('yyyy-MM-dd').format(beijingTimeStamp);
+    final newFileName = '${now}_${fileWrapper.name}';
+    final path = '$dir$beijingTime/$newFileName';
+
+    // 获取文件类型
+    final type = StringUtil.getValue(lookupMimeType(fileWrapper.file.path));
+    await Minio.shared.putObject(
+      Constants.bucket,
+      path,
+      fileWrapper.file.readAsBytes().asStream(),
+    );
+
+    return FileModel(
+      oldFileName: fileWrapper.name,
+      fileSize: fileWrapper.file.lengthSync(),
+      type: type,
+      url: '${Constants.host}/$path',
       name: newFileName,
     );
   }
