@@ -581,10 +581,11 @@ class _FeedbackViewState extends State<FeedbackView> {
           final uploadFileFutures = _fileWrappers
               .map(
                 (fileWrapper) async =>
-                    UploadUtil.uploadOSS(fileWrapper: fileWrapper),
+                    UploadUtil.upload(fileWrapper: fileWrapper),
               )
               .toList();
-          final fileModels = (await Future.wait(uploadFileFutures)).toList();
+          final fileModels =
+              (await Future.wait(uploadFileFutures)).whereNotNull().toList();
           if (fileModels.isNotEmpty) {
             files.addAll(
               fileModels.map(

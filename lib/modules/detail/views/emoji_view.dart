@@ -396,27 +396,29 @@ class _EmojiViewState extends State<EmojiView> {
 
       final uploadFileFutures = _fileWrappers
           .map(
-            (fileWrapper) async =>
-                UploadUtil.uploadOSS(fileWrapper: fileWrapper),
+            (fileWrapper) async => UploadUtil.upload(fileWrapper: fileWrapper),
           )
           .toList();
       await EasyLoading.show();
-      final fileModels = (await Future.wait(uploadFileFutures)).toList();
-      if (fileModels.isNotEmpty) {
-        final emojis = fileModels
-            .map(
-              (fileModel) => EmojiParam(
-                image: fileModel.url,
-                text: fileModel.oldFileName,
-                type: fileModel.type,
-                size: fileModel.fileSize,
-              ),
-            )
-            .toList();
-        await EmojiApi.multiAddEmoji(emojis);
-        NavigatorUtil.pop();
+      final fileModels =
+          (await Future.wait(uploadFileFutures)).whereNotNull().toList();
+      if (fileModels.isEmpty) {
+        await EasyLoading.showToast('File upload failed');
+        return;
       }
+      final emojis = fileModels
+          .map(
+            (fileModel) => EmojiParam(
+              image: fileModel.url,
+              text: fileModel.oldFileName,
+              type: fileModel.type,
+              size: fileModel.fileSize,
+            ),
+          )
+          .toList();
+      await EmojiApi.multiAddEmoji(emojis);
       await EasyLoading.showSuccess('Success');
+      NavigatorUtil.pop();
       _load();
     } on RequestedException catch (error, stackTrace) {
       printErrorLog(error.msg, stackTrace: stackTrace);
