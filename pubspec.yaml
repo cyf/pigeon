@@ -64,7 +64,7 @@ dependencies:
   flutter_easyloading: ^3.0.5
   flutter_inappwebview: ^5.8.0
   flutter_intro: ^3.0.4
-  flutter_local_notifications: ^16.3.0
+  flutter_local_notifications: ^16.3.1+1
   flutter_localizations:
     sdk: flutter
   flutter_markdown: ^0.6.18+3
@@ -89,13 +89,13 @@ dependencies:
   json_annotation: ^4.8.1
   keyboard_dismisser: ^3.0.0
   logger: ^2.0.2+1
-  markdown: ^7.2.0
+  markdown: ^7.2.1
   meta: ^1.10.0
   mime: ^1.0.4
   minio:
     git:
       url: https://github.com/FlutterFleet/minio
-      ref: v0.0.2
+      ref: v0.0.2+1
   package_info_plus: ^5.0.1
   path: ^1.8.3
   path_provider: ^2.1.2
@@ -112,7 +112,7 @@ dependencies:
   synchronized: ^3.1.0+1
   timeago: ^3.6.0
   timezone: ^0.9.2
-  upgrader: ^8.4.0
+  upgrader: ^9.0.0
   url_launcher: ^6.2.3
   uuid: ^3.0.7
   version: ^3.0.2
@@ -129,7 +129,7 @@ dev_dependencies:
   freezed: ^2.4.6
   json_serializable: ^6.7.1
   mockingjay: ^0.5.0
-  mocktail: ^1.0.2
+  mocktail: ^1.0.3
   very_good_analysis: ^5.1.0
 
 flutter_gen:
