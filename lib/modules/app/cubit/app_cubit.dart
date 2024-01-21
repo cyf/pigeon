@@ -9,4 +9,6 @@ class AppCubit extends Cubit<AppState> {
 
   void addConfigs(List<ConfigModel> configs) =>
       emit(state.copyWith(configs: configs));
+
+  void addUser(UserModel? user) => emit(state.copyWith(user: user));
 }

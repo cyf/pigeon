@@ -8,3 +8,4 @@ export 'params/params.dart';
 export 'response.dart';
 export 'roadmap_model.dart';
 export 'social_model.dart';
+export 'user_model.dart';

@@ -3,20 +3,26 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:collection/collection.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:homing_pigeon/app/config.dart';
 import 'package:homing_pigeon/app/manager.dart';
 import 'package:homing_pigeon/app/navigator.dart';
 import 'package:homing_pigeon/common/api/carousel_api.dart';
+import 'package:homing_pigeon/common/api/login_api.dart';
+import 'package:homing_pigeon/common/constants/keys.dart';
 import 'package:homing_pigeon/common/exception/exception.dart';
 import 'package:homing_pigeon/common/extensions/extensions.dart';
 import 'package:homing_pigeon/common/logger/logger.dart';
 import 'package:homing_pigeon/common/models/models.dart';
 import 'package:homing_pigeon/common/utils/color_util.dart';
 import 'package:homing_pigeon/common/utils/navigator_util.dart';
+import 'package:homing_pigeon/common/utils/sp_util.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/common/widgets/header.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
@@ -41,7 +47,7 @@ const double carouselHeight = 250;
 
 class _HomeViewState extends State<HomeView>
     with AutomaticKeepAliveClientMixin {
-  final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormBuilderState>();
   final TextEditingController _accountController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
@@ -55,7 +61,6 @@ class _HomeViewState extends State<HomeView>
   String? _error;
 
   bool _showPassword = false;
-  bool _isAuthenticated = false;
 
   @override
   void initState() {
@@ -101,27 +106,35 @@ class _HomeViewState extends State<HomeView>
     super.build(context);
     return Scaffold(
       body: _buildScaffoldBody(),
-      floatingActionButton: IconButton.filled(
-        onPressed: showLoginBottomSheet,
-        style: ButtonStyle(
-          padding: MaterialStateProperty.all(EdgeInsets.zero),
-          backgroundColor: MaterialStateProperty.all(
-            !_isAuthenticated ? primaryBackgroundColor : primaryGrayColor,
+      floatingActionButton: BlocBuilder<AppCubit, AppState>(
+        builder: (context, state) => IconButton.filled(
+          onPressed: state.user == null ? showLoginBottomSheet : null,
+          style: ButtonStyle(
+            padding: MaterialStateProperty.all(EdgeInsets.zero),
+            backgroundColor: MaterialStateProperty.all(
+              state.user == null ? primaryBackgroundColor : primaryGrayColor,
+            ),
           ),
-        ),
-        icon: !_isAuthenticated
-            ? const Icon(
-                Icons.login,
-                color: primaryColor,
-                size: 20,
-              )
-            : CircleAvatar(
-                backgroundColor: primaryGrayColor,
-                child: Assets.logoRound.image(
-                  width: 30,
-                  height: 30,
+          icon: state.user == null
+              ? const Icon(
+                  Icons.login,
+                  color: primaryColor,
+                  size: 20,
+                )
+              : CircleAvatar(
+                  backgroundColor: primaryGrayColor,
+                  child: StringUtil.isNotBlank(state.user?.avatar)
+                      ? Image.network(
+                          StringUtil.getValue(state.user?.avatar),
+                          width: 30,
+                          height: 30,
+                        )
+                      : Assets.logoRound.image(
+                          width: 30,
+                          height: 30,
+                        ),
                 ),
-              ),
+        ),
       ),
     );
   }
@@ -394,62 +407,62 @@ class _HomeViewState extends State<HomeView>
               constraints: BoxConstraints(maxHeight: height - top - bottom),
               callback: () => _login(setInnerState),
               buttonText: '登录',
-              items: [
-                Row(
-                  children: [
-                    const Text(
-                      '请填写登录信息',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: primaryTextColor,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    )
-                        .nestedPadding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                        )
-                        .nestedExpanded(),
-                    IconButton.outlined(
-                      style: ButtonStyle(
-                        padding: MaterialStateProperty.all(
-                          const EdgeInsets.all(5),
-                        ),
-                        backgroundColor:
-                            MaterialStateProperty.all(secondaryGrayColor),
-                        minimumSize:
-                            MaterialStateProperty.all(const Size(24, 24)),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                      onPressed: NavigatorUtil.pop,
-                      icon: const Icon(
-                        Icons.clear,
-                        color: borderColor,
-                        size: 14,
-                      ),
-                    ).nestedPadding(padding: const EdgeInsets.only(right: 10)),
-                  ],
-                )
-                    .nestedPadding(
-                      padding: const EdgeInsets.symmetric(vertical: 6),
-                    )
-                    .nestedDecoratedBox(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: primaryGrayColor,
-                          ),
-                        ),
-                      ),
-                    )
-                    .nestedDecoratedBox(
-                      decoration: const BoxDecoration(color: Colors.white),
-                    )
-                    .nestedSizedBox(width: width)
-                    .nestedConstrainedBox(
-                      constraints: const BoxConstraints(minHeight: 64),
+              header: Row(
+                children: [
+                  const Text(
+                    '请填写登录信息',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: primaryTextColor,
                     ),
-                Form(
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                      .nestedPadding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                      )
+                      .nestedExpanded(),
+                  IconButton.outlined(
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all(
+                        const EdgeInsets.all(5),
+                      ),
+                      backgroundColor:
+                          MaterialStateProperty.all(secondaryGrayColor),
+                      minimumSize:
+                          MaterialStateProperty.all(const Size(24, 24)),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    onPressed: NavigatorUtil.pop,
+                    icon: const Icon(
+                      Icons.clear,
+                      color: borderColor,
+                      size: 14,
+                    ),
+                  ).nestedPadding(padding: const EdgeInsets.only(right: 10)),
+                ],
+              )
+                  .nestedPadding(
+                    padding: const EdgeInsets.symmetric(vertical: 6),
+                  )
+                  .nestedDecoratedBox(
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: primaryGrayColor,
+                        ),
+                      ),
+                    ),
+                  )
+                  .nestedDecoratedBox(
+                    decoration: const BoxDecoration(color: Colors.white),
+                  )
+                  .nestedSizedBox(width: width)
+                  .nestedConstrainedBox(
+                    constraints: const BoxConstraints(minHeight: 64),
+                  ),
+              items: [
+                FormBuilder(
                   key: _formKey,
                   child: Column(
                     children: [
@@ -457,7 +470,8 @@ class _HomeViewState extends State<HomeView>
                         title: '账号',
                         showTip: false,
                         padding: EdgeInsets.zero,
-                        child: TextFormField(
+                        child: FormBuilderTextField(
+                          name: 'account',
                           focusNode: accountFocusNode,
                           controller: _accountController,
                           cursorColor: primaryColor,
@@ -503,12 +517,9 @@ class _HomeViewState extends State<HomeView>
                             fillColor: secondaryGrayColor,
                             filled: true,
                           ),
-                          validator: (value) {
-                            if (StringUtil.isBlank(value)) {
-                              return '请输入账号';
-                            }
-                            return null;
-                          },
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(errorText: '请输入账号'),
+                          ]),
                         ).nestedPadding(
                           padding: const EdgeInsets.only(top: 8),
                         ),
@@ -516,7 +527,8 @@ class _HomeViewState extends State<HomeView>
                       BaseFormItem(
                         title: '密码',
                         showTip: false,
-                        child: TextFormField(
+                        child: FormBuilderTextField(
+                          name: 'password',
                           controller: _passwordController,
                           cursorColor: primaryColor,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -545,11 +557,133 @@ class _HomeViewState extends State<HomeView>
                             fillColor: secondaryGrayColor,
                             filled: true,
                           ),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(errorText: '请输入密码'),
+                          ]),
+                        ).nestedPadding(
+                          padding: const EdgeInsets.only(top: 8),
+                        ),
+                      ),
+                      BaseFormItem(
+                        child: FormBuilderField<bool>(
+                          name: 'privacy',
+                          initialValue: false,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: (value) {
-                            if (StringUtil.isBlank(value)) {
-                              return '请输入密码';
+                            if (!(value ?? false)) {
+                              return '请同意隐私协议';
                             }
                             return null;
+                          },
+                          builder: (FormFieldState<bool> field) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Checkbox(
+                                      value: field.value ?? false,
+                                      fillColor: MaterialStateProperty.all(
+                                        Colors.white,
+                                      ),
+                                      checkColor: primaryColor,
+                                      side: MaterialStateBorderSide.resolveWith(
+                                        (states) => const BorderSide(
+                                          color: borderColor,
+                                        ),
+                                      ),
+                                      onChanged: (value) {
+                                        field
+                                          ..didChange(value ?? false)
+                                          ..validate();
+                                        setInnerState(() => {});
+                                      },
+                                    )
+                                        .nestedSizedBox(
+                                          width: 14,
+                                          height: 14,
+                                        )
+                                        .nestedColoredBox(
+                                          color: Colors.lightBlueAccent,
+                                        ),
+                                    RichText(
+                                      text: TextSpan(
+                                        children: [
+                                          const TextSpan(
+                                            text: '我已仔细阅读并同意',
+                                            style: TextStyle(
+                                              color: primaryTextColor,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: '隐私政策',
+                                            recognizer: TapGestureRecognizer()
+                                              ..onTap = () async {
+                                                // https://www.chenyifaer.com/homing-pigeon/zh/legal/privacy/
+                                                final uri = Uri.parse(
+                                                  'https://www.chenyifaer.com/homing-pigeon/zh/legal/privacy/',
+                                                );
+                                                if (await canLaunchUrl(uri)) {
+                                                  await launchUrl(uri);
+                                                }
+                                              },
+                                            style: const TextStyle(
+                                              color: primaryColor,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                          const TextSpan(
+                                            text: '以及',
+                                            style: TextStyle(
+                                              color: primaryTextColor,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: '条款和条件',
+                                            recognizer: TapGestureRecognizer()
+                                              ..onTap = () async {
+                                                // https://www.chenyifaer.com/homing-pigeon/zh/legal/terms-of-use/
+                                                final uri = Uri.parse(
+                                                  'https://www.chenyifaer.com/homing-pigeon/zh/legal/terms-of-use/',
+                                                );
+                                                if (await canLaunchUrl(uri)) {
+                                                  await launchUrl(uri);
+                                                }
+                                              },
+                                            style: const TextStyle(
+                                              color: primaryColor,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                        .nestedPadding(
+                                          padding:
+                                              const EdgeInsets.only(left: 6),
+                                        )
+                                        .nestedExpanded(),
+                                  ],
+                                ),
+                                if (StringUtil.isNotBlank(field.errorText))
+                                  Text(
+                                    field.errorText!,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: errorTextColor,
+                                    ),
+                                  ).nestedPadding(
+                                    padding:
+                                        const EdgeInsets.only(top: 8, left: 8),
+                                  ),
+                              ],
+                            );
                           },
                         ).nestedPadding(
                           padding: const EdgeInsets.only(top: 8),
@@ -568,8 +702,32 @@ class _HomeViewState extends State<HomeView>
     );
   }
 
+  // 登录接口
   void _login(StateSetter setInnerState) {
-    if (_formKey.currentState?.validate() ?? false) {}
+    if (_formKey.currentState?.validate() ?? false) {
+      final account = _accountController.text;
+      final password = _passwordController.text;
+
+      EasyLoading.show();
+      LoginApi.login(account: account, password: password).then((value) {
+        if (value != null) {
+          NavigatorUtil.pop();
+          EasyLoading.showSuccess('Success');
+          _accountController.text = '';
+          _passwordController.text = '';
+          SpUtil.putString(
+            Keys.tokenKey,
+            StringUtil.getValue(value.accessToken),
+          );
+          BlocProvider.of<AppCubit>(context).addUser(value.user);
+          return;
+        }
+        EasyLoading.showError('Failure');
+      }).onError<RequestedException>((error, stackTrace) {
+        EasyLoading.showError(error.msg);
+        printErrorLog(error, stackTrace: stackTrace);
+      });
+    }
   }
 
   void showShopModalBottomSheet() {

@@ -3,8 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:homing_pigeon/app/navigator.dart';
 import 'package:homing_pigeon/common/api/config_api.dart';
+import 'package:homing_pigeon/common/api/login_api.dart';
+import 'package:homing_pigeon/common/constants/keys.dart';
 import 'package:homing_pigeon/common/exception/exception.dart';
 import 'package:homing_pigeon/common/logger/logger.dart';
+import 'package:homing_pigeon/common/utils/run_once.dart';
+import 'package:homing_pigeon/common/utils/sp_util.dart';
+import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/l10n/l10n.dart';
 import 'package:homing_pigeon/modules/app/app.dart';
 import 'package:homing_pigeon/modules/home/home.dart';
@@ -26,6 +31,8 @@ class App extends StatelessWidget {
 
 class AppView extends StatefulWidget {
   const AppView({super.key});
+
+  static final runOnce = RunOnce();
 
   @override
   State<AppView> createState() => _AppViewState();
@@ -56,7 +63,7 @@ class _AppViewState extends State<AppView> {
       ],
       home: UpgradeAlert(
         navigatorKey: AppNavigator.key,
-        child: const HomeView(),
+        child: navigateToPage(context),
       ),
       builder: (BuildContext context, Widget? child) {
         final newChild = easyLoading(context, child);
@@ -68,6 +75,33 @@ class _AppViewState extends State<AppView> {
         );
       },
     );
+  }
+
+  Widget navigateToPage(BuildContext context) {
+    final user = BlocProvider.of<AppCubit>(context).state.user;
+    final token = SpUtil.getString(Keys.tokenKey);
+
+    AppView.runOnce(() {
+      if (StringUtil.isNotBlank(token)) {
+        /// 设置消息推送收集开关
+        // if (Platform.isIOS ||
+        //     (Platform.isAndroid && AppConfig.shared.isInternal)) {
+        //   JPushFlutter.setAuth(auth: true);
+        // }
+
+        if (user == null) {
+          LoginApi.profile().then((value) {
+            if (value != null) {
+              BlocProvider.of<AppCubit>(context).addUser(value);
+            }
+          }).onError<RequestedException>((error, stackTrace) {
+            printErrorLog(error, stackTrace: stackTrace);
+          });
+        }
+      }
+    });
+
+    return const HomeView();
   }
 
   void _loadConfigs() {

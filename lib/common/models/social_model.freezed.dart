@@ -188,7 +188,7 @@ class _$SocialModelImpl implements _SocialModel {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SocialModelImpl &&
@@ -356,7 +356,7 @@ class _$SubTitleImpl implements _SubTitle {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SubTitleImpl &&
@@ -517,7 +517,7 @@ class _$DescriptionImpl implements _Description {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DescriptionImpl &&
@@ -693,7 +693,7 @@ class _$LinkImpl implements _Link {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LinkImpl &&
