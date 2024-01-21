@@ -1,4 +1,3 @@
-
 class AppManager {
   /// 私有构造器
   AppManager._();
@@ -11,6 +10,10 @@ class AppManager {
 
   /// 构建版本
   String? buildNumber;
+
+  bool jPushInitialized = false;
+
+  bool firebaseInitialized = false;
 
   /// 静态变量指向自身
   static final AppManager _instance = AppManager._();

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
 
@@ -20,6 +23,10 @@ class Constants {
     'Accept': '*/*',
     'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
   };
+
+  static String jPushNotificationKey = Platform.isAndroid && kDebugMode
+      ? StringUtil.getValue(dotenv.env['JPUSH_APP_KEY_ANDROID_DEV'])
+      : StringUtil.getValue(dotenv.env['JPUSH_APP_KEY']);
 
   static String signKey = StringUtil.getValue(dotenv.env['SIGN_KEY']);
   static String cryptoAESKey =

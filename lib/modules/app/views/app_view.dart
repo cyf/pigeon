@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:homing_pigeon/app/manager.dart';
 import 'package:homing_pigeon/app/navigator.dart';
 import 'package:homing_pigeon/common/api/config_api.dart';
 import 'package:homing_pigeon/common/api/login_api.dart';
@@ -93,6 +94,14 @@ class _AppViewState extends State<AppView> {
           LoginApi.profile().then((value) {
             if (value != null) {
               BlocProvider.of<AppCubit>(context).addUser(value);
+
+              if (!AppManager.instance.jPushInitialized) {
+                initJPush();
+              }
+
+              if (!AppManager.instance.firebaseInitialized) {
+                initFirebase();
+              }
             }
           }).onError<RequestedException>((error, stackTrace) {
             printErrorLog(error, stackTrace: stackTrace);

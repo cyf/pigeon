@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:aliyun_oss_flutter/aliyun_oss_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:homing_pigeon/app/bloc_observer.dart';
@@ -19,6 +21,7 @@ import 'package:homing_pigeon/common/utils/log_util.dart';
 import 'package:homing_pigeon/common/utils/sp_util.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/modules/app/app.dart';
+import 'package:jpush_flutter/jpush_flutter.dart';
 import 'package:minio/minio.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -235,18 +238,48 @@ Future<void> runMainApp() async {
     return true;
   };
 
-  await Firebase.initializeApp();
   EasyLoading.instance.maskType = EasyLoadingMaskType.clear;
 
-  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-  await setupFlutterNotifications();
-  await FirebaseMessaging.instance.requestPermission();
+  if (AppConfig.shared.isExternal) {
+    await Firebase.initializeApp();
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+    await setupFlutterNotifications();
+    await FirebaseMessaging.instance.requestPermission();
+  } else if (AppConfig.shared.isInternal) {
+    await JPushFlutter.setDebugMode(debugMode: kDebugMode);
+  }
 
   if (!kReleaseMode) {
     Bloc.observer = AppBlocObserver();
   }
 
   await initApp();
+
+  if (Platform.isAndroid) {
+    await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(
+      true,
+    );
+
+    final swAvailable = await AndroidWebViewFeature.isFeatureSupported(
+      AndroidWebViewFeature.SERVICE_WORKER_BASIC_USAGE,
+    );
+    final swInterceptAvailable = await AndroidWebViewFeature.isFeatureSupported(
+      AndroidWebViewFeature.SERVICE_WORKER_SHOULD_INTERCEPT_REQUEST,
+    );
+
+    if (swAvailable && swInterceptAvailable) {
+      final serviceWorkerController = AndroidServiceWorkerController.instance();
+
+      await serviceWorkerController.setServiceWorkerClient(
+        AndroidServiceWorkerClient(
+          shouldInterceptRequest: (request) async {
+            printDebugLog(request);
+            return null;
+          },
+        ),
+      );
+    }
+  }
 
   runApp(const App());
 }

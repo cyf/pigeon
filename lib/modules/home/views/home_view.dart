@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:collection/collection.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,7 +27,6 @@ import 'package:homing_pigeon/common/widgets/header.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
 import 'package:homing_pigeon/gen/assets.gen.dart';
 import 'package:homing_pigeon/l10n/l10n.dart';
-import 'package:homing_pigeon/main_common.dart';
 import 'package:homing_pigeon/modules/app/app.dart';
 import 'package:homing_pigeon/modules/detail/detail.dart';
 import 'package:homing_pigeon/modules/home/home.dart';
@@ -78,18 +76,6 @@ class _HomeViewState extends State<HomeView>
       });
     });
 
-    FirebaseMessaging.instance.getInitialMessage().then(
-      (RemoteMessage? value) {
-        printDebugLog('A new getInitialMessage event was published!');
-      },
-    );
-
-    FirebaseMessaging.onMessage.listen(showFlutterNotification);
-
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      printDebugLog('A new onMessageOpenedApp event was published!');
-    });
-
     _load();
   }
 
@@ -107,34 +93,39 @@ class _HomeViewState extends State<HomeView>
     return Scaffold(
       body: _buildScaffoldBody(),
       floatingActionButton: BlocBuilder<AppCubit, AppState>(
-        builder: (context, state) => IconButton.filled(
-          onPressed: state.user == null ? showLoginBottomSheet : null,
-          style: ButtonStyle(
-            padding: MaterialStateProperty.all(EdgeInsets.zero),
-            backgroundColor: MaterialStateProperty.all(
-              state.user == null ? primaryBackgroundColor : primaryGrayColor,
+        builder: (context, state) {
+          printDebugLog(state.user);
+          return IconButton.filled(
+            onPressed: state.user == null
+                ? showLoginBottomSheet
+                : showLogoutBottomSheet,
+            style: ButtonStyle(
+              padding: MaterialStateProperty.all(EdgeInsets.zero),
+              backgroundColor: MaterialStateProperty.all(
+                state.user == null ? primaryBackgroundColor : primaryGrayColor,
+              ),
             ),
-          ),
-          icon: state.user == null
-              ? const Icon(
-                  Icons.login,
-                  color: primaryColor,
-                  size: 20,
-                )
-              : CircleAvatar(
-                  backgroundColor: primaryGrayColor,
-                  child: StringUtil.isNotBlank(state.user?.avatar)
-                      ? Image.network(
-                          StringUtil.getValue(state.user?.avatar),
-                          width: 30,
-                          height: 30,
-                        )
-                      : Assets.logoRound.image(
-                          width: 30,
-                          height: 30,
-                        ),
-                ),
-        ),
+            icon: state.user == null
+                ? const Icon(
+                    Icons.login,
+                    color: primaryColor,
+                    size: 20,
+                  )
+                : CircleAvatar(
+                    backgroundColor: primaryGrayColor,
+                    child: StringUtil.isNotBlank(state.user?.avatar)
+                        ? Image.network(
+                            StringUtil.getValue(state.user?.avatar),
+                            width: 30,
+                            height: 30,
+                          )
+                        : Assets.logoRound.image(
+                            width: 30,
+                            height: 30,
+                          ),
+                  ),
+          );
+        },
       ),
     );
   }
@@ -142,7 +133,7 @@ class _HomeViewState extends State<HomeView>
   Widget _buildScaffoldBody() {
     final configs = BlocProvider.of<AppCubit>(context).state.configs;
     final roadmapConfig =
-        configs.firstWhereOrNull((config) => config.key == 'roadmap');
+        configs?.firstWhereOrNull((config) => config.key == 'roadmap');
     final bottom = MediaQuery.of(context).padding.bottom;
     final version = AppManager.instance.version;
     return CustomScrollView(
@@ -702,6 +693,29 @@ class _HomeViewState extends State<HomeView>
     );
   }
 
+  void showLogoutBottomSheet() {
+    final height = MediaQuery.of(context).size.height;
+    final top = MediaQuery.of(context).padding.top;
+    final bottom = MediaQuery.of(context).padding.bottom;
+
+    showModalBottomSheet<void>(
+      context: AppNavigator.key.currentContext!,
+      isScrollControlled: true,
+      enableDrag: false,
+      builder: (BuildContext ctx) => StatefulBuilder(
+        builder: (BuildContext ctx1, StateSetter setInnerState) {
+          return KeyboardDismisser(
+            child: ModalBottomSheet(
+              constraints: BoxConstraints(maxHeight: height - top - bottom),
+              callback: () => _logout(setInnerState),
+              buttonText: '退出',
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   // 登录接口
   void _login(StateSetter setInnerState) {
     if (_formKey.currentState?.validate() ?? false) {
@@ -719,6 +733,12 @@ class _HomeViewState extends State<HomeView>
             Keys.tokenKey,
             StringUtil.getValue(value.accessToken),
           );
+          SpUtil.putString(
+            Keys.userIdKey,
+            StringUtil.getValue(value.user?.id),
+          );
+          initJPush();
+          initFirebase();
           BlocProvider.of<AppCubit>(context).addUser(value.user);
           return;
         }
@@ -730,10 +750,18 @@ class _HomeViewState extends State<HomeView>
     }
   }
 
+  // 退出接口
+  void _logout(StateSetter setInnerState) {
+    NavigatorUtil.pop();
+    BlocProvider.of<AppCubit>(context).addUser(null);
+    SpUtil.remove(Keys.tokenKey);
+    SpUtil.remove(Keys.userIdKey);
+  }
+
   void showShopModalBottomSheet() {
     final configs = BlocProvider.of<AppCubit>(context).state.configs;
     final tbConfig =
-        configs.firstWhereOrNull((config) => config.key == 'taobao');
+        configs?.firstWhereOrNull((config) => config.key == 'taobao');
 
     const crossAxisAlignment = CrossAxisAlignment.center;
     const padding = EdgeInsets.zero;

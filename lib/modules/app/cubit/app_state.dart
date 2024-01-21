@@ -2,11 +2,11 @@ part of 'app_cubit.dart';
 
 class AppState extends Equatable {
   const AppState({
-    this.configs = const <ConfigModel>[],
+    this.configs,
     this.user,
   });
 
-  final List<ConfigModel> configs;
+  final List<ConfigModel>? configs;
   final UserModel? user;
 
   AppState copyWith({
@@ -14,8 +14,8 @@ class AppState extends Equatable {
     UserModel? user,
   }) {
     return AppState(
-      configs: configs ?? this.configs,
-      user: user ?? this.user,
+      configs: configs,
+      user: user,
     );
   }
 
