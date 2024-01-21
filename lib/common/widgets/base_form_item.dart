@@ -7,8 +7,8 @@ typedef BaseFormItemCallback = void Function();
 
 class BaseFormItem extends StatelessWidget {
   const BaseFormItem({
-    required this.title,
     required this.child,
+    this.title,
     this.required = true,
     this.showTip = true,
     this.padding = const EdgeInsets.only(top: 10),
@@ -19,8 +19,8 @@ class BaseFormItem extends StatelessWidget {
     super.key,
   });
 
-  final String title;
   final Widget child;
+  final String? title;
   final bool required;
   final bool showTip;
   final EdgeInsetsGeometry padding;
@@ -31,25 +31,30 @@ class BaseFormItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: mainAxisSize,
-      children: [
-        if (!showTip)
-          content
-        else
-          content
-              .addWidgetAsList(
-                tipWidget == null
-                    ? tips
-                    : tipWidget!.nestedTap(() {
-                        onTipTap?.call();
-                      }),
-              )
-              .nestedRow(mainAxisAlignment: mainAxisAlignment),
-        child,
-      ],
-    ).nestedPadding(padding: padding);
+    return title != null
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: mainAxisSize,
+            children: [
+              if (!showTip)
+                content
+              else
+                content
+                    .addWidgetAsList(
+                      tipWidget == null
+                          ? tips
+                          : tipWidget!.nestedTap(() {
+                              onTipTap?.call();
+                            }),
+                    )
+                    .nestedRow(mainAxisAlignment: mainAxisAlignment),
+              child,
+            ],
+          ).nestedPadding(padding: padding)
+        : Padding(
+            padding: padding,
+            child: child,
+          );
   }
 
   Widget get content {

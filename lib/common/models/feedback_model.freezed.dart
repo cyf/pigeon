@@ -251,7 +251,7 @@ class _$FeedbackModelImpl implements _FeedbackModel {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FeedbackModelImpl &&
@@ -602,7 +602,7 @@ class _$FeedbackFileModelImpl implements _FeedbackFileModel {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FeedbackFileModelImpl &&

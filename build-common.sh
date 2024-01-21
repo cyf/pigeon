@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 function getEnv() {
-  env=""
+  env="development"
   if [ "$(awk '/dev.external.homing-pigeon.chenyifaer.com/{print $0}' .env)" ]; then
       env="development"
   elif [ "$(awk '/dev.internal.homing-pigeon.chenyifaer.com/{print $0}' .env)" ]; then

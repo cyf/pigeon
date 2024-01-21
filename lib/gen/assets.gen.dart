@@ -17,7 +17,7 @@ class Assets {
   static const AssetGenImage logoRound = AssetGenImage('assets/logo_round.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [info, logo, logoRound];
+  static List<AssetGenImage> get values => [info, logo, logoRound];
 }
 
 class AssetGenImage {
