@@ -6,9 +6,9 @@ const double _buttonHeight = 64;
 
 class ModalBottomSheet extends StatelessWidget {
   const ModalBottomSheet({
-    required this.items,
     required this.buttonText,
     required this.callback,
+    this.items,
     this.header,
     this.mainAxisSize = MainAxisSize.max,
     this.padding = EdgeInsets.zero,
@@ -18,7 +18,7 @@ class ModalBottomSheet extends StatelessWidget {
     super.key,
   });
 
-  final List<Widget> items;
+  final List<Widget>? items;
   final MainAxisSize mainAxisSize;
 
   final Widget? header;
@@ -39,41 +39,61 @@ class ModalBottomSheet extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (header != null) header!,
-        Stack(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: mainAxisSize,
-              children: items,
-            )
-                .nestedSingleChildScrollView(physics: physics, padding: padding)
-                .nestedPadding(padding: margin)
-                .nestedColoredBox(color: Colors.white)
-                .nestedPadding(
-                  padding: EdgeInsets.only(bottom: bottom + _buttonHeight + 8),
-                )
-                .nestedSizedBox(width: width)
-                .nestedConstrainedBox(constraints: constraints),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: TextButton(
-                onPressed: callback,
-                child: Text(
-                  buttonText,
-                  style: const TextStyle(fontSize: 18, color: primaryTextColor),
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                )
-                    .nestedCenter()
-                    .nestedSizedBox(height: _buttonHeight)
-                    .nestedPadding(padding: EdgeInsets.only(bottom: bottom)),
+        if (items != null && items!.isNotEmpty)
+          Stack(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: mainAxisSize,
+                children: items!,
+              )
+                  .nestedSingleChildScrollView(
+                    physics: physics,
+                    padding: padding,
+                  )
+                  .nestedPadding(padding: margin)
+                  .nestedColoredBox(color: Colors.white)
+                  .nestedPadding(
+                    padding:
+                        EdgeInsets.only(bottom: bottom + _buttonHeight + 8),
+                  )
+                  .nestedSizedBox(width: width)
+                  .nestedConstrainedBox(constraints: constraints),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: TextButton(
+                  onPressed: callback,
+                  child: Text(
+                    buttonText,
+                    style:
+                        const TextStyle(fontSize: 18, color: primaryTextColor),
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                      .nestedCenter()
+                      .nestedSizedBox(height: _buttonHeight)
+                      .nestedPadding(padding: EdgeInsets.only(bottom: bottom)),
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          )
+        else
+          TextButton(
+            onPressed: callback,
+            child: Text(
+              buttonText,
+              style: const TextStyle(fontSize: 18, color: primaryTextColor),
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            )
+                .nestedCenter()
+                .nestedSizedBox(height: _buttonHeight)
+                .nestedPadding(padding: EdgeInsets.only(bottom: bottom)),
+          ),
       ],
     );
   }
