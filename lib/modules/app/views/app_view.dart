@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:homing_pigeon/app/manager.dart';
 import 'package:homing_pigeon/app/navigator.dart';
+import 'package:homing_pigeon/common/api/auth_api.dart';
 import 'package:homing_pigeon/common/api/config_api.dart';
-import 'package:homing_pigeon/common/api/login_api.dart';
 import 'package:homing_pigeon/common/constants/keys.dart';
 import 'package:homing_pigeon/common/exception/exception.dart';
 import 'package:homing_pigeon/common/logger/logger.dart';
@@ -91,7 +91,7 @@ class _AppViewState extends State<AppView> {
         // }
 
         if (user == null) {
-          LoginApi.profile().then((value) {
+          AuthApi.profile().then((value) {
             if (value != null) {
               BlocProvider.of<AppCubit>(context).addUser(value);
 

@@ -12,8 +12,8 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:homing_pigeon/app/config.dart';
 import 'package:homing_pigeon/app/manager.dart';
 import 'package:homing_pigeon/app/navigator.dart';
+import 'package:homing_pigeon/common/api/auth_api.dart';
 import 'package:homing_pigeon/common/api/carousel_api.dart';
-import 'package:homing_pigeon/common/api/login_api.dart';
 import 'package:homing_pigeon/common/constants/keys.dart';
 import 'package:homing_pigeon/common/exception/exception.dart';
 import 'package:homing_pigeon/common/extensions/extensions.dart';
@@ -46,19 +46,26 @@ const double carouselHeight = 250;
 class _HomeViewState extends State<HomeView>
     with AutomaticKeepAliveClientMixin {
   final _formKey = GlobalKey<FormBuilderState>();
+  final TextEditingController _nicknameController = TextEditingController();
   final TextEditingController _accountController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _repeatPasswordController =
+      TextEditingController();
   final ScrollController _scrollController = ScrollController();
   bool isSliverAppBarExpanded = false;
 
   final accountFocusNode = FocusNode();
+  final nicknameFocusNode = FocusNode();
   bool _isAccountFocus = false;
+  bool _isNicknameFocus = false;
 
   List<CarouselModel> _carousels = [];
   bool _loading = false;
   String? _error;
 
   bool _showPassword = false;
+  bool _showRepeatPassword = false;
+  bool _isRegistered = false;
 
   @override
   void initState() {
@@ -66,6 +73,12 @@ class _HomeViewState extends State<HomeView>
     accountFocusNode.addListener(() {
       setState(() {
         _isAccountFocus = accountFocusNode.hasFocus;
+      });
+    });
+
+    nicknameFocusNode.addListener(() {
+      setState(() {
+        _isNicknameFocus = nicknameFocusNode.hasFocus;
       });
     });
 
@@ -82,8 +95,10 @@ class _HomeViewState extends State<HomeView>
   @override
   void dispose() {
     _scrollController.dispose();
+    _nicknameController.dispose();
     _accountController.dispose();
     _passwordController.dispose();
+    _repeatPasswordController.dispose();
     super.dispose();
   }
 
@@ -396,13 +411,15 @@ class _HomeViewState extends State<HomeView>
           return KeyboardDismisser(
             child: ModalBottomSheet(
               constraints: BoxConstraints(maxHeight: height - top - bottom),
-              callback: () => _login(setInnerState),
-              buttonText: '登录',
+              callback: () => !_isRegistered
+                  ? _login(setInnerState)
+                  : _register(setInnerState),
+              buttonText: !_isRegistered ? '登录' : '注册',
               header: Row(
                 children: [
-                  const Text(
-                    '请填写登录信息',
-                    style: TextStyle(
+                  Text(
+                    '请填写${!_isRegistered ? '登录' : '注册'}信息',
+                    style: const TextStyle(
                       fontSize: 16,
                       color: primaryTextColor,
                     ),
@@ -509,12 +526,77 @@ class _HomeViewState extends State<HomeView>
                             filled: true,
                           ),
                           validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(errorText: '请输入账号'),
+                            FormBuilderValidators.required(
+                              errorText: '请输入账号',
+                            ),
                           ]),
                         ).nestedPadding(
                           padding: const EdgeInsets.only(top: 8),
                         ),
                       ),
+                      if (_isRegistered)
+                        BaseFormItem(
+                          title: '昵称',
+                          required: false,
+                          showTip: false,
+                          child: FormBuilderTextField(
+                            name: 'nickname',
+                            focusNode: nicknameFocusNode,
+                            controller: _nicknameController,
+                            cursorColor: primaryColor,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            autocorrect: false,
+                            onChanged: (value) {
+                              setInnerState(() {});
+                            },
+                            decoration: InputDecoration(
+                              suffixIcon: (_isNicknameFocus &&
+                                      _nicknameController.text.isNotEmpty)
+                                  ? Container(
+                                      width: 20,
+                                      height: 20,
+                                      margin: const EdgeInsets.only(right: 10),
+                                      decoration: BoxDecoration(
+                                        color: primaryGrayColor,
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      child: IconButton(
+                                        padding: EdgeInsets.zero,
+                                        splashRadius: 2,
+                                        onPressed: () {
+                                          // Clear everything in the text field
+                                          _nicknameController.clear();
+                                          // Call setState to update the UI
+                                          setInnerState(() {});
+                                        },
+                                        iconSize: 16,
+                                        icon: const Icon(
+                                          Icons.clear,
+                                          color: placeholderTextColor,
+                                        ),
+                                      ),
+                                    )
+                                  : null,
+                              suffixIconConstraints: const BoxConstraints(
+                                maxWidth: 30,
+                                maxHeight: 30,
+                              ),
+                              hintText: '请输入昵称',
+                              contentPadding: const EdgeInsets.all(8),
+                              fillColor: secondaryGrayColor,
+                              filled: true,
+                            ),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.maxLength(
+                                20,
+                                errorText: '昵称长度不能大于20',
+                              ),
+                            ]),
+                          ).nestedPadding(
+                            padding: const EdgeInsets.only(top: 8),
+                          ),
+                        ),
                       BaseFormItem(
                         title: '密码',
                         showTip: false,
@@ -549,12 +631,59 @@ class _HomeViewState extends State<HomeView>
                             filled: true,
                           ),
                           validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(errorText: '请输入密码'),
+                            FormBuilderValidators.required(
+                              errorText: '请输入密码',
+                            ),
                           ]),
                         ).nestedPadding(
                           padding: const EdgeInsets.only(top: 8),
                         ),
                       ),
+                      if (_isRegistered)
+                        BaseFormItem(
+                          title: '密码',
+                          showTip: false,
+                          child: FormBuilderTextField(
+                            name: 'repeat_password',
+                            controller: _repeatPasswordController,
+                            cursorColor: primaryColor,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            autocorrect: false,
+                            obscureText: !_showRepeatPassword,
+                            onChanged: (value) {
+                              setInnerState(() {});
+                            },
+                            decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  setInnerState(
+                                    () => _showRepeatPassword =
+                                        !_showRepeatPassword,
+                                  );
+                                },
+                                icon: Icon(
+                                  _showRepeatPassword
+                                      ? Icons.visibility_outlined
+                                      : Icons.visibility_off_outlined,
+                                  color: borderColor,
+                                  size: 18,
+                                ),
+                              ),
+                              hintText: '请再次输入密码',
+                              contentPadding: const EdgeInsets.all(8),
+                              fillColor: secondaryGrayColor,
+                              filled: true,
+                            ),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(
+                                errorText: '请再次输入密码',
+                              ),
+                            ]),
+                          ).nestedPadding(
+                            padding: const EdgeInsets.only(top: 8),
+                          ),
+                        ),
                       BaseFormItem(
                         child: FormBuilderField<bool>(
                           name: 'privacy',
@@ -574,6 +703,8 @@ class _HomeViewState extends State<HomeView>
                                   children: [
                                     Checkbox(
                                       value: field.value ?? false,
+                                      materialTapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
                                       fillColor: MaterialStateProperty.all(
                                         Colors.white,
                                       ),
@@ -589,14 +720,10 @@ class _HomeViewState extends State<HomeView>
                                           ..validate();
                                         setInnerState(() => {});
                                       },
-                                    )
-                                        .nestedSizedBox(
-                                          width: 14,
-                                          height: 14,
-                                        )
-                                        .nestedColoredBox(
-                                          color: Colors.lightBlueAccent,
-                                        ),
+                                    ).nestedSizedBox(
+                                      width: 14,
+                                      height: 14,
+                                    ),
                                     RichText(
                                       text: TextSpan(
                                         children: [
@@ -685,6 +812,39 @@ class _HomeViewState extends State<HomeView>
                 ).nestedPadding(
                   padding: const EdgeInsets.all(10),
                 ),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: !_isRegistered ? '还没有账号, ' : '已有账号, ',
+                        style: const TextStyle(
+                          color: secondaryTextColor,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      TextSpan(
+                        text: !_isRegistered ? '去注册' : '去登录',
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () async {
+                            setInnerState(() => _isRegistered = !_isRegistered);
+                          },
+                        style: const TextStyle(
+                          color: secondaryTextColor,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ],
+                  ),
+                ).nestedCenter().nestedPadding(
+                      padding: const EdgeInsets.only(
+                        left: 10,
+                        right: 10,
+                        bottom: 10,
+                      ),
+                    ),
               ],
             ),
           );
@@ -723,12 +883,49 @@ class _HomeViewState extends State<HomeView>
       final password = _passwordController.text;
 
       EasyLoading.show();
-      LoginApi.login(account: account, password: password).then((value) {
+      AuthApi.login(account: account, password: password).then((value) {
         if (value != null) {
           NavigatorUtil.pop();
           EasyLoading.showSuccess('Success');
-          _accountController.text = '';
-          _passwordController.text = '';
+          _accountController.clear();
+          _passwordController.clear();
+          SpUtil.putString(
+            Keys.tokenKey,
+            StringUtil.getValue(value.accessToken),
+          );
+          SpUtil.putString(
+            Keys.userIdKey,
+            StringUtil.getValue(value.user?.id),
+          );
+          initJPush();
+          initFirebase();
+          BlocProvider.of<AppCubit>(context).addUser(value.user);
+          return;
+        }
+        EasyLoading.showError('Failure');
+      }).onError<RequestedException>((error, stackTrace) {
+        EasyLoading.showError(error.msg);
+        printErrorLog(error, stackTrace: stackTrace);
+      });
+    }
+  }
+
+  // 注册接口
+  void _register(StateSetter setInnerState) {
+    if (_formKey.currentState?.validate() ?? false) {
+      final account = _accountController.text;
+      final nickname = _nicknameController.text;
+      final password = _passwordController.text;
+
+      EasyLoading.show();
+      AuthApi.register(account, password, nickname: nickname).then((value) {
+        if (value != null) {
+          NavigatorUtil.pop();
+          EasyLoading.showSuccess('Success');
+          _accountController.clear();
+          _nicknameController.clear();
+          _passwordController.clear();
+          _repeatPasswordController.clear();
           SpUtil.putString(
             Keys.tokenKey,
             StringUtil.getValue(value.accessToken),
