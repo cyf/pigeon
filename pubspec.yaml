@@ -68,7 +68,7 @@ dependencies:
   flutter_form_builder: ^9.1.1
   flutter_inappwebview: ^5.8.0
   flutter_intro: ^3.0.4
-  flutter_local_notifications: ^16.3.1+1
+  flutter_local_notifications: ^16.3.2
   flutter_localizations:
     sdk: flutter
   flutter_markdown: ^0.6.18+3
