@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:aliyun_oss_flutter/aliyun_oss_flutter.dart';
+import 'package:aliyun_oss/aliyun_oss.dart';
 import 'package:homing_pigeon/app/config.dart';
 import 'package:homing_pigeon/common/constants/constants.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
@@ -42,7 +42,7 @@ class UploadUtil {
 
     // 获取文件类型
     final type = StringUtil.getValue(lookupMimeType(fileWrapper.file.path));
-    await OSSClient().putObject(
+    await OSSClient.shared.putObject(
       object: OSSImageObject.fromFile(file: fileWrapper.file, uuid: uuid),
       path: path,
     );
