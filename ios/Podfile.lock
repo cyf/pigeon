@@ -250,13 +250,13 @@ PODS:
   - SDWebImage/Core (5.18.5)
   - sensors_plus (0.0.1):
     - Flutter
-  - Sentry/HybridSDK (8.17.2):
-    - SentryPrivate (= 8.17.2)
+  - Sentry/HybridSDK (8.18.0):
+    - SentryPrivate (= 8.18.0)
   - sentry_flutter (0.0.1):
     - Flutter
     - FlutterMacOS
-    - Sentry/HybridSDK (= 8.17.2)
-  - SentryPrivate (8.17.2)
+    - Sentry/HybridSDK (= 8.18.0)
+  - SentryPrivate (8.18.0)
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -460,9 +460,9 @@ SPEC CHECKSUMS:
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDWebImage: 7ac2b7ddc5e8484c79aa90fc4e30b149d6a2c88f
   sensors_plus: 42b9de1b8237675fa8d8121e4bb93be0f79fa61d
-  Sentry: 64a9f9c3637af913adcf53deced05bbe452d1410
-  sentry_flutter: 57912cf425e09398bdf47f38842a1fcb9836f1be
-  SentryPrivate: 024c6fed507ac39ae98e6d087034160f942920d5
+  Sentry: 8984a4ffb2b9bd2894d74fb36e6f5833865bc18e
+  sentry_flutter: c87a0556eeb6cbf7f9f924d30e878bdedf22d364
+  SentryPrivate: 2f0c9ba4c3fc993f70eab6ca95673509561e0085
   shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
   sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
   SwiftyGif: 93a1cc87bf3a51916001cf8f3d63835fb64c819f
