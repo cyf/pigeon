@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:homing_pigeon/common/extensions/single.dart';
 import 'package:homing_pigeon/theme/colors.dart';
 
-const double _buttonHeight = 64;
+const double buttonHeight = 64;
 
 class ModalBottomSheet extends StatelessWidget {
   const ModalBottomSheet({
@@ -11,7 +11,7 @@ class ModalBottomSheet extends StatelessWidget {
     this.items,
     this.header,
     this.mainAxisSize = MainAxisSize.max,
-    this.padding = EdgeInsets.zero,
+    this.contentPadding = EdgeInsets.zero,
     this.physics = const AlwaysScrollableScrollPhysics(),
     this.margin = EdgeInsets.zero,
     this.constraints = const BoxConstraints(),
@@ -22,7 +22,7 @@ class ModalBottomSheet extends StatelessWidget {
   final MainAxisSize mainAxisSize;
 
   final Widget? header;
-  final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry contentPadding;
   final ScrollPhysics physics;
 
   final EdgeInsetsGeometry margin;
@@ -49,16 +49,18 @@ class ModalBottomSheet extends StatelessWidget {
               )
                   .nestedSingleChildScrollView(
                     physics: physics,
-                    padding: padding,
+                    padding: contentPadding,
                   )
                   .nestedPadding(padding: margin)
                   .nestedColoredBox(color: Colors.white)
                   .nestedPadding(
                     padding:
-                        EdgeInsets.only(bottom: bottom + _buttonHeight + 8),
+                        EdgeInsets.only(bottom: bottom + buttonHeight + 8),
                   )
                   .nestedSizedBox(width: width)
-                  .nestedConstrainedBox(constraints: constraints),
+                  .nestedConstrainedBox(
+                    constraints: constraints,
+                  ),
               Positioned(
                 left: 0,
                 right: 0,
@@ -74,7 +76,7 @@ class ModalBottomSheet extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   )
                       .nestedCenter()
-                      .nestedSizedBox(height: _buttonHeight)
+                      .nestedSizedBox(height: buttonHeight)
                       .nestedPadding(padding: EdgeInsets.only(bottom: bottom)),
                 ),
               ),
@@ -91,7 +93,7 @@ class ModalBottomSheet extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             )
                 .nestedCenter()
-                .nestedSizedBox(height: _buttonHeight)
+                .nestedSizedBox(height: buttonHeight)
                 .nestedPadding(padding: EdgeInsets.only(bottom: bottom)),
           ),
       ],

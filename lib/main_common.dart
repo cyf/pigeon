@@ -179,21 +179,25 @@ Future<void> runMainApp() async {
   final socket = socket_io.io(
     '${Constants.apiPrefix}/ws',
     socket_io.OptionBuilder()
-        .setTransports(['websocket']).setExtraHeaders({'foo': 'bar'}).build(),
+        .setPath('/homing-pigeon/socket.io/')
+        .setTransports(['websocket', 'polling']).setExtraHeaders(
+      {'foo': 'bar'},
+    ).build(),
   );
 
   socket
-    ..onConnecting(printDebugLog)
+    ..onConnecting((dynamic data) => printDebugLog('connecting'))
     ..onConnect((_) {
       printDebugLog('connect');
       Fluttertoast.showToast(msg: 'Connected', gravity: ToastGravity.BOTTOM);
-      socket.emit('msg', 'test');
+      socket.emit('hello2', 'test');
     })
     ..onConnectError(printErrorLog)
     ..onConnectTimeout(printErrorLog)
-    ..on('event', printDebugLog)
-    ..onReconnectAttempt(printDebugLog)
-    ..onReconnecting(printDebugLog)
+    ..on('hello2', (dynamic data) => printDebugLog('hello2: $data'))
+    ..on('exception', (dynamic data) => printErrorLog('error: $data'))
+    ..onReconnectAttempt((dynamic data) => printDebugLog('reconnect attempt'))
+    ..onReconnecting((dynamic data) => printDebugLog('reconnecting'))
     ..onReconnect((_) {
       printDebugLog('connect');
       Fluttertoast.showToast(msg: 'Connected', gravity: ToastGravity.BOTTOM);
@@ -273,7 +277,6 @@ Future<void> runMainApp() async {
       await serviceWorkerController.setServiceWorkerClient(
         AndroidServiceWorkerClient(
           shouldInterceptRequest: (request) async {
-            printDebugLog(request);
             return null;
           },
         ),

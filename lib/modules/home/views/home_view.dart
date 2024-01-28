@@ -46,8 +46,9 @@ const double carouselHeight = 250;
 class _HomeViewState extends State<HomeView>
     with AutomaticKeepAliveClientMixin {
   final _formKey = GlobalKey<FormBuilderState>();
-  final TextEditingController _nicknameController = TextEditingController();
   final TextEditingController _accountController = TextEditingController();
+  final TextEditingController _nicknameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _repeatPasswordController =
       TextEditingController();
@@ -56,8 +57,11 @@ class _HomeViewState extends State<HomeView>
 
   final accountFocusNode = FocusNode();
   final nicknameFocusNode = FocusNode();
+  final emailFocusNode = FocusNode();
+
   bool _isAccountFocus = false;
   bool _isNicknameFocus = false;
+  bool _isEmailFocus = false;
 
   List<CarouselModel> _carousels = [];
   bool _loading = false;
@@ -82,6 +86,12 @@ class _HomeViewState extends State<HomeView>
       });
     });
 
+    emailFocusNode.addListener(() {
+      setState(() {
+        _isEmailFocus = emailFocusNode.hasFocus;
+      });
+    });
+
     _scrollController.addListener(() {
       setState(() {
         isSliverAppBarExpanded = _scrollController.hasClients &&
@@ -95,8 +105,9 @@ class _HomeViewState extends State<HomeView>
   @override
   void dispose() {
     _scrollController.dispose();
-    _nicknameController.dispose();
     _accountController.dispose();
+    _nicknameController.dispose();
+    _emailController.dispose();
     _passwordController.dispose();
     _repeatPasswordController.dispose();
     super.dispose();
@@ -109,7 +120,6 @@ class _HomeViewState extends State<HomeView>
       body: _buildScaffoldBody(),
       floatingActionButton: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {
-          printDebugLog(state.user);
           return IconButton.filled(
             onPressed: state.user == null
                 ? showLoginBottomSheet
@@ -400,149 +410,92 @@ class _HomeViewState extends State<HomeView>
     final height = MediaQuery.of(context).size.height;
     final top = MediaQuery.of(context).padding.top;
     final bottom = MediaQuery.of(context).padding.bottom;
-
     showModalBottomSheet<void>(
-      context: AppNavigator.key.currentContext!,
+      context: context,
       isDismissible: false,
       isScrollControlled: true,
       enableDrag: false,
-      builder: (BuildContext ctx) => StatefulBuilder(
-        builder: (BuildContext ctx1, StateSetter setInnerState) {
-          return KeyboardDismisser(
-            child: ModalBottomSheet(
-              constraints: BoxConstraints(maxHeight: height - top - bottom),
-              callback: () => !_isRegistered
-                  ? _login(setInnerState)
-                  : _register(setInnerState),
-              buttonText: !_isRegistered ? '登录' : '注册',
-              header: Row(
-                children: [
-                  Text(
-                    '请填写${!_isRegistered ? '登录' : '注册'}信息',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: primaryTextColor,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  )
-                      .nestedPadding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                      )
-                      .nestedExpanded(),
-                  IconButton.outlined(
-                    style: ButtonStyle(
-                      padding: MaterialStateProperty.all(
-                        const EdgeInsets.all(5),
+      builder: (BuildContext ctx) {
+        return StatefulBuilder(
+          builder: (BuildContext ctx1, StateSetter setInnerState) {
+            return KeyboardDismisser(
+              child: ModalBottomSheet(
+                constraints: BoxConstraints(
+                  maxHeight: height - top - buttonHeight - bottom,
+                ),
+                callback: () => !_isRegistered
+                    ? _login(setInnerState)
+                    : _register(setInnerState),
+                buttonText: !_isRegistered ? '登录' : '注册',
+                header: Row(
+                  children: [
+                    Text(
+                      '请填写${!_isRegistered ? '登录' : '注册'}信息',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: primaryTextColor,
                       ),
-                      backgroundColor:
-                          MaterialStateProperty.all(secondaryGrayColor),
-                      minimumSize:
-                          MaterialStateProperty.all(const Size(24, 24)),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    ),
-                    onPressed: NavigatorUtil.pop,
-                    icon: const Icon(
-                      Icons.clear,
-                      color: borderColor,
-                      size: 14,
-                    ),
-                  ).nestedPadding(padding: const EdgeInsets.only(right: 10)),
-                ],
-              )
-                  .nestedPadding(
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                  )
-                  .nestedDecoratedBox(
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: primaryGrayColor,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    )
+                        .nestedPadding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                        )
+                        .nestedExpanded(),
+                    IconButton.outlined(
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all(
+                          const EdgeInsets.all(5),
                         ),
+                        backgroundColor:
+                            MaterialStateProperty.all(secondaryGrayColor),
+                        minimumSize:
+                            MaterialStateProperty.all(const Size(24, 24)),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
+                      onPressed: NavigatorUtil.pop,
+                      icon: const Icon(
+                        Icons.clear,
+                        color: borderColor,
+                        size: 14,
+                      ),
+                    ).nestedPadding(
+                      padding: const EdgeInsets.only(right: 10),
                     ),
-                  )
-                  .nestedDecoratedBox(
-                    decoration: const BoxDecoration(color: Colors.white),
-                  )
-                  .nestedSizedBox(width: width)
-                  .nestedConstrainedBox(
-                    constraints: const BoxConstraints(minHeight: 64),
-                  ),
-              items: [
-                FormBuilder(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      BaseFormItem(
-                        title: '账号',
-                        showTip: false,
-                        padding: EdgeInsets.zero,
-                        child: FormBuilderTextField(
-                          name: 'account',
-                          focusNode: accountFocusNode,
-                          controller: _accountController,
-                          cursorColor: primaryColor,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          autocorrect: false,
-                          onChanged: (value) {
-                            setInnerState(() {});
-                          },
-                          decoration: InputDecoration(
-                            suffixIcon: (_isAccountFocus &&
-                                    _accountController.text.isNotEmpty)
-                                ? Container(
-                                    width: 20,
-                                    height: 20,
-                                    margin: const EdgeInsets.only(right: 10),
-                                    decoration: BoxDecoration(
-                                      color: primaryGrayColor,
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: IconButton(
-                                      padding: EdgeInsets.zero,
-                                      splashRadius: 2,
-                                      onPressed: () {
-                                        // Clear everything in the text field
-                                        _accountController.clear();
-                                        // Call setState to update the UI
-                                        setInnerState(() {});
-                                      },
-                                      iconSize: 16,
-                                      icon: const Icon(
-                                        Icons.clear,
-                                        color: placeholderTextColor,
-                                      ),
-                                    ),
-                                  )
-                                : null,
-                            suffixIconConstraints: const BoxConstraints(
-                              maxWidth: 30,
-                              maxHeight: 30,
-                            ),
-                            hintText: '请输入账号',
-                            contentPadding: const EdgeInsets.all(8),
-                            fillColor: secondaryGrayColor,
-                            filled: true,
+                  ],
+                )
+                    .nestedPadding(
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                    )
+                    .nestedDecoratedBox(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: primaryGrayColor,
                           ),
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(
-                              errorText: '请输入账号',
-                            ),
-                          ]),
-                        ).nestedPadding(
-                          padding: const EdgeInsets.only(top: 8),
                         ),
                       ),
-                      if (_isRegistered)
+                    )
+                    .nestedDecoratedBox(
+                      decoration: const BoxDecoration(color: Colors.white),
+                    )
+                    .nestedSizedBox(width: width)
+                    .nestedConstrainedBox(
+                      constraints: const BoxConstraints(minHeight: 64),
+                    ),
+                items: [
+                  FormBuilder(
+                    key: _formKey,
+                    child: Column(
+                      children: [
                         BaseFormItem(
-                          title: '昵称',
-                          required: false,
+                          title: '账号',
                           showTip: false,
+                          padding: EdgeInsets.zero,
                           child: FormBuilderTextField(
-                            name: 'nickname',
-                            focusNode: nicknameFocusNode,
-                            controller: _nicknameController,
+                            name: 'account',
+                            focusNode: accountFocusNode,
+                            controller: _accountController,
                             cursorColor: primaryColor,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
@@ -551,8 +504,8 @@ class _HomeViewState extends State<HomeView>
                               setInnerState(() {});
                             },
                             decoration: InputDecoration(
-                              suffixIcon: (_isNicknameFocus &&
-                                      _nicknameController.text.isNotEmpty)
+                              suffixIcon: (_isAccountFocus &&
+                                      _accountController.text.isNotEmpty)
                                   ? Container(
                                       width: 20,
                                       height: 20,
@@ -566,7 +519,7 @@ class _HomeViewState extends State<HomeView>
                                         splashRadius: 2,
                                         onPressed: () {
                                           // Clear everything in the text field
-                                          _nicknameController.clear();
+                                          _accountController.clear();
                                           // Call setState to update the UI
                                           setInnerState(() {});
                                         },
@@ -582,75 +535,178 @@ class _HomeViewState extends State<HomeView>
                                 maxWidth: 30,
                                 maxHeight: 30,
                               ),
-                              hintText: '请输入昵称',
+                              hintText: '请输入账号',
+                              helperText: _isRegistered
+                                  ? '只能包含英文, 数字或下划线, 且只能以字母开头, 至少8个字符'
+                                  : null,
+                              helperStyle: const TextStyle(
+                                color: secondaryTextColor,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w400,
+                              ),
                               contentPadding: const EdgeInsets.all(8),
                               fillColor: secondaryGrayColor,
                               filled: true,
                             ),
                             validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.maxLength(
-                                20,
-                                errorText: '昵称长度不能大于20',
+                              FormBuilderValidators.required(
+                                errorText: '请输入账号',
                               ),
+                              if (_isRegistered)
+                                FormBuilderValidators.match(
+                                  r'^[a-zA-Z][a-zA-Z0-9_]{7,}$',
+                                  errorText:
+                                      '账号只能包含英文,数字或下划线, 且只能以字母开头, 至少8个字符',
+                                ),
+                              // TODO(kjxbyz): 与数据库联动，账号唯一
                             ]),
                           ).nestedPadding(
                             padding: const EdgeInsets.only(top: 8),
                           ),
                         ),
-                      BaseFormItem(
-                        title: '密码',
-                        showTip: false,
-                        child: FormBuilderTextField(
-                          name: 'password',
-                          controller: _passwordController,
-                          cursorColor: primaryColor,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          autocorrect: false,
-                          obscureText: !_showPassword,
-                          onChanged: (value) {
-                            setInnerState(() {});
-                          },
-                          decoration: InputDecoration(
-                            suffixIcon: IconButton(
-                              onPressed: () {
-                                setInnerState(
-                                  () => _showPassword = !_showPassword,
-                                );
+                        if (_isRegistered) ...[
+                          BaseFormItem(
+                            title: '昵称',
+                            required: false,
+                            showTip: false,
+                            child: FormBuilderTextField(
+                              name: 'nickname',
+                              focusNode: nicknameFocusNode,
+                              controller: _nicknameController,
+                              cursorColor: primaryColor,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              autocorrect: false,
+                              onChanged: (value) {
+                                setInnerState(() {});
                               },
-                              icon: Icon(
-                                _showPassword
-                                    ? Icons.visibility_outlined
-                                    : Icons.visibility_off_outlined,
-                                color: borderColor,
-                                size: 18,
+                              decoration: InputDecoration(
+                                suffixIcon: (_isNicknameFocus &&
+                                        _nicknameController.text.isNotEmpty)
+                                    ? Container(
+                                        width: 20,
+                                        height: 20,
+                                        margin:
+                                            const EdgeInsets.only(right: 10),
+                                        decoration: BoxDecoration(
+                                          color: primaryGrayColor,
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        child: IconButton(
+                                          padding: EdgeInsets.zero,
+                                          splashRadius: 2,
+                                          onPressed: () {
+                                            // Clear everything in the text field
+                                            _nicknameController.clear();
+                                            // Call setState to update the UI
+                                            setInnerState(() {});
+                                          },
+                                          iconSize: 16,
+                                          icon: const Icon(
+                                            Icons.clear,
+                                            color: placeholderTextColor,
+                                          ),
+                                        ),
+                                      )
+                                    : null,
+                                suffixIconConstraints: const BoxConstraints(
+                                  maxWidth: 30,
+                                  maxHeight: 30,
+                                ),
+                                hintText: '请输入昵称',
+                                contentPadding: const EdgeInsets.all(8),
+                                fillColor: secondaryGrayColor,
+                                filled: true,
                               ),
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.maxLength(
+                                  20,
+                                  errorText: '昵称长度不能大于20',
+                                ),
+                              ]),
+                            ).nestedPadding(
+                              padding: const EdgeInsets.only(top: 8),
                             ),
-                            hintText: '请输入密码',
-                            contentPadding: const EdgeInsets.all(8),
-                            fillColor: secondaryGrayColor,
-                            filled: true,
                           ),
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(
-                              errorText: '请输入密码',
+                          BaseFormItem(
+                            title: '邮箱',
+                            showTip: false,
+                            child: FormBuilderTextField(
+                              name: 'email',
+                              focusNode: emailFocusNode,
+                              controller: _emailController,
+                              cursorColor: primaryColor,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              autocorrect: false,
+                              onChanged: (value) {
+                                setInnerState(() {});
+                              },
+                              decoration: InputDecoration(
+                                suffixIcon: (_isEmailFocus &&
+                                        _emailController.text.isNotEmpty)
+                                    ? Container(
+                                        width: 20,
+                                        height: 20,
+                                        margin:
+                                            const EdgeInsets.only(right: 10),
+                                        decoration: BoxDecoration(
+                                          color: primaryGrayColor,
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        child: IconButton(
+                                          padding: EdgeInsets.zero,
+                                          splashRadius: 2,
+                                          onPressed: () {
+                                            // Clear everything in the text field
+                                            _emailController.clear();
+                                            // Call setState to update the UI
+                                            setInnerState(() {});
+                                          },
+                                          iconSize: 16,
+                                          icon: const Icon(
+                                            Icons.clear,
+                                            color: placeholderTextColor,
+                                          ),
+                                        ),
+                                      )
+                                    : null,
+                                suffixIconConstraints: const BoxConstraints(
+                                  maxWidth: 30,
+                                  maxHeight: 30,
+                                ),
+                                hintText: '请输入邮箱',
+                                contentPadding: const EdgeInsets.all(8),
+                                fillColor: secondaryGrayColor,
+                                filled: true,
+                              ),
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(
+                                  errorText: '请输入邮箱',
+                                ),
+                                FormBuilderValidators.email(
+                                  errorText: '邮箱格式错误',
+                                ),
+                                // TODO(kjxbyz): 与数据库联动，邮箱唯一
+                              ]),
+                            ).nestedPadding(
+                              padding: const EdgeInsets.only(top: 8),
                             ),
-                          ]),
-                        ).nestedPadding(
-                          padding: const EdgeInsets.only(top: 8),
-                        ),
-                      ),
-                      if (_isRegistered)
+                          ),
+                        ],
                         BaseFormItem(
                           title: '密码',
                           showTip: false,
                           child: FormBuilderTextField(
-                            name: 'repeat_password',
-                            controller: _repeatPasswordController,
+                            name: 'password',
+                            controller: _passwordController,
                             cursorColor: primaryColor,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             autocorrect: false,
-                            obscureText: !_showRepeatPassword,
+                            obscureText: !_showPassword,
                             onChanged: (value) {
                               setInnerState(() {});
                             },
@@ -658,198 +714,276 @@ class _HomeViewState extends State<HomeView>
                               suffixIcon: IconButton(
                                 onPressed: () {
                                   setInnerState(
-                                    () => _showRepeatPassword =
-                                        !_showRepeatPassword,
+                                    () => _showPassword = !_showPassword,
                                   );
                                 },
                                 icon: Icon(
-                                  _showRepeatPassword
+                                  _showPassword
                                       ? Icons.visibility_outlined
                                       : Icons.visibility_off_outlined,
                                   color: borderColor,
                                   size: 18,
                                 ),
                               ),
-                              hintText: '请再次输入密码',
+                              hintText: '请输入密码',
+                              helperText: _isRegistered ? '至少8个字符' : null,
+                              helperStyle: const TextStyle(
+                                color: secondaryTextColor,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w400,
+                              ),
                               contentPadding: const EdgeInsets.all(8),
                               fillColor: secondaryGrayColor,
                               filled: true,
                             ),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
-                                errorText: '请再次输入密码',
+                                errorText: '请输入密码',
+                              ),
+                              FormBuilderValidators.minLength(
+                                8,
+                                errorText: '请至少输入8个字符',
                               ),
                             ]),
                           ).nestedPadding(
                             padding: const EdgeInsets.only(top: 8),
                           ),
                         ),
-                      BaseFormItem(
-                        child: FormBuilderField<bool>(
-                          name: 'privacy',
-                          initialValue: false,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (value) {
-                            if (!(value ?? false)) {
-                              return '请同意隐私协议';
-                            }
-                            return null;
-                          },
-                          builder: (FormFieldState<bool> field) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Checkbox(
-                                      value: field.value ?? false,
-                                      materialTapTargetSize:
-                                          MaterialTapTargetSize.shrinkWrap,
-                                      fillColor: MaterialStateProperty.all(
-                                        Colors.white,
-                                      ),
-                                      checkColor: primaryColor,
-                                      side: MaterialStateBorderSide.resolveWith(
-                                        (states) => const BorderSide(
-                                          color: borderColor,
-                                        ),
-                                      ),
-                                      onChanged: (value) {
-                                        field
-                                          ..didChange(value ?? false)
-                                          ..validate();
-                                        setInnerState(() => {});
-                                      },
-                                    ).nestedSizedBox(
-                                      width: 14,
-                                      height: 14,
-                                    ),
-                                    RichText(
-                                      text: TextSpan(
-                                        children: [
-                                          const TextSpan(
-                                            text: '我已仔细阅读并同意',
-                                            style: TextStyle(
-                                              color: primaryTextColor,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: '隐私政策',
-                                            recognizer: TapGestureRecognizer()
-                                              ..onTap = () async {
-                                                // https://www.chenyifaer.com/homing-pigeon/zh/legal/privacy/
-                                                final uri = Uri.parse(
-                                                  'https://www.chenyifaer.com/homing-pigeon/zh/legal/privacy/',
-                                                );
-                                                if (await canLaunchUrl(uri)) {
-                                                  await launchUrl(uri);
-                                                }
-                                              },
-                                            style: const TextStyle(
-                                              color: primaryColor,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                          const TextSpan(
-                                            text: '以及',
-                                            style: TextStyle(
-                                              color: primaryTextColor,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: '条款和条件',
-                                            recognizer: TapGestureRecognizer()
-                                              ..onTap = () async {
-                                                // https://www.chenyifaer.com/homing-pigeon/zh/legal/terms-of-use/
-                                                final uri = Uri.parse(
-                                                  'https://www.chenyifaer.com/homing-pigeon/zh/legal/terms-of-use/',
-                                                );
-                                                if (await canLaunchUrl(uri)) {
-                                                  await launchUrl(uri);
-                                                }
-                                              },
-                                            style: const TextStyle(
-                                              color: primaryColor,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                        .nestedPadding(
-                                          padding:
-                                              const EdgeInsets.only(left: 6),
-                                        )
-                                        .nestedExpanded(),
-                                  ],
-                                ),
-                                if (StringUtil.isNotBlank(field.errorText))
-                                  Text(
-                                    field.errorText!,
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      color: errorTextColor,
-                                    ),
-                                  ).nestedPadding(
-                                    padding:
-                                        const EdgeInsets.only(top: 8, left: 8),
+                        if (_isRegistered)
+                          BaseFormItem(
+                            title: '重复密码',
+                            showTip: false,
+                            child: FormBuilderTextField(
+                              name: 'repeatPassword',
+                              controller: _repeatPasswordController,
+                              cursorColor: primaryColor,
+                              autovalidateMode:
+                              AutovalidateMode.onUserInteraction,
+                              autocorrect: false,
+                              obscureText: !_showRepeatPassword,
+                              onChanged: (value) {
+                                setInnerState(() {});
+                              },
+                              decoration: InputDecoration(
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setInnerState(
+                                          () => _showRepeatPassword = !_showRepeatPassword,
+                                    );
+                                  },
+                                  icon: Icon(
+                                    _showRepeatPassword
+                                        ? Icons.visibility_outlined
+                                        : Icons.visibility_off_outlined,
+                                    color: borderColor,
+                                    size: 18,
                                   ),
-                              ],
-                            );
-                          },
-                        ).nestedPadding(
-                          padding: const EdgeInsets.only(top: 8),
+                                ),
+                                hintText: '请再次输入密码',
+                                helperStyle: const TextStyle(
+                                  color: secondaryTextColor,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                contentPadding: const EdgeInsets.all(8),
+                                fillColor: secondaryGrayColor,
+                                filled: true,
+                              ),
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(
+                                  errorText: '请再次输入密码',
+                                ),
+                                FormBuilderValidators.minLength(
+                                  8,
+                                  errorText: '请至少输入8个字符',
+                                ),
+                                FormBuilderValidators.equal(
+                                  _passwordController.text,
+                                  errorText: '两次输入的密码不一样',
+                                ),
+                              ]),
+                            ).nestedPadding(
+                              padding: const EdgeInsets.only(top: 8),
+                            ),
+                          ),
+                        BaseFormItem(
+                          child: FormBuilderField<bool>(
+                            name: 'privacy',
+                            initialValue: false,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (value) {
+                              if (!(value ?? false)) {
+                                return '请同意隐私协议';
+                              }
+                              return null;
+                            },
+                            builder: (FormFieldState<bool> field) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Checkbox(
+                                        value: field.value ?? false,
+                                        materialTapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap,
+                                        fillColor: MaterialStateProperty.all(
+                                          Colors.white,
+                                        ),
+                                        checkColor: primaryColor,
+                                        side:
+                                            MaterialStateBorderSide.resolveWith(
+                                          (states) => const BorderSide(
+                                            color: borderColor,
+                                          ),
+                                        ),
+                                        onChanged: (value) {
+                                          field
+                                            ..didChange(value ?? false)
+                                            ..validate();
+                                          setInnerState(() => {});
+                                        },
+                                      ).nestedSizedBox(
+                                        width: 20,
+                                        height: 14,
+                                      ),
+                                      RichText(
+                                        text: TextSpan(
+                                          children: [
+                                            const TextSpan(
+                                              text: '我已仔细阅读并同意',
+                                              style: TextStyle(
+                                                color: primaryTextColor,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text: '隐私政策',
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () async {
+                                                  // https://www.chenyifaer.com/homing-pigeon/zh/legal/privacy/
+                                                  final uri = Uri.parse(
+                                                    'https://www.chenyifaer.com/homing-pigeon/zh/legal/privacy/',
+                                                  );
+                                                  if (await canLaunchUrl(
+                                                    uri,
+                                                  )) {
+                                                    await launchUrl(uri);
+                                                  }
+                                                },
+                                              style: const TextStyle(
+                                                color: primaryColor,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                            const TextSpan(
+                                              text: '以及',
+                                              style: TextStyle(
+                                                color: primaryTextColor,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text: '条款和条件',
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () async {
+                                                  // https://www.chenyifaer.com/homing-pigeon/zh/legal/terms-of-use/
+                                                  final uri = Uri.parse(
+                                                    'https://www.chenyifaer.com/homing-pigeon/zh/legal/terms-of-use/',
+                                                  );
+                                                  if (await canLaunchUrl(
+                                                    uri,
+                                                  )) {
+                                                    await launchUrl(uri);
+                                                  }
+                                                },
+                                              style: const TextStyle(
+                                                color: primaryColor,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                          .nestedPadding(
+                                            padding: const EdgeInsets.only(
+                                              left: 6,
+                                            ),
+                                          )
+                                          .nestedExpanded(),
+                                    ],
+                                  ),
+                                  if (StringUtil.isNotBlank(field.errorText))
+                                    Text(
+                                      field.errorText!,
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        color: errorTextColor,
+                                      ),
+                                    ).nestedPadding(
+                                      padding: const EdgeInsets.only(
+                                        top: 8,
+                                        left: 8,
+                                      ),
+                                    ),
+                                ],
+                              );
+                            },
+                          ).nestedPadding(
+                            padding: const EdgeInsets.only(top: 8),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ).nestedPadding(
-                  padding: const EdgeInsets.all(10),
-                ),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: !_isRegistered ? '还没有账号, ' : '已有账号, ',
-                        style: const TextStyle(
-                          color: secondaryTextColor,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      TextSpan(
-                        text: !_isRegistered ? '去注册' : '去登录',
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () async {
-                            setInnerState(() => _isRegistered = !_isRegistered);
-                          },
-                        style: const TextStyle(
-                          color: secondaryTextColor,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ],
-                  ),
-                ).nestedCenter().nestedPadding(
-                      padding: const EdgeInsets.only(
-                        left: 10,
-                        right: 10,
-                        bottom: 10,
-                      ),
+                      ],
                     ),
-              ],
-            ),
-          );
-        },
-      ),
+                  ).nestedPadding(
+                    padding: const EdgeInsets.all(10),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: !_isRegistered ? '还没有账号, ' : '已有账号, ',
+                          style: const TextStyle(
+                            color: secondaryTextColor,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        TextSpan(
+                          text: !_isRegistered ? '去注册' : '去登录',
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () async {
+                              setInnerState(
+                                () => _isRegistered = !_isRegistered,
+                              );
+                            },
+                          style: const TextStyle(
+                            color: secondaryTextColor,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ).nestedCenter().nestedPadding(
+                        padding: const EdgeInsets.only(
+                          left: 10,
+                          right: 10,
+                          bottom: 10,
+                        ),
+                      ),
+                ],
+              ),
+            );
+          },
+        );
+      },
     );
   }
 
@@ -878,9 +1012,10 @@ class _HomeViewState extends State<HomeView>
 
   // 登录接口
   void _login(StateSetter setInnerState) {
-    if (_formKey.currentState?.validate() ?? false) {
-      final account = _accountController.text;
-      final password = _passwordController.text;
+    if (_formKey.currentState!.validate()) {
+      final fields = _formKey.currentState!.instantValue;
+      final account = fields['account'] as String;
+      final password = fields['password'] as String;
 
       EasyLoading.show();
       AuthApi.login(account: account, password: password).then((value) {
@@ -912,18 +1047,26 @@ class _HomeViewState extends State<HomeView>
 
   // 注册接口
   void _register(StateSetter setInnerState) {
-    if (_formKey.currentState?.validate() ?? false) {
-      final account = _accountController.text;
-      final nickname = _nicknameController.text;
-      final password = _passwordController.text;
+    if (_formKey.currentState!.validate()) {
+      final fields = _formKey.currentState!.instantValue;
+      final account = fields['account'] as String;
+      final nickname = fields['nickname'] as String?;
+      final email = fields['email'] as String;
+      final password = fields['password'] as String;
 
       EasyLoading.show();
-      AuthApi.register(account, password, nickname: nickname).then((value) {
+      AuthApi.register(
+        username: account,
+        password: password,
+        email: email,
+        nickname: nickname,
+      ).then((value) {
         if (value != null) {
           NavigatorUtil.pop();
           EasyLoading.showSuccess('Success');
           _accountController.clear();
           _nicknameController.clear();
+          _emailController.clear();
           _passwordController.clear();
           _repeatPasswordController.clear();
           SpUtil.putString(

@@ -18,7 +18,7 @@ import 'package:uuid/uuid.dart';
 class HpHeaders {
   static const _uuid = Uuid();
 
-  static const _encryptDefUrls = ['/api/backend/auth/login'];
+  static const _encryptDefUrls = ['/api/backend/auth/register', '/api/backend/auth/login'];
 
   static const _encryptKeys = ['password', 'newPassword', 'oldPassword'];
 
