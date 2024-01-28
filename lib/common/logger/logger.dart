@@ -11,10 +11,10 @@ void printWarningLog(Object? object) {
 }
 
 void printErrorLog(
-    dynamic error, {
-      DateTime? time,
-      StackTrace? stackTrace,
-    }) {
+  dynamic error, {
+  DateTime? time,
+  StackTrace? stackTrace,
+}) {
   LogUtil.printErrorLog(error, time: time, stackTrace: stackTrace);
 }
 

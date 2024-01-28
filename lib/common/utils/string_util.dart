@@ -24,7 +24,7 @@ class StringUtil {
   }
 
   static String getValue(String? str, {String defaultVal = empty}) {
-    return str ?? defaultVal;
+    return isBlank(str) ? defaultVal : str!;
   }
 
   static String getHyphenValue(String? str) {

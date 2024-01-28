@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:homing_pigeon/common/exception/exception.dart';
 import 'package:homing_pigeon/common/http/hp_http.dart';
 import 'package:homing_pigeon/common/models/models.dart';
+import 'package:homing_pigeon/common/utils/string_util.dart';
 
 class AuthApi {
   /// 登录
@@ -28,18 +29,20 @@ class AuthApi {
   }
 
   /// 注册
-  static Future<TokenModel?> register(
-      String username,
-      String password, {
-        String? nickname,
-      }) async {
+  static Future<TokenModel?> register({
+    required String username,
+    required String password,
+    required String email,
+    String? nickname,
+  }) async {
     try {
       final res = await hpHttp.post<dynamic>(
-        '/api/backend/user',
+        '/api/backend/auth/register',
         data: {
           'username': username,
           'password': password,
-          'nickname': nickname ?? username,
+          'email': email,
+          'nickname': StringUtil.getValue(nickname, defaultVal: username),
         },
       );
       return res.data == null
