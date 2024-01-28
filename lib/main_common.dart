@@ -177,9 +177,9 @@ Future<void> runMainApp() async {
   await LogUtil.getInstance();
 
   final socket = socket_io.io(
-    '${Constants.apiPrefix}/ws',
+    '${Constants.wsPrefix}/ws',
     socket_io.OptionBuilder()
-        .setPath('/homing-pigeon/socket.io/')
+        // .setPath('/homing-pigeon/socket.io/')
         .setTransports(['websocket', 'polling']).setExtraHeaders(
       {'foo': 'bar'},
     ).build(),
@@ -190,11 +190,16 @@ Future<void> runMainApp() async {
     ..onConnect((_) {
       printDebugLog('connect');
       Fluttertoast.showToast(msg: 'Connected', gravity: ToastGravity.BOTTOM);
-      socket.emit('hello2', 'test');
+      socket.emitWithAck(
+        'hello2',
+        'test',
+        ack: (dynamic data) {
+          printDebugLog('hello2 ack: $data');
+        },
+      );
     })
     ..onConnectError(printErrorLog)
     ..onConnectTimeout(printErrorLog)
-    ..on('hello2', (dynamic data) => printDebugLog('hello2: $data'))
     ..on('exception', (dynamic data) => printErrorLog('error: $data'))
     ..onReconnectAttempt((dynamic data) => printDebugLog('reconnect attempt'))
     ..onReconnecting((dynamic data) => printDebugLog('reconnecting'))
