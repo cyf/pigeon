@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:flutter_quill/flutter_quill.dart' hide Operation;
 import 'package:homing_pigeon/common/api/roadmap_api.dart';
 import 'package:homing_pigeon/common/enums/enums.dart';
 import 'package:homing_pigeon/common/exception/exception.dart';
@@ -71,7 +68,6 @@ class _RoadmapViewState extends State<RoadmapView> {
     controlFinishRefresh: true,
     controlFinishLoad: true,
   );
-  final QuillController _quillController = QuillController.basic();
   final ScrollController _scrollController = ScrollController();
 
   List<RoadmapModel> _items = [];
@@ -87,7 +83,6 @@ class _RoadmapViewState extends State<RoadmapView> {
   @override
   void dispose() {
     _controller.dispose();
-    _quillController.dispose();
     _scrollController.dispose();
     super.dispose();
   }
@@ -185,9 +180,6 @@ class _RoadmapViewState extends State<RoadmapView> {
   }
 
   void showCalendarModalBottomSheet(RoadmapModel roadmap) {
-    final json = jsonDecode(r'{"insert":"hello\n"}');
-    _quillController.document = Document.fromJson([json]);
-
     showModalBottomSheet<void>(
       context: context,
       isDismissible: false,
@@ -221,19 +213,6 @@ class _RoadmapViewState extends State<RoadmapView> {
             ),
           ).nestedPadding(
             padding: const EdgeInsets.symmetric(vertical: 10),
-          ),
-          QuillProvider(
-            configurations: QuillConfigurations(
-              controller: _quillController,
-              sharedConfigurations: const QuillSharedConfigurations(
-                locale: Locale('zh'),
-              ),
-            ),
-            child: QuillEditor.basic(
-              configurations: const QuillEditorConfigurations(
-                readOnly: true,
-              ),
-            ),
           ),
         ],
       ),

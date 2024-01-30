@@ -1,11 +1,9 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:homing_pigeon/app/config.dart';
 import 'package:homing_pigeon/app/manager.dart';
-import 'package:homing_pigeon/app/navigator.dart';
 import 'package:homing_pigeon/common/constants/constants.dart';
 import 'package:homing_pigeon/common/constants/keys.dart';
 import 'package:homing_pigeon/common/logger/logger.dart';
@@ -22,8 +20,8 @@ void initJPush() {
           call.arguments != null &&
           StringUtil.isNotBlank(call.arguments.toString())) {
         try {
-          final dataJson =
-          jsonDecode(call.arguments!.toString()) as Map<String, dynamic>?;
+          // final dataJson =
+          // jsonDecode(call.arguments!.toString()) as Map<String, dynamic>?;
 
           /// templateKey 是类型
           /// expertInfoPass  经营信息认证审核被平台运营通过后
@@ -36,9 +34,9 @@ void initJPush() {
           /// bizSubName 服务名字
           /// bizSubId 服务编号
           /// expertsServiceId 专家服务关联id
-          final extras = dataJson?['extras'] as Map<String, dynamic>?;
+          // final extras = dataJson?['extras'] as Map<String, dynamic>?;
           // final userId = extras?['userId'];
-          final context = AppNavigator.key.currentContext!;
+          // final context = AppNavigator.key.currentContext!;
         } on Exception catch (error) {
           printErrorLog(error);
         }
@@ -65,7 +63,7 @@ void initJPush() {
 Future<void> initFirebase() async {
   if (AppConfig.shared.isExternal) {
     AppManager.instance.firebaseInitialized = true;
-    final userId = SpUtil.getString(Keys.userIdKey);
+    // final userId = SpUtil.getString(Keys.userIdKey);
     // FirebaseMessaging.onMessage.listen(showFirebaseNotification);
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
       printDebugLog(
@@ -107,5 +105,5 @@ Future<void> initFirebase() async {
 
 void navigateToPage(Map<String, dynamic> extras) {
   // final userId = extras['userId'];
-  final context = AppNavigator.key.currentContext!;
+  // final context = AppNavigator.key.currentContext!;
 }
