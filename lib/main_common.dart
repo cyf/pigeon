@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:aliyun_oss/aliyun_oss.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,7 +8,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:homing_pigeon/app/bloc_observer.dart';
@@ -263,31 +261,6 @@ Future<void> runMainApp() async {
   }
 
   await initApp();
-
-  if (Platform.isAndroid) {
-    await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(
-      true,
-    );
-
-    final swAvailable = await AndroidWebViewFeature.isFeatureSupported(
-      AndroidWebViewFeature.SERVICE_WORKER_BASIC_USAGE,
-    );
-    final swInterceptAvailable = await AndroidWebViewFeature.isFeatureSupported(
-      AndroidWebViewFeature.SERVICE_WORKER_SHOULD_INTERCEPT_REQUEST,
-    );
-
-    if (swAvailable && swInterceptAvailable) {
-      final serviceWorkerController = AndroidServiceWorkerController.instance();
-
-      await serviceWorkerController.setServiceWorkerClient(
-        AndroidServiceWorkerClient(
-          shouldInterceptRequest: (request) async {
-            return null;
-          },
-        ),
-      );
-    }
-  }
 
   runApp(const App());
 }
