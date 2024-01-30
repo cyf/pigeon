@@ -26,9 +26,6 @@
     {
       "matchPackageNames": ["com.android.tools.build:gradle", "gradle"],
       "groupName": "gradle"
-    },
-    {
-      "excludePackagePatterns": ["^flutter_quill", "^firebase_", "flutter_inappwebview"]
     }
   ]
 }
