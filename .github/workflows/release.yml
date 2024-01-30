@@ -557,8 +557,11 @@ jobs:
       - name: Flutter doctor -v
         run: flutter doctor -v
 
-      - name: Install Deps
+      - name: Resolving flutter dependencies
         run: flutter pub get
+
+      - name: Resolving ios dependencies
+        run: cd ios && pod install --repo-update && cd ..
 
       - name: Install the Apple certificate and provisioning profile
         env:
@@ -705,8 +708,11 @@ jobs:
       - name: Flutter doctor -v
         run: flutter doctor -v
 
-      - name: Install Deps
+      - name: Resolving flutter dependencies
         run: flutter pub get
+
+      - name: Resolving ios dependencies
+        run: cd ios && pod install --repo-update && cd ..
 
       - name: Install the Apple certificate and provisioning profile
         env:
