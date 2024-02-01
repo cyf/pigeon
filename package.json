@@ -13,7 +13,7 @@
     "node": ">= 18"
   },
   "devDependencies": {
-    "@types/node": "^18.19.11",
+    "@types/node": "^18.19.13",
     "tsx": "^4.7.0"
   },
   "dependencies": {
