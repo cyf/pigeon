@@ -54,14 +54,14 @@ PODS:
   - Firebase/Messaging (10.20.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 10.20.0)
-  - firebase_analytics (10.8.1):
+  - firebase_analytics (10.8.3):
     - Firebase/Analytics (= 10.20.0)
     - firebase_core
     - Flutter
-  - firebase_core (2.25.1):
+  - firebase_core (2.25.2):
     - Firebase/CoreOnly (= 10.20.0)
     - Flutter
-  - firebase_messaging (14.7.12):
+  - firebase_messaging (14.7.13):
     - Firebase/Messaging (= 10.20.0)
     - firebase_core
     - Flutter
@@ -327,9 +327,9 @@ SPEC CHECKSUMS:
   dxcaptcha_flutter: fc62f2b79a04a114795940cb4a2aea70c99d5166
   file_picker: 15fd9539e4eb735dc54bae8c0534a7a9511a03de
   Firebase: 10c8cb12fb7ad2ae0c09ffc86cd9c1ab392a0031
-  firebase_analytics: 78852314b0e7d538e6cdc55c192f3950060016ac
-  firebase_core: e1ec68d12510bacdbbd82c3288f2c8f215a17bb1
-  firebase_messaging: fb0269844f3b0a0358003cec581803a77c13ea12
+  firebase_analytics: 51db026de0dc914d71c9a3d114fd6b1ae680dbe8
+  firebase_core: 1612f1d8bbc8ed40598b1317e805658f1d79512f
+  firebase_messaging: 91db88944b6162b64ddb7828181bed5e3f72e08c
   FirebaseAnalytics: a2731bf3670747ce8f65368b118d18aa8e368246
   FirebaseCore: 28045c1560a2600d284b9c45a904fe322dc890b6
   FirebaseCoreInternal: efeeb171ac02d623bdaefe121539939821e10811
