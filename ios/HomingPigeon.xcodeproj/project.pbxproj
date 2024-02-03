@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
+		2E2358232B6E2ABE00C21F36 /* LaunchScreenInternal.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2E2358212B6E2ABE00C21F36 /* LaunchScreenInternal.storyboard */; };
+		2E2358242B6E2ABE00C21F36 /* LaunchScreenInternal.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2E2358212B6E2ABE00C21F36 /* LaunchScreenInternal.storyboard */; };
 		2E77E7012B31DD750058EC04 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		2E77E7022B31DD750058EC04 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		2E77E7062B31DD750058EC04 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
@@ -57,6 +59,7 @@
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
 		285EBBBAD055CDFDA8A19311 /* Pods-internal.profile-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-internal.profile-internal.xcconfig"; path = "Target Support Files/Pods-internal/Pods-internal.profile-internal.xcconfig"; sourceTree = "<group>"; };
+		2E2358222B6E2ABE00C21F36 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreenInternal.storyboard; sourceTree = "<group>"; };
 		2E77E7132B31DD750058EC04 /* external.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = external.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E77E71F2B31DEF30058EC04 /* External.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = External.plist; sourceTree = "<group>"; };
 		2ECD3CED2B539C290043D562 /* Release-internal-internal.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Release-internal-internal.xcconfig"; path = "Flutter/Release-internal-internal.xcconfig"; sourceTree = "<group>"; };
@@ -186,6 +189,7 @@
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
 				97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */,
+				2E2358212B6E2ABE00C21F36 /* LaunchScreenInternal.storyboard */,
 				97C147021CF9000F007C117D /* Internal.plist */,
 				2ECD45DC2A89117300EB2785 /* GoogleService-Info.plist */,
 				1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */,
@@ -299,6 +303,7 @@
 				2E77E7202B31DEF30058EC04 /* External.plist in Resources */,
 				2E77E7092B31DD750058EC04 /* Assets.xcassets in Resources */,
 				2E77E70A2B31DD750058EC04 /* Main.storyboard in Resources */,
+				2E2358242B6E2ABE00C21F36 /* LaunchScreenInternal.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,6 +317,7 @@
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 				2E77E7242B31E1130058EC04 /* Internal.plist in Resources */,
+				2E2358232B6E2ABE00C21F36 /* LaunchScreenInternal.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -516,6 +522,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		2E2358212B6E2ABE00C21F36 /* LaunchScreenInternal.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2E2358222B6E2ABE00C21F36 /* Base */,
+			);
+			name = LaunchScreenInternal.storyboard;
+			sourceTree = "<group>";
+		};
 		97C146FA1CF9000F007C117D /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -589,7 +603,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2ECD3CF52B539C2A0043D562 /* Profile-internal-internal.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconInternal;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = HomingPigeon.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution";
@@ -769,7 +783,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2ECD3CF42B539C2A0043D562 /* Debug-external-internal.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconInternal;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = HomingPigeon.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -885,7 +899,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2ECD3CF72B539C2A0043D562 /* Release-external-internal.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconInternal;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = HomingPigeon.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution";
@@ -997,7 +1011,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2ECD3CF32B539C2A0043D562 /* Profile-external-internal.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconInternal;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = HomingPigeon.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution";
@@ -1166,7 +1180,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2ECD3CEE2B539C290043D562 /* Debug-internal-internal.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconInternal;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = HomingPigeon.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -1198,7 +1212,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2ECD3CED2B539C290043D562 /* Release-internal-internal.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconInternal;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = HomingPigeon.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution";

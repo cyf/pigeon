@@ -68,6 +68,14 @@ android {
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+
+        internal {
+            res.srcDirs += 'src/internal/res'
+        }
+
+        external {
+            res.srcDirs += 'src/external/res'
+        }
     }
 
     defaultConfig {
