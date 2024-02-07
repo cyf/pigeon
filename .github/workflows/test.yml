@@ -12,16 +12,6 @@ on:
 permissions: read-all
 
 jobs:
-  cleanup_ios:
-    name: Clean up (ios)
-    if: ${{ always() }}
-    runs-on: self-hosted
-    needs:
-      - internal_ios
-      - external_ios
-    steps:
-      - run: rm -f ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision
-
   internal_apk:
     name: Create apk (internal)
     runs-on: self-hosted
@@ -349,6 +339,7 @@ jobs:
             echo "$RUNNER_TEMP/app-signing.keychain-db"
             security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
           fi
+          rm -f ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision
           rm -f .env
 
   external_ios:
@@ -450,4 +441,5 @@ jobs:
             echo "$RUNNER_TEMP/app-signing.keychain-db"
             security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
           fi
+          rm -f ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision
           rm -f .env
