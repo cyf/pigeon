@@ -121,7 +121,7 @@ dependencies:
   wechat_camera_picker: ^4.2.0-dev.3
 
 dev_dependencies:
-  bloc_test: ^9.1.5
+  bloc_test: ^9.1.6
   build_runner: ^2.4.8
   flutter_gen_runner: ^5.4.0
   flutter_test:
