@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:homing_pigeon/common/api/feedback_api.dart';
 import 'package:homing_pigeon/common/enums/enums.dart';
 import 'package:homing_pigeon/common/exception/exception.dart';
@@ -33,7 +34,7 @@ class FeedbackView extends StatefulWidget {
 }
 
 class _FeedbackViewState extends State<FeedbackView> {
-  final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormBuilderState>();
   final EasyRefreshController _controller = EasyRefreshController(
     controlFinishRefresh: true,
     controlFinishLoad: true,
@@ -286,13 +287,14 @@ class _FeedbackViewState extends State<FeedbackView> {
 
           return KeyboardDismisser(
             child: ModalBottomSheet(
-              constraints:
-                  BoxConstraints(maxHeight: (height - top - bottom) * 0.7),
+              constraints: BoxConstraints(
+                maxHeight: (height - top - bottom) * 0.7,
+              ),
               callback: _submit,
               buttonText: '提交',
               header: const HpHeader(title: '请填写反馈内容'),
               items: [
-                Form(
+                FormBuilder(
                   key: _formKey,
                   child: Column(
                     children: [
@@ -300,7 +302,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                         title: '标题',
                         showTip: false,
                         padding: EdgeInsets.zero,
-                        child: TextFormField(
+                        child: FormBuilderTextField(
                           focusNode: titleFocusNode,
                           controller: _titleController,
                           cursorColor: primaryColor,
@@ -353,6 +355,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                             }
                             return null;
                           },
+                          name: 'title',
                         ).nestedPadding(
                           padding: const EdgeInsets.only(top: 8),
                         ),
@@ -360,7 +363,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                       BaseFormItem(
                         title: '描述',
                         showTip: false,
-                        child: TextFormField(
+                        child: FormBuilderTextField(
                           focusNode: descriptionFocusNode,
                           controller: _descriptionController,
                           cursorColor: primaryColor,
@@ -413,6 +416,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                             }
                             return null;
                           },
+                          name: 'description',
                         ).nestedPadding(
                           padding: const EdgeInsets.only(top: 8),
                         ),
@@ -573,7 +577,10 @@ class _FeedbackViewState extends State<FeedbackView> {
   }
 
   Future<void> _submit() async {
-    if (_formKey.currentState?.validate() ?? false) {
+    if (_formKey.currentState!.validate()) {
+      final fields = _formKey.currentState!.instantValue;
+      final title = fields['title'] as String;
+      final description = fields['description'] as String;
       try {
         await EasyLoading.show();
         final files = <Map<String, dynamic>>[];
@@ -601,8 +608,8 @@ class _FeedbackViewState extends State<FeedbackView> {
         }
 
         final feedback = await FeedbackApi.addFeedback(
-          title: _titleController.text,
-          description: _descriptionController.text,
+          title: title,
+          description: description,
           files: files.isEmpty ? null : files,
         );
         await EasyLoading.dismiss();

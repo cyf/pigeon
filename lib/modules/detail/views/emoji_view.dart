@@ -6,8 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:homing_pigeon/common/api/emoji_api.dart';
 import 'package:homing_pigeon/common/enums/enums.dart';
 import 'package:homing_pigeon/common/exception/exception.dart';
@@ -16,6 +16,7 @@ import 'package:homing_pigeon/common/logger/logger.dart';
 import 'package:homing_pigeon/common/models/models.dart';
 import 'package:homing_pigeon/common/utils/dialog_util.dart';
 import 'package:homing_pigeon/common/utils/navigator_util.dart';
+import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/common/utils/upload_util.dart';
 import 'package:homing_pigeon/common/widgets/header.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
@@ -33,6 +34,7 @@ class EmojiView extends StatefulWidget {
 }
 
 class _EmojiViewState extends State<EmojiView> {
+  final _formKey = GlobalKey<FormBuilderState>();
   final EasyRefreshController _controller = EasyRefreshController(
     controlFinishRefresh: true,
     controlFinishLoad: true,
@@ -276,15 +278,51 @@ class _EmojiViewState extends State<EmojiView> {
                   right: padding,
                 ),
               ),
-              ReorderableWrap(
-                spacing: spacing,
-                runSpacing: 4,
-                padding: const EdgeInsets.all(padding),
-                scrollPhysics: const NeverScrollableScrollPhysics(),
-                onReorder: (int oldIndex, int newIndex) =>
-                    _onReorder(setInnerState, oldIndex, newIndex),
-                children: items,
-              ).nestedSingleChildScrollView(),
+              FormBuilder(
+                key: _formKey,
+                child: FormBuilderField<List<FileWrapper>>(
+                  name: 'emojis',
+                  initialValue: _fileWrappers,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '请选择上传的图片';
+                    }
+                    return null;
+                  },
+                  builder: (FormFieldState<List<FileWrapper>> field) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ReorderableWrap(
+                          spacing: spacing,
+                          runSpacing: 4,
+                          padding: const EdgeInsets.all(padding),
+                          scrollPhysics: const NeverScrollableScrollPhysics(),
+                          onReorder: (int oldIndex, int newIndex) =>
+                              _onReorder(setInnerState, oldIndex, newIndex),
+                          children: items,
+                        ).nestedSingleChildScrollView(),
+                        if (StringUtil.isNotBlank(field.errorText))
+                          Text(
+                            field.errorText!,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: errorTextColor,
+                            ),
+                          ).nestedPadding(
+                            padding: const EdgeInsets.only(
+                              top: 8,
+                              left: 8,
+                            ),
+                          ),
+                      ],
+                    );
+                  },
+                ).nestedPadding(
+                  padding: const EdgeInsets.only(top: 8),
+                ),
+              ),
             ],
           );
         },
@@ -382,47 +420,39 @@ class _EmojiViewState extends State<EmojiView> {
   }
 
   Future<void> _uploadFiles() async {
-    try {
-      if (_fileWrappers.isEmpty) {
-        await Fluttertoast.showToast(
-          msg: '图片为空, 请选择要上传的图片!',
-          toastLength: Toast.LENGTH_LONG,
-          backgroundColor: backgroundColor,
-          textColor: errorTextColor,
-          gravity: ToastGravity.CENTER,
-        );
-        return;
+    if (_formKey.currentState!.validate()) {
+      try {
+        final uploadFileFutures = _fileWrappers
+            .map(
+              (fileWrapper) async =>
+                  UploadUtil.upload(fileWrapper: fileWrapper),
+            )
+            .toList();
+        await EasyLoading.show();
+        final fileModels =
+            (await Future.wait(uploadFileFutures)).whereNotNull().toList();
+        if (fileModels.isEmpty) {
+          await EasyLoading.showToast('File upload failed');
+          return;
+        }
+        final emojis = fileModels
+            .map(
+              (fileModel) => EmojiParam(
+                image: fileModel.url,
+                text: fileModel.oldFileName,
+                type: fileModel.type,
+                size: fileModel.fileSize,
+              ),
+            )
+            .toList();
+        await EmojiApi.multiAddEmoji(emojis);
+        await EasyLoading.showSuccess('Success');
+        NavigatorUtil.pop();
+        _load();
+      } on RequestedException catch (error, stackTrace) {
+        printErrorLog(error.msg, stackTrace: stackTrace);
+        await EasyLoading.showError(error.msg);
       }
-
-      final uploadFileFutures = _fileWrappers
-          .map(
-            (fileWrapper) async => UploadUtil.upload(fileWrapper: fileWrapper),
-          )
-          .toList();
-      await EasyLoading.show();
-      final fileModels =
-          (await Future.wait(uploadFileFutures)).whereNotNull().toList();
-      if (fileModels.isEmpty) {
-        await EasyLoading.showToast('File upload failed');
-        return;
-      }
-      final emojis = fileModels
-          .map(
-            (fileModel) => EmojiParam(
-              image: fileModel.url,
-              text: fileModel.oldFileName,
-              type: fileModel.type,
-              size: fileModel.fileSize,
-            ),
-          )
-          .toList();
-      await EmojiApi.multiAddEmoji(emojis);
-      await EasyLoading.showSuccess('Success');
-      NavigatorUtil.pop();
-      _load();
-    } on RequestedException catch (error, stackTrace) {
-      printErrorLog(error.msg, stackTrace: stackTrace);
-      await EasyLoading.showError(error.msg);
     }
   }
 
