@@ -179,7 +179,7 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - permission_handler_apple (9.1.1):
+  - permission_handler_apple (9.3.0):
     - Flutter
   - photo_manager (2.0.0):
     - Flutter
@@ -191,13 +191,13 @@ PODS:
   - SDWebImage/Core (5.18.5)
   - sensors_plus (0.0.1):
     - Flutter
-  - Sentry/HybridSDK (8.19.0):
-    - SentryPrivate (= 8.19.0)
+  - Sentry/HybridSDK (8.20.0):
+    - SentryPrivate (= 8.20.0)
   - sentry_flutter (0.0.1):
     - Flutter
     - FlutterMacOS
-    - Sentry/HybridSDK (= 8.19.0)
-  - SentryPrivate (8.19.0)
+    - Sentry/HybridSDK (= 8.20.0)
+  - SentryPrivate (8.20.0)
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -351,15 +351,15 @@ SPEC CHECKSUMS:
   nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
   package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
   path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
-  permission_handler_apple: e76247795d700c14ea09e3a2d8855d41ee80a2e6
+  permission_handler_apple: 036b856153a2b1f61f21030ff725f3e6fece2b78
   photo_manager: 4f6810b7dfc4feb03b461ac1a70dacf91fba7604
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDWebImage: 7ac2b7ddc5e8484c79aa90fc4e30b149d6a2c88f
   sensors_plus: 42b9de1b8237675fa8d8121e4bb93be0f79fa61d
-  Sentry: 1ebcaef678a27c8ac515f974cb5425dd1bbdec2f
-  sentry_flutter: ecdfbedee55337205561cfa782ee02d31ec83e1f
-  SentryPrivate: 765c9b4ebe9ac1a5fcdc067c5a1cfbf3f10e1677
+  Sentry: a8d7b373b9f9868442b02a0c425192f693103cbf
+  sentry_flutter: 03e7660857a8cdb236e71456a7e8447b65c8a788
+  SentryPrivate: 006b24af16828441f70e2ab6adf241bd0a8ad130
   shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
   sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
   SwiftyGif: 93a1cc87bf3a51916001cf8f3d63835fb64c819f

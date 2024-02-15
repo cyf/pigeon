@@ -8,13 +8,13 @@
   "keywords": [],
   "author": "",
   "license": "MIT",
-  "packageManager": "pnpm@8.15.1",
+  "packageManager": "pnpm@8.15.2",
   "engines": {
     "node": ">= 18"
   },
   "devDependencies": {
-    "@types/node": "^18.19.14",
-    "tsx": "^4.7.0"
+    "@types/node": "^18.19.15",
+    "tsx": "^4.7.1"
   },
   "dependencies": {
     "simple-git": "^3.22.0"
