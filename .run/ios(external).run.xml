@@ -1,6 +1,5 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="ios(external)" type="FlutterRunConfigurationType" factoryName="Flutter">
-    <option name="additionalArgs" value="--dart-define-from-file=versioning.json" />
     <option name="buildFlavor" value="external" />
     <option name="filePath" value="$PROJECT_DIR$/lib/main_external.dart" />
     <method v="2">

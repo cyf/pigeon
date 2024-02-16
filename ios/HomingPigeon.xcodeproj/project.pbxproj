@@ -75,6 +75,7 @@
 		2ECD3CF72B539C2A0043D562 /* Release-external-internal.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Release-external-internal.xcconfig"; path = "Flutter/Release-external-internal.xcconfig"; sourceTree = "<group>"; };
 		2ECD3CF82B539C2A0043D562 /* Release-internal-external.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Release-internal-external.xcconfig"; path = "Flutter/Release-internal-external.xcconfig"; sourceTree = "<group>"; };
 		2ECD45DC2A89117300EB2785 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2ED377462B7F825300275E27 /* BuildConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = BuildConfig.xcconfig; path = Flutter/BuildConfig.xcconfig; sourceTree = "<group>"; };
 		2EEEF2722AF75D0000E02055 /* HomingPigeon.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HomingPigeon.entitlements; sourceTree = "<group>"; };
 		30BCD100165EFB588D6B4811 /* Pods-internal.release-external.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-internal.release-external.xcconfig"; path = "Target Support Files/Pods-internal/Pods-internal.release-external.xcconfig"; sourceTree = "<group>"; };
 		3306D38F57F87DB69B03CA80 /* Pods-internal.debug-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-internal.debug-internal.xcconfig"; path = "Target Support Files/Pods-internal/Pods-internal.debug-internal.xcconfig"; sourceTree = "<group>"; };
@@ -83,9 +84,7 @@
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		78B38F669BDF80F1B37CE3E2 /* Pods-external.release-external.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-external.release-external.xcconfig"; path = "Target Support Files/Pods-external/Pods-external.release-external.xcconfig"; sourceTree = "<group>"; };
-		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
 		940A7B25C20261EE61A7D73C /* Pods-external.debug-external.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-external.debug-external.xcconfig"; path = "Target Support Files/Pods-external/Pods-external.debug-external.xcconfig"; sourceTree = "<group>"; };
-		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
 		97C146EE1CF9000F007C117D /* internal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = internal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97C146FB1CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -154,8 +153,7 @@
 				2ECD3CF82B539C2A0043D562 /* Release-internal-external.xcconfig */,
 				2ECD3CED2B539C290043D562 /* Release-internal-internal.xcconfig */,
 				3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */,
-				9740EEB21CF90195004384FC /* Debug.xcconfig */,
-				7AFA3C8E1D35360C0083082E /* Release.xcconfig */,
+				2ED377462B7F825300275E27 /* BuildConfig.xcconfig */,
 				9740EEB31CF90195004384FC /* Generated.xcconfig */,
 			);
 			name = Flutter;
