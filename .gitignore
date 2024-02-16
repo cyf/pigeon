@@ -49,5 +49,4 @@ app.*.map.json
 
 node_modules/
 
-versioning.json
 latest-commits.json
