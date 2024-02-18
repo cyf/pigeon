@@ -33,7 +33,7 @@
     "@nestjs/platform-ws": "^10.3.3",
     "@nestjs/serve-static": "^4.0.1",
     "@nestjs/swagger": "^7.3.0",
-    "@nestjs/terminus": "^10.2.2",
+    "@nestjs/terminus": "^10.2.3",
     "@nestjs/throttler": "^5.1.2",
     "@nestjs/websockets": "^10.3.3",
     "@prisma/client": "^5.9.1",
