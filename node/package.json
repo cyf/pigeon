@@ -6,6 +6,8 @@
     "build:server": "pnpm --filter server build",
     "dev:docs": "pnpm --filter docs dev",
     "dev:server": "pnpm --filter server dev",
+    "start": "pnpm --filter server start",
+    "start:internal": "pnpm --filter server start:internal",
     "format": "pnpm --filter docs --filter server format",
     "prepare": "cd .. && husky node/.husky"
   },
