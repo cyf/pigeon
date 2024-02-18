@@ -1,0 +1,3 @@
+{
+  "./(docs|server)/**/*.{css,js,json,jsx,ts,tsx}": "pnpm format"
+}

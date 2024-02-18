@@ -2,6 +2,7 @@
 get:
 	echo "╠ Installing dependencies..."
 	flutter pub get
+	make ios_install
 
 outdated:
 	echo "╠ Resolving dependencies..."
@@ -13,7 +14,11 @@ clean: ## Cleans the environment
 	echo "╠ Installing dependencies..."
 	flutter pub get
 
-install: ## Installing ios dependencies
+npm_install: ## Installing npm dependencies
+	echo "╠ Resolving npm dependencies..."
+	cd node && pnpm i && cd ..
+
+ios_install: ## Installing ios dependencies
 	echo "╠ Resolving ios dependencies..."
 	cd ios && pod install && cd ..
 
