@@ -1,0 +1,495 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
+}
+
+model Carousel {
+  id    String  @id @default(cuid()) @map("id")
+  image String  @map("image")
+  order Int     @map("order")
+  text  String? @map("text")
+  color String? @map("color")
+  href  String? @map("href")
+
+  start_date DateTime? @map("start_date")
+  end_date   DateTime? @map("end_date")
+
+  create_by   String   @map("create_by")
+  create_date DateTime @default(now()) @map("create_date")
+  update_by   String   @map("update_by")
+  update_date DateTime @updatedAt @map("update_date")
+  is_del      IsDel    @default(NO) @map("is_del")
+
+  create_user User? @relation(name: "create_user_in_carousel", fields: [create_by], references: [id])
+  update_user User? @relation(name: "update_user_in_carousel", fields: [update_by], references: [id])
+
+  @@map("carousels")
+}
+
+model Emoji {
+  id    String  @id @default(cuid()) @map("id")
+  image String  @map("image")
+  type  String? @map("type")
+  size  Int?    @map("size")
+  text  String? @map("text")
+  color String? @map("color")
+
+  create_by   String   @map("create_by")
+  create_date DateTime @default(now()) @map("create_date")
+  update_by   String   @map("update_by")
+  update_date DateTime @updatedAt @map("update_date")
+  is_del      IsDel    @default(NO) @map("is_del")
+
+  create_user User? @relation(name: "create_user_in_emoji", fields: [create_by], references: [id])
+  update_user User? @relation(name: "update_user_in_emoji", fields: [update_by], references: [id])
+
+  @@map("emojis")
+}
+
+model Feedback {
+  id          String @id @default(cuid()) @map("id")
+  title       String @map("title")
+  description String @map("description")
+
+  files File[]
+
+  create_by   String   @map("create_by")
+  create_date DateTime @default(now()) @map("create_date")
+  update_by   String   @map("update_by")
+  update_date DateTime @updatedAt @map("update_date")
+  is_del      IsDel    @default(NO) @map("is_del")
+
+  create_user User? @relation(name: "create_user_in_feedback", fields: [create_by], references: [id])
+  update_user User? @relation(name: "update_user_in_feedback", fields: [update_by], references: [id])
+
+  @@map("feedbacks")
+}
+
+model File {
+  id    String  @id @default(cuid()) @map("id")
+  url   String  @map("url")
+  type  String? @map("type")
+  size  Int?    @map("size")
+  title String? @map("title")
+
+  create_by   String   @map("create_by")
+  create_date DateTime @default(now()) @map("create_date")
+  update_by   String   @map("update_by")
+  update_date DateTime @updatedAt @map("update_date")
+  is_del      IsDel    @default(NO) @map("is_del")
+
+  feedback_id String    @map("feedback_id")
+  feedback    Feedback? @relation(fields: [feedback_id], references: [id])
+  create_user User?     @relation(name: "create_user_in_file", fields: [create_by], references: [id])
+  update_user User?     @relation(name: "update_user_in_file", fields: [update_by], references: [id])
+
+  @@map("files")
+}
+
+model Social {
+  id    String @id @default(cuid()) @map("id")
+  title String @map("title")
+
+  subtitles    SubTitle[]
+  tips         Tip[]
+  descriptions Description[]
+
+  create_by   String   @map("create_by")
+  create_date DateTime @default(now()) @map("create_date")
+  update_by   String   @map("update_by")
+  update_date DateTime @updatedAt @map("update_date")
+  is_del      IsDel    @default(NO) @map("is_del")
+
+  create_user User? @relation(name: "create_user_in_social", fields: [create_by], references: [id])
+  update_user User? @relation(name: "update_user_in_social", fields: [update_by], references: [id])
+
+  @@map("socials")
+}
+
+model SubTitle {
+  id    String  @id @default(cuid()) @map("id")
+  title String  @map("title")
+  color String? @map("color")
+
+  create_by   String   @map("create_by")
+  create_date DateTime @default(now()) @map("create_date")
+  update_by   String   @map("update_by")
+  update_date DateTime @updatedAt @map("update_date")
+  is_del      IsDel    @default(NO) @map("is_del")
+
+  social_id   String  @map("social_id")
+  social      Social? @relation(fields: [social_id], references: [id])
+  create_user User?   @relation(name: "create_user_in_subtitle", fields: [create_by], references: [id])
+  update_user User?   @relation(name: "update_user_in_subtitle", fields: [update_by], references: [id])
+
+  @@map("subtitles")
+}
+
+model Description {
+  id    String  @id @default(cuid()) @map("id")
+  name  String? @map("name")
+  links Link[]
+
+  create_by   String   @map("create_by")
+  create_date DateTime @default(now()) @map("create_date")
+  update_by   String   @map("update_by")
+  update_date DateTime @updatedAt @map("update_date")
+  is_del      IsDel    @default(NO) @map("is_del")
+
+  social_id   String  @map("social_id")
+  social      Social? @relation(fields: [social_id], references: [id])
+  create_user User?   @relation(name: "create_user_in_description", fields: [create_by], references: [id])
+  update_user User?   @relation(name: "update_user_in_description", fields: [update_by], references: [id])
+
+  @@map("descriptions")
+}
+
+model Tip {
+  id    String   @id @default(cuid()) @map("id")
+  type  LinkType @default(link) @map("type")
+  text  String?  @map("text")
+  href  String?  @map("href")
+  color String?  @map("color")
+
+  create_by   String   @map("create_by")
+  create_date DateTime @default(now()) @map("create_date")
+  update_by   String   @map("update_by")
+  update_date DateTime @updatedAt @map("update_date")
+  is_del      IsDel    @default(NO) @map("is_del")
+
+  social_id   String  @map("social_id")
+  social      Social? @relation(fields: [social_id], references: [id])
+  create_user User?   @relation(name: "create_user_in_tip", fields: [create_by], references: [id])
+  update_user User?   @relation(name: "update_user_in_tip", fields: [update_by], references: [id])
+
+  @@map("tips")
+}
+
+model Link {
+  id    String   @id @default(cuid()) @map("id")
+  type  LinkType @default(link) @map("type")
+  text  String?  @map("text")
+  href  String?  @map("href")
+  color String?  @map("color")
+
+  create_by   String   @map("create_by")
+  create_date DateTime @default(now()) @map("create_date")
+  update_by   String   @map("update_by")
+  update_date DateTime @updatedAt @map("update_date")
+  is_del      IsDel    @default(NO) @map("is_del")
+
+  description_id String       @map("description_id")
+  description    Description? @relation(fields: [description_id], references: [id])
+  create_user    User?        @relation(name: "create_user_in_link", fields: [create_by], references: [id])
+  update_user    User?        @relation(name: "update_user_in_link", fields: [update_by], references: [id])
+
+  @@map("links")
+}
+
+model Config {
+  id    String  @id @default(cuid()) @map("id")
+  key   String  @map("key")
+  value String? @map("value")
+
+  start_date DateTime? @map("start_date")
+  end_date   DateTime? @map("end_date")
+
+  create_by   String   @map("create_by")
+  create_date DateTime @default(now()) @map("create_date")
+  update_by   String   @map("update_by")
+  update_date DateTime @updatedAt @map("update_date")
+  is_del      IsDel    @default(NO) @map("is_del")
+
+  create_user User? @relation(name: "create_user_in_config", fields: [create_by], references: [id])
+  update_user User? @relation(name: "update_user_in_config", fields: [update_by], references: [id])
+
+  @@map("configs")
+}
+
+model Roadmap {
+  id          String  @id @default(cuid()) @map("id")
+  title       String  @map("title")
+  description String? @map("description")
+
+  from       DateTime @map("from")
+  to         DateTime @map("to")
+  background String?  @map("background")
+
+  labels Label[]
+
+  create_by   String   @map("create_by")
+  create_date DateTime @default(now()) @map("create_date")
+  update_by   String   @map("update_by")
+  update_date DateTime @updatedAt @map("update_date")
+  is_del      IsDel    @default(NO) @map("is_del")
+
+  create_user User? @relation(name: "create_user_in_roadmap", fields: [create_by], references: [id])
+  update_user User? @relation(name: "update_user_in_roadmap", fields: [update_by], references: [id])
+
+  @@map("roadmaps")
+}
+
+model Label {
+  id    String  @id @default(cuid()) @map("id")
+  icon  String? @map("icon")
+  text  String? @map("text")
+  order Int     @map("order")
+  color String? @map("color")
+
+  create_by   String   @map("create_by")
+  create_date DateTime @default(now()) @map("create_date")
+  update_by   String   @map("update_by")
+  update_date DateTime @updatedAt @map("update_date")
+  is_del      IsDel    @default(NO) @map("is_del")
+
+  roadmap_id  String   @map("roadmap_id")
+  roadmap     Roadmap? @relation(fields: [roadmap_id], references: [id])
+  create_user User?    @relation(name: "create_user_in_label", fields: [create_by], references: [id])
+  update_user User?    @relation(name: "update_user_in_label", fields: [update_by], references: [id])
+
+  @@map("labels")
+}
+
+model User {
+  id             String    @id @default(cuid()) @map("id")
+  username       String    @unique @map("username")
+  nickname       String?   @map("nickname")
+  password       String?   @map("password")
+  email          String?   @unique @map("email")
+  email_verified DateTime? @map("email_verified")
+  phone          String?   @unique @map("phone")
+  phone_verified DateTime? @map("phone_verified")
+  avatar         String?   @map("avatar")
+
+  create_date DateTime @default(now()) @map("create_date")
+  update_date DateTime @updatedAt @map("update_date")
+  is_del      IsDel    @default(NO) @map("is_del")
+
+  roles       RolesOnUsers[]
+  permissions PermissionsOnUsers[]
+
+  create_carousels            Carousel[]           @relation(name: "create_user_in_carousel")
+  update_carousels            Carousel[]           @relation(name: "update_user_in_carousel")
+  create_emojis               Emoji[]              @relation(name: "create_user_in_emoji")
+  update_emojis               Emoji[]              @relation(name: "update_user_in_emoji")
+  create_feedbacks            Feedback[]           @relation(name: "create_user_in_feedback")
+  update_feedbacks            Feedback[]           @relation(name: "update_user_in_feedback")
+  create_files                File[]               @relation(name: "create_user_in_file")
+  update_files                File[]               @relation(name: "update_user_in_file")
+  create_socials              Social[]             @relation(name: "create_user_in_social")
+  update_socials              Social[]             @relation(name: "update_user_in_social")
+  create_subTitles            SubTitle[]           @relation(name: "create_user_in_subtitle")
+  update_subTitles            SubTitle[]           @relation(name: "update_user_in_subtitle")
+  create_descriptions         Description[]        @relation(name: "create_user_in_description")
+  update_descriptions         Description[]        @relation(name: "update_user_in_description")
+  create_tips                 Tip[]                @relation(name: "create_user_in_tip")
+  update_tips                 Tip[]                @relation(name: "update_user_in_tip")
+  create_links                Link[]               @relation(name: "create_user_in_link")
+  update_links                Link[]               @relation(name: "update_user_in_link")
+  create_configs              Config[]             @relation(name: "create_user_in_config")
+  update_configs              Config[]             @relation(name: "update_user_in_config")
+  create_roadmaps             Roadmap[]            @relation(name: "create_user_in_roadmap")
+  update_roadmaps             Roadmap[]            @relation(name: "update_user_in_roadmap")
+  create_labels               Label[]              @relation(name: "create_user_in_label")
+  update_labels               Label[]              @relation(name: "update_user_in_label")
+  create_permissions          Permission[]         @relation(name: "create_user_in_permission")
+  update_permissions          Permission[]         @relation(name: "update_user_in_permission")
+  create_roles                Role[]               @relation(name: "create_user_in_role")
+  update_roles                Role[]               @relation(name: "update_user_in_role")
+  create_permissions_on_roles PermissionsOnRoles[] @relation(name: "create_user_in_permissions_on_roles")
+  update_permissions_on_roles PermissionsOnRoles[] @relation(name: "update_user_in_permissions_on_roles")
+  create_roles_on_users       RolesOnUsers[]       @relation(name: "create_user_in_roles_on_users")
+  update_roles_on_users       RolesOnUsers[]       @relation(name: "update_user_in_roles_on_users")
+  create_permissions_on_users PermissionsOnUsers[] @relation(name: "create_user_in_permissions_on_users")
+  update_permissions_on_users PermissionsOnUsers[] @relation(name: "update_user_in_permissions_on_users")
+  create_menus                Menu[]               @relation(name: "create_user_in_menu")
+  update_menus                Menu[]               @relation(name: "update_user_in_menu")
+  create_menus_on_roles       MenusOnRoles[]       @relation(name: "create_user_in_menus_on_roles")
+  update_menus_on_roles       MenusOnRoles[]       @relation(name: "update_user_in_menus_on_roles")
+
+  @@index([username], type: Hash)
+  @@index([email], type: Hash)
+  @@index([phone], type: Hash)
+  @@map("users")
+}
+
+model Role {
+  id          String  @id @default(cuid()) @map("id")
+  name        String  @unique @map("name")
+  description String? @map("description")
+
+  create_by   String   @map("create_by")
+  create_date DateTime @default(now()) @map("create_date")
+  update_by   String   @map("update_by")
+  update_date DateTime @updatedAt @map("update_date")
+  is_del      IsDel    @default(NO) @map("is_del")
+
+  users       RolesOnUsers[]
+  permissions PermissionsOnRoles[]
+  menus       MenusOnRoles[]
+
+  create_user User? @relation(name: "create_user_in_role", fields: [create_by], references: [id])
+  update_user User? @relation(name: "update_user_in_role", fields: [update_by], references: [id])
+
+  @@index([name], type: Hash)
+  @@map("roles")
+}
+
+model RolesOnUsers {
+  id String @id @default(cuid()) @map("id")
+
+  user_id String @map("user_id")
+  user    User   @relation(fields: [user_id], references: [id])
+  role_id String @map("role_id")
+  role    Role   @relation(fields: [role_id], references: [id])
+
+  create_by   String   @map("create_by")
+  create_date DateTime @default(now()) @map("create_date")
+  update_by   String   @map("update_by")
+  update_date DateTime @updatedAt @map("update_date")
+  is_del      IsDel    @default(NO) @map("is_del")
+
+  create_user User? @relation(name: "create_user_in_roles_on_users", fields: [create_by], references: [id])
+  update_user User? @relation(name: "update_user_in_roles_on_users", fields: [update_by], references: [id])
+
+  @@unique([user_id, role_id])
+  @@map("roles_on_users")
+}
+
+model Menu {
+  id        String   @id @default(cuid()) @map("id")
+  path      String?  @map("path")
+  title     String   @map("title")
+  icon      String?  @map("icon")
+  order     Int?     @map("order")
+  shown     Boolean  @default(true) @map("shown")
+  menu_type MenuType @default(directory) @map("menu_type")
+
+  parent_id String? @map("parent_id")
+  parent    Menu?   @relation("children", fields: [parent_id], references: [id])
+  children  Menu[]  @relation("children")
+
+  create_by   String   @map("create_by")
+  create_date DateTime @default(now()) @map("create_date")
+  update_by   String   @map("update_by")
+  update_date DateTime @updatedAt @map("update_date")
+  is_del      IsDel    @default(NO) @map("is_del")
+
+  permission_id String?        @unique @map("permission_id")
+  permission    Permission?    @relation(fields: [permission_id], references: [id])
+  roles         MenusOnRoles[]
+
+  create_user User? @relation(name: "create_user_in_menu", fields: [create_by], references: [id])
+  update_user User? @relation(name: "update_user_in_menu", fields: [update_by], references: [id])
+
+  @@map("menus")
+}
+
+model MenusOnRoles {
+  id String @id @default(cuid()) @map("id")
+
+  role_id String @map("role_id")
+  role    Role   @relation(fields: [role_id], references: [id])
+  menu_id String @map("menu_id")
+  menu    Menu   @relation(fields: [menu_id], references: [id])
+
+  create_by   String   @map("create_by")
+  create_date DateTime @default(now()) @map("create_date")
+  update_by   String   @map("update_by")
+  update_date DateTime @updatedAt @map("update_date")
+  is_del      IsDel    @default(NO) @map("is_del")
+
+  create_user User? @relation(name: "create_user_in_menus_on_roles", fields: [create_by], references: [id])
+  update_user User? @relation(name: "update_user_in_menus_on_roles", fields: [update_by], references: [id])
+
+  @@unique([role_id, menu_id])
+  @@map("menus_on_roles")
+}
+
+model Permission {
+  id          String  @id @default(cuid()) @map("id")
+  name        String  @unique @map("name")
+  description String? @map("description")
+
+  create_by   String   @map("create_by")
+  create_date DateTime @default(now()) @map("create_date")
+  update_by   String   @map("update_by")
+  update_date DateTime @updatedAt @map("update_date")
+  is_del      IsDel    @default(NO) @map("is_del")
+
+  menu  Menu?
+  users PermissionsOnUsers[]
+  roles PermissionsOnRoles[]
+
+  create_user User? @relation(name: "create_user_in_permission", fields: [create_by], references: [id])
+  update_user User? @relation(name: "update_user_in_permission", fields: [update_by], references: [id])
+
+  @@index([name], type: Hash)
+  @@map("permissions")
+}
+
+model PermissionsOnRoles {
+  id      String @id @default(cuid()) @map("id")
+  role_id String @map("role_id")
+  role    Role   @relation(fields: [role_id], references: [id])
+
+  permission_id String     @map("permission_id")
+  permission    Permission @relation(fields: [permission_id], references: [id])
+
+  create_by   String   @map("create_by")
+  create_date DateTime @default(now()) @map("create_date")
+  update_by   String   @map("update_by")
+  update_date DateTime @updatedAt @map("update_date")
+  is_del      IsDel    @default(NO) @map("is_del")
+
+  create_user User? @relation(name: "create_user_in_permissions_on_roles", fields: [create_by], references: [id])
+  update_user User? @relation(name: "update_user_in_permissions_on_roles", fields: [update_by], references: [id])
+
+  @@unique([role_id, permission_id])
+  @@map("permissions_on_roles")
+}
+
+model PermissionsOnUsers {
+  id      String @id @default(cuid()) @map("id")
+  user_id String @map("user_id")
+  user    User   @relation(fields: [user_id], references: [id])
+
+  permission_id String     @map("permission_id")
+  permission    Permission @relation(fields: [permission_id], references: [id])
+
+  create_by   String   @map("create_by")
+  create_date DateTime @default(now()) @map("create_date")
+  update_by   String   @map("update_by")
+  update_date DateTime @updatedAt @map("update_date")
+  is_del      IsDel    @default(NO) @map("is_del")
+
+  create_user User? @relation(name: "create_user_in_permissions_on_users", fields: [create_by], references: [id])
+  update_user User? @relation(name: "update_user_in_permissions_on_users", fields: [update_by], references: [id])
+
+  @@unique([user_id, permission_id])
+  @@map("permissions_on_users")
+}
+
+enum MenuType {
+  directory
+  menu
+  button
+}
+
+enum IsDel {
+  YES
+  NO
+}
+
+enum LinkType {
+  link
+  text
+}
