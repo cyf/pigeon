@@ -9,7 +9,7 @@ import 'package:homing_pigeon/common/constants/keys.dart';
 import 'package:homing_pigeon/common/logger/logger.dart';
 import 'package:homing_pigeon/common/utils/sp_util.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
-import 'package:jpush_flutter/jpush_flutter.dart';
+import 'package:jpush_flutter2/jpush_flutter2.dart';
 
 void initJPush() {
   if (AppConfig.shared.isInternal) {
