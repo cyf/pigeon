@@ -163,10 +163,10 @@ PODS:
   - hcaptcha_flutter (0.0.1):
     - Flutter
     - HCaptcha (= 2.5.1)
-  - JCore (4.4.2)
+  - JCore (4.6.0)
   - JPush (5.2.0):
     - JCore (>= 2.0.0)
-  - jpush_flutter (0.0.1):
+  - jpush_flutter2 (0.0.1):
     - Flutter
     - JPush (= 5.2.0)
   - nanopb (2.30909.1):
@@ -227,7 +227,7 @@ DEPENDENCIES:
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - hcaptcha_flutter (from `.symlinks/plugins/hcaptcha_flutter/ios`)
-  - jpush_flutter (from `.symlinks/plugins/jpush_flutter/ios`)
+  - jpush_flutter2 (from `.symlinks/plugins/jpush_flutter2/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
@@ -294,8 +294,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/fluttertoast/ios"
   hcaptcha_flutter:
     :path: ".symlinks/plugins/hcaptcha_flutter/ios"
-  jpush_flutter:
-    :path: ".symlinks/plugins/jpush_flutter/ios"
+  jpush_flutter2:
+    :path: ".symlinks/plugins/jpush_flutter2/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
@@ -345,9 +345,9 @@ SPEC CHECKSUMS:
   GoogleUtilities: 0759d1a57ebb953965c2dfe0ba4c82e95ccc2e34
   HCaptcha: 98dc7a73b11b5dee7e6fced7085925a9c74d9ca4
   hcaptcha_flutter: 623552f4d902c493275c7e5cbde36f2c4da6efce
-  JCore: 2e7dd256415fb32398489968202c0066ad5c13db
+  JCore: bfb281ba5fbf3d3e50ccb36bb41d54e0e99312df
   JPush: 76668b765fcfd7c15f86b05ca0e5cdc01945ce23
-  jpush_flutter: 8a8da862f2284f3c5722ba2285b12e561b92080c
+  jpush_flutter2: 2488e8a5b1f4a85a07aa495d7a5d8e5ffea8f097
   nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
   package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
   path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
