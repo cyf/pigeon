@@ -92,7 +92,7 @@ export default function GithubRelease({ lng }: LngProps) {
             </GitHubPkg>
             <Link
               className="flex items-center justify-center space-x-2 rounded-full border border-gray-300 bg-white px-5 py-2 text-sm text-gray-600 shadow-md transition-colors hover:border-gray-800 dark:bg-black dark:text-white/80 max-md:mx-0"
-              href=""
+              href="https://play.google.com/store/apps/details?id=com.chenyifaer.homingpigeon"
             >
               <GooglePlay className="h-7 w-7" />
               <p>
@@ -101,7 +101,7 @@ export default function GithubRelease({ lng }: LngProps) {
             </Link>
             <Link
               className="flex items-center justify-center space-x-2 rounded-full border border-gray-300 bg-white px-5 py-2 text-sm text-gray-600 shadow-md transition-colors hover:border-gray-800 dark:bg-black dark:text-white/80 max-md:mx-0"
-              href=""
+              href="https://apps.apple.com/us/app/id6470935922"
             >
               <AppStore className="h-7 w-7" />
               <p>
