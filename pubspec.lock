@@ -1225,10 +1225,10 @@ packages:
     dependency: transitive
     description:
       name: photo_manager
-      sha256: f980cedae5f55928337708ef6ac81840650e8ab0176a85dc9d7b3a5b893ac578
+      sha256: df594f989f0c31cdb3ed48f3d49cb9ffadf11cc3700d2c3460b1912c93432621
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.0-dev.3"
+    version: "3.0.0"
   photo_manager_image_provider:
     dependency: transitive
     description:
@@ -1902,10 +1902,18 @@ packages:
     dependency: "direct main"
     description:
       name: wechat_camera_picker
-      sha256: ffc6f987b62d7e1104ec08c4797a620cb1cc9698cbfb6d19865290e835ea1777
+      sha256: "6397311b2fc2205b00c376455094934f4626f72fdcfc2d41293d81f0c0264a63"
       url: "https://pub.dev"
     source: hosted
-    version: "4.2.0-dev.3"
+    version: "4.2.0"
+  wechat_picker_library:
+    dependency: transitive
+    description:
+      name: wechat_picker_library
+      sha256: a47cdb227955f64494fe55bc42d91a76bfc626a446075d4284a070f1e1297b4e
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   win32:
     dependency: transitive
     description:
