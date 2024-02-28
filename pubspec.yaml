@@ -93,7 +93,7 @@ dependencies:
   shared_preferences: ^2.2.2
   socket_io_client: ^2.0.3+1
   sortedmap: ^0.5.3
-  syncfusion_flutter_calendar: ^24.2.7
+  syncfusion_flutter_calendar: ^24.2.8
   synchronized: ^3.1.0+1
   timeago: ^3.6.1
   timezone: ^0.9.2
@@ -102,8 +102,8 @@ dependencies:
   uuid: ^4.3.3
   version: ^3.0.2
 #  watcher: ^1.1.0 # https://github.com/dart-lang/sdk/issues/52027
-  wechat_assets_picker: ^9.0.0-dev.2
-  wechat_camera_picker: ^4.2.0-dev.3
+  wechat_assets_picker: ^9.0.0
+  wechat_camera_picker: ^4.2.0
 
 dev_dependencies:
   bloc_test: ^9.1.6
