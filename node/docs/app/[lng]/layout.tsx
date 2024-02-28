@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import { BiArrowToTop } from "react-icons/bi";
 import NextTopLoader from "nextjs-toploader";
 import GoogleAnalytics from "@/components/shared/google-analytics";
-// import CookieBanner from "@/components/shared/cookie-banner";
+import CookieBanner from "@/components/shared/cookie-banner";
 import ScrollToTop from "@/components/layout/scroll-to-top";
 import { languages } from "@/i18n/settings";
 import Footer from "@/components/layout/footer";
@@ -16,6 +16,8 @@ import { sfPro, inter } from "./fonts";
 import Particles from "./particles";
 import ReduxProvider from "./redux-provider";
 import ThemeProvider from "./theme-provider";
+
+const NEXT_PUBLIC_SHOW_PARTICLES = process.env.NEXT_PUBLIC_SHOW_PARTICLES;
 
 const Header = dynamic(() => import("@/components/layout/header"), {
   ssr: false,
@@ -67,7 +69,7 @@ export default async function RootLayout({
         <NextTopLoader height={1} />
         <ReduxProvider>
           <ThemeProvider>
-            <Particles />
+            {NEXT_PUBLIC_SHOW_PARTICLES && <Particles />}
             <Header lng={params.lng} />
             <main
               id="main"
@@ -77,7 +79,7 @@ export default async function RootLayout({
               <GoogleAnalytics />
             </main>
             <Footer lng={params.lng} />
-            {/*<CookieBanner lng={params.lng} />*/}
+            <CookieBanner lng={params.lng} />
           </ThemeProvider>
         </ReduxProvider>
         <ScrollToTop
