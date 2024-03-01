@@ -175,9 +175,8 @@ Future<void> runMainApp() async {
   await LogUtil.getInstance();
 
   final socket = socket_io.io(
-    '${Constants.apiPrefix}/ws',
+    Constants.wsPrefix,
     socket_io.OptionBuilder()
-        .setPath('/homing-pigeon${AppConfig.shared.isInternal ? '/internal' : ''}/socket.io/')
         .setTransports(['websocket', 'polling']).setExtraHeaders(
       {'foo': 'bar'},
     ).build(),

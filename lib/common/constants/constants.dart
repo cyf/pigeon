@@ -8,6 +8,8 @@ import 'package:homing_pigeon/common/utils/string_util.dart';
 class Constants {
   static String apiPrefix = StringUtil.getValue(dotenv.env['API_PREFIX']);
 
+  static String wsPrefix = StringUtil.getValue(dotenv.env['WS_PREFIX']);
+
   static const int days = 7;
 
   static const int timeOut = 60;
