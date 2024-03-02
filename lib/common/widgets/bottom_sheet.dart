@@ -34,7 +34,12 @@ class ModalBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+    final top = MediaQuery.of(context).padding.top;
     final bottom = MediaQuery.of(context).padding.bottom;
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    final marginBottom = keyboardHeight > 0 ? keyboardHeight : bottom;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -54,12 +59,16 @@ class ModalBottomSheet extends StatelessWidget {
                   .nestedPadding(padding: margin)
                   .nestedColoredBox(color: Colors.white)
                   .nestedPadding(
-                    padding:
-                        EdgeInsets.only(bottom: bottom + buttonHeight + 8),
+                    padding: EdgeInsets.only(
+                        bottom: marginBottom + buttonHeight + 8),
                   )
                   .nestedSizedBox(width: width)
                   .nestedConstrainedBox(
-                    constraints: constraints,
+                    constraints: constraints.copyWith(
+                      maxHeight: keyboardHeight > 0
+                          ? (height - top - bottom) * 0.9
+                          : constraints.maxHeight,
+                    ),
                   ),
               Positioned(
                 left: 0,
@@ -69,15 +78,19 @@ class ModalBottomSheet extends StatelessWidget {
                   onPressed: callback,
                   child: Text(
                     buttonText,
-                    style:
-                        const TextStyle(fontSize: 18, color: primaryTextColor),
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: primaryTextColor,
+                    ),
                     textAlign: TextAlign.center,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   )
                       .nestedCenter()
                       .nestedSizedBox(height: buttonHeight)
-                      .nestedPadding(padding: EdgeInsets.only(bottom: bottom)),
+                      .nestedPadding(
+                        padding: EdgeInsets.only(bottom: marginBottom),
+                      ),
                 ),
               ),
             ],
@@ -97,6 +110,6 @@ class ModalBottomSheet extends StatelessWidget {
                 .nestedPadding(padding: EdgeInsets.only(bottom: bottom)),
           ),
       ],
-    );
+    ).nestedSingleChildScrollView();
   }
 }
