@@ -84,6 +84,7 @@ class _FeedbackViewState extends State<FeedbackView> {
   Widget build(BuildContext context) {
     final bottom = MediaQuery.of(context).padding.bottom;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: HpAppBar(
         titleName: '意见或建议',
       ),

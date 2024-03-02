@@ -117,6 +117,7 @@ class _HomeViewState extends State<HomeView>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: _buildScaffoldBody(),
       floatingActionButton: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {
