@@ -212,7 +212,7 @@ Future<void> runMainApp() async {
   if (Constants.ossEnabled) {
     if (AppConfig.shared.isExternal) {
       Minio.init(
-        endPoint: '${Constants.region}.${Constants.endpoint}',
+        endPoint: Constants.endpoint,
         accessKey: Constants.accessKeyId,
         secretKey: Constants.accessKeySecret,
         region: Constants.region,
