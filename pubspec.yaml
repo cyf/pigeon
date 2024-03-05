@@ -48,7 +48,7 @@ dependencies:
   easy_refresh: ^3.3.4
   encrypt: ^5.0.3
   equatable: ^2.0.5
-  file_picker: ^6.1.1
+  file_picker: ^6.2.0
   firebase_analytics: ^10.8.7
   firebase_core: ^2.25.5
   firebase_messaging: ^14.7.17
@@ -60,10 +60,10 @@ dependencies:
   flutter_easyloading: ^3.0.5
   flutter_form_builder: ^9.2.1
   flutter_intro: ^3.1.2
-  flutter_local_notifications: ^16.3.2
+  flutter_local_notifications: ^16.3.3
   flutter_localizations:
     sdk: flutter
-  flutter_markdown: ^0.6.20+1
+  flutter_markdown: ^0.6.21
   flutter_native_splash: ^2.3.10
   flutter_staggered_grid_view: ^0.7.0
   flutter_sticky_header: ^0.6.5
@@ -76,7 +76,7 @@ dependencies:
   jpush_flutter2: ^0.0.1+2
   json_annotation: ^4.8.1
   keyboard_dismisser: ^3.0.0
-  logger: ^2.0.2+1
+  logger: ^2.1.0
   markdown: ^7.2.1
   meta: ^1.10.0
   mime: ^1.0.5
@@ -93,7 +93,7 @@ dependencies:
   shared_preferences: ^2.2.2
   socket_io_client: ^2.0.3+1
   sortedmap: ^0.5.3
-  syncfusion_flutter_calendar: ^24.2.8
+  syncfusion_flutter_calendar: ^24.2.9
   synchronized: ^3.1.0+1
   timeago: ^3.6.1
   timezone: ^0.9.2
