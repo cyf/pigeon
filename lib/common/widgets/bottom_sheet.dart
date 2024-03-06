@@ -60,7 +60,8 @@ class ModalBottomSheet extends StatelessWidget {
                   .nestedColoredBox(color: Colors.white)
                   .nestedPadding(
                     padding: EdgeInsets.only(
-                        bottom: marginBottom + buttonHeight + 8),
+                      bottom: marginBottom + buttonHeight + 8,
+                    ),
                   )
                   .nestedSizedBox(width: width)
                   .nestedConstrainedBox(
