@@ -1,11 +1,7 @@
 "use client";
 import React, { useRef } from "react";
-import {
-  fetchUserAsync,
-  selectUser,
-  useAppDispatch,
-  useAppSelector,
-} from "@/model";
+import { selectUser, setUserAsync } from "@/model/slices/user/slice";
+import { useAppDispatch, useAppSelector } from "@/model/hooks";
 
 export default function UserProvider({ children }: React.PropsWithChildren) {
   const dispatch = useAppDispatch();
@@ -13,7 +9,7 @@ export default function UserProvider({ children }: React.PropsWithChildren) {
   const initialized = useRef(false);
   if (!user && !initialized.current) {
     initialized.current = true;
-    dispatch(fetchUserAsync());
+    dispatch(setUserAsync());
   }
 
   return children;

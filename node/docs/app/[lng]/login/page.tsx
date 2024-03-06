@@ -6,6 +6,8 @@ import { useSearchParams } from "next/navigation";
 // import EmailValidator from "email-validator";
 import Cookies from "js-cookie";
 import { Github, Google, LoadingDots } from "@/components/shared/icons";
+import { setUser } from "@/model/slices/user/slice";
+import { useAppDispatch } from "@/model/hooks";
 import { basePath, cacheTokenKey } from "@/constants";
 import { authService } from "@/services";
 
@@ -18,6 +20,7 @@ export default function Login({
 }) {
   const search = useSearchParams();
   const redirectUrl = search.get("r");
+  const dispatch = useAppDispatch();
   const [checked, setChecked] = useState(false);
   const [showRed, setRed] = useState(false);
   const [googleClicked, setGoogleClicked] = useState(false);
@@ -68,6 +71,7 @@ export default function Login({
         setLoading(false);
         if (res?.code === 0) {
           Cookies.set(cacheTokenKey, res?.data?.access_token);
+          dispatch(setUser(res?.data?.user));
           redirectUrl && window.location.replace(redirectUrl);
         }
       })

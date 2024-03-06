@@ -1,5 +1,6 @@
 "use client";
-import { useAppSelector, selectUser } from "@/model";
+import { selectUser } from "@/model/slices/user/slice";
+import { useAppSelector } from "@/model/hooks";
 
 export default function User({
   params,
