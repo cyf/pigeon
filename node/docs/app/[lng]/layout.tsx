@@ -2,7 +2,7 @@ import "./globals.css";
 import React from "react";
 import cx from "classnames";
 import { dir } from "i18next";
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 import dynamic from "next/dynamic";
 import { BiArrowToTop } from "react-icons/bi";
 import NextTopLoader from "nextjs-toploader";
@@ -23,9 +23,17 @@ const Header = dynamic(() => import("@/components/layout/header"), {
   ssr: false,
 });
 
-// const ReduxProvider = dynamic(() => import("./redux-provider"), {
-//   ssr: false,
-// });
+export function generateViewport(): Viewport {
+  return {
+    colorScheme: "dark",
+    themeColor: "black",
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+    minimumScale: 1,
+    userScalable: false,
+  };
+}
 
 export async function generateMetadata({
   params,
