@@ -47,7 +47,7 @@ export class HeadersMiddleware implements NestMiddleware {
       !isString(xSign) ||
       isEmpty(xChannel) ||
       !isString(xChannel) ||
-      !isIn(xChannel, ['WEB']) ||
+      !isIn(xChannel, ['WEB', 'MOBILE_IOS', 'MOBILE_ANDROID']) ||
       isEmpty(xVersion) ||
       !isString(xVersion) ||
       isEmpty(xLocale) ||
