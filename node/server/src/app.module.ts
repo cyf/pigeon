@@ -132,6 +132,7 @@ import { type RedisOptions } from 'ioredis'
     FeedbackModule,
     RoadmapModule,
     SocialModule,
+    HealthModule,
     RouterModule.register([
       {
         path: '/api',
