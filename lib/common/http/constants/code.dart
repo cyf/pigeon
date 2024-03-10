@@ -4,16 +4,14 @@ import 'package:homing_pigeon/common/http/widget/http_error_boundary.dart';
 
 class Code {
   /// 网络错误
-  static const networkError = -1;
+  static const networkError = '-1';
 
-  static const networkUnAuthorized = 401;
+  static const networkUnAuthorized = '401';
 
-  static const networkUnAccess = 403;
-
-  static const success = 200;
+  static const networkUnAccess = '403';
 
   static HpError? errorHandleFunction(
-    int? code,
+    String? code,
     String? message, {
     bool noTip = false,
   }) {

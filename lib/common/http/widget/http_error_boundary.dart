@@ -3,6 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:homing_pigeon/common/extensions/extensions.dart';
 import 'package:homing_pigeon/common/http/constants/code.dart';
 import 'package:homing_pigeon/common/http/event/http_error_event.dart';
+import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/theme/colors.dart';
 
 class HttpErrorBoundary {
@@ -18,7 +19,7 @@ class HttpErrorBoundary {
 
   GlobalKey<NetworkErrorAlertContainerState>? get key => _key;
   static final HttpErrorBoundary _instance = HttpErrorBoundary._internal();
-  static final Map<int, bool> _cacheMap = <int, bool>{};
+  static final Map<String, bool> _cacheMap = <String, bool>{};
 
   static HttpErrorBoundary get instance => _instance;
 
@@ -37,7 +38,7 @@ class HttpErrorBoundary {
   }
 
   static Future<void> handleErrorEvent(HttpErrorEvent event) async {
-    if (event.code != null && !_cacheMap.containsKey(event.code)) {
+    if (StringUtil.isNotBlank(event.code) && !_cacheMap.containsKey(event.code)) {
       _cacheMap[event.code!] = true;
       switch (event.code) {
         case Code.networkError:
@@ -64,7 +65,7 @@ class HttpErrorBoundary {
     );
   }
 
-  static void _unAuthorizedHandler(int code) {
+  static void _unAuthorizedHandler(String code) {
     // Future.delayed(const Duration(seconds: 2), () {
     //   _cacheMap.remove(Code.networkUnAuthorized);
     //   Future.microtask(() async {

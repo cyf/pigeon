@@ -4,7 +4,7 @@ class HpError {
 
   const HpError.from(this.code, this.msg);
 
-  final int? code;
+  final String? code;
   final String? msg;
 
   String getMsg() {

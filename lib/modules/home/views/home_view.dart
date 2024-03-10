@@ -15,9 +15,8 @@ import 'package:homing_pigeon/app/navigator.dart';
 import 'package:homing_pigeon/common/api/auth_api.dart';
 import 'package:homing_pigeon/common/api/carousel_api.dart';
 import 'package:homing_pigeon/common/constants/keys.dart';
-import 'package:homing_pigeon/common/exception/exception.dart';
 import 'package:homing_pigeon/common/extensions/extensions.dart';
-import 'package:homing_pigeon/common/logger/logger.dart';
+import 'package:homing_pigeon/common/http/utils/handle_errors.dart';
 import 'package:homing_pigeon/common/models/models.dart';
 import 'package:homing_pigeon/common/utils/color_util.dart';
 import 'package:homing_pigeon/common/utils/navigator_util.dart';
@@ -759,7 +758,7 @@ class _HomeViewState extends State<HomeView>
                               controller: _repeatPasswordController,
                               cursorColor: primaryColor,
                               autovalidateMode:
-                              AutovalidateMode.onUserInteraction,
+                                  AutovalidateMode.onUserInteraction,
                               autocorrect: false,
                               obscureText: !_showRepeatPassword,
                               onChanged: (value) {
@@ -769,7 +768,8 @@ class _HomeViewState extends State<HomeView>
                                 suffixIcon: IconButton(
                                   onPressed: () {
                                     setInnerState(
-                                          () => _showRepeatPassword = !_showRepeatPassword,
+                                      () => _showRepeatPassword =
+                                          !_showRepeatPassword,
                                     );
                                   },
                                   icon: Icon(
@@ -1039,9 +1039,14 @@ class _HomeViewState extends State<HomeView>
           return;
         }
         EasyLoading.showError('Failure');
-      }).onError<RequestedException>((error, stackTrace) {
-        EasyLoading.showError(error.msg);
-        printErrorLog(error, stackTrace: stackTrace);
+      }).onError<Exception>((error, stackTrace) {
+        ErrorHandler.handle(
+          error,
+          stackTrace: stackTrace,
+          postProcessor: (_, msg) {
+            EasyLoading.showError(msg ?? 'Failure');
+          },
+        );
       });
     }
   }
@@ -1084,9 +1089,14 @@ class _HomeViewState extends State<HomeView>
           return;
         }
         EasyLoading.showError('Failure');
-      }).onError<RequestedException>((error, stackTrace) {
-        EasyLoading.showError(error.msg);
-        printErrorLog(error, stackTrace: stackTrace);
+      }).onError<Exception>((error, stackTrace) {
+        ErrorHandler.handle(
+          error,
+          stackTrace: stackTrace,
+          postProcessor: (_, msg) {
+            EasyLoading.showError(msg ?? 'Failure');
+          },
+        );
       });
     }
   }
@@ -1160,12 +1170,17 @@ class _HomeViewState extends State<HomeView>
         _loading = false;
         _carousels = carousels;
       });
-    } on RequestedException catch (error, stackTrace) {
-      printErrorStackLog(error, stackTrace);
-      setState(() {
-        _loading = false;
-        _error = error.msg;
-      });
+    } on Exception catch (error, stackTrace) {
+      ErrorHandler.handle(
+        error,
+        stackTrace: stackTrace,
+        postProcessor: (_, msg) {
+          setState(() {
+            _loading = false;
+            _error = msg ?? 'Failure';
+          });
+        },
+      );
     }
   }
 

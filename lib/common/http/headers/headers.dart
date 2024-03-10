@@ -108,7 +108,7 @@ class HpHeaders {
           StringUtil.isNotBlank(token) ? 'Bearer $token' : StringUtil.empty,
       'x-channel': Platform.isIOS ? 'MOBILE_IOS' : 'MOBILE_ANDROID',
       'x-flavor': AppConfig.shared.flavor.name,
-      'x-locale': 'en',
+      'x-locale': 'zh',
     };
   }
 

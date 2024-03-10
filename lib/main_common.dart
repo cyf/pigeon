@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:homing_pigeon/app/bloc_observer.dart';
 import 'package:homing_pigeon/app/config.dart';
 import 'package:homing_pigeon/app/manager.dart';
@@ -23,7 +23,7 @@ import 'package:jpush_flutter2/jpush_flutter2.dart';
 import 'package:minio_flutter/minio.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:socket_io_client/socket_io_client.dart' as socket_io;
+// import 'package:socket_io_client/socket_io_client.dart' as socket_io;
 import 'package:timezone/data/latest_10y.dart' as tz;
 
 @pragma('vm:entry-point')
@@ -174,40 +174,38 @@ Future<void> runMainApp() async {
   await SpUtil.getInstance();
   await LogUtil.getInstance();
 
-  final socket = socket_io.io(
-    Constants.wsPrefix,
-    socket_io.OptionBuilder()
-        .setTransports(['websocket', 'polling']).setExtraHeaders(
-      {'foo': 'bar'},
-    ).build(),
-  );
-
-  socket
-    ..onConnecting((dynamic data) => printDebugLog('connecting'))
-    ..onConnect((_) {
-      printDebugLog('connect');
-      Fluttertoast.showToast(msg: 'Connected', gravity: ToastGravity.BOTTOM);
-      socket.emitWithAck(
-        'hello2',
-        'test',
-        ack: (dynamic data) {
-          printDebugLog('hello2 ack: $data');
-        },
-      );
-    })
-    ..onConnectError(printErrorLog)
-    ..onConnectTimeout(printErrorLog)
-    ..on('exception', (dynamic data) => printErrorLog('error: $data'))
-    ..onReconnectAttempt((dynamic data) => printDebugLog('reconnect attempt'))
-    ..onReconnecting((dynamic data) => printDebugLog('reconnecting'))
-    ..onReconnect((_) {
-      printDebugLog('connect');
-      Fluttertoast.showToast(msg: 'Connected', gravity: ToastGravity.BOTTOM);
-    })
-    ..onReconnectError(printErrorLog)
-    ..onReconnectFailed(printErrorLog)
-    ..onDisconnect((_) => printDebugLog('disconnect'))
-    ..onError(printErrorLog);
+  // TODO(kjxbyz): FIXME: upgrade socket_io_client to 3.0.0
+  // final socket = socket_io.io(
+  //   Constants.wsPrefix,
+  //   socket_io.OptionBuilder().setTransports(['websocket', 'polling']).build(),
+  // );
+  //
+  // socket
+  //   ..onConnecting((dynamic data) => printDebugLog('connecting'))
+  //   ..onConnect((_) {
+  //     printDebugLog('connect');
+  //     Fluttertoast.showToast(msg: 'Connected', gravity: ToastGravity.BOTTOM);
+  //     socket.emitWithAck(
+  //       'hello2',
+  //       'test',
+  //       ack: (dynamic data) {
+  //         printDebugLog('hello2 ack: $data');
+  //       },
+  //     );
+  //   })
+  //   ..onConnectError(printErrorLog)
+  //   ..onConnectTimeout(printErrorLog)
+  //   ..on('exception', (dynamic data) => printErrorLog('error: $data'))
+  //   ..onReconnectAttempt((dynamic data) => printDebugLog('reconnect attempt'))
+  //   ..onReconnecting((dynamic data) => printDebugLog('reconnecting'))
+  //   ..onReconnect((_) {
+  //     printDebugLog('connect');
+  //     Fluttertoast.showToast(msg: 'Connected', gravity: ToastGravity.BOTTOM);
+  //   })
+  //   ..onReconnectError(printErrorLog)
+  //   ..onReconnectFailed(printErrorLog)
+  //   ..onDisconnect((_) => printDebugLog('disconnect'))
+  //   ..onError(printErrorLog);
 
   if (Constants.ossEnabled) {
     if (AppConfig.shared.isExternal) {

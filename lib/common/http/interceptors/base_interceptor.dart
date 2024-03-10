@@ -65,7 +65,7 @@ class BaseInterceptor extends InterceptorsWrapper {
         DioException(
           requestOptions: response.requestOptions,
           error: Code.errorHandleFunction(
-            response.statusCode,
+            response.statusCode?.toString(),
             response.statusMessage,
           ),
         ),
@@ -77,22 +77,23 @@ class BaseInterceptor extends InterceptorsWrapper {
       (json) => json,
     );
 
-    response.data = res.data;
     if (res.code != 0) {
       return handler.reject(
         DioException(
           requestOptions: response.requestOptions,
-          error: Code.errorHandleFunction(res.code, res.msg),
+          error: Code.errorHandleFunction(res.code?.toString(), res.msg),
         ),
       );
     }
+
+    response.data = res.data;
     super.onResponse(response, handler);
   }
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     Code.errorHandleFunction(
-      HttpStatus.internalServerError,
+      HttpStatus.internalServerError.toString(),
       err.message,
     );
     super.onError(err, handler);
