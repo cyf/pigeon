@@ -42,6 +42,7 @@ export class HeadersMiddleware implements NestMiddleware {
     const xChannel = headers['x-channel']
     const xVersion = headers['x-version']
     const xLocale = headers['x-locale']
+    const xFlavor = headers['x-flavor']
     if (
       isEmpty(xSign) ||
       !isString(xSign) ||
@@ -53,6 +54,13 @@ export class HeadersMiddleware implements NestMiddleware {
       isEmpty(xLocale) ||
       !isString(xLocale) ||
       !isIn(xLocale, ['en', 'zh'])
+    ) {
+      throw new BadRequestException('Invalid request header')
+    }
+
+    if (
+      isIn(xChannel, ['MOBILE_IOS', 'MOBILE_ANDROID']) &&
+      !isIn(xFlavor, ['external', 'internal'])
     ) {
       throw new BadRequestException('Invalid request header')
     }
