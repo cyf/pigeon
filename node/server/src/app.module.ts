@@ -44,6 +44,7 @@ import {
   // WsModule,
 } from './modules'
 import { LoggerMiddleware } from './common/middlewares/logger.middleware'
+import { HeadersMiddleware } from './common/middlewares/headers.middleware'
 import { ReplayAttackMiddleware } from './common/middlewares/replay-attack.middleware'
 import { HttpExceptionFilter } from './common/filters/http-exception.filter'
 import { ValidationPipe } from './common/pipes/validation.pipe'
@@ -106,14 +107,13 @@ import { type RedisOptions } from 'ioredis'
       resolvers: [
         { use: QueryResolver, options: ['x-locale'] },
         new HeaderResolver(['x-locale']),
-        new CookieResolver(),
+        new CookieResolver(['__homing_pigeon_lng__']),
         AcceptLanguageResolver,
       ],
       inject: [ConfigService],
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
-      renderPath: '/',
       exclude: ['/api/(.*)'],
     }),
     PrismaModule,
@@ -134,7 +134,7 @@ import { type RedisOptions } from 'ioredis'
     SocialModule,
     RouterModule.register([
       {
-        path: '/backend',
+        path: '/api',
         children: [
           AuthModule,
           {
@@ -155,10 +155,10 @@ import { type RedisOptions } from 'ioredis'
           FeedbackModule,
           RoadmapModule,
           SocialModule,
+          HealthModule,
         ],
       },
     ]),
-    HealthModule,
     SocketIoModule,
     // WsModule,
   ],
@@ -185,6 +185,8 @@ import { type RedisOptions } from 'ioredis'
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware, ReplayAttackMiddleware).forRoutes('*')
+    consumer
+      .apply(LoggerMiddleware, HeadersMiddleware, ReplayAttackMiddleware)
+      .forRoutes('*')
   }
 }
