@@ -5,8 +5,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:homing_pigeon/common/api/roadmap_api.dart';
 import 'package:homing_pigeon/common/enums/enums.dart';
-import 'package:homing_pigeon/common/exception/exception.dart';
 import 'package:homing_pigeon/common/extensions/single.dart';
+import 'package:homing_pigeon/common/http/utils/handle_errors.dart';
 import 'package:homing_pigeon/common/logger/logger.dart';
 import 'package:homing_pigeon/common/models/models.dart';
 import 'package:homing_pigeon/common/utils/color_util.dart';
@@ -168,14 +168,19 @@ class _RoadmapViewState extends State<RoadmapView> {
           _items = data;
         });
       },
-    ).onError<RequestedException>((error, stackTrace) {
-      printErrorStackLog(error, stackTrace);
-      setState(() => _items = []);
-      if (operation == Operation.none) {
-        EasyLoading.showError(error.msg);
-      } else if (operation == Operation.refresh) {
-        _controller.finishRefresh(IndicatorResult.fail);
-      }
+    ).onError<Exception>((error, stackTrace) {
+      ErrorHandler.handle(
+        error,
+        stackTrace: stackTrace,
+        postProcessor: (_, msg) {
+          setState(() => _items = []);
+          if (operation == Operation.none) {
+            EasyLoading.showError(msg ?? 'Failure');
+          } else if (operation == Operation.refresh) {
+            _controller.finishRefresh(IndicatorResult.fail);
+          }
+        },
+      );
     });
   }
 

@@ -6,8 +6,7 @@ import 'package:homing_pigeon/app/navigator.dart';
 import 'package:homing_pigeon/common/api/auth_api.dart';
 import 'package:homing_pigeon/common/api/config_api.dart';
 import 'package:homing_pigeon/common/constants/keys.dart';
-import 'package:homing_pigeon/common/exception/exception.dart';
-import 'package:homing_pigeon/common/logger/logger.dart';
+import 'package:homing_pigeon/common/http/utils/handle_errors.dart';
 import 'package:homing_pigeon/common/utils/run_once.dart';
 import 'package:homing_pigeon/common/utils/sp_util.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
@@ -103,8 +102,8 @@ class _AppViewState extends State<AppView> {
                 initFirebase();
               }
             }
-          }).onError<RequestedException>((error, stackTrace) {
-            printErrorLog(error, stackTrace: stackTrace);
+          }).onError<Exception>((error, stackTrace) {
+            ErrorHandler.handle(error, stackTrace: stackTrace);
           });
         }
       }
@@ -116,6 +115,8 @@ class _AppViewState extends State<AppView> {
   void _loadConfigs() {
     ConfigApi.getConfigList().then<void>((configs) {
       BlocProvider.of<AppCubit>(context).addConfigs(configs);
-    }).onError<RequestedException>(printErrorStackLog);
+    }).onError<Exception>(
+      (error, stackTrace) => ErrorHandler.handle(error, stackTrace: stackTrace),
+    );
   }
 }
