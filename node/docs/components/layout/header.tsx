@@ -1,8 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { MdOutlineDashboardCustomize } from "react-icons/md";
-import { Github } from "@/components/shared/icons";
+import { MdLogin } from "react-icons/md";
 import useScroll from "@/lib/hooks/use-scroll";
 import LngDropdown from "./lng-dropdown";
 import ThemeDropdown from "./theme-dropdown";
@@ -48,31 +47,26 @@ export default function Header(props: LngProps) {
         >
           <ul className="flex flex-col items-center rounded-lg border border-gray-100 p-4 font-medium dark:border-gray-700 max-md:space-y-3 md:mt-0 md:flex-row md:space-x-3 md:border-0 md:p-0">
             <li className="h-8 w-8 sm:h-9 sm:w-9">
-              <div className="relative inline-block text-left">
-                <Link
-                  href="https://github.com/cyf/homing_pigeon"
-                  target="_blank"
-                  className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full transition-all duration-75 focus:outline-none active:scale-95 sm:h-9 sm:w-9"
-                >
-                  <Github className="h-5 w-5" />
-                </Link>
-              </div>
+              <LngDropdown lng={props.lng} />
             </li>
             <li className="h-8 w-8 sm:h-9 sm:w-9">
+              <ThemeDropdown lng={props.lng} />
+            </li>
+            <Link
+              href={`/${props.lng}/admin`}
+              className="rounded-full border border-black bg-black p-1.5 px-4 text-sm text-white transition-all hover:bg-white hover:text-black dark:border-white dark:bg-white dark:text-black dark:hover:bg-black dark:hover:text-white max-md:hidden"
+            >
+              Sign In
+            </Link>
+            <li className="h-8 w-8 sm:h-9 sm:w-9 md:hidden">
               <div className="relative inline-block text-left">
                 <Link
                   href={`/${props.lng}/admin`}
                   className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full transition-all duration-75 focus:outline-none active:scale-95 sm:h-9 sm:w-9"
                 >
-                  <MdOutlineDashboardCustomize className="h-5 w-5" />
+                  <MdLogin className="h-5 w-5" />
                 </Link>
               </div>
-            </li>
-            <li className="h-8 w-8 sm:h-9 sm:w-9">
-              <LngDropdown lng={props.lng} />
-            </li>
-            <li className="h-8 w-8 sm:h-9 sm:w-9">
-              <ThemeDropdown lng={props.lng} />
             </li>
           </ul>
         </div>
@@ -82,7 +76,7 @@ export default function Header(props: LngProps) {
           aria-controls="navbar-language"
           aria-expanded="false"
         >
-          <span className="sr-only">Open main menu</span>
+          <span className="sr-only">Open menu</span>
           <svg
             className="h-5 w-5"
             aria-hidden="true"
