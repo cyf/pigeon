@@ -285,6 +285,31 @@ jobs:
           VERSION: ${{ github.event.inputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
+#      - name: Install firebase cli
+#        run: |
+#          if ! command -v firebase >/dev/null 2>&1; then
+#            echo "firebase not exists"
+#            curl -sL https://firebase.tools | bash
+#          fi
+#          firebase --version
+#
+#      - name: Upload firebase app distribution
+#        run: |
+#          APP_BUNDLE_NAME="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "app-externalstaging-release.apk" || echo "app-externalproduction-release.apk")"
+#          ANDROID_APP_ID="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$FIREBASE_ANDROID_APP_ID_DEV" || echo "$FIREBASE_ANDROID_APP_ID")"
+#          ANDROID_GROUPS="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$FIREBASE_ANDROID_GROUPS_DEV" || echo "$FIREBASE_ANDROID_GROUPS")"
+#          firebase appdistribution:distribute "$APP_BUNDLE_NAME"  \
+#            --app "$ANDROID_APP_ID"  \
+#            --release-notes "env: $ENV" --groups "$ANDROID_GROUPS"
+#        env:
+#          ENV: ${{ github.event.inputs.env }}
+#          FIREBASE_ANDROID_APP_ID_DEV: ${{ secrets.FIREBASE_ANDROID_APP_ID_DEV }}
+#          FIREBASE_ANDROID_APP_ID: ${{ secrets.FIREBASE_ANDROID_APP_ID }}
+#          FIREBASE_ANDROID_GROUPS_DEV: ${{ secrets.FIREBASE_ANDROID_GROUPS_DEV }}
+#          FIREBASE_ANDROID_GROUPS: ${{ secrets.FIREBASE_ANDROID_GROUPS }}
+#          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+#        working-directory: build/app/outputs/flutter-apk
+
       - name: Clean up
         if: ${{ always() }}
         run: |
@@ -729,6 +754,28 @@ jobs:
           VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}
           VERSION: ${{ github.event.inputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
+
+#      - name: Install firebase cli
+#        run: |
+#          if ! command -v firebase >/dev/null 2>&1; then
+#            echo "firebase not exists"
+#            curl -sL https://firebase.tools | bash
+#          fi
+#          firebase --version
+#
+#      - name: Upload firebase app distribution
+#        run: |
+#          IOS_GROUPS="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$FIREBASE_IOS_GROUPS_DEV" || echo "$FIREBASE_IOS_GROUPS")"
+#          firebase appdistribution:distribute Homing\ Pigeon.ipa  \
+#            --app "$FIREBASE_IOS_APP_ID"  \
+#            --release-notes "env: $ENV" --groups "$IOS_GROUPS"
+#        env:
+#          ENV: ${{ github.event.inputs.env }}
+#          FIREBASE_IOS_APP_ID: ${{ secrets.FIREBASE_IOS_APP_ID }}
+#          FIREBASE_IOS_GROUPS_DEV: ${{ secrets.FIREBASE_IOS_GROUPS_DEV }}
+#          FIREBASE_IOS_GROUPS: ${{ secrets.FIREBASE_IOS_GROUPS }}
+#          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+#        working-directory: build/ios/ipa
 
       - name: Clean up
         if: ${{ always() }}
