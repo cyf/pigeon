@@ -4,11 +4,17 @@ on:
   pull_request:
     paths-ignore:
       - 'node/**'
+      - 'LICENSE'
+      - 'README.md'
+      - 'Makefile'
     branches:
       - main
   push:
     paths-ignore:
       - 'node/**'
+      - 'LICENSE'
+      - 'README.md'
+      - 'Makefile'
     branches:
       - main
 
