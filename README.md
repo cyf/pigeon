@@ -1,6 +1,8 @@
 # Homing Pigeon
 
+[![Test](https://github.com/cyf/homing_pigeon/actions/workflows/test.yml/badge.svg)](https://github.com/cyf/homing_pigeon/actions/workflows/test.yml)
 [![Release](https://github.com/cyf/homing_pigeon/actions/workflows/release.yml/badge.svg)](https://github.com/cyf/homing_pigeon/actions/workflows/release.yml)
+[![Release to GitHub](https://github.com/cyf/homing_pigeon/actions/workflows/release-github.yml/badge.svg)](https://github.com/cyf/homing_pigeon/actions/workflows/release-github.yml)
 
 ## iOS
 
