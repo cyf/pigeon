@@ -228,7 +228,7 @@ class _HomeViewState extends State<HomeView>
           SliverList.list(
             children: [
               Text(
-                '版本号: ${version!}-${AppConfig.shared.flavor.name}',
+                '版本号: ${version!}(${AppConfig.shared.flavor.name})',
                 style: const TextStyle(fontSize: 12, color: secondaryTextColor),
                 textAlign: TextAlign.center,
               ).nestedPadding(
