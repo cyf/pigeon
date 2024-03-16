@@ -682,10 +682,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_intro
-      sha256: d04de7ab547fc2f35f04ed6c12df4fed797d818bedd0e97ff9e0cc3ae7ff434f
+      sha256: "9c06dea931d22ffd8c7009b2297b1b9ee5a6a50b5629ac91ea0490e987ed4060"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.2"
+    version: "3.2.0"
   flutter_local_notifications:
     dependency: "direct main"
     description:
@@ -1369,26 +1369,26 @@ packages:
     dependency: transitive
     description:
       name: sentry
-      sha256: a524a87d096799b775530176c8c082afe7aa1f10cc31ba078fecdd74e9afc923
+      sha256: a460aa48568d47140dd0557410b624d344ffb8c05555107ac65035c1097cf1ad
       url: "https://pub.dev"
     source: hosted
-    version: "7.17.0"
+    version: "7.18.0"
   sentry_dio:
     dependency: "direct main"
     description:
       name: sentry_dio
-      sha256: "93e6d6d3290aaf61484f337a94e516824116aa2b0be9d5bc50bfa9518f6f7822"
+      sha256: "5eb0b1759d86662fa73420d6d26b20aea48d0ca09982c4786b32b754aac37d69"
       url: "https://pub.dev"
     source: hosted
-    version: "7.17.0"
+    version: "7.18.0"
   sentry_flutter:
     dependency: "direct main"
     description:
       name: sentry_flutter
-      sha256: e0f8367f8f7c74dba9f7521f71700bce6c6ee065cf342f065d4fce411b84fc7b
+      sha256: "3d0d1d4e0e407d276ae8128d123263ccbc37e988bae906765efd6f37d544f4c6"
       url: "https://pub.dev"
     source: hosted
-    version: "7.17.0"
+    version: "7.18.0"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -1606,26 +1606,26 @@ packages:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_calendar
-      sha256: "57cca039b31d49844de6681ad039216dd098da7b9e7acffeee5e7075a4978416"
+      sha256: "2a41662f56368fc2dc63dd4b41e817470e031ee4cbc56121cd2edc6960ecf2f6"
       url: "https://pub.dev"
     source: hosted
-    version: "24.2.9"
+    version: "25.1.35"
   syncfusion_flutter_core:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
-      sha256: "7666506885ebc8f62bb928ad4588a73e20caaff2b2cf2b2b56f67d98f4113525"
+      sha256: eac3cbf2278fa4993d9b97d92d050973025deebfbff970109843640dc770888c
       url: "https://pub.dev"
     source: hosted
-    version: "24.2.9"
+    version: "25.1.35"
   syncfusion_flutter_datepicker:
     dependency: transitive
     description:
       name: syncfusion_flutter_datepicker
-      sha256: c010440ccef2beecb988684af3557c57ade8ea300d1177536f01059e3a16ce5d
+      sha256: "37e0c694110d106aab43e6ab7b1823fc95db143c5038c6b7aaf3054b8f97db1d"
       url: "https://pub.dev"
     source: hosted
-    version: "24.2.9"
+    version: "25.1.35"
   synchronized:
     dependency: "direct main"
     description:
@@ -1910,10 +1910,10 @@ packages:
     dependency: "direct main"
     description:
       name: wechat_assets_picker
-      sha256: "6e52853f7dbc6f7aec10675d0064167eb7fc65f636ed22e55c38c450f5b75918"
+      sha256: "3d5cfcebbcbe21d6a4f91927423d437d3c8b441b0d9cc5318bc2632b05c1cddf"
       url: "https://pub.dev"
     source: hosted
-    version: "9.0.1"
+    version: "9.0.2"
   wechat_camera_picker:
     dependency: "direct main"
     description:
