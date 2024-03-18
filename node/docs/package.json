@@ -45,7 +45,7 @@
     "cmdk": "^1.0.0",
     "contentlayer": "^0.3.4",
     "crypto-js": "^4.2.0",
-    "date-fns": "^3.5.0",
+    "date-fns": "^3.6.0",
     "email-validator": "^2.0.4",
     "focus-trap-react": "^10.2.3",
     "framer-motion": "^11.0.14",
