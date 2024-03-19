@@ -690,10 +690,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_local_notifications
-      sha256: "55b9b229307a10974b26296ff29f2e132256ba4bd74266939118eaefa941cb00"
+      sha256: f9a05409385b77b06c18f200a41c7c2711ebf7415669350bb0f8474c07bd40d1
       url: "https://pub.dev"
     source: hosted
-    version: "16.3.3"
+    version: "17.0.0"
   flutter_local_notifications_linux:
     dependency: transitive
     description:
@@ -727,10 +727,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_native_splash
-      sha256: "558f10070f03ee71f850a78f7136ab239a67636a294a44a06b6b7345178edb1e"
+      sha256: edf39bcf4d74aca1eb2c1e43c3e445fd9f494013df7f0da752fefe72020eedc0
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.10"
+    version: "2.4.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -881,10 +881,10 @@ packages:
     dependency: transitive
     description:
       name: image
-      sha256: "028f61960d56f26414eb616b48b04eb37d700cbe477b7fb09bf1d7ce57fd9271"
+      sha256: "4c68bfd5ae83e700b5204c1e74451e7bf3cf750e6843c6e158289cf56bda018e"
       url: "https://pub.dev"
     source: hosted
-    version: "4.1.3"
+    version: "4.1.7"
   intl:
     dependency: "direct main"
     description:
@@ -1718,10 +1718,10 @@ packages:
     dependency: "direct main"
     description:
       name: upgrader
-      sha256: "0c5fe8101b9d3017aebcb5175b49c382699725ffcf477afbe93fc3351491f6e8"
+      sha256: "938c14b35175e9491785d2a5bb0ddf92e81846ba22443f073519ab45a24e0cc7"
       url: "https://pub.dev"
     source: hosted
-    version: "9.0.0"
+    version: "10.0.0"
   url_launcher:
     dependency: "direct main"
     description:
@@ -1918,10 +1918,10 @@ packages:
     dependency: "direct main"
     description:
       name: wechat_camera_picker
-      sha256: "6397311b2fc2205b00c376455094934f4626f72fdcfc2d41293d81f0c0264a63"
+      sha256: "682d4cd5606d5f95af2f6efe3224ebb5fe5ac014980eeaba0eddd211219c6f4a"
       url: "https://pub.dev"
     source: hosted
-    version: "4.2.0"
+    version: "4.2.1"
   wechat_picker_library:
     dependency: transitive
     description:

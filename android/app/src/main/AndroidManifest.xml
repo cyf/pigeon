@@ -30,6 +30,9 @@
     <!-- Permissions options for the `camera` group -->
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <!-- flutter_local_notifications -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
     <!--#docregion android-queries-->
     <!-- Provide required visibility configuration for API level 30 and above -->
     <queries>
