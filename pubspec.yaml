@@ -42,17 +42,17 @@ dependencies:
   crypto: ^3.0.3
   cupertino_icons: ^1.0.6
   deep_collection: ^1.0.2
-  device_info_plus: ^9.1.2
+  device_info_plus: ^10.0.1
   dio: ^5.4.1
   dxcaptcha_flutter: ^0.0.1+1
   easy_refresh: ^3.3.4
   encrypt: ^5.0.3
   equatable: ^2.0.5
   extended_text: ^13.0.0
-  file_picker: ^6.2.1
-  firebase_analytics: ^10.8.9
-  firebase_core: ^2.27.0
-  firebase_messaging: ^14.7.19
+  file_picker: ^8.0.0+1
+  firebase_analytics: ^10.8.10
+  firebase_core: ^2.27.1
+  firebase_messaging: ^14.7.20
   flutter:
     sdk: flutter
   flutter_aliyun_oss: ^0.0.1
@@ -82,7 +82,7 @@ dependencies:
   meta: ^1.10.0
   mime: ^1.0.5
   minio_flutter: ^0.0.1
-  package_info_plus: ^5.0.1
+  package_info_plus: ^6.0.0
   path: ^1.8.3
   path_provider: ^2.1.2
   permission_handler: ^11.3.0
@@ -117,6 +117,10 @@ dev_dependencies:
   mockingjay: ^0.5.0
   mocktail: ^1.0.3
   very_good_analysis: ^5.1.0
+
+dependency_overrides:
+  device_info_plus: ^10.0.1
+  package_info_plus: ^6.0.0
 
 flutter_gen:
   output: lib/gen/ # Optional (default: lib/gen/)
