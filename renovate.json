@@ -16,10 +16,6 @@
       "matchPackageNames": ["@types/node"]
     },
     {
-      "allowedVersions": "18",
-      "matchPackageNames": ["@commitlint/cli", "@commitlint/config-conventional"]
-    },
-    {
       "allowedVersions": "7",
       "matchPackageNames": ["query-string"]
     },
