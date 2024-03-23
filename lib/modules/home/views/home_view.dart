@@ -44,53 +44,26 @@ const double carouselHeight = 250;
 
 class _HomeViewState extends State<HomeView>
     with AutomaticKeepAliveClientMixin {
-  final _formKey = GlobalKey<FormBuilderState>();
-  final TextEditingController _accountController = TextEditingController();
-  final TextEditingController _nicknameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _repeatPasswordController =
-      TextEditingController();
+  final _loginFormKey = GlobalKey<FormBuilderState>();
+  final _signupFormKey = GlobalKey<FormBuilderState>();
   final ScrollController _scrollController = ScrollController();
   bool isSliverAppBarExpanded = false;
 
   final accountFocusNode = FocusNode();
   final nicknameFocusNode = FocusNode();
   final emailFocusNode = FocusNode();
-
-  bool _isAccountFocus = false;
-  bool _isNicknameFocus = false;
-  bool _isEmailFocus = false;
+  final passwordFocusNode = FocusNode();
+  final repeatPasswordFocusNode = FocusNode();
 
   List<CarouselModel> _carousels = [];
   bool _loading = false;
   String? _error;
 
-  bool _showPassword = false;
-  bool _showRepeatPassword = false;
   bool _isRegistered = false;
 
   @override
   void initState() {
     super.initState();
-    accountFocusNode.addListener(() {
-      setState(() {
-        _isAccountFocus = accountFocusNode.hasFocus;
-      });
-    });
-
-    nicknameFocusNode.addListener(() {
-      setState(() {
-        _isNicknameFocus = nicknameFocusNode.hasFocus;
-      });
-    });
-
-    emailFocusNode.addListener(() {
-      setState(() {
-        _isEmailFocus = emailFocusNode.hasFocus;
-      });
-    });
-
     _scrollController.addListener(() {
       setState(() {
         isSliverAppBarExpanded = _scrollController.hasClients &&
@@ -104,11 +77,6 @@ class _HomeViewState extends State<HomeView>
   @override
   void dispose() {
     _scrollController.dispose();
-    _accountController.dispose();
-    _nicknameController.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-    _repeatPasswordController.dispose();
     super.dispose();
   }
 
@@ -410,6 +378,10 @@ class _HomeViewState extends State<HomeView>
     final height = MediaQuery.of(context).size.height;
     final top = MediaQuery.of(context).padding.top;
     final bottom = MediaQuery.of(context).padding.bottom;
+
+    final passwordNotifier = ValueNotifier<bool>(false);
+    final repeatPasswordNotifier = ValueNotifier<bool>(false);
+
     showModalBottomSheet<void>(
       context: context,
       isDismissible: false,
@@ -423,9 +395,9 @@ class _HomeViewState extends State<HomeView>
                 constraints: BoxConstraints(
                   maxHeight: height - top - buttonHeight - bottom,
                 ),
-                callback: () => !_isRegistered
-                    ? _login(setInnerState)
-                    : _register(setInnerState),
+                callback: !_isRegistered
+                    ? _login
+                    : _register,
                 buttonText: !_isRegistered ? '登录' : '注册',
                 header: Row(
                   children: [
@@ -485,81 +457,105 @@ class _HomeViewState extends State<HomeView>
                     ),
                 items: [
                   FormBuilder(
-                    key: _formKey,
+                    key: !_isRegistered ? _loginFormKey : _signupFormKey,
                     child: Column(
                       children: [
                         BaseFormItem(
                           title: '账号',
                           showTip: false,
                           padding: EdgeInsets.zero,
-                          child: FormBuilderTextField(
-                            name: 'account',
+                          child: FormBuilderField<String>(
                             focusNode: accountFocusNode,
-                            controller: _accountController,
-                            cursorColor: primaryColor,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            autocorrect: false,
-                            onChanged: (value) {
-                              setInnerState(() {});
-                            },
-                            decoration: InputDecoration(
-                              suffixIcon: (_isAccountFocus &&
-                                      _accountController.text.isNotEmpty)
-                                  ? Container(
-                                      width: 20,
-                                      height: 20,
-                                      margin: const EdgeInsets.only(right: 10),
-                                      decoration: BoxDecoration(
-                                        color: primaryGrayColor,
-                                        borderRadius: BorderRadius.circular(15),
+                            builder: (FormFieldState<String> field) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  TextFormField(
+                                    initialValue: field.value,
+                                    focusNode: accountFocusNode,
+                                    cursorColor: primaryColor,
+                                    cursorErrorColor: errorTextColor,
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    autocorrect: false,
+                                    style: const TextStyle(
+                                      color: primaryTextColor,
+                                    ),
+                                    onChanged: (value) {
+                                      field
+                                        ..didChange(value)
+                                        ..validate();
+                                    },
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      contentPadding: const EdgeInsets.fromLTRB(
+                                        10,
+                                        10,
+                                        5,
+                                        10,
                                       ),
-                                      child: IconButton(
-                                        padding: EdgeInsets.zero,
-                                        splashRadius: 2,
-                                        onPressed: () {
-                                          // Clear everything in the text field
-                                          _accountController.clear();
-                                          // Call setState to update the UI
-                                          setInnerState(() {});
-                                        },
-                                        iconSize: 16,
-                                        icon: const Icon(
-                                          Icons.clear,
-                                          color: placeholderTextColor,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(4),
+                                        borderSide: const BorderSide(
+                                          color: borderColor,
                                         ),
+                                        gapPadding: 0,
                                       ),
-                                    )
-                                  : null,
-                              suffixIconConstraints: const BoxConstraints(
-                                maxWidth: 30,
-                                maxHeight: 30,
-                              ),
-                              hintText: '请输入账号',
-                              helperText: _isRegistered
-                                  ? '只能包含英文, 数字或下划线, 且只能以字母开头, 至少8个字符'
-                                  : null,
-                              helperStyle: const TextStyle(
-                                color: secondaryTextColor,
-                                fontSize: 10,
-                                fontWeight: FontWeight.w400,
-                              ),
-                              contentPadding: const EdgeInsets.all(8),
-                              fillColor: secondaryGrayColor,
-                              filled: true,
-                            ),
+                                      disabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(4),
+                                        borderSide: const BorderSide(
+                                          color: borderColor,
+                                        ),
+                                        gapPadding: 0,
+                                      ),
+                                      hintText: '请输入账号',
+                                      helperText: _isRegistered
+                                          ? '只能包含英文, 数字或下划线, 且只能以字母开头, 至少8个字符'
+                                          : null,
+                                      helperStyle: const TextStyle(
+                                        color: secondaryTextColor,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      errorText: field.errorText,
+                                      errorStyle: const TextStyle(
+                                        fontSize: 12,
+                                        color: errorTextColor,
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(4),
+                                        borderSide: const BorderSide(
+                                          color: primaryColor,
+                                        ),
+                                        gapPadding: 0,
+                                      ),
+                                      errorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(4),
+                                        borderSide: const BorderSide(
+                                          color: errorTextColor,
+                                        ),
+                                        gapPadding: 0,
+                                      ),
+                                      // fillColor: epPrimaryGrayColor,
+                                      // filled: true,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
                                 errorText: '请输入账号',
                               ),
-                              if (_isRegistered)
-                                FormBuilderValidators.match(
-                                  r'^[a-zA-Z][a-zA-Z0-9_]{7,}$',
-                                  errorText:
-                                      '账号只能包含英文,数字或下划线, 且只能以字母开头, 至少8个字符',
-                                ),
+                              FormBuilderValidators.match(
+                                r'^[a-zA-Z][a-zA-Z0-9_]{7,}$',
+                                errorText: _isRegistered
+                                    ? '账号只能包含英文,数字或下划线, 且只能以字母开头, 至少8个字符'
+                                    : '至少8个字符',
+                              ),
                               // TODO(kjxbyz): 与数据库联动，账号唯一
                             ]),
+                            name: 'account',
                           ).nestedPadding(
                             padding: const EdgeInsets.only(top: 8),
                           ),
@@ -569,62 +565,100 @@ class _HomeViewState extends State<HomeView>
                             title: '昵称',
                             required: false,
                             showTip: false,
-                            child: FormBuilderTextField(
-                              name: 'nickname',
+                            child: FormBuilderField<String>(
                               focusNode: nicknameFocusNode,
-                              controller: _nicknameController,
-                              cursorColor: primaryColor,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              autocorrect: false,
-                              onChanged: (value) {
-                                setInnerState(() {});
-                              },
-                              decoration: InputDecoration(
-                                suffixIcon: (_isNicknameFocus &&
-                                        _nicknameController.text.isNotEmpty)
-                                    ? Container(
-                                        width: 20,
-                                        height: 20,
-                                        margin:
-                                            const EdgeInsets.only(right: 10),
-                                        decoration: BoxDecoration(
-                                          color: primaryGrayColor,
+                              builder: (FormFieldState<String> field) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    TextFormField(
+                                      initialValue: field.value,
+                                      focusNode: nicknameFocusNode,
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
+                                      cursorColor: primaryColor,
+                                      cursorErrorColor: errorTextColor,
+                                      autocorrect: false,
+                                      // inputFormatters: [
+                                      //   LengthLimitingTextInputFormatter(20),
+                                      // ],
+                                      style: const TextStyle(
+                                        color: primaryTextColor,
+                                      ),
+                                      onChanged: (value) {
+                                        field
+                                          ..didChange(value)
+                                          ..validate();
+                                      },
+                                      decoration: InputDecoration(
+                                        isDense: true,
+                                        contentPadding:
+                                            const EdgeInsets.fromLTRB(
+                                          10,
+                                          10,
+                                          5,
+                                          10,
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        child: IconButton(
-                                          padding: EdgeInsets.zero,
-                                          splashRadius: 2,
-                                          onPressed: () {
-                                            // Clear everything in the text field
-                                            _nicknameController.clear();
-                                            // Call setState to update the UI
-                                            setInnerState(() {});
-                                          },
-                                          iconSize: 16,
-                                          icon: const Icon(
-                                            Icons.clear,
-                                            color: placeholderTextColor,
+                                              BorderRadius.circular(4),
+                                          borderSide: const BorderSide(
+                                            color: borderColor,
                                           ),
+                                          gapPadding: 0,
                                         ),
-                                      )
-                                    : null,
-                                suffixIconConstraints: const BoxConstraints(
-                                  maxWidth: 30,
-                                  maxHeight: 30,
-                                ),
-                                hintText: '请输入昵称',
-                                contentPadding: const EdgeInsets.all(8),
-                                fillColor: secondaryGrayColor,
-                                filled: true,
-                              ),
+                                        disabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          borderSide: const BorderSide(
+                                            color: borderColor,
+                                          ),
+                                          gapPadding: 0,
+                                        ),
+                                        hintText: '请输入昵称',
+                                        helperText:
+                                            _isRegistered ? '不能多于20个字符' : null,
+                                        helperStyle: const TextStyle(
+                                          color: secondaryTextColor,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                        errorText: field.errorText,
+                                        errorStyle: const TextStyle(
+                                          fontSize: 12,
+                                          color: errorTextColor,
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          borderSide: const BorderSide(
+                                            color: primaryColor,
+                                          ),
+                                          gapPadding: 0,
+                                        ),
+                                        errorBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          borderSide: const BorderSide(
+                                            color: errorTextColor,
+                                          ),
+                                          // borderSide: BorderSide.none,
+                                          gapPadding: 0,
+                                        ),
+                                        // fillColor: epPrimaryGrayColor,
+                                        // filled: true,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
                               validator: FormBuilderValidators.compose([
                                 FormBuilderValidators.maxLength(
                                   20,
                                   errorText: '昵称长度不能大于20',
                                 ),
                               ]),
+                              name: 'nickname',
                             ).nestedPadding(
                               padding: const EdgeInsets.only(top: 8),
                             ),
@@ -632,56 +666,83 @@ class _HomeViewState extends State<HomeView>
                           BaseFormItem(
                             title: '邮箱',
                             showTip: false,
-                            child: FormBuilderTextField(
-                              name: 'email',
+                            child: FormBuilderField<String>(
                               focusNode: emailFocusNode,
-                              controller: _emailController,
-                              cursorColor: primaryColor,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              autocorrect: false,
-                              onChanged: (value) {
-                                setInnerState(() {});
-                              },
-                              decoration: InputDecoration(
-                                suffixIcon: (_isEmailFocus &&
-                                        _emailController.text.isNotEmpty)
-                                    ? Container(
-                                        width: 20,
-                                        height: 20,
-                                        margin:
-                                            const EdgeInsets.only(right: 10),
-                                        decoration: BoxDecoration(
-                                          color: primaryGrayColor,
+                              builder: (FormFieldState<String> field) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    TextFormField(
+                                      initialValue: field.value,
+                                      focusNode: emailFocusNode,
+                                      cursorColor: primaryColor,
+                                      cursorErrorColor: errorTextColor,
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
+                                      autocorrect: false,
+                                      style: const TextStyle(
+                                        color: primaryTextColor,
+                                      ),
+                                      onChanged: (value) {
+                                        field
+                                          ..didChange(value)
+                                          ..validate();
+                                      },
+                                      decoration: InputDecoration(
+                                        isDense: true,
+                                        contentPadding:
+                                            const EdgeInsets.fromLTRB(
+                                          10,
+                                          10,
+                                          5,
+                                          10,
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        child: IconButton(
-                                          padding: EdgeInsets.zero,
-                                          splashRadius: 2,
-                                          onPressed: () {
-                                            // Clear everything in the text field
-                                            _emailController.clear();
-                                            // Call setState to update the UI
-                                            setInnerState(() {});
-                                          },
-                                          iconSize: 16,
-                                          icon: const Icon(
-                                            Icons.clear,
-                                            color: placeholderTextColor,
+                                              BorderRadius.circular(4),
+                                          borderSide: const BorderSide(
+                                            color: borderColor,
                                           ),
+                                          gapPadding: 0,
                                         ),
-                                      )
-                                    : null,
-                                suffixIconConstraints: const BoxConstraints(
-                                  maxWidth: 30,
-                                  maxHeight: 30,
-                                ),
-                                hintText: '请输入邮箱',
-                                contentPadding: const EdgeInsets.all(8),
-                                fillColor: secondaryGrayColor,
-                                filled: true,
-                              ),
+                                        disabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          borderSide: const BorderSide(
+                                            color: borderColor,
+                                          ),
+                                          gapPadding: 0,
+                                        ),
+                                        hintText: '请输入邮箱',
+                                        errorText: field.errorText,
+                                        errorStyle: const TextStyle(
+                                          fontSize: 12,
+                                          color: errorTextColor,
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          borderSide: const BorderSide(
+                                            color: primaryColor,
+                                          ),
+                                          gapPadding: 0,
+                                        ),
+                                        errorBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          borderSide: const BorderSide(
+                                            color: errorTextColor,
+                                          ),
+                                          // borderSide: BorderSide.none,
+                                          gapPadding: 0,
+                                        ),
+                                        // fillColor: epPrimaryGrayColor,
+                                        // filled: true,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
                               validator: FormBuilderValidators.compose([
                                 FormBuilderValidators.required(
                                   errorText: '请输入邮箱',
@@ -691,6 +752,7 @@ class _HomeViewState extends State<HomeView>
                                 ),
                                 // TODO(kjxbyz): 与数据库联动，邮箱唯一
                               ]),
+                              name: 'email',
                             ).nestedPadding(
                               padding: const EdgeInsets.only(top: 8),
                             ),
@@ -699,43 +761,277 @@ class _HomeViewState extends State<HomeView>
                         BaseFormItem(
                           title: '密码',
                           showTip: false,
-                          child: FormBuilderTextField(
-                            name: 'password',
-                            controller: _passwordController,
-                            cursorColor: primaryColor,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            autocorrect: false,
-                            obscureText: !_showPassword,
-                            onChanged: (value) {
-                              setInnerState(() {});
+                          child: FormBuilderField<String>(
+                            focusNode: passwordFocusNode,
+                            builder: (FormFieldState<String> field) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ValueListenableBuilder(
+                                    valueListenable: passwordNotifier,
+                                    builder: (
+                                      BuildContext context,
+                                      bool passwordVisible,
+                                      Widget? child,
+                                    ) =>
+                                        TextFormField(
+                                      initialValue: field.value,
+                                      focusNode: passwordFocusNode,
+                                      obscureText: !passwordVisible,
+                                      cursorColor: primaryColor,
+                                      cursorErrorColor: errorTextColor,
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
+                                      autocorrect: false,
+                                      style: const TextStyle(
+                                        color: primaryTextColor,
+                                      ),
+                                      onChanged: (value) {
+                                        field
+                                          ..didChange(value)
+                                          ..validate();
+                                      },
+                                      decoration: InputDecoration(
+                                        isDense: true,
+                                        contentPadding:
+                                            const EdgeInsets.fromLTRB(
+                                          10,
+                                          10,
+                                          5,
+                                          10,
+                                        ),
+                                        suffixIcon: IconButton(
+                                          splashRadius: 2,
+                                          onPressed: () {
+                                            passwordNotifier.value =
+                                                !passwordNotifier.value;
+                                          },
+                                          iconSize: 16,
+                                          icon: Icon(
+                                            passwordVisible
+                                                ? Icons.visibility_outlined
+                                                : Icons.visibility_off_outlined,
+                                            color: const Color.fromARGB(
+                                              65,
+                                              0,
+                                              0,
+                                              0,
+                                            ),
+                                          ),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          borderSide: const BorderSide(
+                                            color: borderColor,
+                                          ),
+                                          gapPadding: 0,
+                                        ),
+                                        disabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          borderSide: const BorderSide(
+                                            color: borderColor,
+                                          ),
+                                          gapPadding: 0,
+                                        ),
+                                        hintText: '请输入密码',
+                                        helperText:
+                                            _isRegistered ? '不能少于8个字符' : null,
+                                        helperStyle: const TextStyle(
+                                          color: secondaryTextColor,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                        errorText: field.errorText,
+                                        errorStyle: const TextStyle(
+                                          fontSize: 12,
+                                          color: errorTextColor,
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          borderSide: const BorderSide(
+                                            color: primaryColor,
+                                          ),
+                                          gapPadding: 0,
+                                        ),
+                                        errorBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          borderSide: const BorderSide(
+                                            color: errorTextColor,
+                                          ),
+                                          // borderSide: BorderSide.none,
+                                          gapPadding: 0,
+                                        ),
+                                        // fillColor: epPrimaryGrayColor,
+                                        // filled: true,
+                                      ),
+                                    ),
+                                  ),
+                                  if (_isRegistered)
+                                    BaseFormItem(
+                                      title: '重复密码',
+                                      showTip: false,
+                                      child: FormBuilderField<String>(
+                                        focusNode: repeatPasswordFocusNode,
+                                        builder: (
+                                          FormFieldState<String> repeatPwdField,
+                                        ) {
+                                          return Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              ValueListenableBuilder(
+                                                valueListenable:
+                                                    repeatPasswordNotifier,
+                                                builder: (
+                                                  BuildContext context,
+                                                  bool repeatPasswordVisible,
+                                                  Widget? child,
+                                                ) =>
+                                                    TextFormField(
+                                                  initialValue:
+                                                      repeatPwdField.value,
+                                                  obscureText:
+                                                      !repeatPasswordVisible,
+                                                  focusNode:
+                                                      repeatPasswordFocusNode,
+                                                  cursorColor: primaryColor,
+                                                  cursorErrorColor:
+                                                      errorTextColor,
+                                                  autovalidateMode:
+                                                      AutovalidateMode
+                                                          .onUserInteraction,
+                                                  autocorrect: false,
+                                                  style: const TextStyle(
+                                                    color: primaryTextColor,
+                                                  ),
+                                                  onChanged: (value) {
+                                                    repeatPwdField
+                                                      ..didChange(value)
+                                                      ..validate();
+                                                  },
+                                                  decoration: InputDecoration(
+                                                    isDense: true,
+                                                    contentPadding:
+                                                        const EdgeInsets
+                                                            .fromLTRB(
+                                                      10,
+                                                      10,
+                                                      5,
+                                                      10,
+                                                    ),
+                                                    suffixIcon: IconButton(
+                                                      splashRadius: 2,
+                                                      onPressed: () {
+                                                        repeatPasswordNotifier
+                                                                .value =
+                                                            !repeatPasswordNotifier
+                                                                .value;
+                                                      },
+                                                      iconSize: 16,
+                                                      icon: Icon(
+                                                        repeatPasswordVisible
+                                                            ? Icons
+                                                                .visibility_outlined
+                                                            : Icons
+                                                                .visibility_off_outlined,
+                                                        color: const Color
+                                                            .fromARGB(
+                                                          65,
+                                                          0,
+                                                          0,
+                                                          0,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    enabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        4,
+                                                      ),
+                                                      borderSide:
+                                                          const BorderSide(
+                                                        color: borderColor,
+                                                      ),
+                                                      gapPadding: 0,
+                                                    ),
+                                                    disabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        4,
+                                                      ),
+                                                      borderSide:
+                                                          const BorderSide(
+                                                        color: borderColor,
+                                                      ),
+                                                      gapPadding: 0,
+                                                    ),
+                                                    hintText: '请再次输入密码',
+                                                    errorText: repeatPwdField
+                                                        .errorText,
+                                                    errorStyle: const TextStyle(
+                                                      fontSize: 12,
+                                                      color: errorTextColor,
+                                                    ),
+                                                    focusedBorder:
+                                                        OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        4,
+                                                      ),
+                                                      borderSide:
+                                                          const BorderSide(
+                                                        color: primaryColor,
+                                                      ),
+                                                      gapPadding: 0,
+                                                    ),
+                                                    errorBorder:
+                                                        OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        4,
+                                                      ),
+                                                      borderSide:
+                                                          const BorderSide(
+                                                        color: errorTextColor,
+                                                      ),
+                                                      // borderSide: BorderSide.none,
+                                                      gapPadding: 0,
+                                                    ),
+                                                    // fillColor: epPrimaryGrayColor,
+                                                    // filled: true,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                        validator:
+                                            FormBuilderValidators.compose([
+                                          FormBuilderValidators.required(
+                                            errorText: '请再次输入密码',
+                                          ),
+                                          if (StringUtil.isNotBlank(
+                                            field.value,
+                                          ))
+                                            FormBuilderValidators.equal(
+                                              field.value!,
+                                              errorText: '两次输入的密码不一样',
+                                            ),
+                                        ]),
+                                        name: 'repeatPassword',
+                                      ).nestedPadding(
+                                        padding: const EdgeInsets.only(top: 8),
+                                      ),
+                                    ),
+                                ],
+                              );
                             },
-                            decoration: InputDecoration(
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  setInnerState(
-                                    () => _showPassword = !_showPassword,
-                                  );
-                                },
-                                icon: Icon(
-                                  _showPassword
-                                      ? Icons.visibility_outlined
-                                      : Icons.visibility_off_outlined,
-                                  color: borderColor,
-                                  size: 18,
-                                ),
-                              ),
-                              hintText: '请输入密码',
-                              helperText: _isRegistered ? '至少8个字符' : null,
-                              helperStyle: const TextStyle(
-                                color: secondaryTextColor,
-                                fontSize: 10,
-                                fontWeight: FontWeight.w400,
-                              ),
-                              contentPadding: const EdgeInsets.all(8),
-                              fillColor: secondaryGrayColor,
-                              filled: true,
-                            ),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
                                 errorText: '请输入密码',
@@ -745,68 +1041,11 @@ class _HomeViewState extends State<HomeView>
                                 errorText: '请至少输入8个字符',
                               ),
                             ]),
+                            name: 'password',
                           ).nestedPadding(
                             padding: const EdgeInsets.only(top: 8),
                           ),
                         ),
-                        if (_isRegistered)
-                          BaseFormItem(
-                            title: '重复密码',
-                            showTip: false,
-                            child: FormBuilderTextField(
-                              name: 'repeatPassword',
-                              controller: _repeatPasswordController,
-                              cursorColor: primaryColor,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              autocorrect: false,
-                              obscureText: !_showRepeatPassword,
-                              onChanged: (value) {
-                                setInnerState(() {});
-                              },
-                              decoration: InputDecoration(
-                                suffixIcon: IconButton(
-                                  onPressed: () {
-                                    setInnerState(
-                                      () => _showRepeatPassword =
-                                          !_showRepeatPassword,
-                                    );
-                                  },
-                                  icon: Icon(
-                                    _showRepeatPassword
-                                        ? Icons.visibility_outlined
-                                        : Icons.visibility_off_outlined,
-                                    color: borderColor,
-                                    size: 18,
-                                  ),
-                                ),
-                                hintText: '请再次输入密码',
-                                helperStyle: const TextStyle(
-                                  color: secondaryTextColor,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                                contentPadding: const EdgeInsets.all(8),
-                                fillColor: secondaryGrayColor,
-                                filled: true,
-                              ),
-                              validator: FormBuilderValidators.compose([
-                                FormBuilderValidators.required(
-                                  errorText: '请再次输入密码',
-                                ),
-                                FormBuilderValidators.minLength(
-                                  8,
-                                  errorText: '请至少输入8个字符',
-                                ),
-                                FormBuilderValidators.equal(
-                                  _passwordController.text,
-                                  errorText: '两次输入的密码不一样',
-                                ),
-                              ]),
-                            ).nestedPadding(
-                              padding: const EdgeInsets.only(top: 8),
-                            ),
-                          ),
                         BaseFormItem(
                           child: FormBuilderField<bool>(
                             name: 'privacy',
@@ -959,9 +1198,10 @@ class _HomeViewState extends State<HomeView>
                           text: !_isRegistered ? '去注册' : '去登录',
                           recognizer: TapGestureRecognizer()
                             ..onTap = () async {
-                              setInnerState(
-                                () => _isRegistered = !_isRegistered,
-                              );
+                              setInnerState(() {
+                                // _formKey.currentState?.reset();
+                                _isRegistered = !_isRegistered;
+                              });
                             },
                           style: const TextStyle(
                             color: secondaryTextColor,
@@ -1002,7 +1242,7 @@ class _HomeViewState extends State<HomeView>
           return KeyboardDismisser(
             child: ModalBottomSheet(
               constraints: BoxConstraints(maxHeight: height - top - bottom),
-              callback: () => _logout(setInnerState),
+              callback: _logout,
               buttonText: '退出',
             ),
           );
@@ -1012,9 +1252,9 @@ class _HomeViewState extends State<HomeView>
   }
 
   // 登录接口
-  void _login(StateSetter setInnerState) {
-    if (_formKey.currentState!.validate()) {
-      final fields = _formKey.currentState!.instantValue;
+  void _login() {
+    if (_loginFormKey.currentState!.validate()) {
+      final fields = _loginFormKey.currentState!.instantValue;
       final account = fields['account'] as String;
       final password = fields['password'] as String;
 
@@ -1023,8 +1263,6 @@ class _HomeViewState extends State<HomeView>
         if (value != null) {
           NavigatorUtil.pop();
           EasyLoading.showSuccess('Success');
-          _accountController.clear();
-          _passwordController.clear();
           SpUtil.putString(
             Keys.tokenKey,
             StringUtil.getValue(value.accessToken),
@@ -1052,9 +1290,9 @@ class _HomeViewState extends State<HomeView>
   }
 
   // 注册接口
-  void _register(StateSetter setInnerState) {
-    if (_formKey.currentState!.validate()) {
-      final fields = _formKey.currentState!.instantValue;
+  void _register() {
+    if (_signupFormKey.currentState!.validate()) {
+      final fields = _signupFormKey.currentState!.instantValue;
       final account = fields['account'] as String;
       final nickname = fields['nickname'] as String?;
       final email = fields['email'] as String;
@@ -1070,11 +1308,6 @@ class _HomeViewState extends State<HomeView>
         if (value != null) {
           NavigatorUtil.pop();
           EasyLoading.showSuccess('Success');
-          _accountController.clear();
-          _nicknameController.clear();
-          _emailController.clear();
-          _passwordController.clear();
-          _repeatPasswordController.clear();
           SpUtil.putString(
             Keys.tokenKey,
             StringUtil.getValue(value.accessToken),
@@ -1102,7 +1335,7 @@ class _HomeViewState extends State<HomeView>
   }
 
   // 退出接口
-  void _logout(StateSetter setInnerState) {
+  void _logout() {
     NavigatorUtil.pop();
     BlocProvider.of<AppCubit>(context).addUser(null);
     SpUtil.remove(Keys.tokenKey);
