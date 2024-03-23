@@ -78,7 +78,7 @@ class _EmojiViewState extends State<EmojiView> {
               color: primaryTextColor,
             ),
           ).nestedPadding(
-            padding: const EdgeInsets.only(top: 20, bottom: 16),
+            padding: const EdgeInsets.only(top: 20, bottom: 10),
           ),
           Text.rich(
             TextSpan(

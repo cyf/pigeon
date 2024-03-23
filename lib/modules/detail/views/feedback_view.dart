@@ -7,6 +7,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:homing_pigeon/common/api/feedback_api.dart';
 import 'package:homing_pigeon/common/enums/enums.dart';
 import 'package:homing_pigeon/common/exception/exception.dart';
@@ -46,9 +47,6 @@ class _FeedbackViewState extends State<FeedbackView> {
   final titleFocusNode = FocusNode();
   final descriptionFocusNode = FocusNode();
 
-  bool _isTitleFocus = false;
-  bool _isDescriptionFocus = false;
-
   List<FeedbackModel> items = [];
   bool loading = false;
   int page = 1;
@@ -59,17 +57,6 @@ class _FeedbackViewState extends State<FeedbackView> {
   @override
   void initState() {
     super.initState();
-    titleFocusNode.addListener(() {
-      setState(() {
-        _isTitleFocus = titleFocusNode.hasFocus;
-      });
-    });
-    descriptionFocusNode.addListener(() {
-      setState(() {
-        _isDescriptionFocus = descriptionFocusNode.hasFocus;
-      });
-    });
-
     _load();
   }
 
@@ -92,6 +79,16 @@ class _FeedbackViewState extends State<FeedbackView> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Text(
+            '欢迎提意见或建议，嗷呜~',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: primaryTextColor,
+            ),
+          ).nestedPadding(
+            padding: const EdgeInsets.only(top: 20, bottom: 10),
+          ),
           Text.rich(
             TextSpan(
               children: [
@@ -99,7 +96,6 @@ class _FeedbackViewState extends State<FeedbackView> {
                 TextSpan(
                   text: '[点击此处]',
                   style: const TextStyle(
-                    fontSize: 18,
                     color: primaryColor,
                   ),
                   recognizer: TapGestureRecognizer()
@@ -109,11 +105,11 @@ class _FeedbackViewState extends State<FeedbackView> {
               ],
             ),
             style: const TextStyle(
-              fontSize: 18,
+              fontSize: 16,
               color: primaryTextColor,
             ),
           ).nestedPadding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.only(bottom: 10),
           ),
           // TextButton(
           //   style: ButtonStyle(
@@ -304,59 +300,93 @@ class _FeedbackViewState extends State<FeedbackView> {
                         title: '标题',
                         showTip: false,
                         padding: EdgeInsets.zero,
-                        child: FormBuilderTextField(
+                        child: FormBuilderField<String>(
                           focusNode: titleFocusNode,
-                          controller: _titleController,
-                          cursorColor: primaryColor,
-                          autocorrect: false,
-                          onChanged: (value) {
-                            setInnerState(() {});
-                          },
-                          maxLines: 3,
-                          maxLength: 100,
-                          decoration: InputDecoration(
-                            suffixIcon: (_isTitleFocus &&
-                                    _titleController.text.isNotEmpty)
-                                ? Container(
-                                    width: 20,
-                                    height: 20,
-                                    margin: const EdgeInsets.only(right: 10),
-                                    decoration: BoxDecoration(
-                                      color: primaryGrayColor,
-                                      borderRadius: BorderRadius.circular(15),
+                          builder: (FormFieldState<String> field) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                TextFormField(
+                                  initialValue: field.value,
+                                  focusNode: titleFocusNode,
+                                  cursorColor: primaryColor,
+                                  cursorErrorColor: errorTextColor,
+                                  autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                                  maxLines: 3,
+                                  maxLength: 100,
+                                  autocorrect: false,
+                                  style: const TextStyle(
+                                    color: primaryTextColor,
+                                  ),
+                                  onChanged: (value) {
+                                    field
+                                      ..didChange(value)
+                                      ..validate();
+                                  },
+                                  decoration: InputDecoration(
+                                    isDense: true,
+                                    contentPadding: const EdgeInsets.fromLTRB(
+                                      10,
+                                      10,
+                                      5,
+                                      10,
                                     ),
-                                    child: IconButton(
-                                      padding: EdgeInsets.zero,
-                                      splashRadius: 2,
-                                      onPressed: () {
-                                        // Clear everything in the text field
-                                        _titleController.clear();
-                                        // Call setState to update the UI
-                                        setInnerState(() {});
-                                      },
-                                      iconSize: 16,
-                                      icon: const Icon(
-                                        Icons.clear,
-                                        color: placeholderTextColor,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(4),
+                                      borderSide: const BorderSide(
+                                        color: borderColor,
                                       ),
+                                      gapPadding: 0,
                                     ),
-                                  )
-                                : null,
-                            suffixIconConstraints: const BoxConstraints(
-                              maxWidth: 30,
-                              maxHeight: 30,
-                            ),
-                            hintText: '请输入标题',
-                            contentPadding: const EdgeInsets.all(8),
-                            fillColor: secondaryGrayColor,
-                            filled: true,
-                          ),
-                          validator: (value) {
-                            if (StringUtil.isBlank(value)) {
-                              return '请输入标题';
-                            }
-                            return null;
+                                    disabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(4),
+                                      borderSide: const BorderSide(
+                                        color: borderColor,
+                                      ),
+                                      gapPadding: 0,
+                                    ),
+                                    hintText: '请输入标题',
+                                    helperStyle: const TextStyle(
+                                      color: secondaryTextColor,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                    errorText: field.errorText,
+                                    errorStyle: const TextStyle(
+                                      fontSize: 12,
+                                      color: errorTextColor,
+                                    ),
+                                    counterStyle: const TextStyle(
+                                      fontSize: 12,
+                                      color: secondaryTextColor,
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(4),
+                                      borderSide: const BorderSide(
+                                        color: primaryColor,
+                                      ),
+                                      gapPadding: 0,
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(4),
+                                      borderSide: const BorderSide(
+                                        color: errorTextColor,
+                                      ),
+                                      gapPadding: 0,
+                                    ),
+                                    // fillColor: epPrimaryGrayColor,
+                                    // filled: true,
+                                  ),
+                                ),
+                              ],
+                            );
                           },
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(
+                              errorText: '请输入标题',
+                            ),
+                          ]),
                           name: 'title',
                         ).nestedPadding(
                           padding: const EdgeInsets.only(top: 8),
@@ -365,59 +395,93 @@ class _FeedbackViewState extends State<FeedbackView> {
                       BaseFormItem(
                         title: '描述',
                         showTip: false,
-                        child: FormBuilderTextField(
+                        child: FormBuilderField<String>(
                           focusNode: descriptionFocusNode,
-                          controller: _descriptionController,
-                          cursorColor: primaryColor,
-                          autocorrect: false,
-                          onChanged: (value) {
-                            setInnerState(() {});
-                          },
-                          maxLines: 10,
-                          maxLength: 500,
-                          decoration: InputDecoration(
-                            suffixIcon: (_isDescriptionFocus &&
-                                    _descriptionController.text.isNotEmpty)
-                                ? Container(
-                                    width: 20,
-                                    height: 20,
-                                    margin: const EdgeInsets.only(right: 10),
-                                    decoration: BoxDecoration(
-                                      color: primaryGrayColor,
-                                      borderRadius: BorderRadius.circular(15),
+                          builder: (FormFieldState<String> field) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                TextFormField(
+                                  initialValue: field.value,
+                                  focusNode: descriptionFocusNode,
+                                  cursorColor: primaryColor,
+                                  cursorErrorColor: errorTextColor,
+                                  autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                                  maxLines: 10,
+                                  maxLength: 500,
+                                  autocorrect: false,
+                                  style: const TextStyle(
+                                    color: primaryTextColor,
+                                  ),
+                                  onChanged: (value) {
+                                    field
+                                      ..didChange(value)
+                                      ..validate();
+                                  },
+                                  decoration: InputDecoration(
+                                    isDense: true,
+                                    contentPadding: const EdgeInsets.fromLTRB(
+                                      10,
+                                      10,
+                                      5,
+                                      10,
                                     ),
-                                    child: IconButton(
-                                      padding: EdgeInsets.zero,
-                                      splashRadius: 2,
-                                      onPressed: () {
-                                        // Clear everything in the text field
-                                        _descriptionController.clear();
-                                        // Call setState to update the UI
-                                        setInnerState(() {});
-                                      },
-                                      iconSize: 16,
-                                      icon: const Icon(
-                                        Icons.clear,
-                                        color: placeholderTextColor,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(4),
+                                      borderSide: const BorderSide(
+                                        color: borderColor,
                                       ),
+                                      gapPadding: 0,
                                     ),
-                                  )
-                                : null,
-                            suffixIconConstraints: const BoxConstraints(
-                              maxWidth: 30,
-                              maxHeight: 30,
-                            ),
-                            hintText: '请输入描述',
-                            contentPadding: const EdgeInsets.all(8),
-                            fillColor: secondaryGrayColor,
-                            filled: true,
-                          ),
-                          validator: (value) {
-                            if (StringUtil.isBlank(value)) {
-                              return '请输入描述';
-                            }
-                            return null;
+                                    disabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(4),
+                                      borderSide: const BorderSide(
+                                        color: borderColor,
+                                      ),
+                                      gapPadding: 0,
+                                    ),
+                                    hintText: '请输入描述',
+                                    helperStyle: const TextStyle(
+                                      color: secondaryTextColor,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                    errorText: field.errorText,
+                                    errorStyle: const TextStyle(
+                                      fontSize: 12,
+                                      color: errorTextColor,
+                                    ),
+                                    counterStyle: const TextStyle(
+                                      fontSize: 12,
+                                      color: secondaryTextColor,
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(4),
+                                      borderSide: const BorderSide(
+                                        color: primaryColor,
+                                      ),
+                                      gapPadding: 0,
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(4),
+                                      borderSide: const BorderSide(
+                                        color: errorTextColor,
+                                      ),
+                                      gapPadding: 0,
+                                    ),
+                                    // fillColor: epPrimaryGrayColor,
+                                    // filled: true,
+                                  ),
+                                ),
+                              ],
+                            );
                           },
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(
+                              errorText: '请输入描述',
+                            ),
+                          ]),
                           name: 'description',
                         ).nestedPadding(
                           padding: const EdgeInsets.only(top: 8),
