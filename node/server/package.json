@@ -21,9 +21,9 @@
   },
   "dependencies": {
     "@nestjs/axios": "^3.0.2",
-    "@nestjs/cache-manager": "^2.2.1",
+    "@nestjs/cache-manager": "^2.2.2",
     "@nestjs/common": "^10.3.5",
-    "@nestjs/config": "^3.2.0",
+    "@nestjs/config": "^3.2.1",
     "@nestjs/core": "^10.3.5",
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/mapped-types": "*",
@@ -65,7 +65,7 @@
     "rxjs": "^7.8.1",
     "socket.io": "^4.7.5",
     "sort-keys-recursive": "^2.1.10",
-    "winston": "^3.12.0",
+    "winston": "^3.13.0",
     "ws": "^8.16.0"
   },
   "devDependencies": {
