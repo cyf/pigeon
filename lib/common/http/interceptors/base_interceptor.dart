@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:homing_pigeon/common/constants/constants.dart';
 import 'package:homing_pigeon/common/http/constants/code.dart';
 import 'package:homing_pigeon/common/http/headers/headers.dart';
@@ -70,6 +71,11 @@ class BaseInterceptor extends InterceptorsWrapper {
           ),
         ),
       );
+    }
+
+    if (response.data is Uint8List || response.data is ResponseBody) {
+      super.onResponse(response, handler);
+      return;
     }
 
     final res = HpResponse.fromJson(
