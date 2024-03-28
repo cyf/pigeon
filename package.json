@@ -17,6 +17,6 @@
     "tsx": "^4.7.1"
   },
   "dependencies": {
-    "simple-git": "^3.23.0"
+    "simple-git": "^3.24.0"
   }
 }
