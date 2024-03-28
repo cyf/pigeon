@@ -20,10 +20,6 @@
       "matchPackageNames": ["query-string"]
     },
     {
-      "allowedVersions": "2",
-      "matchPackageNames": ["tsparticles"]
-    },
-    {
       "matchPackageNames": ["flutter", "dart"],
       "groupName": "flutter"
     },
