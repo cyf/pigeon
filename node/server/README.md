@@ -1,10 +1,4 @@
-# homing-pigeon-server
-
-1. For Development: [https://dev.chenyifaer.com/homing-pigeon/api](https://dev.chenyifaer.com/homing-pigeon/api).
-
-2. For Staging: [https://stg.chenyifaer.com/homing-pigeon/api](https://stg.chenyifaer.com/homing-pigeon/api).
-
-3. For Production: [https://chenyifaer.com/homing-pigeon/api](https://chenyifaer.com/homing-pigeon/api).
+# server
 
 ## Installation
 
