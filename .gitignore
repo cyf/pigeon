@@ -46,7 +46,3 @@ app.*.map.json
 # local env files
 .env*.local
 .env
-
-node_modules/
-
-latest-commits.json
