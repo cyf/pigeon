@@ -3,11 +3,6 @@ on:
   # Enable manual run
   workflow_dispatch:
     inputs:
-      version:
-        description: "Tag to create (e.g. v2.10.0)."
-        required: true
-        default: "v1.0.0"
-        type: string
       env:
         type: choice
         description: "Which environment are you using?"
@@ -28,22 +23,38 @@ jobs:
     outputs:
       sha_short: ${{ steps.sha_short_step.outputs.sha_short }}
       timestamp: ${{ steps.timestamp_step.outputs.timestamp }}
+      version: ${{ steps.version_step.outputs.version }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set outputs
+      - name: Set sha_short
         id: sha_short_step
         run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
 
-      - name: Check outputs
+      - name: Check sha_short
         run: echo ${{ steps.sha_short_step.outputs.sha_short }}
 
       - name: Set timestamp
         id: timestamp_step
         run: echo "timestamp=$(date +%s)" >> $GITHUB_OUTPUT
 
-      - name: Check outputs
+      - name: Check timestamp
         run: echo ${{ steps.timestamp_step.outputs.timestamp }}
+
+      - name: Install yq
+        run: |
+          if ! command -v yq >/dev/null 2>&1; then
+            echo "yq not exists"
+            brew install yq
+          fi
+          yq --version
+
+      - name: Set version
+        id: version_step
+        run: echo "version=v$(yq '.version' < pubspec.yaml)" >> $GITHUB_OUTPUT
+
+      - name: Check version
+        run: echo ${{ steps.version_step.outputs.version }}
 
       - name: Install gh
         run: |
@@ -63,8 +74,8 @@ jobs:
           fi
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ steps.timestamp_step.outputs.timestamp }}-${{ steps.sha_short_step.outputs.sha_short }}
-          VERSION: ${{ github.event.inputs.version }}
+          VERSION_SUFFIX: ${{ steps.version_step.outputs.version }}+${{ steps.timestamp_step.outputs.timestamp }}-${{ steps.sha_short_step.outputs.sha_short }}
+          VERSION: ${{ steps.version_step.outputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
   remove_release:
@@ -96,8 +107,8 @@ jobs:
             gh release delete -y --cleanup-tag "$RELEASE"
           env:
             ENV: ${{ github.event.inputs.env }}
-            VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}
-            VERSION: ${{ github.event.inputs.version }}
+            VERSION_SUFFIX: ${{ needs.version_step.outputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}
+            VERSION: ${{ needs.version_step.outputs.version }}
             GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
   internal_apk:
@@ -185,8 +196,8 @@ jobs:
           gh release upload "$RELEASE" ./*.apk
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}
-          VERSION: ${{ github.event.inputs.version }}
+          VERSION_SUFFIX: ${{ needs.version_step.outputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}
+          VERSION: ${{ needs.version_step.outputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
       - name: Clean up
@@ -281,8 +292,8 @@ jobs:
           gh release upload "$RELEASE" ./*.apk
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}
-          VERSION: ${{ github.event.inputs.version }}
+          VERSION_SUFFIX: ${{ needs.version_step.outputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}
+          VERSION: ${{ needs.version_step.outputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
 #      - name: Install firebase cli
@@ -384,8 +395,8 @@ jobs:
           gh release upload "$RELEASE" ./*.aab
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}
-          VERSION: ${{ github.event.inputs.version }}
+          VERSION_SUFFIX: ${{ needs.version_step.outputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}
+          VERSION: ${{ needs.version_step.outputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
       - name: Clean up
@@ -462,8 +473,8 @@ jobs:
           gh release upload "$RELEASE" ./*.aab
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}
-          VERSION: ${{ github.event.inputs.version }}
+          VERSION_SUFFIX: ${{ needs.version_step.outputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}
+          VERSION: ${{ needs.version_step.outputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
       - name: Clean up
@@ -605,8 +616,8 @@ jobs:
           gh release upload "$RELEASE" ./*.ipa
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}
-          VERSION: ${{ github.event.inputs.version }}
+          VERSION_SUFFIX: ${{ needs.version_step.outputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}
+          VERSION: ${{ needs.version_step.outputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
       - name: Clean up
@@ -751,8 +762,8 @@ jobs:
           gh release upload "$RELEASE" ./*.ipa
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: ${{ github.event.inputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}
-          VERSION: ${{ github.event.inputs.version }}
+          VERSION_SUFFIX: ${{ needs.version_step.outputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}
+          VERSION: ${{ needs.version_step.outputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
 #      - name: Install firebase cli
