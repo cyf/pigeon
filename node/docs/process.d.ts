@@ -9,12 +9,6 @@ declare namespace NodeJS {
     NEXT_PUBLIC_GH_TOKEN: string;
     NEXT_PUBLIC_GH_REPO_OWNER: string;
     NEXT_PUBLIC_GH_REPO: string;
-    DISTRIBUTION_ENV: string;
-    ALIYUN_OSS_REGION: string;
-    ALIYUN_OSS_ACCESS_KEY_ID: string;
-    ALIYUN_OSS_ACCESS_KEY_SECRET: string;
-    ALIYUN_OSS_BUCKET: string;
-    ALIYUN_OSS_ENDPOINT: string;
     API_BASE_URL: string;
     WS_BASE_URL: string;
     ENCRYPT_KEY: string;
