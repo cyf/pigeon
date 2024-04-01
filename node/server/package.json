@@ -11,7 +11,6 @@
     "dev:watch": "prisma generate && nest build --webpack --webpackPath webpack-hmr.config.cjs --watch",
     "dev:debug": "prisma generate && nest start --debug --watch",
     "start": "cross-env NODE_ENV=production node dist/main",
-    "start:internal": "cross-env NODE_ENV=production DISTRIBUTION_ENV=internal node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest --detectOpenHandles --forceExit",
     "test:watch": "jest --watch",

@@ -1,7 +1,6 @@
 declare namespace NodeJS {
   export interface ProcessEnv {
     NODE_ENV: string
-    DISTRIBUTION_ENV: string
     POSTGRES_PRISMA_URL: string
     POSTGRES_URL_NON_POOLING: string
     KV_HOST: string

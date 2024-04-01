@@ -20,15 +20,9 @@ import { WebsocketExceptionFilter } from '@/common/filters/ws-exception.filter'
 import { SocketIoAuthGuard } from '@/common/guards/socket-io.guard'
 import { SocketIoThrottlerGuard } from '@/common/guards/socket-io.throttler.guard'
 
-// const basePath = process.env.NODE_ENV === 'production' ? 'homing-pigeon/' : ''
-// const distribution =
-//   process.env.DISTRIBUTION_ENV === 'internal' ? 'internal/' : ''
-
 @WebSocketGateway({
   // for socket-io
   // http://127.0.0.1:3001/ws
-  // namespace: `${basePath}${distribution}ws`,
-  // path: `/${basePath}${distribution}socket.io/`,
   // namespace: 'ws',
   // for ws
   // ws://127.0.0.1:3001/ws
