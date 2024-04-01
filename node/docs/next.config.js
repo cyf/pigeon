@@ -27,9 +27,9 @@ const nextConfig = {
     NEXT_PUBLIC_SHOW_PARTICLES: process.env.NEXT_PUBLIC_SHOW_PARTICLES,
     NEXT_PUBLIC_WEBSITE_GLOBAL_GRAY:
       process.env.NEXT_PUBLIC_WEBSITE_GLOBAL_GRAY,
-    NEXT_PUBLIC_GH_TOKEN: process.env.NEXT_PUBLIC_GH_TOKEN,
-    NEXT_PUBLIC_GH_REPO_OWNER: process.env.NEXT_PUBLIC_GH_REPO_OWNER,
-    NEXT_PUBLIC_GH_REPO: process.env.NEXT_PUBLIC_GH_REPO,
+    GH_TOKEN: process.env.GH_TOKEN,
+    GH_REPO_OWNER: process.env.GH_REPO_OWNER,
+    GH_REPO: process.env.GH_REPO,
     API_BASE_URL: process.env.API_BASE_URL,
     WS_BASE_URL: process.env.WS_BASE_URL,
     ENCRYPT_KEY: process.env.ENCRYPT_KEY,
