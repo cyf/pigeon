@@ -6,9 +6,9 @@ declare namespace NodeJS {
     NEXT_PUBLIC_COOKIE_BANNER_ID: string;
     NEXT_PUBLIC_SHOW_PARTICLES: string;
     NEXT_PUBLIC_WEBSITE_GLOBAL_GRAY: string;
-    NEXT_PUBLIC_GH_TOKEN: string;
-    NEXT_PUBLIC_GH_REPO_OWNER: string;
-    NEXT_PUBLIC_GH_REPO: string;
+    GH_TOKEN: string;
+    GH_REPO_OWNER: string;
+    GH_REPO: string;
     API_BASE_URL: string;
     WS_BASE_URL: string;
     ENCRYPT_KEY: string;
