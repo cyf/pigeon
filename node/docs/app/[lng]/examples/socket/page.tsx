@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import { IoIosSend } from "react-icons/io";
-import { Button } from "@/components/ui/button";
+import { Button } from "muse-ui";
 import { useTranslation } from "@/i18n/client";
 
 import type { Socket } from "socket.io-client";

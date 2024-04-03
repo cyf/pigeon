@@ -1,43 +1,11 @@
 "use client";
-// import type { Metadata } from "next";
 import { allPosts } from "contentlayer/generated";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-// import dynamic from "next/dynamic";
 import PostDate from "@/components/post/post-date";
 import { Mdx } from "@/components/mdx/mdx";
 import PostNav from "@/components/post/post-nav";
-
-// const DiscussionEmbed = dynamic(
-//     () => import('disqus-react').then((mod) => mod.DiscussionEmbed),
-//     { ssr: false }
-// )
-
-// export async function generateStaticParams() {
-//   return allPosts.map((post) => ({
-//     slug: post.slug,
-//   }));
-// }
-
-// export async function generateMetadata({
-//   params,
-// }: {
-//   params: { slug: string; type: string; lng: string };
-// }): Promise<Metadata | undefined> {
-//   const post = allPosts.find(
-//     (post) => post.slug === `${params.lng}/${params.type}/${params.slug}`,
-//   );
-//
-//   if (!post) return;
-//
-//   const { title, summary: description } = post;
-//
-//   return {
-//     title,
-//     description,
-//   };
-// }
 
 export default function Legal({
   params,
