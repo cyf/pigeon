@@ -50,9 +50,9 @@ dependencies:
   equatable: ^2.0.5
   extended_text: ^13.0.0
   file_picker: ^8.0.0+1
-  firebase_analytics: ^10.9.0
-  firebase_core: ^2.27.2
-  firebase_messaging: ^14.7.21
+  firebase_analytics: ^10.10.0
+  firebase_core: ^2.28.0
+  firebase_messaging: ^14.8.0
   flutter:
     sdk: flutter
   flutter_aliyun_oss: ^0.0.1
@@ -64,7 +64,7 @@ dependencies:
   flutter_local_notifications: ^17.0.0
   flutter_localizations:
     sdk: flutter
-  flutter_markdown: ^0.6.22
+  flutter_markdown: ^0.6.22+1
   flutter_native_splash: ^2.4.0
   flutter_staggered_grid_view: ^0.7.0
   flutter_sticky_header: ^0.6.5
@@ -94,7 +94,7 @@ dependencies:
   shared_preferences: ^2.2.2
   socket_io_client: ^3.0.0-beta.2
   sortedmap: ^0.5.3
-  syncfusion_flutter_calendar: ^25.1.37+1
+  syncfusion_flutter_calendar: ^25.1.38
   synchronized: ^3.1.0+1
   timeago: ^3.6.1
   timezone: ^0.9.2
