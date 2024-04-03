@@ -4,16 +4,10 @@ import Balancer from "react-wrap-balancer";
 import { RoughNotation } from "react-rough-notation";
 import { FaBlog } from "react-icons/fa";
 import Image from "next/image";
-// import dynamic from "next/dynamic";
-// import AliyunRelease from "@/components/home/aliyun-release";
 import GithubRelease from "@/components/home/github-release";
 import { useTranslation } from "@/i18n/client";
 import { allPosts } from "contentlayer/generated";
 import { basePath } from "@/constants";
-
-// const DynamicCard = dynamic(() => import("@/components/home/card"), {
-//   ssr: false,
-// });
 
 export default function Home({
   params,
@@ -78,7 +72,6 @@ export default function Home({
         </p>
       </div>
       <GithubRelease lng={params.lng} />
-      {/*<AliyunRelease lng={params.lng} />*/}
     </>
   );
 }
