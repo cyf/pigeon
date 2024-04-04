@@ -3,7 +3,6 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-// import EmailValidator from "email-validator";
 import Cookies from "js-cookie";
 import { Github, Google, LoadingDots } from "@/components/shared/icons";
 import { setUser } from "@/model/slices/user/slice";
@@ -34,9 +33,6 @@ export default function Login({
     if (!input) {
       return "account must not be empty.";
     }
-    // if (!EmailValidator.validate(input)) {
-    //   return "email format is incorrect.";
-    // }
     return null;
   };
 
