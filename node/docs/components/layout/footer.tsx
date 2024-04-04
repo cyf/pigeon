@@ -1,9 +1,8 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { LngProps } from "@/i18next-lng";
 import { useTranslation } from "@/i18n/client";
-import * as process from "process";
+import type { LngProps } from "@/types/i18next-lng";
 
 const VERCEL_GIT_COMMIT_SHA = process.env.VERCEL_GIT_COMMIT_SHA;
 
