@@ -4,7 +4,7 @@ import Image from "next/image";
 import { FaDownload } from "react-icons/fa6";
 import GitHubPkg from "@/components/home/github-pkg";
 import type { Release } from "@/types/github";
-import type { LngProps } from "@/i18next-lng";
+import type { LngProps } from "@/types/i18next-lng";
 
 export default function Release({
   release,

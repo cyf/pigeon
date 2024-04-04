@@ -1,8 +1,7 @@
 "use client";
-
 import { useState, useEffect } from "react";
-import { LngProps } from "@/i18next-lng";
 import { useTranslation } from "@/i18n/client";
+import type { LngProps } from "@/types/i18next-lng";
 
 export default function PostNav(props: LngProps) {
   const { t } = useTranslation(props.lng);

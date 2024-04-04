@@ -11,7 +11,7 @@ import {
   DrawerTrigger,
   Button,
 } from "muse-ui";
-import type { LngProps } from "@/i18next-lng";
+import type { LngProps } from "@/types/i18next-lng";
 import type { Asset } from "@/types/github";
 
 export default function GitHubPkg(
