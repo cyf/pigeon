@@ -27,7 +27,7 @@ export default function GithubRelease({ lng }: LngProps) {
     return [];
   }, [data]);
 
-  const { ios, android } = useMemo(() => {
+  const { android } = useMemo(() => {
     const packages: Record<SystemOS, Asset[]> = {
       ios: [],
       android: [],
@@ -69,7 +69,7 @@ export default function GithubRelease({ lng }: LngProps) {
     <>
       <div className="mt-10 grid w-full max-w-screen-xl animate-fade-up xl:px-0">
         <div className="flex items-center justify-center">
-          <div className="grid w-full grid-cols-1 gap-5 px-10 sm:grid-cols-2 sm:px-10 md:grid-cols-4">
+          <div className="grid w-full grid-cols-1 gap-5 px-10 sm:grid-cols-2 sm:px-10 md:grid-cols-3">
             <GitHubPkg
               lng={lng}
               disabled={loading || error || !android.length}
@@ -81,17 +81,17 @@ export default function GithubRelease({ lng }: LngProps) {
                 <span className="sm:inline-block">Android</span>
               </p>
             </GitHubPkg>
-            <GitHubPkg
-              lng={lng}
-              disabled={loading || error || !ios.length}
-              assets={ios}
-              wrapperClassName="border border-gray-300 hover:border-gray-800 shadow-md"
-            >
-              <AppStore className="h-7 w-7" />
-              <p>
-                <span className="sm:inline-block">App Store</span>
-              </p>
-            </GitHubPkg>
+            {/*<GitHubPkg*/}
+            {/*  lng={lng}*/}
+            {/*  disabled={loading || error || !ios.length}*/}
+            {/*  assets={ios}*/}
+            {/*  wrapperClassName="border border-gray-300 hover:border-gray-800 shadow-md"*/}
+            {/*>*/}
+            {/*  <AppStore className="h-7 w-7" />*/}
+            {/*  <p>*/}
+            {/*    <span className="sm:inline-block">iOS</span>*/}
+            {/*  </p>*/}
+            {/*</GitHubPkg>*/}
             <Link
               className="flex items-center justify-center space-x-2 rounded-full border border-gray-300 px-5 py-2 text-sm text-gray-600 shadow-md transition-colors hover:border-gray-800 dark:text-white/80 max-md:mx-0"
               href="https://play.google.com/store/apps/details?id=com.chenyifaer.homingpigeon"
