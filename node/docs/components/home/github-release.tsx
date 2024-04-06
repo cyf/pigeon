@@ -122,7 +122,7 @@ export default function GithubRelease({ lng }: LngProps) {
             <>
               {t("latest")}:{" "}
               <Link
-                className="text-[#ff7979]"
+                className="text-[#2262af]"
                 href={`https://github.com/cyf/homing-pigeon/releases/tag/${data?.tag_name}`}
                 target="_blank"
               >
