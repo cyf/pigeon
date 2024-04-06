@@ -39,7 +39,8 @@ export default function Particle() {
       isShow: boolean;
       children: React.ReactElement;
     }) => (isShow ? children : null),
-    [],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [theme, particlesRef.current],
   );
 
   return (
