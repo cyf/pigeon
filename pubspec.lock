@@ -301,10 +301,10 @@ packages:
     dependency: "direct main"
     description:
       name: connectivity_plus
-      sha256: e9feae83b1849f61bad9f6f33ee00646e3410d54ce0821e02f262f9901dad3c9
+      sha256: ebe15d94de9dd7c31dc2ac54e42780acdf3384b1497c69290c9f3c5b0279fc57
       url: "https://pub.dev"
     source: hosted
-    version: "6.0.1"
+    version: "6.0.2"
   connectivity_plus_platform_interface:
     dependency: transitive
     description:
@@ -397,10 +397,10 @@ packages:
     dependency: "direct main"
     description:
       name: device_info_plus
-      sha256: "50fb435ed30c6d2525cbfaaa0f46851ea6131315f213c0d921b0e407b34e3b84"
+      sha256: eead12d1a1ed83d8283ab4c2f3fca23ac4082f29f25f29dff0f758f57d06ec91
       url: "https://pub.dev"
     source: hosted
-    version: "10.0.1"
+    version: "10.1.0"
   device_info_plus_platform_interface:
     dependency: transitive
     description:
@@ -793,10 +793,10 @@ packages:
     dependency: "direct dev"
     description:
       name: freezed
-      sha256: "24f77b50776d4285cc4b3a1665bb79852714c09b878363efbe64788c179c4284"
+      sha256: "91bce569d4805ea5bad6619a3e8690df8ad062a235165af4c0c5d928dda15eaf"
       url: "https://pub.dev"
     source: hosted
-    version: "2.5.0"
+    version: "2.5.1"
   freezed_annotation:
     dependency: "direct main"
     description:
@@ -1606,26 +1606,26 @@ packages:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_calendar
-      sha256: "7dc2c61d8b22b8b9f0affeea6649a13f38bdf3a154aa1c383ad123601f2023d3"
+      sha256: "74a0ea2350dec01b14a9e2df511d7bfc079f3546c3b623c9bfe02b9af9061d8b"
       url: "https://pub.dev"
     source: hosted
-    version: "25.1.38"
+    version: "25.1.39"
   syncfusion_flutter_core:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
-      sha256: "9fae07d8d1f1f66c61ad40cce8f85c02b8a3506ff0c3eae8ace0fd1d504b1ea5"
+      sha256: "159b125f55d95534c0c39a5efd644f50a310821191946e15eac50a49032fb42c"
       url: "https://pub.dev"
     source: hosted
-    version: "25.1.38"
+    version: "25.1.39"
   syncfusion_flutter_datepicker:
     dependency: transitive
     description:
       name: syncfusion_flutter_datepicker
-      sha256: "99d81d3fff8fd79cb8589b67a006faa718afde6d2366d74d770fc3fd9a434531"
+      sha256: "742bbe6aba9df10553a177e3f6e4a3c07bbea39244e3af3f898864823b003de9"
       url: "https://pub.dev"
     source: hosted
-    version: "25.1.38"
+    version: "25.1.39"
   synchronized:
     dependency: "direct main"
     description:
@@ -1790,10 +1790,10 @@ packages:
     dependency: "direct main"
     description:
       name: uuid
-      sha256: cd210a09f7c18cbe5a02511718e0334de6559871052c90a90c0cca46a4aa81c8
+      sha256: "814e9e88f21a176ae1359149021870e87f7cddaf633ab678a5d2b0bff7fd1ba8"
       url: "https://pub.dev"
     source: hosted
-    version: "4.3.3"
+    version: "4.4.0"
   value_layout_builder:
     dependency: transitive
     description:
@@ -1910,10 +1910,10 @@ packages:
     dependency: "direct main"
     description:
       name: wechat_assets_picker
-      sha256: "3d5cfcebbcbe21d6a4f91927423d437d3c8b441b0d9cc5318bc2632b05c1cddf"
+      sha256: d9d3b7219206247898234ce2f330f84dd6ba9d45338f382db787c5dd8789e97a
       url: "https://pub.dev"
     source: hosted
-    version: "9.0.2"
+    version: "9.0.3"
   wechat_camera_picker:
     dependency: "direct main"
     description:
