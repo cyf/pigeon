@@ -31,7 +31,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   app_settings: ^5.1.1
-  args: ^2.4.2
+  args: ^2.5.0
   bloc: ^8.1.4
   cached_network_image: ^3.3.1
   carousel_slider: ^4.2.1
