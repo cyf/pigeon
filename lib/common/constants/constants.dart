@@ -1,15 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
 
 /// Constants
 class Constants {
-  static String apiPrefix = StringUtil.getValue(dotenv.env['API_PREFIX']);
-
-  static String wsPrefix = StringUtil.getValue(dotenv.env['WS_PREFIX']);
-
   static const int days = 7;
 
   static const int timeOut = 60;
@@ -26,26 +21,29 @@ class Constants {
     'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
   };
 
-  static String jPushNotificationKey = Platform.isAndroid && kDebugMode
-      ? StringUtil.getValue(dotenv.env['JPUSH_APP_KEY_ANDROID_DEV'])
-      : StringUtil.getValue(dotenv.env['JPUSH_APP_KEY']);
+  // request
+  static String apiPrefix = const String.fromEnvironment('API_PREFIX');
+  static String wsPrefix = const String.fromEnvironment('WS_PREFIX');
+  static String signKey = const String.fromEnvironment('SIGN_KEY');
+  static String cryptoAESKey = const String.fromEnvironment('CRYPTO_AES_KEY');
+  static String cryptoAESIV = const String.fromEnvironment('CRYPTO_AES_IV');
 
-  static String signKey = StringUtil.getValue(dotenv.env['SIGN_KEY']);
-  static String cryptoAESKey =
-      StringUtil.getValue(dotenv.env['CRYPTO_AES_KEY']);
-  static String cryptoAESIV = StringUtil.getValue(dotenv.env['CRYPTO_AES_IV']);
+  // jpush
+  static String jPushNotificationKey = Platform.isAndroid && kDebugMode
+      ? const String.fromEnvironment('JPUSH_APP_KEY_ANDROID_DEV')
+      : const String.fromEnvironment('JPUSH_APP_KEY');
 
   /// oss
-  static String region = StringUtil.getValue(dotenv.env['ASSETS_REGION']);
-  static String endpoint = StringUtil.getValue(dotenv.env['ASSETS_ENDPOINT']);
-  static String bucket = StringUtil.getValue(dotenv.env['ASSETS_BUCKET']);
+  static String region = const String.fromEnvironment('ASSETS_REGION');
+  static String endpoint = const String.fromEnvironment('ASSETS_ENDPOINT');
+  static String bucket = const String.fromEnvironment('ASSETS_BUCKET');
   static String accessKeyId =
-      StringUtil.getValue(dotenv.env['ASSETS_ACCESS_KEY_ID']);
+      const String.fromEnvironment('ASSETS_ACCESS_KEY_ID');
   static String accessKeySecret =
-      StringUtil.getValue(dotenv.env['ASSETS_ACCESS_KEY_SECRET']);
-  static String host = StringUtil.getValue(
-    dotenv.env['ASSETS_HOST'],
-    defaultVal: 'https://$bucket.$region.$endpoint',
+      const String.fromEnvironment('ASSETS_ACCESS_KEY_SECRET');
+  static String host = String.fromEnvironment(
+    'ASSETS_HOST',
+    defaultValue: 'https://$bucket.$region.$endpoint',
   );
   static bool ossEnabled = StringUtil.isNotBlank(region) &&
       StringUtil.isNotBlank(endpoint) &&
@@ -53,6 +51,7 @@ class Constants {
       StringUtil.isNotBlank(accessKeyId) &&
       StringUtil.isNotBlank(accessKeySecret);
 
-  static String sentryDsn = StringUtil.getValue(dotenv.env['SENTRY_DSN']);
+  // crash report
+  static String sentryDsn = const String.fromEnvironment('SENTRY_DSN');
   static bool sentryEnabled = StringUtil.isNotBlank(sentryDsn);
 }
