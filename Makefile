@@ -40,25 +40,25 @@ clean_runner: ## Deleting cache and generated source files
 
 internal_apk: ## Release Apk
 	echo "╠ Releasing Apk..."
-	bash build-android.sh && flutter build apk --no-tree-shake-icons --flavor internalStaging --target lib/main_internal.dart
+	bash build-android.sh && flutter build apk --no-tree-shake-icons --dart-define-from-file=.env --flavor internalStaging --target lib/main_internal.dart
 
 internal_appbundle: ## Release Appbundle
 	echo "╠ Releasing Appbundle..."
-	flutter build appbundle --no-tree-shake-icons --flavor internalProduction --target lib/main_internal.dart
+	flutter build appbundle --no-tree-shake-icons --dart-define-from-file=.env --flavor internalProduction --target lib/main_internal.dart
 
 external_apk: ## Release Apk
 	echo "╠ Releasing Apk..."
-	bash build-android.sh && flutter build apk --no-tree-shake-icons --flavor externalStaging --target lib/main_external.dart
+	bash build-android.sh && flutter build apk --no-tree-shake-icons --dart-define-from-file=.env --flavor externalStaging --target lib/main_external.dart
 
 external_appbundle: ## Release Appbundle
 	echo "╠ Releasing Appbundle..."
-	flutter build appbundle --no-tree-shake-icons --flavor externalProduction --target lib/main_external.dart
+	flutter build appbundle --no-tree-shake-icons --dart-define-from-file=.env --flavor externalProduction --target lib/main_external.dart
 
 internal_adhoc:
 	echo "╠ Removing build products and intermediate files from the build root..."
 	cd ios && xcodebuild clean && cd ..
 	echo "╠ Releasing to adhoc..."
-	bash build-ios.sh && flutter build ipa --flavor internal --target lib/main_internal.dart --export-options-plist=ios/ExportOptions-internal-debug.plist
+	bash build-ios.sh && flutter build ipa --dart-define-from-file=.env --flavor internal --target lib/main_internal.dart --export-options-plist=ios/ExportOptions-internal-debug.plist
 
 internal_appstore:
 	echo "╠ Removing build products and intermediate files from the build root..."
@@ -66,13 +66,13 @@ internal_appstore:
 	echo "╠ Removing BuildConfig.xcconfig..."
 	rm -f ios/Flutter/BuildConfig.xcconfig
 	echo "╠ Releasing to app store..."
-	flutter build ipa --flavor internal --target lib/main_internal.dart --export-options-plist=ios/ExportOptions-internal-release.plist
+	flutter build ipa --dart-define-from-file=.env --flavor internal --target lib/main_internal.dart --export-options-plist=ios/ExportOptions-internal-release.plist
 
 external_adhoc:
 	echo "╠ Removing build products and intermediate files from the build root..."
 	cd ios && xcodebuild clean && cd ..
 	echo "╠ Releasing to adhoc..."
-	bash build-ios.sh && flutter build ipa --flavor external --target lib/main_external.dart --export-options-plist=ios/ExportOptions-external-debug.plist
+	bash build-ios.sh && flutter build ipa --dart-define-from-file=.env --flavor external --target lib/main_external.dart --export-options-plist=ios/ExportOptions-external-debug.plist
 
 external_appstore:
 	echo "╠ Removing build products and intermediate files from the build root..."
@@ -80,4 +80,4 @@ external_appstore:
 	echo "╠ Removing BuildConfig.xcconfig..."
 	rm -f ios/Flutter/BuildConfig.xcconfig
 	echo "╠ Releasing to app store..."
-	flutter build ipa --flavor external --target lib/main_external.dart --export-options-plist=ios/ExportOptions-external-release.plist
+	flutter build ipa --dart-define-from-file=.env --flavor external --target lib/main_external.dart --export-options-plist=ios/ExportOptions-external-release.plist

@@ -18,7 +18,7 @@ on:
     branches:
       - main
 
-# Declare default permissions as read only.
+# Declare default permissions as readonly.
 permissions: read-all
 
 jobs:
@@ -65,7 +65,7 @@ jobs:
         working-directory: android
 
       - name: Build Apk
-        run: flutter build apk --no-tree-shake-icons --flavor internalProduction --target lib/main_internal.dart
+        run: flutter build apk --no-tree-shake-icons --dart-define-from-file=.env --flavor internalProduction --target lib/main_internal.dart
 
       # Package the build.
       - name: Copy build for Android
@@ -122,7 +122,7 @@ jobs:
         working-directory: android
 
       - name: Build Apk
-        run: flutter build apk --no-tree-shake-icons --flavor externalProduction --target lib/main_external.dart
+        run: flutter build apk --no-tree-shake-icons --dart-define-from-file=.env --flavor externalProduction --target lib/main_external.dart
 
       # Package the build.
       - name: Copy build for Android
@@ -179,7 +179,7 @@ jobs:
 #        working-directory: android
 #
 #      - name: Build Appbundle
-#        run: flutter build appbundle --no-tree-shake-icons --flavor internalProduction --target lib/main_internal.dart
+#        run: flutter build appbundle --no-tree-shake-icons --dart-define-from-file=.env --flavor internalProduction --target lib/main_internal.dart
 #
 #      # Package the build.
 #      - name: Copy build for Android
@@ -236,7 +236,7 @@ jobs:
 #        working-directory: android
 #
 #      - name: Build Appbundle
-#        run: flutter build appbundle --no-tree-shake-icons --flavor externalProduction --target lib/main_external.dart
+#        run: flutter build appbundle --no-tree-shake-icons --dart-define-from-file=.env --flavor externalProduction --target lib/main_external.dart
 #
 #      # Package the build.
 #      - name: Copy build for Android
@@ -335,7 +335,7 @@ jobs:
           echo "╠ Removing build products and intermediate files from the build root..."
           cd ios && xcodebuild clean && cd ..
           echo "╠ Releasing to app store..."
-          flutter build ipa --flavor internal --target lib/main_internal.dart --export-options-plist=ios/ExportOptions-internal-release.plist
+          flutter build ipa --dart-define-from-file=.env --flavor internal --target lib/main_internal.dart --export-options-plist=ios/ExportOptions-internal-release.plist
 
       # Package the build.
       - name: Copy build for iOS
@@ -437,7 +437,7 @@ jobs:
           echo "╠ Removing build products and intermediate files from the build root..."
           cd ios && xcodebuild clean && cd ..
           echo "╠ Releasing to app store..."
-          flutter build ipa --flavor external --target lib/main_external.dart --export-options-plist=ios/ExportOptions-external-release.plist
+          flutter build ipa --dart-define-from-file=.env --flavor external --target lib/main_external.dart --export-options-plist=ios/ExportOptions-external-release.plist
 
       # Package the build.
       - name: Copy build for iOS

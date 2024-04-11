@@ -13,7 +13,7 @@ on:
           - staging
           - production
 
-# Declare default permissions as read only.
+# Declare default permissions as readonly.
 permissions: read-all
 
 jobs:
@@ -173,11 +173,11 @@ jobs:
       # Build the application.
       - name: Build apk
         if: ${{ github.event.inputs.env == 'development' || github.event.inputs.env == 'staging' }}
-        run: bash build-android.sh && flutter build apk --no-tree-shake-icons --flavor internalStaging --target lib/main_internal.dart
+        run: bash build-android.sh && flutter build apk --no-tree-shake-icons --dart-define-from-file=.env --flavor internalStaging --target lib/main_internal.dart
 
       - name: Build apk
         if: github.event.inputs.env == 'production'
-        run: flutter build apk --no-tree-shake-icons --flavor internalProduction --target lib/main_internal.dart
+        run: flutter build apk --no-tree-shake-icons --dart-define-from-file=.env --flavor internalProduction --target lib/main_internal.dart
 
       # Package the build.
       - name: Copy build for Android
@@ -271,11 +271,11 @@ jobs:
       # Build the application.
       - name: Build apk
         if: ${{ github.event.inputs.env == 'development' || github.event.inputs.env == 'staging' }}
-        run: bash build-android.sh && flutter build apk --no-tree-shake-icons --flavor externalStaging --target lib/main_external.dart
+        run: bash build-android.sh && flutter build apk --no-tree-shake-icons --dart-define-from-file=.env --flavor externalStaging --target lib/main_external.dart
 
       - name: Build apk
         if: github.event.inputs.env == 'production'
-        run: flutter build apk --no-tree-shake-icons --flavor externalProduction --target lib/main_external.dart
+        run: flutter build apk --no-tree-shake-icons --dart-define-from-file=.env --flavor externalProduction --target lib/main_external.dart
 
       # Package the build.
       - name: Copy build for Android
@@ -394,11 +394,11 @@ jobs:
       # Build the application.
       - name: Build appbundle
         if: ${{ github.event.inputs.env == 'development' || github.event.inputs.env == 'staging' }}
-        run: bash build-android.sh && flutter build appbundle --no-tree-shake-icons --flavor internalStaging --target lib/main_internal.dart
+        run: bash build-android.sh && flutter build appbundle --no-tree-shake-icons --dart-define-from-file=.env --flavor internalStaging --target lib/main_internal.dart
 
       - name: Build appbundle
         if: github.event.inputs.env == 'production'
-        run: flutter build appbundle --no-tree-shake-icons --flavor internalProduction --target lib/main_internal.dart
+        run: flutter build appbundle --no-tree-shake-icons --dart-define-from-file=.env --flavor internalProduction --target lib/main_internal.dart
 
       # Package the build.
       - name: Copy build for Android
@@ -498,11 +498,11 @@ jobs:
       # Build the application.
       - name: Build appbundle
         if: ${{ github.event.inputs.env == 'development' || github.event.inputs.env == 'staging' }}
-        run: bash build-android.sh && flutter build appbundle --no-tree-shake-icons --flavor externalStaging --target lib/main_external.dart
+        run: bash build-android.sh && flutter build appbundle --no-tree-shake-icons --dart-define-from-file=.env --flavor externalStaging --target lib/main_external.dart
 
       - name: Build appbundle
         if: github.event.inputs.env == 'production'
-        run: flutter build appbundle --no-tree-shake-icons --flavor externalProduction --target lib/main_external.dart
+        run: flutter build appbundle --no-tree-shake-icons --dart-define-from-file=.env --flavor externalProduction --target lib/main_external.dart
 
       # Package the build.
       - name: Copy build for Android
@@ -643,7 +643,7 @@ jobs:
           echo "╠ Removing build products and intermediate files from the build root..."
           cd ios && xcodebuild clean && cd ..
           echo "╠ Releasing to adhoc..."
-          bash build-ios.sh && flutter build ipa --flavor internal --target lib/main_internal.dart --export-options-plist=ios/ExportOptions-internal-debug.plist
+          bash build-ios.sh && flutter build ipa --dart-define-from-file=.env --flavor internal --target lib/main_internal.dart --export-options-plist=ios/ExportOptions-internal-debug.plist
 
       - name: Build ipa
         if: github.event.inputs.env == 'production'
@@ -651,7 +651,7 @@ jobs:
           echo "╠ Removing build products and intermediate files from the build root..."
           cd ios && xcodebuild clean && cd ..
           echo "╠ Releasing to app store..."
-          flutter build ipa --flavor internal --target lib/main_internal.dart --export-options-plist=ios/ExportOptions-internal-release.plist
+          flutter build ipa --dart-define-from-file=.env --flavor internal --target lib/main_internal.dart --export-options-plist=ios/ExportOptions-internal-release.plist
 
       # Package the build.
       - name: Copy build for iOS
@@ -789,7 +789,7 @@ jobs:
           echo "╠ Removing build products and intermediate files from the build root..."
           cd ios && xcodebuild clean && cd ..
           echo "╠ Releasing to adhoc..."
-          bash build-ios.sh && flutter build ipa --flavor external --target lib/main_external.dart --export-options-plist=ios/ExportOptions-external-debug.plist
+          bash build-ios.sh && flutter build ipa --dart-define-from-file=.env --flavor external --target lib/main_external.dart --export-options-plist=ios/ExportOptions-external-debug.plist
 
       - name: Build ipa
         if: github.event.inputs.env == 'production'
@@ -797,7 +797,7 @@ jobs:
           echo "╠ Removing build products and intermediate files from the build root..."
           cd ios && xcodebuild clean && cd ..
           echo "╠ Releasing to app store..."
-          flutter build ipa --flavor external --target lib/main_external.dart --export-options-plist=ios/ExportOptions-external-release.plist
+          flutter build ipa --dart-define-from-file=.env --flavor external --target lib/main_external.dart --export-options-plist=ios/ExportOptions-external-release.plist
 
       # Package the build.
       - name: Copy build for iOS
