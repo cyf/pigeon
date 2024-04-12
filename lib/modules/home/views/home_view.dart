@@ -129,6 +129,9 @@ class _HomeViewState extends State<HomeView>
         configs?.firstWhereOrNull((config) => config.key == 'roadmap');
     final bottom = MediaQuery.of(context).padding.bottom;
     final version = AppManager.instance.version;
+    final showRoadmap =
+        StringUtil.getValue(roadmapConfig?.value, defaultVal: 'disabled') ==
+            'enabled';
     return CustomScrollView(
       controller: _scrollController,
       slivers: [
@@ -178,12 +181,9 @@ class _HomeViewState extends State<HomeView>
               title: '意见/建议',
               tips: '无论您遇到任何问题、意见或建议, 均可反馈...',
               onTap: () => NavigatorUtil.push(const FeedbackView()),
+              showBorder: showRoadmap,
             ),
-            if (StringUtil.getValue(
-                  roadmapConfig?.value,
-                  defaultVal: 'disabled',
-                ) ==
-                'enabled')
+            if (showRoadmap)
               SectionItem(
                 title: '路线图',
                 tips: '查看开发计划或进度😄',
@@ -212,6 +212,7 @@ class _HomeViewState extends State<HomeView>
   }
 
   Widget _buildSliverAppBar() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final statusBarHeight = MediaQuery.of(context).padding.top;
     Widget? flexibleSpace;
     double? expandedHeight = carouselHeight;
@@ -273,15 +274,15 @@ class _HomeViewState extends State<HomeView>
     return SliverAppBar(
       pinned: true,
       stretch: true,
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       expandedHeight: expandedHeight,
       title: expandedHeight == null || isSliverAppBarExpanded
           ? Text(AppLocalizations.of(context).appName)
           : null,
-      systemOverlayStyle: const SystemUiOverlayStyle(
+      systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.light,
+        statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+        statusBarBrightness: isDark ? Brightness.dark : Brightness.light,
       ),
       // actions: isSliverAppBarExpanded
       //     ? [
@@ -388,6 +389,7 @@ class _HomeViewState extends State<HomeView>
       isScrollControlled: true,
       enableDrag: false,
       builder: (BuildContext ctx) {
+        final isDark = Theme.of(ctx).brightness == Brightness.dark;
         return StatefulBuilder(
           builder: (BuildContext ctx1, StateSetter setInnerState) {
             return KeyboardDismisser(
@@ -395,17 +397,15 @@ class _HomeViewState extends State<HomeView>
                 constraints: BoxConstraints(
                   maxHeight: height - top - buttonHeight - bottom,
                 ),
-                callback: !_isRegistered
-                    ? _login
-                    : _register,
+                callback: !_isRegistered ? _login : _register,
                 buttonText: !_isRegistered ? '登录' : '注册',
                 header: Row(
                   children: [
                     Text(
                       '请填写${!_isRegistered ? '登录' : '注册'}信息',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
-                        color: primaryTextColor,
+                        color: isDark ? Colors.white : primaryTextColor,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -419,16 +419,18 @@ class _HomeViewState extends State<HomeView>
                         padding: MaterialStateProperty.all(
                           const EdgeInsets.all(5),
                         ),
-                        backgroundColor:
-                            MaterialStateProperty.all(secondaryGrayColor),
-                        minimumSize:
-                            MaterialStateProperty.all(const Size(24, 24)),
+                        side: MaterialStateProperty.all(BorderSide.none),
+                        backgroundColor: MaterialStateProperty.all(
+                          isDark ? borderColor : secondaryGrayColor,
+                        ),
+                        elevation: MaterialStateProperty.all(0),
+                        minimumSize: MaterialStateProperty.all(Size.zero),
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                       onPressed: NavigatorUtil.pop,
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.clear,
-                        color: borderColor,
+                        color: isDark ? secondaryTextColor : borderColor,
                         size: 14,
                       ),
                     ).nestedPadding(
@@ -440,16 +442,15 @@ class _HomeViewState extends State<HomeView>
                       padding: const EdgeInsets.symmetric(vertical: 6),
                     )
                     .nestedDecoratedBox(
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
+                        color: isDark ? primaryTextColor : Colors.white,
                         border: Border(
                           bottom: BorderSide(
-                            color: primaryGrayColor,
+                            color:
+                                isDark ? secondaryTextColor : primaryGrayColor,
                           ),
                         ),
                       ),
-                    )
-                    .nestedDecoratedBox(
-                      decoration: const BoxDecoration(color: Colors.white),
                     )
                     .nestedSizedBox(width: width)
                     .nestedConstrainedBox(
@@ -1069,7 +1070,7 @@ class _HomeViewState extends State<HomeView>
                                         materialTapTargetSize:
                                             MaterialTapTargetSize.shrinkWrap,
                                         fillColor: MaterialStateProperty.all(
-                                          Colors.white,
+                                          isDark ? primaryTextColor : Colors.white,
                                         ),
                                         checkColor: primaryColor,
                                         side:
@@ -1093,11 +1094,6 @@ class _HomeViewState extends State<HomeView>
                                           children: [
                                             const TextSpan(
                                               text: '我已仔细阅读并同意',
-                                              style: TextStyle(
-                                                color: primaryTextColor,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                              ),
                                             ),
                                             TextSpan(
                                               text: '隐私政策',
@@ -1121,11 +1117,6 @@ class _HomeViewState extends State<HomeView>
                                             ),
                                             const TextSpan(
                                               text: '以及',
-                                              style: TextStyle(
-                                                color: primaryTextColor,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                              ),
                                             ),
                                             TextSpan(
                                               text: '条款和条件',
@@ -1148,6 +1139,13 @@ class _HomeViewState extends State<HomeView>
                                               ),
                                             ),
                                           ],
+                                          style: TextStyle(
+                                            color: isDark
+                                                ? secondaryGrayColor
+                                                : primaryTextColor,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                          ),
                                         ),
                                       )
                                           .nestedPadding(
@@ -1188,8 +1186,10 @@ class _HomeViewState extends State<HomeView>
                       children: [
                         TextSpan(
                           text: !_isRegistered ? '还没有账号, ' : '已有账号, ',
-                          style: const TextStyle(
-                            color: secondaryTextColor,
+                          style: TextStyle(
+                            color: isDark
+                                ? secondaryBorderColor
+                                : secondaryTextColor,
                             fontSize: 12,
                             fontWeight: FontWeight.w400,
                           ),
@@ -1203,8 +1203,10 @@ class _HomeViewState extends State<HomeView>
                                 _isRegistered = !_isRegistered;
                               });
                             },
-                          style: const TextStyle(
-                            color: secondaryTextColor,
+                          style: TextStyle(
+                            color: isDark
+                                ? secondaryBorderColor
+                                : secondaryTextColor,
                             fontSize: 12,
                             fontWeight: FontWeight.w400,
                             decoration: TextDecoration.underline,

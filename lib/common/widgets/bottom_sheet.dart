@@ -39,6 +39,7 @@ class ModalBottomSheet extends StatelessWidget {
     final bottom = MediaQuery.of(context).padding.bottom;
     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     final marginBottom = keyboardHeight > 0 ? keyboardHeight : bottom;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -57,7 +58,9 @@ class ModalBottomSheet extends StatelessWidget {
                     padding: contentPadding,
                   )
                   .nestedPadding(padding: margin)
-                  .nestedColoredBox(color: Colors.white)
+                  .nestedColoredBox(
+                    color: isDark ? primaryTextColor : Colors.white,
+                  )
                   .nestedPadding(
                     padding: EdgeInsets.only(
                       bottom: marginBottom + buttonHeight + 8,
@@ -76,12 +79,20 @@ class ModalBottomSheet extends StatelessWidget {
                 right: 0,
                 bottom: 0,
                 child: TextButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                      isDark ? primaryTextColor : Colors.white,
+                    ),
+                    shape: MaterialStateProperty.all(
+                      const RoundedRectangleBorder(),
+                    ),
+                  ),
                   onPressed: callback,
                   child: Text(
                     buttonText,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18,
-                      color: primaryTextColor,
+                      color: isDark ? Colors.white : primaryTextColor,
                     ),
                     textAlign: TextAlign.center,
                     maxLines: 1,
@@ -98,10 +109,21 @@ class ModalBottomSheet extends StatelessWidget {
           )
         else
           TextButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(
+                isDark ? primaryTextColor : Colors.white,
+              ),
+              shape: MaterialStateProperty.all(
+                const RoundedRectangleBorder(),
+              ),
+            ),
             onPressed: callback,
             child: Text(
               buttonText,
-              style: const TextStyle(fontSize: 18, color: primaryTextColor),
+              style: TextStyle(
+                fontSize: 18,
+                color: isDark ? Colors.white : primaryTextColor,
+              ),
               textAlign: TextAlign.center,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

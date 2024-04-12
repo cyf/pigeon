@@ -15,6 +15,7 @@ class SocialCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final hasSubtitles = item.subtitles != null && item.subtitles!.isNotEmpty;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -39,9 +40,11 @@ class SocialCard extends StatelessWidget {
                       color: subtitle.color != null
                           ? ColorUtil.stringToColor(
                               subtitle.color!,
-                              primaryTextColor,
+                              isDark ? primaryGrayColor : primaryTextColor,
                             )
-                          : primaryTextColor,
+                          : isDark
+                              ? primaryGrayColor
+                              : primaryTextColor,
                       // color: primaryTextColor,
                       fontSize: 18,
                       fontWeight: FontWeight.w400,
@@ -103,8 +106,10 @@ class SocialCard extends StatelessWidget {
                 if (description.name != null)
                   Text(
                     description.name!,
-                    style:
-                        const TextStyle(color: primaryTextColor, fontSize: 18),
+                    style: TextStyle(
+                      color: isDark ? primaryGrayColor : primaryTextColor,
+                      fontSize: 18,
+                    ),
                   ).nestedPadding(padding: const EdgeInsets.only(top: 16)),
                 if (description.links != null && description.links!.isNotEmpty)
                   ...List.generate(

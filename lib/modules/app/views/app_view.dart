@@ -55,7 +55,7 @@ class _AppViewState extends State<AppView> {
       debugShowCheckedModeBanner: false,
       navigatorKey: AppNavigator.key,
       theme: AppTheme.light,
-      darkTheme: AppTheme.light,
+      darkTheme: AppTheme.dark,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       navigatorObservers: [

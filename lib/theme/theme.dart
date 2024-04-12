@@ -93,6 +93,7 @@ class AppTheme {
       dialogTheme: DialogTheme(
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.transparent,
+        elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
@@ -110,8 +111,7 @@ class AppTheme {
         ),
       ),
       textButtonTheme: TextButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
+        style: TextButton.styleFrom(
           foregroundColor: primaryBackgroundColor,
           padding: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
@@ -120,35 +120,44 @@ class AppTheme {
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(
-        style: ElevatedButton.styleFrom(
+        style: FilledButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
-        style: ElevatedButton.styleFrom(
+        style: OutlinedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
         ),
       ),
-      fontFamily: 'Normal',
     );
   }
 
   static ThemeData get dark {
     return ThemeData(
       unselectedWidgetColor: borderColor,
-      scaffoldBackgroundColor: secondaryGrayColor,
+      scaffoldBackgroundColor: Colors.black87,
       brightness: Brightness.dark,
       appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.white,
+        backgroundColor: primaryTextColor,
+        surfaceTintColor: Colors.black87,
+      ),
+      cardTheme: CardTheme(
+        clipBehavior: Clip.hardEdge,
+        color: primaryTextColor,
+        shadowColor: Colors.transparent,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        margin: const EdgeInsets.symmetric(horizontal: 10),
       ),
       bottomSheetTheme: BottomSheetThemeData(
         surfaceTintColor: primaryColor,
-        backgroundColor: secondaryGrayColor,
+        backgroundColor: Colors.black45,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -216,9 +225,11 @@ class AppTheme {
         tabAlignment: TabAlignment.start,
       ),
       dialogTheme: DialogTheme(
-        backgroundColor: Colors.white,
+        backgroundColor: primaryTextColor,
         surfaceTintColor: Colors.transparent,
+        elevation: 0,
         shape: RoundedRectangleBorder(
+          // side: const BorderSide(color: placeholderTextColor),
           borderRadius: BorderRadius.circular(20),
         ),
       ),
@@ -235,8 +246,7 @@ class AppTheme {
         ),
       ),
       textButtonTheme: TextButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
+        style: TextButton.styleFrom(
           foregroundColor: primaryBackgroundColor,
           padding: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
@@ -245,20 +255,19 @@ class AppTheme {
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(
-        style: ElevatedButton.styleFrom(
+        style: FilledButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
-        style: ElevatedButton.styleFrom(
+        style: OutlinedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
         ),
       ),
-      fontFamily: 'Normal',
     );
   }
 }

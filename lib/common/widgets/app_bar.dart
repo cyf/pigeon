@@ -5,12 +5,13 @@ import 'package:homing_pigeon/theme/colors.dart';
 
 class HpAppBar extends AppBar {
   HpAppBar({
-    super.key,
-    super.actions,
+    required this.isDark,
     this.titleName,
     this.titleWidget,
     this.onBackClick,
     this.hideBack = false,
+    super.key,
+    super.actions,
   }) : super(
           leading: hideBack
               ? null
@@ -29,14 +30,14 @@ class HpAppBar extends AppBar {
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(1),
             child: Container(
-              color: borderColor,
+              color: isDark ? secondaryTextColor : borderColor,
               height: 1,
             ),
           ),
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: Colors.white,
-            statusBarIconBrightness: Brightness.dark,
-            statusBarBrightness: Brightness.light,
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: isDark ? Colors.black : Colors.white,
+            statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+            statusBarBrightness: isDark ? Brightness.dark : Brightness.light,
           ),
         );
 
@@ -44,4 +45,5 @@ class HpAppBar extends AppBar {
   final Widget? titleWidget;
   final VoidCallback? onBackClick;
   final bool hideBack;
+  final bool isDark;
 }

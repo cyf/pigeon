@@ -62,27 +62,32 @@ class _EmojiViewState extends State<EmojiView> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final bottom = MediaQuery.of(context).padding.bottom;
     return Scaffold(
       appBar: HpAppBar(
+        isDark: isDark,
         titleName: '表情库～',
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             '欢迎投稿，嗷呜~',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: primaryTextColor,
+              color: isDark ? Colors.white : primaryTextColor,
             ),
           ).nestedPadding(
             padding: const EdgeInsets.only(top: 20, bottom: 10),
           ),
           Text.rich(
             TextSpan(
-              style: const TextStyle(fontSize: 16, color: primaryTextColor),
+              style: TextStyle(
+                fontSize: 16,
+                color: isDark ? Colors.white : primaryTextColor,
+              ),
               children: [
                 const TextSpan(text: '欢迎'),
                 TextSpan(
@@ -182,152 +187,155 @@ class _EmojiViewState extends State<EmojiView> {
       isDismissible: false,
       isScrollControlled: true,
       enableDrag: false,
-      builder: (BuildContext context) => StatefulBuilder(
-        builder: (BuildContext context, StateSetter setInnerState) {
-          final items = _fileWrappers
-              .mapIndexed(
-                (index, element) {
-                  if (kDebugMode) {
-                    print(element.file.path);
-                  }
-                  return Stack(
-                    children: [
-                      Image.file(
-                        element.file,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, url, error) => const Icon(
-                          Icons.error,
-                          color: errorTextColor,
-                          size: 24,
-                        ),
-                      ).nestedSizedBox(width: itemWidth, height: itemWidth),
-                      Positioned(
-                        top: 2,
-                        right: 2,
-                        child: const Icon(
-                          Icons.clear,
-                          color: warnTextColor,
-                          size: 14,
-                        )
-                            .nestedDecoratedBox(
-                              decoration: BoxDecoration(
-                                color: backgroundColor,
-                                borderRadius: BorderRadius.circular(9),
-                              ),
-                            )
-                            .nestedSizedBox(width: 18, height: 18)
-                            .nestedTap(
-                              () => setInnerState(
-                                () => _fileWrappers = _fileWrappers
-                                  ..removeAt(index),
-                              ),
-                            ),
-                      ),
-                    ],
-                  );
-                },
-              )
-              .cast<Widget>()
-              .toList();
-
-          if (items.length < 9) {
-            items.add(
-              const Icon(
-                Icons.add,
-                size: 40,
-                color: primaryColor,
-              )
-                  .nestedCenter()
-                  .nestedColoredBox(color: primaryGrayColor)
-                  .nestedSizedBox(width: itemWidth, height: itemWidth)
-                  .nestedInkWell(onTap: () => _pickImages(setInnerState)),
-            );
-          }
-
-          return ModalBottomSheet(
-            callback: _uploadFiles,
-            buttonText: '上传',
-            constraints: BoxConstraints(
-              minHeight: 350,
-              maxHeight: (height - top - bottom) * 0.7,
-            ),
-            header: const HpHeader(title: '请选择要上传的表情'),
-            items: [
-              const Text.rich(
-                TextSpan(
+      builder: (BuildContext context) {
+        final isDark = Theme.of(context).brightness == Brightness.dark;
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setInnerState) {
+            final items = _fileWrappers
+                .mapIndexed(
+                  (index, element) {
+                if (kDebugMode) {
+                  print(element.file.path);
+                }
+                return Stack(
                   children: [
-                    TextSpan(text: '您最多可以上传9张图片('),
-                    TextSpan(
-                      text: '图片大小必须在50KB到15MB之间',
-                      style: TextStyle(
+                    Image.file(
+                      element.file,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, url, error) => const Icon(
+                        Icons.error,
+                        color: errorTextColor,
+                        size: 24,
+                      ),
+                    ).nestedSizedBox(width: itemWidth, height: itemWidth),
+                    Positioned(
+                      top: 2,
+                      right: 2,
+                      child: const Icon(
+                        Icons.clear,
                         color: warnTextColor,
+                        size: 14,
+                      )
+                          .nestedDecoratedBox(
+                        decoration: BoxDecoration(
+                          color: backgroundColor,
+                          borderRadius: BorderRadius.circular(9),
+                        ),
+                      )
+                          .nestedSizedBox(width: 18, height: 18)
+                          .nestedTap(
+                            () => setInnerState(
+                              () => _fileWrappers = _fileWrappers
+                            ..removeAt(index),
+                        ),
                       ),
                     ),
-                    TextSpan(text: ')'),
                   ],
-                ),
-                style: TextStyle(
-                  fontSize: 12,
-                  color: placeholderTextColor,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ).nestedPadding(
-                padding: const EdgeInsets.only(
-                  left: padding,
-                  top: padding,
-                  right: padding,
-                ),
+                );
+              },
+            )
+                .cast<Widget>()
+                .toList();
+
+            if (items.length < 9) {
+              items.add(
+                const Icon(
+                  Icons.add,
+                  size: 40,
+                  color: primaryColor,
+                )
+                    .nestedCenter()
+                    .nestedColoredBox(color: isDark ? secondaryTextColor : primaryGrayColor)
+                    .nestedSizedBox(width: itemWidth, height: itemWidth)
+                    .nestedInkWell(onTap: () => _pickImages(setInnerState)),
+              );
+            }
+
+            return ModalBottomSheet(
+              callback: _uploadFiles,
+              buttonText: '上传',
+              constraints: BoxConstraints(
+                minHeight: 350,
+                maxHeight: (height - top - bottom) * 0.7,
               ),
-              FormBuilder(
-                key: _formKey,
-                child: FormBuilderField<List<FileWrapper>>(
-                  name: 'emojis',
-                  initialValue: _fileWrappers,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '请选择上传的图片';
-                    }
-                    return null;
-                  },
-                  builder: (FormFieldState<List<FileWrapper>> field) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ReorderableWrap(
-                          spacing: spacing,
-                          runSpacing: 4,
-                          padding: const EdgeInsets.all(padding),
-                          scrollPhysics: const NeverScrollableScrollPhysics(),
-                          onReorder: (int oldIndex, int newIndex) =>
-                              _onReorder(setInnerState, oldIndex, newIndex),
-                          children: items,
-                        ).nestedSingleChildScrollView(),
-                        if (StringUtil.isNotBlank(field.errorText))
-                          Text(
-                            field.errorText!,
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: errorTextColor,
-                            ),
-                          ).nestedPadding(
-                            padding: const EdgeInsets.only(
-                              top: 8,
-                              left: 8,
-                            ),
-                          ),
-                      ],
-                    );
-                  },
+              header: const HpHeader(title: '请选择要上传的表情'),
+              items: [
+                const Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(text: '您最多可以上传9张图片('),
+                      TextSpan(
+                        text: '图片大小必须在50KB到15MB之间',
+                        style: TextStyle(
+                          color: warnTextColor,
+                        ),
+                      ),
+                      TextSpan(text: ')'),
+                    ],
+                  ),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: placeholderTextColor,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ).nestedPadding(
-                  padding: const EdgeInsets.only(top: 8),
+                  padding: const EdgeInsets.only(
+                    left: padding,
+                    top: padding,
+                    right: padding,
+                  ),
                 ),
-              ),
-            ],
-          );
-        },
-      ),
+                FormBuilder(
+                  key: _formKey,
+                  child: FormBuilderField<List<FileWrapper>>(
+                    name: 'emojis',
+                    initialValue: _fileWrappers,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '请选择上传的图片';
+                      }
+                      return null;
+                    },
+                    builder: (FormFieldState<List<FileWrapper>> field) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ReorderableWrap(
+                            spacing: spacing,
+                            runSpacing: 4,
+                            padding: const EdgeInsets.all(padding),
+                            scrollPhysics: const NeverScrollableScrollPhysics(),
+                            onReorder: (int oldIndex, int newIndex) =>
+                                _onReorder(setInnerState, oldIndex, newIndex),
+                            children: items,
+                          ).nestedSingleChildScrollView(),
+                          if (StringUtil.isNotBlank(field.errorText))
+                            Text(
+                              field.errorText!,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: errorTextColor,
+                              ),
+                            ).nestedPadding(
+                              padding: const EdgeInsets.only(
+                                top: 8,
+                                left: 8,
+                              ),
+                            ),
+                        ],
+                      );
+                    },
+                  ).nestedPadding(
+                    padding: const EdgeInsets.only(top: 8),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 
@@ -462,6 +470,7 @@ class _EmojiViewState extends State<EmojiView> {
     }
   }
 
+  /// 数据加载
   void _load({Operation operation = Operation.none}) {
     var currentPage = page;
     if (operation == Operation.none) {

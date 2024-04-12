@@ -15,15 +15,16 @@ class HpHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final width = MediaQuery.of(context).size.width;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16,
-            color: primaryTextColor,
+            color: isDark ? Colors.white : primaryTextColor,
           ),
           maxLines: 1,
           textAlign: hideCancel ? TextAlign.center : TextAlign.start,
@@ -36,15 +37,21 @@ class HpHeader extends StatelessWidget {
         if (!hideCancel)
           IconButton.outlined(
             style: ButtonStyle(
-              padding: MaterialStateProperty.all(const EdgeInsets.all(5)),
-              backgroundColor: MaterialStateProperty.all(secondaryGrayColor),
-              minimumSize: MaterialStateProperty.all(const Size(24, 24)),
+              padding: MaterialStateProperty.all(
+                const EdgeInsets.all(5),
+              ),
+              side: MaterialStateProperty.all(BorderSide.none),
+              backgroundColor: MaterialStateProperty.all(
+                isDark ? borderColor : secondaryGrayColor,
+              ),
+              elevation: MaterialStateProperty.all(0),
+              minimumSize: MaterialStateProperty.all(Size.zero),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
             onPressed: NavigatorUtil.pop,
-            icon: const Icon(
+            icon: Icon(
               Icons.clear,
-              color: borderColor,
+              color: isDark ? secondaryTextColor : borderColor,
               size: 16,
             ),
           ).nestedPadding(padding: const EdgeInsets.only(right: 10)),
@@ -54,16 +61,18 @@ class HpHeader extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 6),
         )
         .nestedDecoratedBox(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                color: primaryGrayColor,
+                color: isDark ? secondaryTextColor : primaryGrayColor,
               ),
             ),
           ),
         )
         .nestedDecoratedBox(
-          decoration: const BoxDecoration(color: Colors.white),
+          decoration: BoxDecoration(
+            color: isDark ? primaryTextColor : Colors.white,
+          ),
         )
         .nestedSizedBox(width: width)
         .nestedConstrainedBox(

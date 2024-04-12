@@ -11,8 +11,10 @@ class MovieView extends StatefulWidget {
 class _MovieViewState extends State<MovieView> {
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: HpAppBar(
+        isDark: isDark,
         titleName: 'Movie',
       ),
       body: const Center(
