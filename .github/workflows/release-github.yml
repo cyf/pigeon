@@ -606,7 +606,7 @@ jobs:
           INTERNAL_PP_DEV_PATH=$RUNNER_TEMP/homing_pigeon_internal_dev.mobileprovision
           EXTERNAL_PP_PATH=$RUNNER_TEMP/homing_pigeon_appstore.mobileprovision
           EXTERNAL_PP_DEV_PATH=$RUNNER_TEMP/homing_pigeon_dev.mobileprovision
-          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          KEYCHAIN_PATH=$RUNNER_TEMP/hp-signing.keychain-db
 
           # import certificate and provisioning profile from secrets
           echo -n "$P12_BASE64" | base64 --decode --output $CERTIFICATE_PATH
@@ -679,11 +679,11 @@ jobs:
       - name: Clean up
         if: ${{ always() }}
         run: |
-          if [ -f "$RUNNER_TEMP/app-signing.keychain-db" ]; then
-            echo "$RUNNER_TEMP/app-signing.keychain-db"
-            security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+          if [ -f "$RUNNER_TEMP/hp-signing.keychain-db" ]; then
+            echo "$RUNNER_TEMP/hp-signing.keychain-db"
+            security delete-keychain $RUNNER_TEMP/hp-signing.keychain-db
           fi
-          rm -f ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision
+          rm -f ~/Library/MobileDevice/Provisioning\ Profiles/homing_pigeon_*.mobileprovision
           rm -f .env
 
   external_ios:
@@ -752,7 +752,7 @@ jobs:
           INTERNAL_PP_DEV_PATH=$RUNNER_TEMP/homing_pigeon_internal_dev.mobileprovision
           EXTERNAL_PP_PATH=$RUNNER_TEMP/homing_pigeon_appstore.mobileprovision
           EXTERNAL_PP_DEV_PATH=$RUNNER_TEMP/homing_pigeon_dev.mobileprovision
-          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          KEYCHAIN_PATH=$RUNNER_TEMP/hp-signing.keychain-db
 
           # import certificate and provisioning profile from secrets
           echo -n "$P12_BASE64" | base64 --decode --output $CERTIFICATE_PATH
@@ -847,9 +847,9 @@ jobs:
       - name: Clean up
         if: ${{ always() }}
         run: |
-          if [ -f "$RUNNER_TEMP/app-signing.keychain-db" ]; then
-            echo "$RUNNER_TEMP/app-signing.keychain-db"
-            security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+          if [ -f "$RUNNER_TEMP/hp-signing.keychain-db" ]; then
+            echo "$RUNNER_TEMP/hp-signing.keychain-db"
+            security delete-keychain $RUNNER_TEMP/hp-signing.keychain-db
           fi
-          rm -f ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision
+          rm -f ~/Library/MobileDevice/Provisioning\ Profiles/homing_pigeon_*.mobileprovision
           rm -f .env
