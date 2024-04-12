@@ -25,7 +25,7 @@ import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/common/widgets/header.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
 import 'package:homing_pigeon/gen/assets.gen.dart';
-import 'package:homing_pigeon/l10n/l10n.dart';
+import 'package:homing_pigeon/i18n/i18n.dart';
 import 'package:homing_pigeon/modules/app/app.dart';
 import 'package:homing_pigeon/modules/detail/detail.dart';
 import 'package:homing_pigeon/modules/home/home.dart';
@@ -112,7 +112,7 @@ class _HomeViewState extends State<HomeView>
                             width: 30,
                             height: 30,
                           )
-                        : Assets.logoRound.image(
+                        : Assets.logoDark.image(
                             width: 30,
                             height: 30,
                           ),
@@ -212,6 +212,7 @@ class _HomeViewState extends State<HomeView>
   }
 
   Widget _buildSliverAppBar() {
+    final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final statusBarHeight = MediaQuery.of(context).padding.top;
     Widget? flexibleSpace;
@@ -277,7 +278,7 @@ class _HomeViewState extends State<HomeView>
       // backgroundColor: Colors.white,
       expandedHeight: expandedHeight,
       title: expandedHeight == null || isSliverAppBarExpanded
-          ? Text(AppLocalizations.of(context).appName)
+          ? Text(t.homePage.title)
           : null,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,

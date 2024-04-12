@@ -14,10 +14,10 @@ class Assets {
 
   static const AssetGenImage info = AssetGenImage('assets/info.png');
   static const AssetGenImage logo = AssetGenImage('assets/logo.png');
-  static const AssetGenImage logoRound = AssetGenImage('assets/logo_round.png');
+  static const AssetGenImage logoDark = AssetGenImage('assets/logo_dark.png');
 
   /// List of all assets
-  static List<AssetGenImage> get values => [info, logo, logoRound];
+  static List<AssetGenImage> get values => [info, logo, logoDark];
 }
 
 class AssetGenImage {

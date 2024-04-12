@@ -1,0 +1,10 @@
+{
+  "appName": "Homing Pigeon",
+  "homePage": {
+    "title": "Homing Pigeon"
+  },
+  "locales(map)": {
+    "en": "English",
+    "zh": "中文"
+  }
+}
