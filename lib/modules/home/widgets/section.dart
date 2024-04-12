@@ -22,7 +22,7 @@ class Section extends StatelessWidget {
         style: const TextStyle(color: secondaryTextColor, fontSize: 16),
       )
           .nestedPadding(
-            padding: const EdgeInsets.only(top: 6, left: 10, bottom: 6),
+            padding: const EdgeInsets.only(top: 10, left: 10, bottom: 6),
           )
           .nestedColoredBox(
             color: isDark ? Colors.black87 : secondaryGrayColor,
@@ -87,9 +87,7 @@ class SectionItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(0),
           ),
         ),
-        backgroundColor: MaterialStateProperty.all(
-          isDark ? primaryTextColor : Colors.white,
-        ),
+        backgroundColor: MaterialStateProperty.all(Colors.transparent),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
