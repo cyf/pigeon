@@ -45,9 +45,11 @@ class _SocialViewState extends State<SocialView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final bottom = MediaQuery.of(context).padding.bottom;
     return Scaffold(
       appBar: HpAppBar(
+        isDark: isDark,
         titleName: '社交',
       ),
       body: EasyRefresh(
@@ -102,6 +104,7 @@ class _SocialViewState extends State<SocialView>
     );
   }
 
+  /// 数据加载
   void _load({Operation operation = Operation.none}) {
     var currentPage = page;
     if (operation == Operation.none) {
@@ -127,6 +130,27 @@ class _SocialViewState extends State<SocialView>
             page = data?.page ?? 1;
             total = data?.pageInfo?.total ?? 0;
             items = data?.items ?? [];
+                // [
+                //   SocialModel(
+                //     title: 'hahahahha',
+                //     subtitles: [
+                //       SubTitle(title: 'hahahah'),
+                //     ],
+                //     tips: [
+                //       Link(type: LinkType.link, href: 'https://baidu.com'),
+                //       Link(type: LinkType.text, text: 'hahahah'),
+                //     ],
+                //     descriptions: [
+                //       Description(
+                //         name: 'hahah',
+                //         links: [
+                //           Link(type: LinkType.link, href: 'https://baidu.com'),
+                //           Link(type: LinkType.text, text: 'hahahah'),
+                //         ],
+                //       ),
+                //     ],
+                //   )
+                // ];
           });
         } else if (operation == Operation.refresh) {
           _controller.finishRefresh();

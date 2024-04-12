@@ -89,10 +89,12 @@ class _RoadmapViewState extends State<RoadmapView> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final height = MediaQuery.of(context).size.height;
     final top = MediaQuery.of(context).padding.top;
     return Scaffold(
       appBar: HpAppBar(
+        isDark: isDark,
         titleName: '路线图',
       ),
       body: EasyRefresh(
@@ -148,6 +150,7 @@ class _RoadmapViewState extends State<RoadmapView> {
     );
   }
 
+  /// 数据加载
   void _load({
     required int year,
     required int month,

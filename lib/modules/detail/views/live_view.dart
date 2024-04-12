@@ -11,8 +11,10 @@ class LiveView extends StatefulWidget {
 class _LiveViewState extends State<LiveView> {
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: HpAppBar(
+        isDark: isDark,
         titleName: 'Live',
       ),
       body: const Center(

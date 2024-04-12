@@ -37,9 +37,9 @@ class BaseFormItem extends StatelessWidget {
             mainAxisSize: mainAxisSize,
             children: [
               if (!showTip)
-                content
+                getContent(context)
               else
-                content
+                getContent(context)
                     .addWidgetAsList(
                       tipWidget == null
                           ? tips
@@ -57,7 +57,8 @@ class BaseFormItem extends StatelessWidget {
           );
   }
 
-  Widget get content {
+  Widget getContent(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return RichText(
       text: TextSpan(
         children: [
@@ -72,8 +73,8 @@ class BaseFormItem extends StatelessWidget {
             ),
           TextSpan(
             text: title,
-            style: const TextStyle(
-              color: primaryTextColor,
+            style: TextStyle(
+              color: isDark ? Colors.white : primaryTextColor,
               fontSize: 14,
               fontWeight: FontWeight.w400,
             ),

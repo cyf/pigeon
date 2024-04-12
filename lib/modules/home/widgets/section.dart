@@ -15,20 +15,23 @@ class Section extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return SliverStickyHeader(
       header: Text(
         title,
         style: const TextStyle(color: secondaryTextColor, fontSize: 16),
       )
           .nestedPadding(
-            padding: const EdgeInsets.only(top: 10, left: 10, bottom: 6),
+            padding: const EdgeInsets.only(top: 6, left: 10, bottom: 6),
           )
-          .nestedColoredBox(color: secondaryGrayColor),
+          .nestedColoredBox(
+            color: isDark ? Colors.black87 : secondaryGrayColor,
+          ),
       sliver: SliverPadding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         sliver: DecoratedSliver(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: isDark ? primaryTextColor : Colors.white,
             borderRadius: BorderRadius.circular(10),
           ),
           sliver: SliverList(
@@ -49,7 +52,6 @@ class SectionItem extends StatelessWidget {
     this.showBack = true,
     this.showBorder = true,
     this.borderHeight = 1,
-    this.bottomBorderColor = primaryGrayColor,
     this.height = 68,
     this.tipsColor = placeholderTextColor,
     this.crossAxisAlignment = CrossAxisAlignment.start,
@@ -66,7 +68,6 @@ class SectionItem extends StatelessWidget {
   final bool showBack;
   final bool showBorder;
   final double borderHeight;
-  final Color bottomBorderColor;
   final double height;
   final CrossAxisAlignment crossAxisAlignment;
   final EdgeInsetsGeometry contentPadding;
@@ -77,6 +78,7 @@ class SectionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return TextButton(
       onPressed: onTap,
       style: ButtonStyle(
@@ -85,7 +87,9 @@ class SectionItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(0),
           ),
         ),
-        backgroundColor: MaterialStateProperty.all(Colors.transparent),
+        backgroundColor: MaterialStateProperty.all(
+          isDark ? primaryTextColor : Colors.white,
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -96,7 +100,10 @@ class SectionItem extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(fontSize: 18, color: primaryTextColor),
+                style: TextStyle(
+                  fontSize: 18,
+                  color: isDark ? secondaryGrayColor : primaryTextColor,
+                ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -123,7 +130,7 @@ class SectionItem extends StatelessWidget {
               border: showBorder
                   ? Border(
                       bottom: BorderSide(
-                        color: bottomBorderColor,
+                        color: isDark ? secondaryTextColor : primaryGrayColor,
                         width: borderHeight,
                       ),
                     )

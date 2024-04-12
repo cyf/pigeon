@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:homing_pigeon/common/extensions/extensions.dart';
 
 class NoData extends StatelessWidget {
@@ -19,8 +20,8 @@ class NoData extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         icon,
-        if (title != null) title!,
-        if (content != null) content!,
+        if (title != null) ...[const Gap(8), title!],
+        if (content != null) ...[const Gap(8), content!],
       ],
     ).nestedCenter();
   }

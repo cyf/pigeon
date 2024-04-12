@@ -35,7 +35,6 @@ class _FeedbackDetailViewState extends State<FeedbackDetailView> {
 
   // bool _isTitleFocus = false;
   // bool _isDescriptionFocus = false;
-  //
   // List<FileWrapper> _fileWrappers = [];
 
   FeedbackModel? _feedback;
@@ -68,9 +67,11 @@ class _FeedbackDetailViewState extends State<FeedbackDetailView> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final bottom = MediaQuery.of(context).padding.bottom;
     return Scaffold(
       appBar: HpAppBar(
+        isDark: isDark,
         titleName: '反馈详情',
       ),
       body: EasyRefresh(
@@ -89,6 +90,7 @@ class _FeedbackDetailViewState extends State<FeedbackDetailView> {
   }
 
   Widget _buildBody() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final height = MediaQuery.of(context).size.height;
     final top = MediaQuery.of(context).padding.top;
     final bottom = MediaQuery.of(context).padding.bottom;
@@ -101,18 +103,18 @@ class _FeedbackDetailViewState extends State<FeedbackDetailView> {
         children: [
           Text(
             StringUtil.getValue(_feedback?.title),
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w500,
-              color: primaryTextColor,
+              color: isDark ? Colors.white : primaryTextColor,
             ),
           ).nestedPadding(padding: const EdgeInsets.only(bottom: 10)),
           Text(
             StringUtil.getValue(_feedback?.description),
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
-              color: secondaryTextColor,
+              color: isDark ? primaryGrayColor : secondaryTextColor,
             ),
           ).nestedPadding(padding: const EdgeInsets.only(bottom: 10)),
           if (_feedback?.files?.isNotEmpty ?? false)
@@ -155,13 +157,14 @@ class _FeedbackDetailViewState extends State<FeedbackDetailView> {
           .nestedPadding(padding: const EdgeInsets.all(10))
           .nestedDecoratedBox(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: isDark ? primaryTextColor : Colors.white,
               borderRadius: BorderRadius.circular(8),
             ),
           )
           .nestedPadding(padding: const EdgeInsets.symmetric(vertical: 10))
           .nestedConstrainedBox(
             constraints: BoxConstraints(
+              minWidth: width,
               minHeight: height - top - kToolbarHeight - bottom,
             ),
           )
@@ -206,6 +209,7 @@ class _FeedbackDetailViewState extends State<FeedbackDetailView> {
     return const SizedBox();
   }
 
+  /// 数据加载
   void _load({Operation operation = Operation.none}) {
     if (operation == Operation.none) {
       setState(() => _loading = true);

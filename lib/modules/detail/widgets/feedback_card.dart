@@ -22,26 +22,27 @@ class _FeedbackCardState extends State<FeedbackCard> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final files = widget.feedback.files ?? <FeedbackFileModel>[];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           StringUtil.getValue(widget.feedback.title),
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.w500,
-            color: primaryTextColor,
+            color: isDark ? Colors.white : primaryTextColor,
           ),
           maxLines: 5,
           overflow: TextOverflow.ellipsis,
         ).nestedPadding(padding: const EdgeInsets.only(bottom: 10)),
         Text(
           StringUtil.getValue(widget.feedback.description),
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
-            color: secondaryTextColor,
+            color: isDark ? primaryGrayColor : secondaryTextColor,
           ),
           maxLines: 10,
           overflow: TextOverflow.ellipsis,
@@ -91,11 +92,11 @@ class _FeedbackCardState extends State<FeedbackCard> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
+            Text(
               'datadatadatadatadatadatadatadatadata',
               style: TextStyle(
                 fontSize: 14,
-                color: secondaryTextColor,
+                color: isDark ? primaryGrayColor : secondaryTextColor,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -116,7 +117,7 @@ class _FeedbackCardState extends State<FeedbackCard> {
       ],
     ).nestedPadding(padding: const EdgeInsets.all(10)).nestedDecoratedBox(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: isDark ? primaryTextColor : Colors.white,
             borderRadius: BorderRadius.circular(8),
           ),
         );

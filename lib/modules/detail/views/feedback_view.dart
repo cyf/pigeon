@@ -70,21 +70,23 @@ class _FeedbackViewState extends State<FeedbackView> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final bottom = MediaQuery.of(context).padding.bottom;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: HpAppBar(
+        isDark: isDark,
         titleName: '意见或建议',
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             '欢迎提意见或建议，嗷呜~',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: primaryTextColor,
+              color: isDark ? Colors.white : primaryTextColor,
             ),
           ).nestedPadding(
             padding: const EdgeInsets.only(top: 20, bottom: 10),
@@ -104,9 +106,9 @@ class _FeedbackViewState extends State<FeedbackView> {
                 const TextSpan(text: '进行反馈。'),
               ],
             ),
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
-              color: primaryTextColor,
+              color: isDark ? Colors.white : primaryTextColor,
             ),
           ).nestedPadding(
             padding: const EdgeInsets.only(bottom: 10),
@@ -221,330 +223,338 @@ class _FeedbackViewState extends State<FeedbackView> {
       isDismissible: false,
       isScrollControlled: true,
       enableDrag: false,
-      builder: (BuildContext context) => StatefulBuilder(
-        builder: (BuildContext context, StateSetter setInnerState) {
-          final items = _fileWrappers
-              .mapIndexed(
-                (index, element) {
-                  if (kDebugMode) {
-                    print(element.file.path);
-                  }
-                  return Stack(
-                    children: [
-                      Image.file(
-                        element.file,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, url, error) => const Icon(
-                          Icons.error,
-                          color: errorTextColor,
-                          size: 24,
-                        ),
-                      ).nestedSizedBox(width: itemWidth, height: itemWidth),
-                      Positioned(
-                        top: 2,
-                        right: 2,
-                        child: const Icon(
-                          Icons.clear,
-                          color: warnTextColor,
-                          size: 14,
-                        )
-                            .nestedDecoratedBox(
-                              decoration: BoxDecoration(
-                                color: backgroundColor,
-                                borderRadius: BorderRadius.circular(9),
-                              ),
-                            )
-                            .nestedSizedBox(width: 18, height: 18)
-                            .nestedTap(
-                              () => setInnerState(
-                                () => _fileWrappers = _fileWrappers
-                                  ..removeAt(index),
-                              ),
-                            ),
-                      ),
-                    ],
-                  );
-                },
-              )
-              .cast<Widget>()
-              .toList();
-
-          if (items.length < 9) {
-            items.add(
-              const Icon(
-                Icons.add,
-                size: 40,
-                color: primaryColor,
-              )
-                  .nestedCenter()
-                  .nestedColoredBox(color: secondaryGrayColor)
-                  .nestedSizedBox(width: itemWidth, height: itemWidth)
-                  .nestedInkWell(onTap: () => _pickImages(setInnerState)),
-            );
-          }
-
-          return KeyboardDismisser(
-            child: ModalBottomSheet(
-              constraints: BoxConstraints(
-                maxHeight: (height - top - bottom) * 0.7,
-              ),
-              callback: _submit,
-              buttonText: '提交',
-              header: const HpHeader(title: '请填写反馈内容'),
-              items: [
-                FormBuilder(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      BaseFormItem(
-                        title: '标题',
-                        showTip: false,
-                        padding: EdgeInsets.zero,
-                        child: FormBuilderField<String>(
-                          focusNode: titleFocusNode,
-                          builder: (FormFieldState<String> field) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                TextFormField(
-                                  initialValue: field.value,
-                                  focusNode: titleFocusNode,
-                                  cursorColor: primaryColor,
-                                  cursorErrorColor: errorTextColor,
-                                  autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                                  maxLines: 3,
-                                  maxLength: 100,
-                                  autocorrect: false,
-                                  style: const TextStyle(
-                                    color: primaryTextColor,
-                                  ),
-                                  onChanged: (value) {
-                                    field
-                                      ..didChange(value)
-                                      ..validate();
-                                  },
-                                  decoration: InputDecoration(
-                                    isDense: true,
-                                    contentPadding: const EdgeInsets.fromLTRB(
-                                      10,
-                                      10,
-                                      5,
-                                      10,
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(4),
-                                      borderSide: const BorderSide(
-                                        color: borderColor,
-                                      ),
-                                      gapPadding: 0,
-                                    ),
-                                    disabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(4),
-                                      borderSide: const BorderSide(
-                                        color: borderColor,
-                                      ),
-                                      gapPadding: 0,
-                                    ),
-                                    hintText: '请输入标题',
-                                    helperStyle: const TextStyle(
-                                      color: secondaryTextColor,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                    errorText: field.errorText,
-                                    errorStyle: const TextStyle(
-                                      fontSize: 12,
-                                      color: errorTextColor,
-                                    ),
-                                    counterStyle: const TextStyle(
-                                      fontSize: 12,
-                                      color: secondaryTextColor,
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(4),
-                                      borderSide: const BorderSide(
-                                        color: primaryColor,
-                                      ),
-                                      gapPadding: 0,
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(4),
-                                      borderSide: const BorderSide(
-                                        color: errorTextColor,
-                                      ),
-                                      gapPadding: 0,
-                                    ),
-                                    // fillColor: epPrimaryGrayColor,
-                                    // filled: true,
-                                  ),
+      builder: (BuildContext context) {
+        final isDark = Theme.of(context).brightness == Brightness.dark;
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setInnerState) {
+            final items = _fileWrappers
+                .mapIndexed(
+                  (index, element) {
+                    if (kDebugMode) {
+                      print(element.file.path);
+                    }
+                    return Stack(
+                      children: [
+                        Image.file(
+                          element.file,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, url, error) => const Icon(
+                            Icons.error,
+                            color: errorTextColor,
+                            size: 24,
+                          ),
+                        ).nestedSizedBox(width: itemWidth, height: itemWidth),
+                        Positioned(
+                          top: 2,
+                          right: 2,
+                          child: const Icon(
+                            Icons.clear,
+                            color: warnTextColor,
+                            size: 14,
+                          )
+                              .nestedDecoratedBox(
+                                decoration: BoxDecoration(
+                                  color: backgroundColor,
+                                  borderRadius: BorderRadius.circular(9),
                                 ),
-                              ],
-                            );
-                          },
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(
-                              errorText: '请输入标题',
-                            ),
-                          ]),
-                          name: 'title',
-                        ).nestedPadding(
-                          padding: const EdgeInsets.only(top: 8),
-                        ),
-                      ),
-                      BaseFormItem(
-                        title: '描述',
-                        showTip: false,
-                        child: FormBuilderField<String>(
-                          focusNode: descriptionFocusNode,
-                          builder: (FormFieldState<String> field) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                TextFormField(
-                                  initialValue: field.value,
-                                  focusNode: descriptionFocusNode,
-                                  cursorColor: primaryColor,
-                                  cursorErrorColor: errorTextColor,
-                                  autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                                  maxLines: 10,
-                                  maxLength: 500,
-                                  autocorrect: false,
-                                  style: const TextStyle(
-                                    color: primaryTextColor,
-                                  ),
-                                  onChanged: (value) {
-                                    field
-                                      ..didChange(value)
-                                      ..validate();
-                                  },
-                                  decoration: InputDecoration(
-                                    isDense: true,
-                                    contentPadding: const EdgeInsets.fromLTRB(
-                                      10,
-                                      10,
-                                      5,
-                                      10,
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(4),
-                                      borderSide: const BorderSide(
-                                        color: borderColor,
-                                      ),
-                                      gapPadding: 0,
-                                    ),
-                                    disabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(4),
-                                      borderSide: const BorderSide(
-                                        color: borderColor,
-                                      ),
-                                      gapPadding: 0,
-                                    ),
-                                    hintText: '请输入描述',
-                                    helperStyle: const TextStyle(
-                                      color: secondaryTextColor,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                    errorText: field.errorText,
-                                    errorStyle: const TextStyle(
-                                      fontSize: 12,
-                                      color: errorTextColor,
-                                    ),
-                                    counterStyle: const TextStyle(
-                                      fontSize: 12,
-                                      color: secondaryTextColor,
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(4),
-                                      borderSide: const BorderSide(
-                                        color: primaryColor,
-                                      ),
-                                      gapPadding: 0,
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(4),
-                                      borderSide: const BorderSide(
-                                        color: errorTextColor,
-                                      ),
-                                      gapPadding: 0,
-                                    ),
-                                    // fillColor: epPrimaryGrayColor,
-                                    // filled: true,
-                                  ),
+                              )
+                              .nestedSizedBox(width: 18, height: 18)
+                              .nestedTap(
+                                () => setInnerState(
+                                  () => _fileWrappers = _fileWrappers
+                                    ..removeAt(index),
                                 ),
-                              ],
-                            );
-                          },
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(
-                              errorText: '请输入描述',
-                            ),
-                          ]),
-                          name: 'description',
-                        ).nestedPadding(
-                          padding: const EdgeInsets.only(top: 8),
+                              ),
                         ),
-                      ),
-                    ],
-                  ),
-                ).nestedPadding(
-                  padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
+                      ],
+                    );
+                  },
+                )
+                .cast<Widget>()
+                .toList();
+
+            if (items.length < 9) {
+              items.add(
+                const Icon(
+                  Icons.add,
+                  size: 40,
+                  color: primaryColor,
+                )
+                    .nestedCenter()
+                    .nestedColoredBox(
+                        color: isDark ? secondaryTextColor : secondaryGrayColor)
+                    .nestedSizedBox(width: itemWidth, height: itemWidth)
+                    .nestedInkWell(onTap: () => _pickImages(setInnerState)),
+              );
+            }
+
+            return KeyboardDismisser(
+              child: ModalBottomSheet(
+                constraints: BoxConstraints(
+                  maxHeight: (height - top - bottom) * 0.7,
                 ),
-                BaseFormItem(
-                  title: '图片或视频',
-                  showTip: false,
-                  required: false,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(text: '您最多可以上传9张图片或视频('),
-                            TextSpan(
-                              text: '图片大小必须在50KB到15MB之间, 视频大小必须在50KB到20MB之间',
-                              style: TextStyle(
-                                color: warnTextColor,
+                callback: _submit,
+                buttonText: '提交',
+                header: const HpHeader(title: '请填写反馈内容'),
+                items: [
+                  FormBuilder(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        BaseFormItem(
+                          title: '标题',
+                          showTip: false,
+                          padding: EdgeInsets.zero,
+                          child: FormBuilderField<String>(
+                            focusNode: titleFocusNode,
+                            builder: (FormFieldState<String> field) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  TextFormField(
+                                    initialValue: field.value,
+                                    focusNode: titleFocusNode,
+                                    cursorColor: primaryColor,
+                                    cursorErrorColor: errorTextColor,
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    maxLines: 3,
+                                    maxLength: 100,
+                                    autocorrect: false,
+                                    style: const TextStyle(
+                                      color: primaryTextColor,
+                                    ),
+                                    onChanged: (value) {
+                                      field
+                                        ..didChange(value)
+                                        ..validate();
+                                    },
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      contentPadding: const EdgeInsets.fromLTRB(
+                                        10,
+                                        10,
+                                        5,
+                                        10,
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(4),
+                                        borderSide: const BorderSide(
+                                          color: borderColor,
+                                        ),
+                                        gapPadding: 0,
+                                      ),
+                                      disabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(4),
+                                        borderSide: const BorderSide(
+                                          color: borderColor,
+                                        ),
+                                        gapPadding: 0,
+                                      ),
+                                      hintText: '请输入标题',
+                                      helperStyle: const TextStyle(
+                                        color: secondaryTextColor,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      errorText: field.errorText,
+                                      errorStyle: const TextStyle(
+                                        fontSize: 12,
+                                        color: errorTextColor,
+                                      ),
+                                      counterStyle: const TextStyle(
+                                        fontSize: 12,
+                                        color: secondaryTextColor,
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(4),
+                                        borderSide: const BorderSide(
+                                          color: primaryColor,
+                                        ),
+                                        gapPadding: 0,
+                                      ),
+                                      errorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(4),
+                                        borderSide: const BorderSide(
+                                          color: errorTextColor,
+                                        ),
+                                        gapPadding: 0,
+                                      ),
+                                      // fillColor: epPrimaryGrayColor,
+                                      // filled: true,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(
+                                errorText: '请输入标题',
                               ),
-                            ),
-                            TextSpan(text: ')'),
-                          ],
+                            ]),
+                            name: 'title',
+                          ).nestedPadding(
+                            padding: const EdgeInsets.only(top: 8),
+                          ),
                         ),
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: placeholderTextColor,
+                        BaseFormItem(
+                          title: '描述',
+                          showTip: false,
+                          child: FormBuilderField<String>(
+                            focusNode: descriptionFocusNode,
+                            builder: (FormFieldState<String> field) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  TextFormField(
+                                    initialValue: field.value,
+                                    focusNode: descriptionFocusNode,
+                                    cursorColor: primaryColor,
+                                    cursorErrorColor: errorTextColor,
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    maxLines: 10,
+                                    maxLength: 500,
+                                    autocorrect: false,
+                                    style: const TextStyle(
+                                      color: primaryTextColor,
+                                    ),
+                                    onChanged: (value) {
+                                      field
+                                        ..didChange(value)
+                                        ..validate();
+                                    },
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      contentPadding: const EdgeInsets.fromLTRB(
+                                        10,
+                                        10,
+                                        5,
+                                        10,
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(4),
+                                        borderSide: const BorderSide(
+                                          color: borderColor,
+                                        ),
+                                        gapPadding: 0,
+                                      ),
+                                      disabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(4),
+                                        borderSide: const BorderSide(
+                                          color: borderColor,
+                                        ),
+                                        gapPadding: 0,
+                                      ),
+                                      hintText: '请输入描述',
+                                      helperStyle: const TextStyle(
+                                        color: secondaryTextColor,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      errorText: field.errorText,
+                                      errorStyle: const TextStyle(
+                                        fontSize: 12,
+                                        color: errorTextColor,
+                                      ),
+                                      counterStyle: const TextStyle(
+                                        fontSize: 12,
+                                        color: secondaryTextColor,
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(4),
+                                        borderSide: const BorderSide(
+                                          color: primaryColor,
+                                        ),
+                                        gapPadding: 0,
+                                      ),
+                                      errorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(4),
+                                        borderSide: const BorderSide(
+                                          color: errorTextColor,
+                                        ),
+                                        gapPadding: 0,
+                                      ),
+                                      // fillColor: epPrimaryGrayColor,
+                                      // filled: true,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(
+                                errorText: '请输入描述',
+                              ),
+                            ]),
+                            name: 'description',
+                          ).nestedPadding(
+                            padding: const EdgeInsets.only(top: 8),
+                          ),
                         ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      ReorderableWrap(
-                        spacing: spacing,
-                        runSpacing: 4,
-                        onReorder: (int oldIndex, int newIndex) =>
-                            _onReorder(setInnerState, oldIndex, newIndex),
-                        scrollPhysics: const NeverScrollableScrollPhysics(),
-                        children: items,
-                      ).nestedPadding(
-                        padding: const EdgeInsets.only(top: 8),
-                      ),
-                    ],
+                      ],
+                    ),
                   ).nestedPadding(
-                    padding: const EdgeInsets.only(top: 8),
+                    padding: const EdgeInsets.only(
+                      left: 10,
+                      top: 10,
+                      right: 10,
+                    ),
                   ),
-                ).nestedPadding(
-                  padding: const EdgeInsets.only(
-                    left: 10,
-                    right: 10,
-                    bottom: 10,
+                  BaseFormItem(
+                    title: '图片或视频',
+                    showTip: false,
+                    required: false,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(text: '您最多可以上传9张图片或视频('),
+                              TextSpan(
+                                text: '图片大小必须在50KB到15MB之间, 视频大小必须在50KB到20MB之间',
+                                style: TextStyle(
+                                  color: warnTextColor,
+                                ),
+                              ),
+                              TextSpan(text: ')'),
+                            ],
+                          ),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: placeholderTextColor,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        ReorderableWrap(
+                          spacing: spacing,
+                          runSpacing: 4,
+                          onReorder: (int oldIndex, int newIndex) =>
+                              _onReorder(setInnerState, oldIndex, newIndex),
+                          scrollPhysics: const NeverScrollableScrollPhysics(),
+                          children: items,
+                        ).nestedPadding(
+                          padding: const EdgeInsets.only(top: 8),
+                        ),
+                      ],
+                    ).nestedPadding(
+                      padding: const EdgeInsets.only(top: 8),
+                    ),
+                  ).nestedPadding(
+                    padding: const EdgeInsets.only(
+                      left: 10,
+                      right: 10,
+                      bottom: 10,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
+                ],
+              ),
+            );
+          },
+        );
+      },
     );
   }
 
@@ -568,14 +578,16 @@ class _FeedbackViewState extends State<FeedbackView> {
 
     final statusList = statuses.values.toList();
     final denied = statusList.every(
-      (status) => [PermissionStatus.permanentlyDenied, PermissionStatus.denied]
-          .contains(status),
+      (status) => [
+        PermissionStatus.permanentlyDenied,
+        PermissionStatus.denied,
+      ].contains(status),
     );
     if (denied) {
       DialogUtil.showCustomDialog(
         title: 'Allow access to your album',
-        content:
-            'Please go to your phone Settings to grant Homing Pigeon the permission to visit your album.',
+        content: 'Please go to your phone Settings to grant '
+            'Homing Pigeon the permission to visit your album.',
         cancelText: 'Ignore',
         okText: 'Turn On',
         onOK: () async {
@@ -593,8 +605,11 @@ class _FeedbackViewState extends State<FeedbackView> {
     final assets = await AssetPicker.pickAssets(
       context,
       pickerConfig: AssetPickerConfig(
-        selectedAssets:
-            _fileWrappers.map((fileWrapper) => fileWrapper.asset).toList(),
+        selectedAssets: _fileWrappers
+            .map(
+              (fileWrapper) => fileWrapper.asset,
+            )
+            .toList(),
       ),
     );
     if (assets != null && assets.isNotEmpty) {
@@ -704,6 +719,7 @@ class _FeedbackViewState extends State<FeedbackView> {
     );
   }
 
+  /// 数据加载
   void _load({Operation operation = Operation.none}) {
     var currentPage = page;
     if (operation == Operation.none) {
