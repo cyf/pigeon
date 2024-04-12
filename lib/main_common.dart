@@ -17,6 +17,7 @@ import 'package:homing_pigeon/common/logger/logger.dart';
 import 'package:homing_pigeon/common/utils/log_util.dart';
 import 'package:homing_pigeon/common/utils/sp_util.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
+import 'package:homing_pigeon/i18n/i18n.dart';
 import 'package:homing_pigeon/modules/app/app.dart';
 import 'package:jpush_flutter2/jpush_flutter2.dart';
 import 'package:minio_flutter/minio.dart';
@@ -169,6 +170,9 @@ Future<void> runMainApp() async {
     );
   }
 
+  // initialize with the right locale
+  LocaleSettings.useDeviceLocale();
+
   await SpUtil.getInstance();
   await LogUtil.getInstance();
 
@@ -258,7 +262,7 @@ Future<void> runMainApp() async {
 
   await initApp();
 
-  runApp(const App());
+  runApp(TranslationProvider(child: const App()));
 }
 
 Future<void> initApp() async {

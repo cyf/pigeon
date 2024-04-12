@@ -1,0 +1,10 @@
+{
+  "appName": "信鸽",
+  "homePage": {
+    "title": "信鸽"
+  },
+  "locales(map)": {
+    "en": "English",
+    "zh": "中文"
+  }
+}
