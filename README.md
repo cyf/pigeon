@@ -3,7 +3,9 @@
 [![Test](https://github.com/cyf/homing-pigeon/actions/workflows/test.yml/badge.svg)](https://github.com/cyf/homing-pigeon/actions/workflows/test.yml)
 [![Release to GitHub](https://github.com/cyf/homing-pigeon/actions/workflows/release-github.yml/badge.svg)](https://github.com/cyf/homing-pigeon/actions/workflows/release-github.yml)
 
-## iOS
+## Requirements
+
+### iOS
 
 1. 导入证书
 ```shell
@@ -16,9 +18,7 @@ security import ./<name>.p12 -P <password> -A -t cert -f pkcs12
 ```
 
 3. 双击导入mobileprovision文件
-
-### 手动安装模拟器运行时
-
+4. 手动安装模拟器运行时
 - 已安装列表
 ```shell
 xcrun simctl runtime list
@@ -28,6 +28,8 @@ xcrun simctl runtime list
 ```shell
 xcrun simctl runtime add "~/iOS_17.0.1_Simulator_Runtime.dmg"
 ```
+
+### Android
 
 ## Release
 
