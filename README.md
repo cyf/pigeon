@@ -39,7 +39,7 @@ app打包发生变化，这样发布到蒲公英的版本号，会带有commit�
 
 ### Flutter
 
-在`pubspec.yaml`文件修改`version: <new version>`
+>在`pubspec.yaml`文件修改`version: <new version>`
 
 ### Android
 
