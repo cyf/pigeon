@@ -68,6 +68,9 @@ class _AppViewState extends State<AppView> {
         child: navigateToPage(context),
       ),
       builder: (BuildContext context, Widget? child) {
+        final isDark = Theme.of(context).brightness == Brightness.dark;
+        EasyLoading.instance.loadingStyle =
+            isDark ? EasyLoadingStyle.light : EasyLoadingStyle.dark;
         final newChild = easyLoading(context, child);
         return MediaQuery(
           /// 设置文字大小不随系统设置改变
