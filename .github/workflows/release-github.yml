@@ -173,7 +173,9 @@ jobs:
       # Build the application.
       - name: Build apk
         if: ${{ github.event.inputs.env == 'development' || github.event.inputs.env == 'staging' }}
-        run: bash build-android.sh && flutter build apk --no-tree-shake-icons --dart-define-from-file=.env --flavor internalStaging --target lib/main_internal.dart
+        run: bash build-android.sh "$ENV" && flutter build apk --no-tree-shake-icons --dart-define-from-file=.env --flavor internalStaging --target lib/main_internal.dart
+        env:
+          ENV: ${{ github.event.inputs.env }}
 
       - name: Build apk
         if: github.event.inputs.env == 'production'
@@ -271,7 +273,9 @@ jobs:
       # Build the application.
       - name: Build apk
         if: ${{ github.event.inputs.env == 'development' || github.event.inputs.env == 'staging' }}
-        run: bash build-android.sh && flutter build apk --no-tree-shake-icons --dart-define-from-file=.env --flavor externalStaging --target lib/main_external.dart
+        run: bash build-android.sh "$ENV" && flutter build apk --no-tree-shake-icons --dart-define-from-file=.env --flavor externalStaging --target lib/main_external.dart
+        env:
+          ENV: ${{ github.event.inputs.env }}
 
       - name: Build apk
         if: github.event.inputs.env == 'production'
@@ -394,7 +398,9 @@ jobs:
       # Build the application.
       - name: Build appbundle
         if: ${{ github.event.inputs.env == 'development' || github.event.inputs.env == 'staging' }}
-        run: bash build-android.sh && flutter build appbundle --no-tree-shake-icons --dart-define-from-file=.env --flavor internalStaging --target lib/main_internal.dart
+        run: bash build-android.sh "$ENV" && flutter build appbundle --no-tree-shake-icons --dart-define-from-file=.env --flavor internalStaging --target lib/main_internal.dart
+        env:
+          ENV: ${{ github.event.inputs.env }}
 
       - name: Build appbundle
         if: github.event.inputs.env == 'production'
@@ -498,7 +504,9 @@ jobs:
       # Build the application.
       - name: Build appbundle
         if: ${{ github.event.inputs.env == 'development' || github.event.inputs.env == 'staging' }}
-        run: bash build-android.sh && flutter build appbundle --no-tree-shake-icons --dart-define-from-file=.env --flavor externalStaging --target lib/main_external.dart
+        run: bash build-android.sh "$ENV" && flutter build appbundle --no-tree-shake-icons --dart-define-from-file=.env --flavor externalStaging --target lib/main_external.dart
+        env:
+          ENV: ${{ github.event.inputs.env }}
 
       - name: Build appbundle
         if: github.event.inputs.env == 'production'
@@ -643,7 +651,9 @@ jobs:
           echo "╠ Removing build products and intermediate files from the build root..."
           cd ios && xcodebuild clean && cd ..
           echo "╠ Releasing to adhoc..."
-          bash build-ios.sh && flutter build ipa --dart-define-from-file=.env --flavor internal --target lib/main_internal.dart --export-options-plist=ios/ExportOptions-internal-debug.plist
+          bash build-ios.sh "$ENV" && flutter build ipa --dart-define-from-file=.env --flavor internal --target lib/main_internal.dart --export-options-plist=ios/ExportOptions-internal-debug.plist
+        env:
+          ENV: ${{ github.event.inputs.env }}
 
       - name: Build ipa
         if: github.event.inputs.env == 'production'
@@ -789,7 +799,9 @@ jobs:
           echo "╠ Removing build products and intermediate files from the build root..."
           cd ios && xcodebuild clean && cd ..
           echo "╠ Releasing to adhoc..."
-          bash build-ios.sh && flutter build ipa --dart-define-from-file=.env --flavor external --target lib/main_external.dart --export-options-plist=ios/ExportOptions-external-debug.plist
+          bash build-ios.sh "$ENV" && flutter build ipa --dart-define-from-file=.env --flavor external --target lib/main_external.dart --export-options-plist=ios/ExportOptions-external-debug.plist
+        env:
+          ENV: ${{ github.event.inputs.env }}
 
       - name: Build ipa
         if: github.event.inputs.env == 'production'
