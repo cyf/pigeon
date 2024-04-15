@@ -1,18 +1,12 @@
 #!/bin/zsh
 
 function getEnv() {
-  env="development"
-  if [ "$(awk '/dev.external.homing-pigeon.chenyifaer.com/{print $0}' .env)" ]; then
+  env=""
+  if [ "$(awk '/dev.chenyifaer.com\/homing-pigeon/{print $0}' .env)" ]; then
       env="development"
-  elif [ "$(awk '/dev.internal.homing-pigeon.chenyifaer.com/{print $0}' .env)" ]; then
-      env="development"
-  elif [ "$(awk '/stg.external.homing-pigeon.chenyifaer.com/{print $0}' .env)" ]; then
+  elif [ "$(awk '/stg.chenyifaer.com\/homing-pigeon/{print $0}' .env)" ]; then
       env="staging"
-  elif [ "$(awk '/stg.internal.homing-pigeon.chenyifaer.com/{print $0}' .env)" ]; then
-      env="staging"
-  elif [ "$(awk '/external.homing-pigeon.chenyifaer.com/{print $0}' .env)" ]; then
-      env="production"
-  elif [ "$(awk '/internal.homing-pigeon.chenyifaer.com/{print $0}' .env)" ]; then
+  elif [ "$(awk '/chenyifaer.com\/homing-pigeon/{print $0}' .env)" ]; then
       env="production"
   fi
   echo "$env"

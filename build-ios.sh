@@ -2,7 +2,15 @@
 
 . ./build-common.sh
 
-env=$(getEnv $?)
+env=""
+if [ ! -z "$1" ]; then
+    echo "get env from args"
+    env="$1"
+else
+    echo "get env from .env"
+    env=$(getEnv $?)
+fi
+
 echo "env: $env"
 
 git_commit=$(git rev-parse --short=8 HEAD)
