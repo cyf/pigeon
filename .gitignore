@@ -46,4 +46,3 @@ app.*.map.json
 # local env files
 .env*.local
 .env
-scripts/runner/version.dart
