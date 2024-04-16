@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:homing_pigeon/common/extensions/extensions.dart';
-import 'package:homing_pigeon/gen/assets.gen.dart';
 import 'package:homing_pigeon/theme/colors.dart';
 
 typedef BaseFormItemCallback = void Function();
@@ -87,13 +86,19 @@ class BaseFormItem extends StatelessWidget {
   }
 
   Widget get tips {
-    return Assets.info
-        .image(height: 16, width: 16)
-        .nestedPadding(
-          padding: const EdgeInsets.only(left: 4),
-        )
-        .nestedTap(() {
-      onTipTap?.call();
-    });
+    return IconButton(
+      style: ButtonStyle(
+        padding: MaterialStateProperty.all(EdgeInsets.zero),
+        elevation: MaterialStateProperty.all(0),
+        minimumSize: MaterialStateProperty.all(Size.zero),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
+      onPressed: onTipTap,
+      icon: const Icon(
+        Icons.info,
+        size: 14,
+        color: primaryColor,
+      ),
+    ).nestedPadding(padding: const EdgeInsets.only(left: 4));
   }
 }

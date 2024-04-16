@@ -4,6 +4,7 @@ const primaryColor = Color(0xFF00A590);
 const primaryHoverColor = Color(0xFF00CBB3);
 const primaryBackgroundColor = Color(0xFFE6FAF7);
 const primaryTextColor = Color(0xFF333333);
+const dialogBackgroundColor = Color(0xFF2f3542);
 const secondaryTextColor = Color(0xFF6F7379);
 const placeholderTextColor = Color(0xFF959595);
 const errorTextColor = Color(0xFFFF5050);
