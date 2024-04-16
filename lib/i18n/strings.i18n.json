@@ -1,7 +1,39 @@
 {
   "appName": "Homing Pigeon",
-  "homePage": {
-    "title": "Homing Pigeon"
+  "pages": {
+    "homePage": {
+      "title": "Homing Pigeon"
+    }
+  },
+  "buttons": {
+    "agree": "Agree",
+    "cancel": "Cancel"
+  },
+  "dialogs": {
+    "licenseDialog": {
+      "licenseDialogTitle": "Terms and Conditions",
+      "licenseDialogContentContent": "Protecting user's privacy and personal information is a fundamental principle of Homing Pigeon.",
+      "licenseDialogContentTip": "Below is a list of permissions required by this APP:",
+      "licenseDialogContentPrefix": "Before you use this APP's services, please carefully read and agree to the ",
+      "licenseDialogContentUserAgreement": "User Agreement",
+      "licenseDialogContentAnd": " and ",
+      "licenseDialogContentPrivacyAgreement": "Privacy Agreement",
+      "licenseDialogContentSuffix": ", start using our services after you agree and accept all terms.",
+      "iosPermissions": [
+        "For you to take pictures, Homing Pigeon needs access to your Camera. (NSCameraUsageDescription)",
+        "For you to upload pictures, Homing Pigeon needs access to your Photos. (NSPhotoLibraryUsageDescription)"
+      ],
+      "androidPermissions": [
+        "Used for data interaction between the application and the server, Homing Pigeon needs access to your Internet. (android.permission.INTERNET)",
+        "In order to send you notifications, Homing Pigeon needs access to your permission. (android.permission.POST_NOTIFICATIONS)",
+        "For you to upload pictures, Homing Pigeon needs access to your Storage. (android.permission.READ_EXTERNAL_STORAGE)",
+        "For you to save pictures, Homing Pigeon needs access to your Storage. (android.permission.WRITE_EXTERNAL_STORAGE)",
+        "For you to upload pictures, Homing Pigeon needs access to your Photos. (android.permission.READ_MEDIA_IMAGES)",
+        "For you to upload videos, Homing Pigeon needs access to your Videos. (android.permission.READ_MEDIA_VIDEO)",
+        "For you to take pictures, Homing Pigeon needs access to your Camera. (android.permission.CAMERA)",
+        "In order to send you local notifications, Homing Pigeon needs access to your permission. (android.permission.RECEIVE_BOOT_COMPLETED)"
+      ]
+    }
   },
   "locales(map)": {
     "en": "English",

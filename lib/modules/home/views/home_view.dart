@@ -4,6 +4,7 @@ import 'package:clipboard/clipboard.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -19,6 +20,7 @@ import 'package:homing_pigeon/common/extensions/extensions.dart';
 import 'package:homing_pigeon/common/http/utils/handle_errors.dart';
 import 'package:homing_pigeon/common/models/models.dart';
 import 'package:homing_pigeon/common/utils/color_util.dart';
+import 'package:homing_pigeon/common/utils/dialog_util.dart';
 import 'package:homing_pigeon/common/utils/navigator_util.dart';
 import 'package:homing_pigeon/common/utils/sp_util.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
@@ -64,6 +66,10 @@ class _HomeViewState extends State<HomeView>
   @override
   void initState() {
     super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((timestamp) {
+      DialogUtil.showLicenseDialog();
+    });
+
     _scrollController.addListener(() {
       setState(() {
         isSliverAppBarExpanded = _scrollController.hasClients &&
@@ -278,7 +284,7 @@ class _HomeViewState extends State<HomeView>
       // backgroundColor: Colors.white,
       expandedHeight: expandedHeight,
       title: expandedHeight == null || isSliverAppBarExpanded
-          ? Text(t.homePage.title)
+          ? Text(t.pages.homePage.title)
           : null,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -1071,7 +1077,9 @@ class _HomeViewState extends State<HomeView>
                                         materialTapTargetSize:
                                             MaterialTapTargetSize.shrinkWrap,
                                         fillColor: MaterialStateProperty.all(
-                                          isDark ? primaryTextColor : Colors.white,
+                                          isDark
+                                              ? primaryTextColor
+                                              : Colors.white,
                                         ),
                                         checkColor: primaryColor,
                                         side:

@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:homing_pigeon/theme/colors.dart';
 
+///
 class AppTheme {
+  ///
   static ThemeData get light {
     return ThemeData(
       unselectedWidgetColor: borderColor,
-      scaffoldBackgroundColor: secondaryGrayColor,
+      scaffoldBackgroundColor: Colors.white,
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
       ),
       bottomSheetTheme: BottomSheetThemeData(
-        surfaceTintColor: primaryColor,
+        surfaceTintColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -112,6 +114,7 @@ class AppTheme {
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
+          backgroundColor: Colors.white,
           foregroundColor: primaryBackgroundColor,
           padding: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
@@ -136,28 +139,19 @@ class AppTheme {
     );
   }
 
+  ///
   static ThemeData get dark {
     return ThemeData(
       unselectedWidgetColor: borderColor,
-      scaffoldBackgroundColor: Colors.black87,
+      scaffoldBackgroundColor: Colors.black,
       brightness: Brightness.dark,
       appBarTheme: const AppBarTheme(
-        backgroundColor: primaryTextColor,
-        surfaceTintColor: Colors.black87,
-      ),
-      cardTheme: CardTheme(
-        clipBehavior: Clip.hardEdge,
-        color: primaryTextColor,
-        shadowColor: Colors.transparent,
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        margin: const EdgeInsets.symmetric(horizontal: 10),
+        backgroundColor: Colors.black,
+        surfaceTintColor: Colors.black,
       ),
       bottomSheetTheme: BottomSheetThemeData(
-        surfaceTintColor: primaryColor,
-        backgroundColor: Colors.black45,
+        surfaceTintColor: dialogBackgroundColor,
+        backgroundColor: dialogBackgroundColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -225,7 +219,7 @@ class AppTheme {
         tabAlignment: TabAlignment.start,
       ),
       dialogTheme: DialogTheme(
-        backgroundColor: primaryTextColor,
+        backgroundColor: dialogBackgroundColor,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         shape: RoundedRectangleBorder(
@@ -247,6 +241,7 @@ class AppTheme {
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
+          backgroundColor: Colors.white,
           foregroundColor: primaryBackgroundColor,
           padding: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
