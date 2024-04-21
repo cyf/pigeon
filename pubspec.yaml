@@ -45,7 +45,7 @@ dependencies:
   device_info_plus: ^10.1.0
   dio: ^5.4.3+1
   dxcaptcha_flutter: ^0.0.1+1
-  easy_refresh: ^3.3.4
+  easy_refresh: ^3.3.5
   encrypt: ^5.0.3
   equatable: ^2.0.5
   extended_text: ^13.0.0
@@ -63,7 +63,7 @@ dependencies:
   flutter_local_notifications: ^17.0.1
   flutter_localizations:
     sdk: flutter
-  flutter_markdown: ^0.6.23
+  flutter_markdown: ^0.7.1
   flutter_native_splash: ^2.4.0
   flutter_staggered_grid_view: ^0.7.0
   flutter_sticky_header: ^0.6.5
