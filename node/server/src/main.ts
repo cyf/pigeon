@@ -5,15 +5,28 @@ import { IoAdapter } from '@nestjs/platform-socket.io'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import bodyParser from 'body-parser'
 import session from 'express-session'
+import RedisStore from 'connect-redis'
 import cookieParser from 'cookie-parser'
 import compression from 'compression'
 import helmet from 'helmet'
 import { join } from 'path'
+import { createClient } from 'redis'
 import { AppModule } from './app.module'
 
 const RENDER_GIT_BRANCH = process.env.RENDER_GIT_BRANCH
 const RENDER_GIT_COMMIT = process.env.RENDER_GIT_COMMIT
 const RENDER_GIT_REPO_SLUG = process.env.RENDER_GIT_REPO_SLUG
+
+const redisClient = createClient({
+  socket: {
+    host: process.env.KV_HOST,
+    port: +process.env.KV_PORT,
+    tls: true,
+  },
+  username: process.env.KV_USERNAME,
+  password: process.env.KV_PASSWORD,
+})
+redisClient.connect().catch(console.error)
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
@@ -22,6 +35,11 @@ async function bootstrap() {
   app.use(
     session({
       secret: process.env.SESSION_SECRET,
+      store: new RedisStore({
+        client: redisClient,
+        prefix: 'hps:',
+        ttl: 60,
+      }),
       resave: false,
       saveUninitialized: false,
       cookie: {
