@@ -18,13 +18,15 @@ const RENDER_GIT_REPO_SLUG = process.env.RENDER_GIT_REPO_SLUG
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
   app.use(bodyParser.urlencoded({ extended: false }))
-  app.use(cookieParser('cookie-parser-secret'))
+  app.use(cookieParser(process.env.COOKIE_SECRET))
   app.use(
     session({
       secret: process.env.SESSION_SECRET,
+      resave: false,
+      saveUninitialized: false,
       cookie: {
+        secure: true,
         maxAge: 30 * 24 * 60 * 60 * 1000,
-        httpOnly: true,
         sameSite: 'lax', //csrf security
       },
     }),

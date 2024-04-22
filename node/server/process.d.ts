@@ -8,6 +8,7 @@ declare namespace NodeJS {
     KV_USERNAME: string
     KV_PASSWORD: string
     JWT_SECRET: string
+    COOKIE_SECRET: string
     SESSION_SECRET: string
     ENCRYPT_KEY: string
     ENCRYPT_IV: string
