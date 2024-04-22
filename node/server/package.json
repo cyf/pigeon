@@ -45,6 +45,7 @@
     "class-validator": "^0.14.1",
     "compare-versions": "^6.1.0",
     "compression": "^1.7.4",
+    "connect-redis": "^7.1.1",
     "cookie-parser": "^1.4.6",
     "cross-env": "^7.0.3",
     "crypto-js": "^4.2.0",
