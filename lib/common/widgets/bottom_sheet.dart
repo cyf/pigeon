@@ -133,6 +133,8 @@ class ModalBottomSheet extends StatelessWidget {
                 .nestedPadding(padding: EdgeInsets.only(bottom: bottom)),
           ),
       ],
-    ).nestedSingleChildScrollView();
+    ).nestedSingleChildScrollView().nestedColoredBox(
+          color: isDark ? dialogBackgroundColor : secondaryGrayColor,
+        );
   }
 }

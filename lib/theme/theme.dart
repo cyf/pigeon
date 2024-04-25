@@ -7,7 +7,7 @@ class AppTheme {
   static ThemeData get light {
     return ThemeData(
       unselectedWidgetColor: borderColor,
-      scaffoldBackgroundColor: Colors.white,
+      scaffoldBackgroundColor: secondaryGrayColor,
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
