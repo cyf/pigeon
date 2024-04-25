@@ -11,8 +11,8 @@ Pager<T> _$PagerFromJson<T>(
   T Function(Object? json) fromJsonT,
 ) =>
     Pager<T>(
-      page: json['page'] as int?,
-      pageSize: json['pageSize'] as int?,
+      page: (json['page'] as num?)?.toInt(),
+      pageSize: (json['pageSize'] as num?)?.toInt(),
       pageInfo: json['pageInfo'] == null
           ? null
           : PageInfo.fromJson(json['pageInfo'] as Map<String, dynamic>),
@@ -43,8 +43,8 @@ Object? _$nullableGenericToJson<T>(
     input == null ? null : toJson(input);
 
 PageInfo _$PageInfoFromJson(Map<String, dynamic> json) => PageInfo(
-      total: json['total'] as int?,
-      pages: json['pages'] as int?,
+      total: (json['total'] as num?)?.toInt(),
+      pages: (json['pages'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$PageInfoToJson(PageInfo instance) => <String, dynamic>{

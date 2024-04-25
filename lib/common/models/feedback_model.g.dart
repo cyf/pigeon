@@ -43,7 +43,7 @@ _$FeedbackFileModelImpl _$$FeedbackFileModelImplFromJson(
       feedbackId: json['feedback_id'] as String?,
       url: json['url'] as String?,
       type: json['type'] as String?,
-      size: json['size'] as int?,
+      size: (json['size'] as num?)?.toInt(),
       title: json['title'] as String?,
       createBy: json['create_by'] as String?,
       createDate: json['create_date'] == null

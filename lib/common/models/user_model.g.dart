@@ -9,8 +9,8 @@ part of 'user_model.dart';
 _$TokenModelImpl _$$TokenModelImplFromJson(Map<String, dynamic> json) =>
     _$TokenModelImpl(
       accessToken: json['access_token'] as String? ?? '',
-      createSeconds: json['create_seconds'] as int? ?? 0,
-      expireSeconds: json['expire_seconds'] as int? ?? 0,
+      createSeconds: (json['create_seconds'] as num?)?.toInt() ?? 0,
+      expireSeconds: (json['expire_seconds'] as num?)?.toInt() ?? 0,
       user: json['user'] == null
           ? null
           : UserModel.fromJson(json['user'] as Map<String, dynamic>),
