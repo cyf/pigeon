@@ -10,7 +10,7 @@ _$CarouselModelImpl _$$CarouselModelImplFromJson(Map<String, dynamic> json) =>
     _$CarouselModelImpl(
       id: json['id'] as String?,
       image: json['image'] as String? ?? '',
-      order: json['order'] as int? ?? 0,
+      order: (json['order'] as num?)?.toInt() ?? 0,
       text: json['text'] as String?,
       color: json['color'] as String?,
       href: json['href'] as String?,

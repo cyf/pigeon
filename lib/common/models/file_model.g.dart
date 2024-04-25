@@ -11,7 +11,7 @@ _$FileModelImpl _$$FileModelImplFromJson(Map<String, dynamic> json) =>
       url: json['url'] as String?,
       pathname: json['pathname'] as String?,
       contentType: json['contentType'] as String?,
-      fileSize: json['fileSize'] as int?,
+      fileSize: (json['fileSize'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$FileModelImplToJson(_$FileModelImpl instance) =>

@@ -12,8 +12,8 @@ HpResponse<T> _$HpResponseFromJson<T>(
 ) =>
     HpResponse<T>(
       msg: json['msg'] as String?,
-      code: json['code'] as int?,
-      timestamp: json['timestamp'] as int?,
+      code: (json['code'] as num?)?.toInt(),
+      timestamp: (json['timestamp'] as num?)?.toInt(),
       data: _$nullableGenericFromJson(json['data'], fromJsonT),
     );
 

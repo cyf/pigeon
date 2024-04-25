@@ -52,9 +52,9 @@ dependencies:
   equatable: ^2.0.5
   extended_text: ^13.0.0
   file_picker: ^8.0.2
-  firebase_analytics: ^10.10.3
+  firebase_analytics: ^10.10.4
   firebase_core: ^2.30.1
-  firebase_messaging: ^14.9.0
+  firebase_messaging: ^14.9.1
   flutter:
     sdk: flutter
   flutter_aliyun_oss: ^0.0.1
@@ -75,9 +75,10 @@ dependencies:
   gap: ^3.0.1
   hcaptcha_flutter: ^0.0.1+1
   http_parser: ^4.0.2
+  image_picker: ^1.1.0
   intl: ^0.18.1
   jpush_flutter2: ^0.0.1+4
-  json_annotation: ^4.8.1
+  json_annotation: ^4.9.0
   keyboard_dismisser: ^3.0.0
   logger: ^2.2.0
   markdown: ^7.2.2
@@ -117,7 +118,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   freezed: ^2.5.2
-  json_serializable: ^6.7.1
+  json_serializable: ^6.8.0
   mockingjay: ^0.5.0
   mocktail: ^1.0.3
   slang_build_runner: ^3.30.0

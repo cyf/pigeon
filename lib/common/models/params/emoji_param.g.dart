@@ -10,7 +10,7 @@ _$EmojiParamImpl _$$EmojiParamImplFromJson(Map<String, dynamic> json) =>
     _$EmojiParamImpl(
       image: json['image'] as String?,
       type: json['type'] as String?,
-      size: json['size'] as int?,
+      size: (json['size'] as num?)?.toInt(),
       text: json['text'] as String?,
       color: json['color'] as String?,
     );

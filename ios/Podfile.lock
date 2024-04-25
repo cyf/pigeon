@@ -54,14 +54,14 @@ PODS:
   - Firebase/Messaging (10.24.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 10.24.0)
-  - firebase_analytics (10.10.3):
+  - firebase_analytics (10.10.4):
     - Firebase/Analytics (= 10.24.0)
     - firebase_core
     - Flutter
   - firebase_core (2.30.1):
     - Firebase/CoreOnly (= 10.24.0)
     - Flutter
-  - firebase_messaging (14.9.0):
+  - firebase_messaging (14.9.1):
     - Firebase/Messaging (= 10.24.0)
     - firebase_core
     - Flutter
@@ -172,6 +172,8 @@ PODS:
   - hcaptcha_flutter (0.0.1):
     - Flutter
     - HCaptcha (= 2.5.1)
+  - image_picker_ios (0.0.1):
+    - Flutter
   - JCore (4.6.2)
   - JPush (5.2.4):
     - JCore (>= 2.0.0)
@@ -235,6 +237,7 @@ DEPENDENCIES:
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - hcaptcha_flutter (from `.symlinks/plugins/hcaptcha_flutter/ios`)
+  - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - jpush_flutter2 (from `.symlinks/plugins/jpush_flutter2/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
@@ -301,6 +304,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/fluttertoast/ios"
   hcaptcha_flutter:
     :path: ".symlinks/plugins/hcaptcha_flutter/ios"
+  image_picker_ios:
+    :path: ".symlinks/plugins/image_picker_ios/ios"
   jpush_flutter2:
     :path: ".symlinks/plugins/jpush_flutter2/ios"
   package_info_plus:
@@ -334,9 +339,9 @@ SPEC CHECKSUMS:
   dxcaptcha_flutter: fc62f2b79a04a114795940cb4a2aea70c99d5166
   file_picker: 09aa5ec1ab24135ccd7a1621c46c84134bfd6655
   Firebase: 91fefd38712feb9186ea8996af6cbdef41473442
-  firebase_analytics: 7a8ed626daae25871f36e6ce65d7e5289ceb13e5
+  firebase_analytics: 573fd0677abf22d32e2820865fc5190b6cdbfa1b
   firebase_core: 7f1e1156934d0da3be260174812842df9420e4ab
-  firebase_messaging: 917a590db1d2f6fec494c5d9aa83c010f518c28f
+  firebase_messaging: 28b49260e70d10042fa2bea79f37e1edae48f1bd
   FirebaseAnalytics: b5efc493eb0f40ec560b04a472e3e1a15d39ca13
   FirebaseCore: 11dc8a16dfb7c5e3c3f45ba0e191a33ac4f50894
   FirebaseCoreInternal: bcb5acffd4ea05e12a783ecf835f2210ce3dc6af
@@ -352,6 +357,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: d053d902a8edaa9904e1bd00c37535385b8ed152
   HCaptcha: 98dc7a73b11b5dee7e6fced7085925a9c74d9ca4
   hcaptcha_flutter: 623552f4d902c493275c7e5cbde36f2c4da6efce
+  image_picker_ios: b545a5f16c0fa88e3ecbbce3ed4de45567a8ec18
   JCore: 024c73b04e110b496e93d8c127ea9cd1ed934e4c
   JPush: c3c6e328b39a7dd78cf6b1a7d072af1a9a1974bd
   jpush_flutter2: c07f12a9c35fc624c2dd5cbcfb4872a87b55c643
