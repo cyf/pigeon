@@ -9,3 +9,5 @@ export 'response.dart';
 export 'roadmap_model.dart';
 export 'social_model.dart';
 export 'user_model.dart';
+export 'yt_response.dart';
+export 'yt_video_model.dart';

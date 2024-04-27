@@ -1,5 +1,16 @@
+import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:homing_pigeon/common/api/live_api.dart';
+import 'package:homing_pigeon/common/enums/enums.dart';
+import 'package:homing_pigeon/common/extensions/single.dart';
+import 'package:homing_pigeon/common/http/utils/handle_errors.dart';
+import 'package:homing_pigeon/common/models/models.dart';
+import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
+import 'package:homing_pigeon/theme/colors.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class LiveView extends StatefulWidget {
   const LiveView({super.key});
@@ -9,17 +20,154 @@ class LiveView extends StatefulWidget {
 }
 
 class _LiveViewState extends State<LiveView> {
+  final EasyRefreshController _easyRefreshController = EasyRefreshController(
+    controlFinishRefresh: true,
+    controlFinishLoad: true,
+  );
+  late YoutubePlayerController _youtubePlayerController;
+
+  PlayerState? _playerState;
+  YoutubeMetaData? _videoMetaData;
+  double _volume = 100;
+  bool _muted = false;
+  bool _isPlayerReady = false;
+
+  int currentPage = 1;
+  int totalResults = 0;
+  List<YTVideoModel> items = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _youtubePlayerController = YoutubePlayerController(
+      initialVideoId: 'iLnmTe5Q2Qw',
+      flags: const YoutubePlayerFlags(
+        autoPlay: false,
+        mute: true,
+      ),
+    )..addListener(listener);
+
+    // _load();
+  }
+
+  @override
+  void deactivate() {
+    _youtubePlayerController.pause();
+    super.deactivate();
+  }
+
+  @override
+  void dispose() {
+    _easyRefreshController.dispose();
+    _youtubePlayerController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final bottom = MediaQuery.of(context).padding.bottom;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return Scaffold(
-      appBar: HpAppBar(
-        isDark: isDark,
-        titleName: 'Live',
+    return YoutubePlayerBuilder(
+      onEnterFullScreen: () {
+        SystemChrome.setPreferredOrientations([
+          DeviceOrientation.landscapeRight,
+        ]);
+      },
+      onExitFullScreen: () {
+        SystemChrome.setPreferredOrientations([
+          DeviceOrientation.portraitUp,
+        ]);
+      },
+      player: YoutubePlayer(
+        controller: _youtubePlayerController,
+        showVideoProgressIndicator: true,
+        progressIndicatorColor: primaryColor,
+        progressColors: const ProgressBarColors(
+          playedColor: primaryColor,
+          handleColor: primaryHoverColor,
+        ),
+        onReady: () {
+          setState(() => _isPlayerReady = true);
+        },
       ),
-      body: const Center(
-        child: Text('Live'),
-      ),
+      builder: (context, player) {
+        return Scaffold(
+          appBar: HpAppBar(
+            isDark: isDark,
+            titleName: StringUtil.getValue(
+              _videoMetaData?.title,
+              defaultVal: 'Live',
+            ),
+          ),
+          body: EasyRefresh(
+            controller: _easyRefreshController,
+            header: const ClassicHeader(),
+            // onRefresh: () => _load(operation: Operation.refresh),
+            // onLoad: () => _load(operation: Operation.load),
+            child: ListView(
+              children: [
+                // some widgets
+                player,
+                //some other widgets
+              ],
+            ),
+          ).nestedPadding(
+            padding: EdgeInsets.only(
+              top: 10,
+              left: 10,
+              right: 10,
+              bottom: bottom,
+            ),
+          ),
+        );
+      },
     );
+  }
+
+  void listener() {
+    if (_isPlayerReady &&
+        mounted &&
+        !_youtubePlayerController.value.isFullScreen) {
+      setState(() {
+        _playerState = _youtubePlayerController.value.playerState;
+        _videoMetaData = _youtubePlayerController.metadata;
+      });
+    }
+  }
+
+  void _load({Operation operation = Operation.none}) {
+    if (operation == Operation.none) {
+      EasyLoading.show();
+    }
+    LiveApi.getVideoList().then(
+      (data) {
+        if (operation == Operation.none) {
+          EasyLoading.dismiss();
+        } else if (operation == Operation.refresh) {
+          _easyRefreshController.finishRefresh();
+        } else if (operation == Operation.load) {
+          _easyRefreshController.finishLoad();
+        }
+        setState(() {
+          totalResults = data?.pageInfo?.totalResults ?? 0;
+          items = data?.items ?? [];
+        });
+      },
+    ).onError<Exception>((error, stackTrace) {
+      ErrorHandler.handle(
+        error,
+        stackTrace: stackTrace,
+        postProcessor: (_, msg) {
+          setState(() => items = []);
+          if (operation == Operation.none) {
+            EasyLoading.showError(msg ?? 'Failure');
+          } else if (operation == Operation.refresh) {
+            _easyRefreshController.finishRefresh(IndicatorResult.fail);
+          } else if (operation == Operation.load) {
+            _easyRefreshController.finishLoad(IndicatorResult.fail);
+          }
+        },
+      );
+    });
   }
 }
