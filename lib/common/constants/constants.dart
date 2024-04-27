@@ -23,6 +23,7 @@ class Constants {
 
   // request
   static String apiPrefix = const String.fromEnvironment('API_PREFIX');
+  static String youtubeApiPrefix = 'https://www.googleapis.com';
   static String wsPrefix = const String.fromEnvironment('WS_PREFIX');
   static String signKey = const String.fromEnvironment('SIGN_KEY');
   static String cryptoAESKey = const String.fromEnvironment('CRYPTO_AES_KEY');
@@ -32,6 +33,11 @@ class Constants {
   static String jPushNotificationKey = Platform.isAndroid && kDebugMode
       ? const String.fromEnvironment('JPUSH_APP_KEY_ANDROID_DEV')
       : const String.fromEnvironment('JPUSH_APP_KEY');
+
+  // youtube
+  static String youtubeApiKey = Platform.isAndroid
+      ? const String.fromEnvironment('YOUTUBE_API_KEY_ANDROID')
+      : const String.fromEnvironment('YOUTUBE_API_KEY_IOS');
 
   /// oss
   static String region = const String.fromEnvironment('ASSETS_REGION');

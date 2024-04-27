@@ -18,7 +18,10 @@ import 'package:uuid/uuid.dart';
 class HpHeaders {
   static const _uuid = Uuid();
 
-  static const _encryptDefUrls = ['/api/backend/auth/register', '/api/backend/auth/login'];
+  static const _encryptDefUrls = [
+    '/api/backend/auth/register',
+    '/api/backend/auth/login',
+  ];
 
   static const _encryptKeys = ['password', 'newPassword', 'oldPassword'];
 
@@ -109,6 +112,12 @@ class HpHeaders {
       'x-channel': Platform.isIOS ? 'MOBILE_IOS' : 'MOBILE_ANDROID',
       'x-flavor': AppConfig.shared.flavor.name,
       'x-locale': 'zh',
+    };
+  }
+
+  static Map<String, dynamic> getYTQueryParameters() {
+    return {
+      'key': Constants.youtubeApiKey,
     };
   }
 

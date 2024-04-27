@@ -282,7 +282,8 @@ class _FeedbackViewState extends State<FeedbackView> {
                 )
                     .nestedCenter()
                     .nestedColoredBox(
-                        color: isDark ? secondaryTextColor : secondaryGrayColor)
+                      color: isDark ? secondaryTextColor : secondaryGrayColor,
+                    )
                     .nestedSizedBox(width: itemWidth, height: itemWidth)
                     .nestedInkWell(onTap: () => _pickImages(setInnerState)),
               );
