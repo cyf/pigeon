@@ -41,7 +41,6 @@ import {
   UserRoleModule,
   UserPermissionModule,
   MenuModule,
-  // WsModule,
 } from './modules'
 import { LoggerMiddleware } from './common/middlewares/logger.middleware'
 import { HeadersMiddleware } from './common/middlewares/headers.middleware'
@@ -161,7 +160,6 @@ import { type RedisOptions } from 'ioredis'
       },
     ]),
     SocketIoModule,
-    // WsModule,
   ],
   providers: [
     { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },

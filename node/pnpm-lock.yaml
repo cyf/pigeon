@@ -405,9 +405,6 @@ importers:
       winston:
         specifier: ^3.13.0
         version: 3.13.0
-      ws:
-        specifier: ^8.16.0
-        version: 8.16.0
     devDependencies:
       '@nestjs/cli':
         specifier: ^10.3.2
@@ -463,9 +460,6 @@ importers:
       '@types/webpack-node-externals':
         specifier: ^3.0.4
         version: 3.0.4
-      '@types/ws':
-        specifier: ^8.5.10
-        version: 8.5.10
       '@typescript-eslint/eslint-plugin':
         specifier: ^7.7.1
         version: 7.7.1(@typescript-eslint/parser@7.7.1(eslint@8.57.0)(typescript@5.4.5))(eslint@8.57.0)(typescript@5.4.5)
@@ -3269,9 +3263,6 @@ packages:
 
   '@types/webpack-node-externals@3.0.4':
     resolution: {integrity: sha512-8Z3/edqxE3RRlOJwKSgOFxLZRt/i1qFlv/Bi308ZUKo9jh8oGngd9r8GR0ZNKW5AEJq8QNQE3b17CwghTjQ0Uw==}
-
-  '@types/ws@8.5.10':
-    resolution: {integrity: sha512-vmQSUcfalpIq0R9q7uTo2lXs6eGIpt9wtnLdMv9LVpIjCA/+ufZRozlVoVelIYixx1ugCBKDhn89vnsEGOCx9A==}
 
   '@types/yargs-parser@21.0.2':
     resolution: {integrity: sha512-5qcvofLPbfjmBfKaLfj/+f+Sbd6pN4zl7w7VSVI5uz7m9QZTuB2aZAa2uo1wHFBNN2x6g/SoTkXmd8mQnQF2Cw==}
@@ -12492,10 +12483,6 @@ snapshots:
       - esbuild
       - uglify-js
       - webpack-cli
-
-  '@types/ws@8.5.10':
-    dependencies:
-      '@types/node': 18.19.31
 
   '@types/yargs-parser@21.0.2': {}
 
