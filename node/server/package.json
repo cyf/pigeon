@@ -65,8 +65,7 @@
     "rxjs": "^7.8.1",
     "socket.io": "^4.7.5",
     "sort-keys-recursive": "^2.1.10",
-    "winston": "^3.13.0",
-    "ws": "^8.16.0"
+    "winston": "^3.13.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.3.2",
@@ -87,7 +86,6 @@
     "@types/supertest": "^6.0.2",
     "@types/webpack-env": "^1.18.4",
     "@types/webpack-node-externals": "^3.0.4",
-    "@types/ws": "^8.5.10",
     "@typescript-eslint/eslint-plugin": "^7.7.1",
     "@typescript-eslint/parser": "^7.7.1",
     "eslint": "8.57.0",
