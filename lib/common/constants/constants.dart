@@ -34,6 +34,11 @@ class Constants {
       ? const String.fromEnvironment('JPUSH_APP_KEY_ANDROID_DEV')
       : const String.fromEnvironment('JPUSH_APP_KEY');
 
+  // google sign in
+  static String googleOAuth2ClientId = Platform.isAndroid
+      ? const String.fromEnvironment('GOOGLE_OAUTH2_CLIENT_ID_ANDROID')
+      : const String.fromEnvironment('GOOGLE_OAUTH2_CLIENT_ID_IOS');
+
   // youtube
   static String youtubeApiKey = Platform.isAndroid
       ? const String.fromEnvironment('YOUTUBE_API_KEY_ANDROID')
