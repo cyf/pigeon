@@ -22,6 +22,17 @@
 	<string>$(FLUTTER_BUILD_NAME)$(FLUTTER_BUILD_ENV)$(FLUTTER_BUILD_NAME_SUFFIX)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>com.googleusercontent.apps.1029812416722-p53aegpebiucq4v1lbt5jmp45h8l36l3</string>
+            </array>
+        </dict>
+    </array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FLTEnableImpeller</key>

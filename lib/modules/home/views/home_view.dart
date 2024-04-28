@@ -151,11 +151,12 @@ class _HomeViewState extends State<HomeView>
               tips: '给看过的电影打个分吧~~',
               onTap: () => NavigatorUtil.push(const MovieView()),
             ),
-            SectionItem(
-              title: '直播预告',
-              tips: '查看详情',
-              onTap: () => NavigatorUtil.push(const LiveView()),
-            ),
+            if (AppConfig.shared.isExternal)
+              SectionItem(
+                title: '直播预告',
+                tips: '查看详情',
+                onTap: () => NavigatorUtil.push(const LiveView()),
+              ),
             SectionItem(
               title: '开播通知设置',
               onTap: () => NavigatorUtil.push(const LiveView()),
