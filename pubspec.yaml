@@ -76,9 +76,7 @@ dependencies:
   gap: ^3.0.1
   google_sign_in: ^6.2.1
   googleapis: ^13.1.0
-  googleapis_auth: ^1.6.0
   hcaptcha_flutter: ^0.0.1+1
-  http: ^1.2.1
   http_parser: ^4.0.2
   image_picker: ^1.1.0
   intl: ^0.18.1
