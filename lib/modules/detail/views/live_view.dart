@@ -1,17 +1,21 @@
 import 'package:easy_refresh/easy_refresh.dart';
+import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gap/gap.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/youtube/v3.dart';
-import 'package:googleapis_auth/googleapis_auth.dart';
 import 'package:homing_pigeon/common/constants/constants.dart';
 import 'package:homing_pigeon/common/enums/enums.dart';
 import 'package:homing_pigeon/common/extensions/single.dart';
 import 'package:homing_pigeon/common/http/utils/handle_errors.dart';
+import 'package:homing_pigeon/common/logger/logger.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
 import 'package:homing_pigeon/theme/colors.dart';
-import 'package:http/http.dart' as http;
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class LiveView extends StatefulWidget {
@@ -111,6 +115,10 @@ class _LiveViewState extends State<LiveView> {
                 // some widgets
                 player,
                 //some other widgets
+                if (kDebugMode) ...[
+                  const Gap(10),
+                  ElevatedButton(onPressed: _load, child: const Text('Login')),
+                ],
               ],
             ),
           ).nestedPadding(
@@ -138,15 +146,27 @@ class _LiveViewState extends State<LiveView> {
   }
 
   Future<void> _load({Operation operation = Operation.none}) async {
-    http.Client? httpClient;
     try {
-      // final googleSignIn = GoogleSignIn(
-      //   clientId: Constants.googleOAuth2ClientId,
-      //   scopes: <String>[YouTubeApi.youtubeReadonlyScope],
-      // );
-      //
-      // final httpClient = (await googleSignIn.authenticatedClient())!;
-      httpClient = clientViaApiKey(Constants.youtubeApiKey);
+      /// https://github.com/flutter/flutter/issues/137614
+      final googleSignIn = GoogleSignIn(
+        clientId: Constants.googleOAuth2ClientId,
+        scopes: <String>[YouTubeApi.youtubeReadonlyScope],
+      );
+
+      final user = await googleSignIn.signIn();
+      printDebugLog('user: $user');
+      if (user == null) {
+        await Fluttertoast.showToast(msg: 'Cancelled');
+        return;
+      }
+
+      final httpClient = await googleSignIn.authenticatedClient();
+      if (httpClient == null) {
+        printDebugLog('httpClient is null');
+        return;
+      }
+
+      // httpClient = clientViaApiKey(Constants.youtubeApiKey);
       final youTubeApi = YouTubeApi(httpClient);
       if (operation == Operation.none) {
         await EasyLoading.show();
@@ -159,7 +179,7 @@ class _LiveViewState extends State<LiveView> {
         type: ['video'],
         maxResults: 10,
       );
-      httpClient.close();
+      printDebugLog('res: $res');
 
       if (operation == Operation.none) {
         await EasyLoading.dismiss();
@@ -177,7 +197,6 @@ class _LiveViewState extends State<LiveView> {
         error,
         stackTrace: stackTrace,
         postProcessor: (_, msg) {
-          httpClient?.close();
           if (operation == Operation.none) {
             EasyLoading.showError(msg ?? 'Failure');
           } else if (operation == Operation.refresh) {
