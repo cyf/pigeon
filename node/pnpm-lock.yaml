@@ -126,8 +126,8 @@ importers:
         specifier: ^18.2.0
         version: 18.2.0
       react-big-calendar:
-        specifier: ^1.12.0
-        version: 1.12.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        specifier: ^1.12.1
+        version: 1.12.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-day-picker:
         specifier: ^8.10.1
         version: 8.10.1(date-fns@3.6.0)(react@18.2.0)
@@ -7660,8 +7660,8 @@ packages:
     resolution: {integrity: sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==}
     hasBin: true
 
-  react-big-calendar@1.12.0:
-    resolution: {integrity: sha512-QwF+ZVbjuDuVpaOBcqQmpYFZksZo6cxbfKSE+L45wCPPUpmV2uW5dU05tdlXavXfGs10M73kFlVXt3KmKT6YRw==}
+  react-big-calendar@1.12.1:
+    resolution: {integrity: sha512-MCkuMHv/GrHbLo00eq2ixhiG9aHMD57NYnAQZgG3w2tqiHFwt29CB+hjfNTBdAQmR/F1bklgMILI8NogzbUEVA==}
     peerDependencies:
       react: ^16.14.0 || ^17 || ^18
       react-dom: ^16.14.0 || ^17 || ^18
@@ -8447,6 +8447,7 @@ packages:
   superagent@8.1.2:
     resolution: {integrity: sha512-6WTxW1EB6yCxV5VFOIPQruWGHqc3yI7hEmZK6h+pyk69Lk/Ut7rLUY6W/ONF2MjBuGjvmMiIpsrVJ2vjrHlslA==}
     engines: {node: '>=6.4.0 <13 || >=14'}
+    deprecated: Please upgrade to v9.0.0+ as we have fixed a public vulnerability with formidable dependency. Note that v9.0.0+ requires Node.js v14.18.0+. See https://github.com/ladjs/superagent/pull/1800 for insight. This project is supported and maintained by the team at Forward Email @ https://forwardemail.net
 
   supertest@6.3.4:
     resolution: {integrity: sha512-erY3HFDG0dPnhw4U+udPfrzXa4xhSG+n4rxfRuZWCUvjFWwKl+OxWf/7zk50s84/fAAs7vf5QAb9uRa0cCykxw==}
@@ -18057,7 +18058,7 @@ snapshots:
       minimist: 1.2.8
       strip-json-comments: 2.0.1
 
-  react-big-calendar@1.12.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+  react-big-calendar@1.12.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       '@babel/runtime': 7.24.1
       clsx: 1.2.1
