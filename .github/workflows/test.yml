@@ -24,7 +24,7 @@ permissions: read-all
 jobs:
   internal_apk:
     name: Create apk (internal)
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -81,7 +81,7 @@ jobs:
 
   external_apk:
     name: Create apk (external)
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -138,7 +138,7 @@ jobs:
 
   internal_ios:
     name: Create ios (internal)
-    runs-on: self-hosted
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -240,7 +240,7 @@ jobs:
 
   external_ios:
     name: Create ios (external)
-    runs-on: self-hosted
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
 
