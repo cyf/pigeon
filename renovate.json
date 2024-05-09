@@ -7,18 +7,9 @@
   "prHourlyLimit": 0,
   "ignoreDeps": [
     "flutter_localizations",
-    "flutter_test",
-    "node"
+    "flutter_test"
   ],
   "packageRules": [
-    {
-      "allowedVersions": "18",
-      "matchPackageNames": ["@types/node"]
-    },
-    {
-      "allowedVersions": "7",
-      "matchPackageNames": ["query-string"]
-    },
     {
       "matchPackageNames": ["flutter", "dart"],
       "groupName": "flutter"
@@ -26,10 +17,6 @@
     {
       "matchPackagePatterns": ["androidx.window"],
       "groupName": "androidx.window"
-    },
-    {
-      "matchPackagePatterns": ["nestjs"],
-      "groupName": "nestjs"
     }
   ]
 }
