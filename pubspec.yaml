@@ -83,7 +83,7 @@ dependencies:
   jpush_flutter2: ^0.0.1+4
   json_annotation: ^4.9.0
   keyboard_dismisser: ^3.0.0
-  logger: ^2.2.0
+  logger: ^2.3.0
   markdown: ^7.2.2
   meta: ^1.10.0
   mime: ^1.0.5
