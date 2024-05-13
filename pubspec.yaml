@@ -112,7 +112,7 @@ dependencies:
   version: ^3.0.2
 #  watcher: ^1.1.0 # https://github.com/dart-lang/sdk/issues/52027
   wechat_assets_picker: ^9.0.3
-  wechat_camera_picker: ^4.2.1
+  wechat_camera_picker: ^4.2.2
   youtube_player_flutter: ^9.0.1
 
 dev_dependencies:
