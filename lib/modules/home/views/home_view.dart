@@ -135,6 +135,8 @@ class _HomeViewState extends State<HomeView>
         configs?.firstWhereOrNull((config) => config.key == 'roadmap');
     final bottom = MediaQuery.of(context).padding.bottom;
     final version = AppManager.instance.version;
+    final buildNumber = AppManager.instance.buildNumber;
+    final flavorName = AppConfig.shared.flavor.name;
     final showRoadmap =
         StringUtil.getValue(roadmapConfig?.value, defaultVal: 'disabled') ==
             'enabled';
@@ -203,7 +205,7 @@ class _HomeViewState extends State<HomeView>
           SliverList.list(
             children: [
               Text(
-                '版本号: ${version!}(${AppConfig.shared.flavor.name})',
+                '版本号: $version+$buildNumber($flavorName)',
                 style: const TextStyle(fontSize: 12, color: secondaryTextColor),
                 textAlign: TextAlign.center,
               ).nestedPadding(
