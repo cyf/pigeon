@@ -1,6 +1,12 @@
 PODS:
   - app_settings (5.1.1):
     - Flutter
+  - AppAuth (1.7.5):
+    - AppAuth/Core (= 1.7.5)
+    - AppAuth/ExternalUserAgent (= 1.7.5)
+  - AppAuth/Core (1.7.5)
+  - AppAuth/ExternalUserAgent (1.7.5):
+    - AppAuth/Core
   - camera_avfoundation (0.0.1):
     - Flutter
   - connectivity_plus (0.0.1):
@@ -62,6 +68,24 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
+  - google_sign_in_ios (0.0.1):
+    - AppAuth (>= 1.7.4)
+    - Flutter
+    - FlutterMacOS
+    - GoogleSignIn (~> 7.1)
+    - GTMSessionFetcher (>= 3.4.0)
+  - GoogleSignIn (7.1.0):
+    - AppAuth (< 2.0, >= 1.7.3)
+    - GTMAppAuth (< 5.0, >= 4.1.1)
+    - GTMSessionFetcher/Core (~> 3.3)
+  - GTMAppAuth (4.1.1):
+    - AppAuth/Core (~> 1.7)
+    - GTMSessionFetcher/Core (< 4.0, >= 3.3)
+  - GTMSessionFetcher (3.4.1):
+    - GTMSessionFetcher/Full (= 3.4.1)
+  - GTMSessionFetcher/Core (3.4.1)
+  - GTMSessionFetcher/Full (3.4.1):
+    - GTMSessionFetcher/Core
   - HCaptcha (2.5.1):
     - HCaptcha/Core (= 2.5.1)
   - HCaptcha/Core (2.5.1)
@@ -123,6 +147,7 @@ DEPENDENCIES:
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
+  - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/darwin`)
   - hcaptcha_flutter (from `.symlinks/plugins/hcaptcha_flutter/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - jpush_flutter2 (from `.symlinks/plugins/jpush_flutter2/ios`)
@@ -139,9 +164,13 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - AppAuth
     - DKImagePickerController
     - DKPhotoGallery
     - FMDB
+    - GoogleSignIn
+    - GTMAppAuth
+    - GTMSessionFetcher
     - HCaptcha
     - JCore
     - JPush
@@ -174,6 +203,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_native_splash/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
+  google_sign_in_ios:
+    :path: ".symlinks/plugins/google_sign_in_ios/darwin"
   hcaptcha_flutter:
     :path: ".symlinks/plugins/hcaptcha_flutter/ios"
   image_picker_ios:
@@ -203,6 +234,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   app_settings: 2ef6fd7feddb190c36589bd471a02136e4f99641
+  AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
   camera_avfoundation: 3125e8cd1a4387f6f31c6c63abb8a55892a9eeeb
   connectivity_plus: ddd7f30999e1faaef5967c23d5b6d503d10434db
   device_info_plus: 97af1d7e84681a90d0693e63169a5d50e0839a0d
@@ -216,6 +248,10 @@ SPEC CHECKSUMS:
   flutter_native_splash: edf599c81f74d093a4daf8e17bd7a018854bc778
   fluttertoast: 9f2f8e81bb5ce18facb9748d7855bf5a756fe3db
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  google_sign_in_ios: 07375bfbf2620bc93a602c0e27160d6afc6ead38
+  GoogleSignIn: d4281ab6cf21542b1cfaff85c191f230b399d2db
+  GTMAppAuth: f69bd07d68cd3b766125f7e072c45d7340dea0de
+  GTMSessionFetcher: 8000756fc1c19d2e5697b90311f7832d2e33f6cd
   HCaptcha: 98dc7a73b11b5dee7e6fced7085925a9c74d9ca4
   hcaptcha_flutter: 623552f4d902c493275c7e5cbde36f2c4da6efce
   image_picker_ios: b545a5f16c0fa88e3ecbbce3ed4de45567a8ec18
