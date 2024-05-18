@@ -22,21 +22,6 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0.0'
 }
 
-def versioningProperties = new Properties()
-def versioningFile = rootProject.file('versioning.properties')
-if (versioningFile.exists()) {
-    versioningFile.withReader('UTF-8') { reader ->
-        versioningProperties.load(reader)
-    }
-}
-
-def appSuffix = versioningProperties.getProperty('app.suffix')
-def appEnv = versioningProperties.getProperty('app.env')
-def appVersionNameSuffix = ''
-if (appSuffix && appEnv) {
-    appVersionNameSuffix = "+${appEnv}-${appSuffix}"
-}
-
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
 if (keystorePropertiesFile.exists()) {
@@ -82,8 +67,8 @@ android {
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
         minSdkVersion 21
         targetSdk 34
-        versionCode 1
         versionName flutterVersionName
+        versionCode flutterVersionCode.toInteger()
         multiDexEnabled true
 //        versionCode flutterVersionCode.toInteger()
 
@@ -109,7 +94,6 @@ android {
         staging {
             dimension "env"
             applicationIdSuffix ".dev"
-            versionNameSuffix appVersionNameSuffix
             manifestPlaceholders = manifestPlaceholders + [ JPUSH_PKGNAME : "com.chenyifaer.homingpigeon.dev" ]
         }
 

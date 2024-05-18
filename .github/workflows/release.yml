@@ -1,4 +1,4 @@
-name: Release to GitHub
+name: Release
 on:
   # Enable manual run
   workflow_dispatch:
@@ -22,10 +22,13 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       sha_short: ${{ steps.sha_short_step.outputs.sha_short }}
-      timestamp: ${{ steps.timestamp_step.outputs.timestamp }}
+      commit_count: ${{ steps.commit_count_step.outputs.commit_count }}
+#      timestamp: ${{ steps.timestamp_step.outputs.timestamp }}
       version: ${{ steps.version_step.outputs.version }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set sha_short
         id: sha_short_step
@@ -34,12 +37,23 @@ jobs:
       - name: Check sha_short
         run: echo ${{ steps.sha_short_step.outputs.sha_short }}
 
-      - name: Set timestamp
-        id: timestamp_step
-        run: echo "timestamp=$(date +%s)" >> $GITHUB_OUTPUT
+      - name: Set commit_count
+        id: commit_count_step
+        run: |
+          echo "Current ref name: $BRANCH"
+          echo "commit_count=$(git rev-list --count $BRANCH)" >> $GITHUB_OUTPUT
+        env:
+          BRANCH: ${{ github.ref_name }}
 
-      - name: Check timestamp
-        run: echo ${{ steps.timestamp_step.outputs.timestamp }}
+      - name: Check commit_count
+        run: echo ${{ steps.commit_count_step.outputs.commit_count }}
+
+#      - name: Set timestamp
+#        id: timestamp_step
+#        run: echo "timestamp=$(date +%s)" >> $GITHUB_OUTPUT
+#
+#      - name: Check timestamp
+#        run: echo ${{ steps.timestamp_step.outputs.timestamp }}
 
       - name: Install yq
         run: |
@@ -51,7 +65,12 @@ jobs:
 
       - name: Set version
         id: version_step
-        run: echo "version=v$(yq '.version' < pubspec.yaml)" >> $GITHUB_OUTPUT
+        run: |
+          PUB_VERSION=$(yq '.version' < pubspec.yaml)
+          echo "$PUB_VERSION"
+          VERSION=$(echo "$PUB_VERSION" | sed -e "s/+\(.*\)$//g")
+          echo "$VERSION"
+          echo "version=v$VERSION" >> $GITHUB_OUTPUT
 
       - name: Check version
         run: echo ${{ steps.version_step.outputs.version }}
@@ -66,15 +85,19 @@ jobs:
 
       - name: Create a release
         run: |
-          RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
+          RELEASE_NOTES="Env: $ENV <br /> Branch: $BRANCH <br /> Commit: $COMMIT_REF"
           if [ "$ENV" == "production" ]; then
-            gh release create "$RELEASE" --latest --title "$RELEASE" --notes "Env: $ENV <br /> Version: $RELEASE"
+            gh release create "$VERSION_SUFFIX" --latest --title "$VERSION_SUFFIX" --notes "$RELEASE_NOTES"
           else
-            gh release create "$RELEASE" --prerelease --title "$RELEASE" --notes "Env: $ENV <br /> Version: $RELEASE"
+            RELEASE="$([[ "$ENV" == "development" ]] && echo "$VERSION_SUFFIX.dev" || echo "$VERSION_SUFFIX.stg")"
+            gh release create "$RELEASE" --prerelease --title "$RELEASE" --notes "$RELEASE_NOTES"
           fi
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: "${{ steps.version_step.outputs.version }}+${{ steps.timestamp_step.outputs.timestamp }}-${{ steps.sha_short_step.outputs.sha_short }}"
+          BRANCH: ${{ github.ref_name }}
+          COMMIT_REF: ${{ steps.sha_short_step.outputs.sha_short }}
+          COMMIT_COUNT: ${{ steps.commit_count_step.outputs.commit_count }}
+          VERSION_SUFFIX: "${{ steps.version_step.outputs.version }}+${{ steps.commit_count_step.outputs.commit_count }}"
           VERSION: ${{ steps.version_step.outputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
@@ -103,11 +126,15 @@ jobs:
 
         - name: Remove a release
           run: |
-            RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
-            gh release delete -y --cleanup-tag "$RELEASE"
+            if [ "$ENV" == "production" ]; then
+              gh release delete -y --cleanup-tag "$VERSION_SUFFIX"
+            else
+              RELEASE="$([[ "$ENV" == "development" ]] && echo "$VERSION_SUFFIX.dev" || echo "$VERSION_SUFFIX.stg")"
+              gh release delete -y --cleanup-tag "$RELEASE"
+            fi
           env:
             ENV: ${{ github.event.inputs.env }}
-            VERSION_SUFFIX: "${{ needs.create_release.outputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}"
+            VERSION_SUFFIX: "${{ needs.create_release.outputs.version }}+${{ needs.create_release.outputs.commit_count }}"
             VERSION: ${{ needs.create_release.outputs.version }}
             GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
@@ -173,13 +200,15 @@ jobs:
       # Build the application.
       - name: Build apk
         if: ${{ github.event.inputs.env == 'development' || github.event.inputs.env == 'staging' }}
-        run: bash build-android.sh "$ENV" && flutter build apk --no-tree-shake-icons --dart-define-from-file=.env --flavor internalStaging --target lib/main_internal.dart
+        run: flutter build apk --no-tree-shake-icons --dart-define-from-file=.env --build-number "$COMMIT_COUNT" --flavor internalStaging --target lib/main_internal.dart
         env:
-          ENV: ${{ github.event.inputs.env }}
+          COMMIT_COUNT: ${{ needs.create_release.outputs.commit_count }}
 
       - name: Build apk
         if: github.event.inputs.env == 'production'
-        run: flutter build apk --no-tree-shake-icons --dart-define-from-file=.env --flavor internalProduction --target lib/main_internal.dart
+        run: flutter build apk --no-tree-shake-icons --dart-define-from-file=.env --build-number "$COMMIT_COUNT" --flavor internalProduction --target lib/main_internal.dart
+        env:
+          COMMIT_COUNT: ${{ needs.create_release.outputs.commit_count }}
 
       # Package the build.
       - name: Copy build for Android
@@ -196,11 +225,15 @@ jobs:
 
       - name: Upload assets
         run: |
-          RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
-          gh release upload "$RELEASE" ./*.apk
+          if [ "$ENV" == "production" ]; then
+            gh release upload "$VERSION_SUFFIX" ./*.apk
+          else
+            RELEASE="$([[ "$ENV" == "development" ]] && echo "$VERSION_SUFFIX.dev" || echo "$VERSION_SUFFIX.stg")"
+            gh release upload "$RELEASE" ./*.apk
+          fi
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: "${{ needs.create_release.outputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}"
+          VERSION_SUFFIX: "${{ needs.create_release.outputs.version }}+${{ needs.create_release.outputs.commit_count }}"
           VERSION: ${{ needs.create_release.outputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
@@ -273,13 +306,15 @@ jobs:
       # Build the application.
       - name: Build apk
         if: ${{ github.event.inputs.env == 'development' || github.event.inputs.env == 'staging' }}
-        run: bash build-android.sh "$ENV" && flutter build apk --no-tree-shake-icons --dart-define-from-file=.env --flavor externalStaging --target lib/main_external.dart
+        run: flutter build apk --no-tree-shake-icons --dart-define-from-file=.env --build-number "$COMMIT_COUNT" --flavor externalStaging --target lib/main_external.dart
         env:
-          ENV: ${{ github.event.inputs.env }}
+          COMMIT_COUNT: ${{ needs.create_release.outputs.commit_count }}
 
       - name: Build apk
         if: github.event.inputs.env == 'production'
-        run: flutter build apk --no-tree-shake-icons --dart-define-from-file=.env --flavor externalProduction --target lib/main_external.dart
+        run: flutter build apk --no-tree-shake-icons --dart-define-from-file=.env --build-number "$COMMIT_COUNT" --flavor externalProduction --target lib/main_external.dart
+        env:
+          COMMIT_COUNT: ${{ needs.create_release.outputs.commit_count }}
 
       # Package the build.
       - name: Copy build for Android
@@ -296,11 +331,15 @@ jobs:
 
       - name: Upload assets
         run: |
-          RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
-          gh release upload "$RELEASE" ./*.apk
+          if [ "$ENV" == "production" ]; then
+            gh release upload "$VERSION_SUFFIX" ./*.apk
+          else
+            RELEASE="$([[ "$ENV" == "development" ]] && echo "$VERSION_SUFFIX.dev" || echo "$VERSION_SUFFIX.stg")"
+            gh release upload "$RELEASE" ./*.apk
+          fi
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: "${{ needs.create_release.outputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}"
+          VERSION_SUFFIX: "${{ needs.create_release.outputs.version }}+${{ needs.create_release.outputs.commit_count }}"
           VERSION: ${{ needs.create_release.outputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
@@ -398,13 +437,15 @@ jobs:
       # Build the application.
       - name: Build appbundle
         if: ${{ github.event.inputs.env == 'development' || github.event.inputs.env == 'staging' }}
-        run: bash build-android.sh "$ENV" && flutter build appbundle --no-tree-shake-icons --dart-define-from-file=.env --flavor internalStaging --target lib/main_internal.dart
+        run: flutter build appbundle --no-tree-shake-icons --dart-define-from-file=.env --build-number "$COMMIT_COUNT" --flavor internalStaging --target lib/main_internal.dart
         env:
-          ENV: ${{ github.event.inputs.env }}
+          COMMIT_COUNT: ${{ needs.create_release.outputs.commit_count }}
 
       - name: Build appbundle
         if: github.event.inputs.env == 'production'
-        run: flutter build appbundle --no-tree-shake-icons --dart-define-from-file=.env --flavor internalProduction --target lib/main_internal.dart
+        run: flutter build appbundle --no-tree-shake-icons --dart-define-from-file=.env --build-number "$COMMIT_COUNT" --flavor internalProduction --target lib/main_internal.dart
+        env:
+          COMMIT_COUNT: ${{ needs.create_release.outputs.commit_count }}
 
       # Package the build.
       - name: Copy build for Android
@@ -427,11 +468,15 @@ jobs:
 
       - name: Upload assets
         run: |
-          RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
-          gh release upload "$RELEASE" ./*.aab
+          if [ "$ENV" == "production" ]; then
+            gh release upload "$VERSION_SUFFIX" ./*.aab
+          else
+            RELEASE="$([[ "$ENV" == "development" ]] && echo "$VERSION_SUFFIX.dev" || echo "$VERSION_SUFFIX.stg")"
+            gh release upload "$RELEASE" ./*.aab
+          fi
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: "${{ needs.create_release.outputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}"
+          VERSION_SUFFIX: "${{ needs.create_release.outputs.version }}+${{ needs.create_release.outputs.commit_count }}"
           VERSION: ${{ needs.create_release.outputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
@@ -504,13 +549,15 @@ jobs:
       # Build the application.
       - name: Build appbundle
         if: ${{ github.event.inputs.env == 'development' || github.event.inputs.env == 'staging' }}
-        run: bash build-android.sh "$ENV" && flutter build appbundle --no-tree-shake-icons --dart-define-from-file=.env --flavor externalStaging --target lib/main_external.dart
+        run: flutter build appbundle --no-tree-shake-icons --dart-define-from-file=.env --build-number "$COMMIT_COUNT" --flavor externalStaging --target lib/main_external.dart
         env:
-          ENV: ${{ github.event.inputs.env }}
+          COMMIT_COUNT: ${{ needs.create_release.outputs.commit_count }}
 
       - name: Build appbundle
         if: github.event.inputs.env == 'production'
-        run: flutter build appbundle --no-tree-shake-icons --dart-define-from-file=.env --flavor externalProduction --target lib/main_external.dart
+        run: flutter build appbundle --no-tree-shake-icons --dart-define-from-file=.env --build-number "$COMMIT_COUNT" --flavor externalProduction --target lib/main_external.dart
+        env:
+          COMMIT_COUNT: ${{ needs.create_release.outputs.commit_count }}
 
       # Package the build.
       - name: Copy build for Android
@@ -533,11 +580,15 @@ jobs:
 
       - name: Upload assets
         run: |
-          RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
-          gh release upload "$RELEASE" ./*.aab
+          if [ "$ENV" == "production" ]; then
+            gh release upload "$VERSION_SUFFIX" ./*.aab
+          else
+            RELEASE="$([[ "$ENV" == "development" ]] && echo "$VERSION_SUFFIX.dev" || echo "$VERSION_SUFFIX.stg")"
+            gh release upload "$RELEASE" ./*.aab
+          fi
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: "${{ needs.create_release.outputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}"
+          VERSION_SUFFIX: "${{ needs.create_release.outputs.version }}+${{ needs.create_release.outputs.commit_count }}"
           VERSION: ${{ needs.create_release.outputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
@@ -651,9 +702,9 @@ jobs:
           echo "╠ Removing build products and intermediate files from the build root..."
           cd ios && xcodebuild clean && cd ..
           echo "╠ Releasing to adhoc..."
-          bash build-ios.sh "$ENV" && flutter build ipa --dart-define-from-file=.env --flavor internal --target lib/main_internal.dart --export-options-plist=ios/ExportOptions-internal-debug.plist
+          flutter build ipa --dart-define-from-file=.env --build-number "$COMMIT_COUNT" --flavor internal --target lib/main_internal.dart --export-options-plist=ios/ExportOptions-internal-debug.plist
         env:
-          ENV: ${{ github.event.inputs.env }}
+          COMMIT_COUNT: ${{ needs.create_release.outputs.commit_count }}
 
       - name: Build ipa
         if: github.event.inputs.env == 'production'
@@ -661,7 +712,9 @@ jobs:
           echo "╠ Removing build products and intermediate files from the build root..."
           cd ios && xcodebuild clean && cd ..
           echo "╠ Releasing to app store..."
-          flutter build ipa --dart-define-from-file=.env --flavor internal --target lib/main_internal.dart --export-options-plist=ios/ExportOptions-internal-release.plist
+          flutter build ipa --dart-define-from-file=.env --build-number "$COMMIT_COUNT" --flavor internal --target lib/main_internal.dart --export-options-plist=ios/ExportOptions-internal-release.plist
+        env:
+          COMMIT_COUNT: ${{ needs.create_release.outputs.commit_count }}
 
       # Package the build.
       - name: Copy build for iOS
@@ -678,11 +731,15 @@ jobs:
 
       - name: Upload assets
         run: |
-          RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
-          gh release upload "$RELEASE" ./*.ipa
+          if [ "$ENV" == "production" ]; then
+            gh release upload "$VERSION_SUFFIX" ./*.ipa
+          else
+            RELEASE="$([[ "$ENV" == "development" ]] && echo "$VERSION_SUFFIX.dev" || echo "$VERSION_SUFFIX.stg")"
+            gh release upload "$RELEASE" ./*.ipa
+          fi
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: "${{ needs.create_release.outputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}"
+          VERSION_SUFFIX: "${{ needs.create_release.outputs.version }}+${{ needs.create_release.outputs.commit_count }}"
           VERSION: ${{ needs.create_release.outputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
@@ -799,9 +856,9 @@ jobs:
           echo "╠ Removing build products and intermediate files from the build root..."
           cd ios && xcodebuild clean && cd ..
           echo "╠ Releasing to adhoc..."
-          bash build-ios.sh "$ENV" && flutter build ipa --dart-define-from-file=.env --flavor external --target lib/main_external.dart --export-options-plist=ios/ExportOptions-external-debug.plist
+          flutter build ipa --dart-define-from-file=.env --build-number "$COMMIT_COUNT" --flavor external --target lib/main_external.dart --export-options-plist=ios/ExportOptions-external-debug.plist
         env:
-          ENV: ${{ github.event.inputs.env }}
+          COMMIT_COUNT: ${{ needs.create_release.outputs.commit_count }}
 
       - name: Build ipa
         if: github.event.inputs.env == 'production'
@@ -809,7 +866,9 @@ jobs:
           echo "╠ Removing build products and intermediate files from the build root..."
           cd ios && xcodebuild clean && cd ..
           echo "╠ Releasing to app store..."
-          flutter build ipa --dart-define-from-file=.env --flavor external --target lib/main_external.dart --export-options-plist=ios/ExportOptions-external-release.plist
+          flutter build ipa --dart-define-from-file=.env --build-number "$COMMIT_COUNT" --flavor external --target lib/main_external.dart --export-options-plist=ios/ExportOptions-external-release.plist
+        env:
+          COMMIT_COUNT: ${{ needs.create_release.outputs.commit_count }}
 
       # Package the build.
       - name: Copy build for iOS
@@ -826,11 +885,15 @@ jobs:
 
       - name: Upload assets
         run: |
-          RELEASE="$([[ "$ENV" == "development" || "$ENV" == "staging" ]] && echo "$VERSION_SUFFIX" || echo "$VERSION")"
-          gh release upload "$RELEASE" ./*.ipa
+          if [ "$ENV" == "production" ]; then
+            gh release upload "$VERSION_SUFFIX" ./*.ipa
+          else
+            RELEASE="$([[ "$ENV" == "development" ]] && echo "$VERSION_SUFFIX.dev" || echo "$VERSION_SUFFIX.stg")"
+            gh release upload "$RELEASE" ./*.ipa
+          fi
         env:
           ENV: ${{ github.event.inputs.env }}
-          VERSION_SUFFIX: "${{ needs.create_release.outputs.version }}+${{ needs.create_release.outputs.timestamp }}-${{ needs.create_release.outputs.sha_short }}"
+          VERSION_SUFFIX: "${{ needs.create_release.outputs.version }}+${{ needs.create_release.outputs.commit_count }}"
           VERSION: ${{ needs.create_release.outputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 

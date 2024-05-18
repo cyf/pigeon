@@ -5,9 +5,6 @@ class AppManager {
   /// 版本号
   String? version;
 
-  ///
-  String? prodVersion;
-
   /// 构建版本
   String? buildNumber;
 

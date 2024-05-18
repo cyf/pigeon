@@ -16,7 +16,6 @@ import 'package:homing_pigeon/common/constants/constants.dart';
 import 'package:homing_pigeon/common/logger/logger.dart';
 import 'package:homing_pigeon/common/utils/log_util.dart';
 import 'package:homing_pigeon/common/utils/sp_util.dart';
-import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/i18n/i18n.dart';
 import 'package:homing_pigeon/modules/app/app.dart';
 import 'package:jpush_flutter2/jpush_flutter2.dart';
@@ -269,7 +268,5 @@ Future<void> initApp() async {
   final packageInfo = await PackageInfo.fromPlatform();
   AppManager.instance
     ..version = packageInfo.version
-    ..prodVersion = packageInfo.version
-        .replaceAll(RegExp(r'\+[0-9-a-z]+'), StringUtil.empty)
     ..buildNumber = packageInfo.buildNumber;
 }

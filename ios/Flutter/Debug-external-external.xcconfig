@@ -1,3 +1,2 @@
 #include? "Pods/Target Support Files/Pods-external/Pods-external.debug-external.xcconfig"
 #include "Generated.xcconfig"
-#include? "BuildConfig.xcconfig"
