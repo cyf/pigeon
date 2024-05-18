@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:homing_pigeon/app/config.dart';
 import 'package:homing_pigeon/app/manager.dart';
@@ -64,42 +63,7 @@ Future<void> initFirebase() async {
   if (AppConfig.shared.isExternal) {
     AppManager.instance.firebaseInitialized = true;
     // final userId = SpUtil.getString(Keys.userIdKey);
-    // FirebaseMessaging.onMessage.listen(showFirebaseNotification);
-    FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      printDebugLog(
-        '[FirebaseMessaging] onMessageOpenedApp: ${message.toMap()}',
-      );
-      final extras = message.data;
-      navigateToPage(extras);
-    });
-    await FirebaseMessaging.instance.getInitialMessage().then((message) {
-      if (message != null) {
-        printDebugLog(
-          '[FirebaseMessaging] getInitialMessage: ${message.toMap()}',
-        );
-        final extras = message.data;
-        navigateToPage(extras);
-      }
-    });
 
-    try {
-      final token = await FirebaseMessaging.instance.getToken();
-      if (kDebugMode) {
-        print('FCM Token: $token');
-      }
-      if (StringUtil.isNotBlank(token)) {
-        await SpUtil.putString(Keys.fcmTokenKey, token!);
-        // await LoginApi.saveFcmToken(
-        //   data: {
-        //     'userId': userId,
-        //     'token': token,
-        //   },
-        //   onSuccess: (dynamic data) => true,
-        // );
-      }
-    } on Exception catch (error) {
-      printErrorLog(error);
-    }
   }
 }
 

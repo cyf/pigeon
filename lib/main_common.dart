@@ -1,7 +1,5 @@
-import 'dart:convert';
+import 'dart:developer';
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_aliyun_oss/flutter_aliyun_oss.dart';
@@ -12,144 +10,34 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:homing_pigeon/app/bloc_observer.dart';
 import 'package:homing_pigeon/app/config.dart';
 import 'package:homing_pigeon/app/manager.dart';
+import 'package:homing_pigeon/app/navigator.dart';
 import 'package:homing_pigeon/common/constants/constants.dart';
 import 'package:homing_pigeon/common/logger/logger.dart';
-import 'package:homing_pigeon/common/utils/log_util.dart';
 import 'package:homing_pigeon/common/utils/sp_util.dart';
 import 'package:homing_pigeon/i18n/i18n.dart';
 import 'package:homing_pigeon/modules/app/app.dart';
 import 'package:jpush_flutter2/jpush_flutter2.dart';
+import 'package:logging/logging.dart';
 import 'package:minio_flutter/minio.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:sentry_logging/sentry_logging.dart';
 import 'package:socket_io_client/socket_io_client.dart' as socket_io;
 import 'package:timezone/data/latest_10y.dart' as tz;
-
-@pragma('vm:entry-point')
-Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-  await setupFlutterNotifications();
-  // showFlutterNotification(message);
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
-  printDebugLog('Handling a background message ${message.messageId}');
-}
-
-@pragma('vm:entry-point')
-void notificationTapBackground(NotificationResponse notificationResponse) {
-  // ignore: avoid_print
-  printDebugLog(
-      'onDidReceiveBackgroundNotificationResponse: notification(${notificationResponse.id}) action tapped: '
-      '${notificationResponse.actionId} with'
-      ' payload: ${notificationResponse.payload}');
-  if (notificationResponse.input?.isNotEmpty ?? false) {
-    // ignore: avoid_print
-    printDebugLog(
-      'notification action tapped with input: ${notificationResponse.input}',
-    );
-  }
-}
 
 /// Create a [AndroidNotificationChannel] for heads up notifications
 late AndroidNotificationChannel channel;
 
 bool isFlutterLocalNotificationsInitialized = false;
 
-Future<void> setupFlutterNotifications() async {
-  if (isFlutterLocalNotificationsInitialized) {
-    return;
-  }
-  channel = const AndroidNotificationChannel(
-    'high_importance_channel', // id
-    'High Importance Notifications', // title
-    description:
-        'This channel is used for important notifications.', // description
-    importance: Importance.high,
-  );
-
-  flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
-  const initializationSettingsAndroid = AndroidInitializationSettings('splash');
-
-  /// Note: permissions aren't requested here just to demonstrate that can be
-  /// done later
-  const initializationSettingsDarwin = DarwinInitializationSettings(
-    requestAlertPermission: false,
-    requestBadgePermission: false,
-    requestSoundPermission: false,
-  );
-
-  const initializationSettings = InitializationSettings(
-    android: initializationSettingsAndroid,
-    iOS: initializationSettingsDarwin,
-  );
-
-  await flutterLocalNotificationsPlugin.initialize(
-    initializationSettings,
-    onDidReceiveNotificationResponse:
-        (NotificationResponse notificationResponse) {
-      printDebugLog(
-          'onDidReceiveNotificationResponse: notification(${notificationResponse.id})'
-          ' action tapped: ${notificationResponse.actionId} with'
-          ' payload: ${notificationResponse.payload}');
-      if (notificationResponse.input?.isNotEmpty ?? false) {
-        // ignore: avoid_print
-        printDebugLog(
-          'notification action tapped with input: ${notificationResponse.input}',
-        );
-      }
-    },
-    onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
-  );
-
-  /// Create an Android Notification Channel.
-  ///
-  /// We use this channel in the `AndroidManifest.xml` file to override the
-  /// default FCM channel to enable heads up notifications.
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel);
-
-  /// Update the iOS foreground notification presentation options to allow
-  /// heads up notifications.
-  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
-  isFlutterLocalNotificationsInitialized = true;
-}
-
-void showFlutterNotification(RemoteMessage message) {
-  final notification = message.notification;
-  final android = message.notification?.android;
-  if (notification != null && android != null) {
-    flutterLocalNotificationsPlugin.show(
-      notification.hashCode,
-      notification.title,
-      notification.body,
-      NotificationDetails(
-        android: AndroidNotificationDetails(
-          channel.id,
-          channel.name,
-          channelDescription: channel.description,
-
-          /// add a proper drawable resource to android, for now using
-          /// one that already exists in example app.
-          icon: 'launch_background',
-        ),
-      ),
-      payload: jsonEncode(message.data),
-    );
-  }
-}
-
 /// Initialize the [FlutterLocalNotificationsPlugin] package.
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
-void reportErrorAndLog(FlutterErrorDetails details) {
+Future<void> reportErrorAndLog(FlutterErrorDetails details) async {
   printErrorStackLog(details.exception, details.stack);
+  if (Constants.sentryEnabled && kReleaseMode) {
+    await Sentry.captureException(details.exception, stackTrace: details.stack);
+  }
 }
 
 FlutterErrorDetails makeErrorDetails(Object error, StackTrace stackTrace) {
@@ -158,22 +46,44 @@ FlutterErrorDetails makeErrorDetails(Object error, StackTrace stackTrace) {
 
 Future<void> runMainApp() async {
   tz.initializeTimeZones();
+  await SpUtil.getInstance();
+  // app version / build number
+  await initApp();
+
+  Logger.root.level =
+      kReleaseMode ? Level.OFF : Level.ALL; // defaults to Level.INFO
+  Logger.root.onRecord.listen((record) {
+    log('${record.level.name}: ${record.time}: ${record.message}');
+  });
 
   if (Constants.sentryEnabled && kReleaseMode) {
     await SentryFlutter.init(
       (options) {
         options
           ..dsn = Constants.sentryDsn
-          ..tracesSampleRate = 1.0;
+          ..tracesSampleRate = 1.0
+          ..profilesSampleRate = 1.0
+          ..attachThreads = true
+          ..enableWindowMetricBreadcrumbs = true
+          ..addIntegration(LoggingIntegration(minEventLevel: Level.INFO))
+          ..sendDefaultPii = true
+          ..reportSilentFlutterErrors = true
+          ..attachScreenshot = true
+          ..screenshotQuality = SentryScreenshotQuality.low
+          ..attachViewHierarchy = true
+          ..debug = kDebugMode
+          ..spotlight = Spotlight(enabled: true)
+          ..enableTimeToFullDisplayTracing = true
+          ..enableMetrics = true
+          ..maxRequestBodySize = MaxRequestBodySize.always
+          ..maxResponseBodySize = MaxResponseBodySize.always
+          ..navigatorKey = AppNavigator.key;
       },
     );
   }
 
   // initialize with the right locale
   LocaleSettings.useDeviceLocale();
-
-  await SpUtil.getInstance();
-  await LogUtil.getInstance();
 
   // TODO(kjxbyz): FIXME: upgrade socket_io_client to 3.0.0
   final socket = socket_io.io(
@@ -232,25 +142,20 @@ Future<void> runMainApp() async {
   }
 
   final onError = FlutterError.onError;
-  FlutterError.onError = (details) {
+  FlutterError.onError = (details) async {
     onError?.call(details);
-    reportErrorAndLog(details);
+    await reportErrorAndLog(details);
   };
 
-  /// Pass all uncaught asynchronous errors
-  /// that aren't handled by the Flutter Framework to Sentry
-  PlatformDispatcher.instance.onError = (error, stack) {
-    reportErrorAndLog(makeErrorDetails(error, stack));
+  PlatformDispatcher.instance.onError = (error, stackTrace) {
+    reportErrorAndLog(makeErrorDetails(error, stackTrace));
     return true;
   };
 
   EasyLoading.instance.maskType = EasyLoadingMaskType.clear;
 
   if (AppConfig.shared.isExternal) {
-    await Firebase.initializeApp();
-    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-    await setupFlutterNotifications();
-    await FirebaseMessaging.instance.requestPermission();
+    // TODO(kimmy): add app push service
   } else if (AppConfig.shared.isInternal) {
     await JPushFlutter.setDebugMode(debugMode: kDebugMode);
   }
@@ -259,9 +164,17 @@ Future<void> runMainApp() async {
     Bloc.observer = AppBlocObserver();
   }
 
-  await initApp();
+  Widget child = const App();
+  if (Constants.sentryEnabled && kReleaseMode) {
+    child = SentryWidget(
+      child: DefaultAssetBundle(
+        bundle: SentryAssetBundle(),
+        child: child,
+      ),
+    );
+  }
 
-  runApp(TranslationProvider(child: const App()));
+  runApp(TranslationProvider(child: child));
 }
 
 Future<void> initApp() async {

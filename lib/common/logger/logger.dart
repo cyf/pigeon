@@ -1,13 +1,15 @@
 import 'dart:async';
 
-import 'package:homing_pigeon/common/utils/log_util.dart';
+import 'package:logging/logging.dart';
+
+final logger = Logger('Homing Pigeon');
 
 void printDebugLog(Object? object) {
-  LogUtil.printDebugLog(object);
+  logger.shout(object);
 }
 
 void printWarningLog(Object? object) {
-  LogUtil.printWarningLog(object);
+  logger.warning(object);
 }
 
 void printErrorLog(
@@ -15,9 +17,10 @@ void printErrorLog(
   DateTime? time,
   StackTrace? stackTrace,
 }) {
-  LogUtil.printErrorLog(error, time: time, stackTrace: stackTrace);
+  logger.severe(null, error, stackTrace);
 }
 
 FutureOr<bool> printErrorStackLog(dynamic error, StackTrace? stackTrace) async {
-  return LogUtil.printErrorStackLog(error, stackTrace);
+  logger.severe(null, error, stackTrace);
+  return true;
 }

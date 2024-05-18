@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -6,6 +7,7 @@ import 'package:homing_pigeon/app/manager.dart';
 import 'package:homing_pigeon/app/navigator.dart';
 import 'package:homing_pigeon/common/api/auth_api.dart';
 import 'package:homing_pigeon/common/api/config_api.dart';
+import 'package:homing_pigeon/common/constants/constants.dart';
 import 'package:homing_pigeon/common/constants/keys.dart';
 import 'package:homing_pigeon/common/http/utils/handle_errors.dart';
 import 'package:homing_pigeon/common/utils/run_once.dart';
@@ -61,7 +63,7 @@ class _AppViewState extends State<AppView> {
       supportedLocales: AppLocaleUtils.supportedLocales,
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       navigatorObservers: [
-        SentryNavigatorObserver(),
+        if (Constants.sentryEnabled && kReleaseMode) SentryNavigatorObserver(),
       ],
       home: UpgradeAlert(
         navigatorKey: AppNavigator.key,
