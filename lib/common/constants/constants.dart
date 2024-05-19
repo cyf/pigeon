@@ -64,5 +64,6 @@ class Constants {
 
   // crash report
   static String sentryDsn = const String.fromEnvironment('SENTRY_DSN');
-  static bool sentryEnabled = StringUtil.isNotBlank(sentryDsn);
+  static bool sentryEnabled = StringUtil.isNotBlank(sentryDsn) && kReleaseMode;
+  // static bool sentryEnabled = false;
 }

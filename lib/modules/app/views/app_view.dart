@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -63,7 +62,7 @@ class _AppViewState extends State<AppView> {
       supportedLocales: AppLocaleUtils.supportedLocales,
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       navigatorObservers: [
-        if (Constants.sentryEnabled && kReleaseMode) SentryNavigatorObserver(),
+        if (Constants.sentryEnabled) SentryNavigatorObserver(),
       ],
       home: UpgradeAlert(
         navigatorKey: AppNavigator.key,

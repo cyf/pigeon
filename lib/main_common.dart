@@ -56,7 +56,7 @@ Future<void> runMainApp() async {
     log('${record.level.name}: ${record.time}: ${record.message}');
   });
 
-  if (Constants.sentryEnabled && kReleaseMode) {
+  if (Constants.sentryEnabled) {
     await SentryFlutter.init(
       (options) {
         options
@@ -65,6 +65,8 @@ Future<void> runMainApp() async {
           ..profilesSampleRate = 1.0
           ..attachThreads = true
           ..enableWindowMetricBreadcrumbs = true
+          ..enableAppHangTracking =
+              false // https://github.com/getsentry/sentry-cocoa/issues/3472
           ..addIntegration(LoggingIntegration(minEventLevel: Level.INFO))
           ..sendDefaultPii = true
           ..reportSilentFlutterErrors = true
@@ -165,7 +167,7 @@ Future<void> runMainApp() async {
   }
 
   Widget child = const App();
-  if (Constants.sentryEnabled && kReleaseMode) {
+  if (Constants.sentryEnabled) {
     child = SentryWidget(
       child: DefaultAssetBundle(
         bundle: SentryAssetBundle(),
