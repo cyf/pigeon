@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
+		2E0BC77C2BF9957D008FFC92 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2E0BC77B2BF9957D008FFC92 /* GoogleService-Info.plist */; };
 		2E2358232B6E2ABE00C21F36 /* LaunchScreenInternal.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2E2358212B6E2ABE00C21F36 /* LaunchScreenInternal.storyboard */; };
 		2E2358242B6E2ABE00C21F36 /* LaunchScreenInternal.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2E2358212B6E2ABE00C21F36 /* LaunchScreenInternal.storyboard */; };
 		2E77E7012B31DD750058EC04 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
@@ -57,6 +58,7 @@
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
 		285EBBBAD055CDFDA8A19311 /* Pods-internal.profile-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-internal.profile-internal.xcconfig"; path = "Target Support Files/Pods-internal/Pods-internal.profile-internal.xcconfig"; sourceTree = "<group>"; };
+		2E0BC77B2BF9957D008FFC92 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2E2358222B6E2ABE00C21F36 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreenInternal.storyboard; sourceTree = "<group>"; };
 		2E77E7132B31DD750058EC04 /* external.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = external.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E77E71F2B31DEF30058EC04 /* External.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = External.plist; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				2E0BC77B2BF9957D008FFC92 /* GoogleService-Info.plist */,
 				2E77E71F2B31DEF30058EC04 /* External.plist */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
@@ -295,6 +298,7 @@
 				2E77E7092B31DD750058EC04 /* Assets.xcassets in Resources */,
 				2E77E70A2B31DD750058EC04 /* Main.storyboard in Resources */,
 				2E2358242B6E2ABE00C21F36 /* LaunchScreenInternal.storyboard in Resources */,
+				2E0BC77C2BF9957D008FFC92 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

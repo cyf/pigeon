@@ -53,6 +53,7 @@ jobs:
 
       - name: Configure Keystore for Android
         run: |
+          echo "$FIREBASE_GOOGLE_SERVICE_BASE64_ANDROID" | base64 --decode > app/src/external/google-services.json
           echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > app/upload-keystore.jks
           echo "storeFile=upload-keystore.jks" >> key.properties
           echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
@@ -63,6 +64,7 @@ jobs:
           KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
           KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
           KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
+          FIREBASE_GOOGLE_SERVICE_BASE64_ANDROID: ${{ secrets.FIREBASE_GOOGLE_SERVICE_BASE64_ANDROID }}
         working-directory: android
 
       - name: Build Apk
@@ -76,6 +78,7 @@ jobs:
       - name: Clean up
         if: ${{ always() }}
         run: |
+          rm -f android/app/src/external/google-services.json
           rm -f android/app/upload-keystore.jks
           rm -f android/key.properties
           rm -f .env
@@ -110,6 +113,7 @@ jobs:
 
       - name: Configure Keystore for Android
         run: |
+          echo "$FIREBASE_GOOGLE_SERVICE_BASE64_ANDROID" | base64 --decode > app/src/external/google-services.json
           echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > app/upload-keystore.jks
           echo "storeFile=upload-keystore.jks" >> key.properties
           echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
@@ -120,6 +124,7 @@ jobs:
           KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
           KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
           KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
+          FIREBASE_GOOGLE_SERVICE_BASE64_ANDROID: ${{ secrets.FIREBASE_GOOGLE_SERVICE_BASE64_ANDROID }}
         working-directory: android
 
       - name: Build Apk
@@ -133,6 +138,7 @@ jobs:
       - name: Clean up
         if: ${{ always() }}
         run: |
+          rm -f android/app/src/external/google-services.json
           rm -f android/app/upload-keystore.jks
           rm -f android/key.properties
           rm -f .env
@@ -217,6 +223,13 @@ jobs:
           mv $EXTERNAL_PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
           mv $EXTERNAL_PP_DEV_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
+      - name: Configure Firebase
+        run: |
+          echo "$FIREBASE_GOOGLE_SERVICE_BASE64_IOS" | base64 --decode > Runner/GoogleService-Info.plist
+        env:
+          FIREBASE_GOOGLE_SERVICE_BASE64_IOS: ${{ secrets.FIREBASE_GOOGLE_SERVICE_BASE64_IOS }}
+        working-directory: ios
+
       - name: Build Ipa
         run: |
           echo "╠ Removing build products and intermediate files from the build root..."
@@ -237,6 +250,7 @@ jobs:
             security delete-keychain $RUNNER_TEMP/hp-signing.keychain-db
           fi
           rm -f ~/Library/MobileDevice/Provisioning\ Profiles/homing_pigeon_*.mobileprovision
+          rm -f ios/Runner/GoogleService-Info.plist
           rm -f .env
 
   external_ios:
@@ -319,6 +333,13 @@ jobs:
           mv $EXTERNAL_PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
           mv $EXTERNAL_PP_DEV_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
+      - name: Configure Firebase
+        run: |
+          echo "$FIREBASE_GOOGLE_SERVICE_BASE64_IOS" | base64 --decode > Runner/GoogleService-Info.plist
+        env:
+          FIREBASE_GOOGLE_SERVICE_BASE64_IOS: ${{ secrets.FIREBASE_GOOGLE_SERVICE_BASE64_IOS }}
+        working-directory: ios
+
       - name: Build Ipa
         run: |
           echo "╠ Removing build products and intermediate files from the build root..."
@@ -339,4 +360,5 @@ jobs:
             security delete-keychain $RUNNER_TEMP/hp-signing.keychain-db
           fi
           rm -f ~/Library/MobileDevice/Provisioning\ Profiles/homing_pigeon_*.mobileprovision
+          rm -f ios/Runner/GoogleService-Info.plist
           rm -f .env

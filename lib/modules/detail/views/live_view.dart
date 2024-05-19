@@ -2,10 +2,11 @@ import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
-import 'package:googleapis/youtube/v3.dart';
 import 'package:homing_pigeon/common/enums/enums.dart';
 import 'package:homing_pigeon/common/extensions/single.dart';
+import 'package:homing_pigeon/common/http/utils/handle_errors.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
 import 'package:homing_pigeon/theme/colors.dart';
@@ -33,7 +34,6 @@ class _LiveViewState extends State<LiveView> {
 
   int currentPage = 1;
   int totalResults = 0;
-  List<SearchResult> items = [];
 
   @override
   void initState() {
@@ -139,66 +139,22 @@ class _LiveViewState extends State<LiveView> {
   }
 
   Future<void> _load({Operation operation = Operation.none}) async {
-    // try {
-    //   /// https://github.com/flutter/flutter/issues/137614
-    //   final googleSignIn = GoogleSignIn(
-    //     clientId: Constants.googleOAuth2ClientId,
-    //     scopes: <String>[YouTubeApi.youtubeReadonlyScope],
-    //   );
-    //
-    //   final user = await googleSignIn.signIn();
-    //   printDebugLog('user: $user');
-    //   if (user == null) {
-    //     await Fluttertoast.showToast(msg: 'Cancelled');
-    //     return;
-    //   }
-    //
-    //   final httpClient = await googleSignIn.authenticatedClient();
-    //   if (httpClient == null) {
-    //     printDebugLog('httpClient is null');
-    //     return;
-    //   }
-    //
-    //   // httpClient = clientViaApiKey(Constants.youtubeApiKey);
-    //   final youTubeApi = YouTubeApi(httpClient);
-    //   if (operation == Operation.none) {
-    //     await EasyLoading.show();
-    //   }
-    //   final res = await youTubeApi.search.list(
-    //     ['id', 'snippet'],
-    //     channelId: 'UC7QVieoTCNwwW84G0bddXpA',
-    //     channelType: 'any',
-    //     eventType: EventType.live.name,
-    //     type: ['video'],
-    //     maxResults: 10,
-    //   );
-    //   printDebugLog('res: $res');
-    //
-    //   if (operation == Operation.none) {
-    //     await EasyLoading.dismiss();
-    //   } else if (operation == Operation.refresh) {
-    //     _easyRefreshController.finishRefresh();
-    //   } else if (operation == Operation.load) {
-    //     _easyRefreshController.finishLoad();
-    //   }
-    //   setState(() {
-    //     totalResults = res.pageInfo?.totalResults ?? 0;
-    //     items = res.items ?? [];
-    //   });
-    // } on Exception catch (error, stackTrace) {
-    //   ErrorHandler.handle(
-    //     error,
-    //     stackTrace: stackTrace,
-    //     postProcessor: (_, msg) {
-    //       if (operation == Operation.none) {
-    //         EasyLoading.showError(msg ?? 'Failure');
-    //       } else if (operation == Operation.refresh) {
-    //         _easyRefreshController.finishRefresh(IndicatorResult.fail);
-    //       } else if (operation == Operation.load) {
-    //         _easyRefreshController.finishLoad(IndicatorResult.fail);
-    //       }
-    //     },
-    //   );
-    // }
+    try {
+
+    } on Exception catch (error, stackTrace) {
+      ErrorHandler.handle(
+        error,
+        stackTrace: stackTrace,
+        postProcessor: (_, msg) {
+          if (operation == Operation.none) {
+            EasyLoading.showError(msg ?? 'Failure');
+          } else if (operation == Operation.refresh) {
+            _easyRefreshController.finishRefresh(IndicatorResult.fail);
+          } else if (operation == Operation.load) {
+            _easyRefreshController.finishLoad(IndicatorResult.fail);
+          }
+        },
+      );
+    }
   }
 }
