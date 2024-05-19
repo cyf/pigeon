@@ -23,7 +23,7 @@ abstract class BaseHttp with DioMixin implements Dio {
     httpClientAdapter = HttpClientAdapter();
     ErrorInterceptor();
     init();
-    if (Constants.sentryEnabled && kReleaseMode) {
+    if (Constants.sentryEnabled) {
       addSentry();
     }
   }
