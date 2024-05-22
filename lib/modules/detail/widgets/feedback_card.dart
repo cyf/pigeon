@@ -56,7 +56,7 @@ class _FeedbackCardState extends State<FeedbackCard> {
                 .where((file) => file.type?.startsWith('image/') ?? false)
                 .map(
               (file) {
-                final width = MediaQuery.of(context).size.width - 10 * 2;
+                final width = MediaQuery.sizeOf(context).width - 10 * 2;
                 final itemWidth = ((width - 5 * 2) / 3).floorToDouble();
                 // TODO(kjxbyz): add video preview.
                 return CachedNetworkImage(

@@ -136,7 +136,7 @@ class _EmojiViewState extends State<EmojiView> {
     }
 
     if (!loading && items.isEmpty) {
-      final height = MediaQuery.of(context).size.height;
+      final height = MediaQuery.sizeOf(context).height;
       return NoData(
         icon: IconButton.outlined(
           style: ButtonStyle(
@@ -175,8 +175,8 @@ class _EmojiViewState extends State<EmojiView> {
   void showUploadBottomSheet() {
     const spacing = 8.0;
     const padding = 10.0;
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.sizeOf(context).width;
+    final height = MediaQuery.sizeOf(context).height;
     final top = MediaQuery.of(context).padding.top;
     final bottom = MediaQuery.of(context).padding.bottom;
     final contentWidth = width - padding * 2;

@@ -91,12 +91,12 @@ class _FeedbackDetailViewState extends State<FeedbackDetailView> {
 
   Widget _buildBody() {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final height = MediaQuery.of(context).size.height;
+    final height = MediaQuery.sizeOf(context).height;
     final top = MediaQuery.of(context).padding.top;
     final bottom = MediaQuery.of(context).padding.bottom;
     if (!_loading && _feedback != null) {
       const spacing = 8.0;
-      final width = MediaQuery.of(context).size.width;
+      final width = MediaQuery.sizeOf(context).width;
       final itemWidth = ((width - spacing * 2) / 3).floorToDouble();
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -248,7 +248,7 @@ class _FeedbackDetailViewState extends State<FeedbackDetailView> {
   // void showUploadBottomSheet() {
   //   const spacing = 8.0;
   //   const padding = 10.0;
-  //   final width = MediaQuery.of(context).size.width - padding * 2;
+  //   final width = MediaQuery.sizeOf(context).width - padding * 2;
   //   final itemWidth = ((width - spacing * 2) / 3).floorToDouble();
   //
   //   showModalBottomSheet<void>(

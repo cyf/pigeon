@@ -313,7 +313,7 @@ class _HomeViewState extends State<HomeView>
     final child = CachedNetworkImage(
       imageUrl: carousel.image,
       imageBuilder: (context, imageProvider) => Container(
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery.sizeOf(context).width,
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(8),
@@ -385,8 +385,8 @@ class _HomeViewState extends State<HomeView>
   }
 
   void showLoginBottomSheet() {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.sizeOf(context).width;
+    final height = MediaQuery.sizeOf(context).height;
     final top = MediaQuery.of(context).padding.top;
     final bottom = MediaQuery.of(context).padding.bottom;
 
@@ -1243,7 +1243,7 @@ class _HomeViewState extends State<HomeView>
   }
 
   void showLogoutBottomSheet() {
-    final height = MediaQuery.of(context).size.height;
+    final height = MediaQuery.sizeOf(context).height;
     final top = MediaQuery.of(context).padding.top;
     final bottom = MediaQuery.of(context).padding.bottom;
 
