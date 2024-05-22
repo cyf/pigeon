@@ -90,7 +90,7 @@ class _RoadmapViewState extends State<RoadmapView> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final height = MediaQuery.of(context).size.height;
+    final height = MediaQuery.sizeOf(context).height;
     final top = MediaQuery.of(context).padding.top;
     return Scaffold(
       appBar: HpAppBar(
