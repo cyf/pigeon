@@ -53,8 +53,8 @@ dependencies:
   equatable: ^2.0.5
   extended_text: ^13.0.0
   file_picker: ^8.0.3
-  firebase_core: ^2.31.0
-  firebase_messaging: ^14.9.2
+  firebase_core: ^2.31.1
+  firebase_messaging: ^14.9.3
   flutter:
     sdk: flutter
   flutter_aliyun_oss: ^0.0.1
@@ -96,8 +96,8 @@ dependencies:
   sentry_flutter: ^8.2.0
   sentry_logging: ^8.2.0
   shared_preferences: ^2.2.3
-  slang: ^3.30.2
-  slang_flutter: ^3.30.0
+  slang: ^3.31.0
+  slang_flutter: ^3.31.0
   socket_io_client: ^3.0.0-beta.2
   sortedmap: ^0.5.3
   syncfusion_flutter_calendar: ^25.2.4
@@ -116,14 +116,14 @@ dependencies:
 dev_dependencies:
   bloc_test: ^9.1.7
   build_runner: ^2.4.9
-  flutter_gen_runner: ^5.4.0
+  flutter_gen_runner: ^5.5.0+1
   flutter_test:
     sdk: flutter
   freezed: ^2.5.2
   json_serializable: ^6.8.0
   mockingjay: ^0.5.0
   mocktail: ^1.0.3
-  slang_build_runner: ^3.30.0
+  slang_build_runner: ^3.31.0
   very_good_analysis: ^5.1.0
 
 flutter_gen:
