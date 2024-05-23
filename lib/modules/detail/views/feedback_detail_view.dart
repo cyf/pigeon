@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:homing_pigeon/app/navigator.dart';
 import 'package:homing_pigeon/common/api/feedback_api.dart';
 import 'package:homing_pigeon/common/enums/enums.dart';
 import 'package:homing_pigeon/common/extensions/extensions.dart';
@@ -9,6 +10,7 @@ import 'package:homing_pigeon/common/http/utils/handle_errors.dart';
 import 'package:homing_pigeon/common/models/models.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
+import 'package:homing_pigeon/i18n/i18n.dart';
 import 'package:homing_pigeon/theme/colors.dart';
 import 'package:reorderables/reorderables.dart';
 
@@ -67,12 +69,13 @@ class _FeedbackDetailViewState extends State<FeedbackDetailView> {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bottom = MediaQuery.of(context).padding.bottom;
     return Scaffold(
       appBar: HpAppBar(
         isDark: isDark,
-        titleName: '反馈详情',
+        titleName: t.pages.feedbackDetail.title,
       ),
       body: EasyRefresh(
         controller: _controller,
@@ -90,6 +93,7 @@ class _FeedbackDetailViewState extends State<FeedbackDetailView> {
   }
 
   Widget _buildBody() {
+    final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final height = MediaQuery.sizeOf(context).height;
     final top = MediaQuery.of(context).padding.top;
@@ -193,9 +197,9 @@ class _FeedbackDetailViewState extends State<FeedbackDetailView> {
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
           onPressed: _load,
-          child: const Text(
-            '没有数据, 点击以重新加载',
-            style: TextStyle(
+          child: Text(
+            t.common.noData,
+            style: const TextStyle(
               fontSize: 12,
               color: placeholderTextColor,
             ),
@@ -230,13 +234,14 @@ class _FeedbackDetailViewState extends State<FeedbackDetailView> {
         }
       },
     ).onError<Exception>((error, stackTrace) {
+      final t = Translations.of(AppNavigator.key.currentContext!);
       ErrorHandler.handle(
         error,
         stackTrace: stackTrace,
         postProcessor: (_, msg) {
           if (operation == Operation.none) {
             setState(() => _loading = false);
-            EasyLoading.showError(msg ?? 'Failure');
+            EasyLoading.showError(msg ?? t.common.failure);
           } else if (operation == Operation.refresh) {
             _controller.finishRefresh(IndicatorResult.fail);
           }

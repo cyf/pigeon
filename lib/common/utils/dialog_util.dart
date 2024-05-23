@@ -39,21 +39,20 @@ class DialogUtil {
         builder: (BuildContext context) {
           final isDark = Theme.of(context).brightness == Brightness.dark;
 
-          final androidPermissionTexts =
-              t.dialogs.licenseDialog.androidPermissions
-                  .mapIndexed(
-                    (index, permissionText) => Text(
-                      '${index + 1}. $permissionText',
-                      style: TextStyle(
-                        color: isDark ? Colors.white : primaryTextColor,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ).nestedPadding(padding: const EdgeInsets.only(top: 4)),
-                  )
-                  .toList();
+          final androidPermissionTexts = t.dialogs.license.androidPermissions
+              .mapIndexed(
+                (index, permissionText) => Text(
+                  '${index + 1}. $permissionText',
+                  style: TextStyle(
+                    color: isDark ? Colors.white : primaryTextColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ).nestedPadding(padding: const EdgeInsets.only(top: 4)),
+              )
+              .toList();
 
-          final iosPermissionTexts = t.dialogs.licenseDialog.iosPermissions
+          final iosPermissionTexts = t.dialogs.license.iosPermissions
               .mapIndexed(
                 (index, permissionText) => Text(
                   '${index + 1}. $permissionText',
@@ -68,7 +67,7 @@ class DialogUtil {
 
           return AlertDialog(
             title: Text(
-              t.dialogs.licenseDialog.licenseDialogTitle,
+              t.dialogs.license.title,
               style: TextStyle(
                 color: isDark ? Colors.white : primaryTextColor,
                 fontSize: 18,
@@ -80,7 +79,7 @@ class DialogUtil {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  t.dialogs.licenseDialog.licenseDialogContentContent,
+                  t.dialogs.license.contentContent,
                   style: TextStyle(
                     color: isDark ? Colors.white : primaryTextColor,
                     fontSize: 14,
@@ -88,7 +87,7 @@ class DialogUtil {
                   ),
                 ),
                 Text(
-                  t.dialogs.licenseDialog.licenseDialogContentTip,
+                  t.dialogs.license.contentTip,
                   style: TextStyle(
                     color: isDark ? Colors.white : primaryTextColor,
                     fontSize: 14,
@@ -101,8 +100,7 @@ class DialogUtil {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text:
-                            t.dialogs.licenseDialog.licenseDialogContentPrefix,
+                        text: t.dialogs.license.contentPrefix,
                         style: TextStyle(
                           color: isDark ? Colors.white : primaryTextColor,
                           fontSize: 14,
@@ -110,8 +108,7 @@ class DialogUtil {
                         ),
                       ),
                       TextSpan(
-                        text: t.dialogs.licenseDialog
-                            .licenseDialogContentUserAgreement,
+                        text: t.dialogs.license.contentUserAgreement,
                         recognizer: TapGestureRecognizer()
                           ..onTap = () async {
                             final uri = Uri.parse(
@@ -128,7 +125,7 @@ class DialogUtil {
                         ),
                       ),
                       TextSpan(
-                        text: t.dialogs.licenseDialog.licenseDialogContentAnd,
+                        text: t.dialogs.license.contentAnd,
                         style: TextStyle(
                           color: isDark ? Colors.white : primaryTextColor,
                           fontSize: 14,
@@ -136,8 +133,7 @@ class DialogUtil {
                         ),
                       ),
                       TextSpan(
-                        text: t.dialogs.licenseDialog
-                            .licenseDialogContentPrivacyAgreement,
+                        text: t.dialogs.license.contentPrivacyAgreement,
                         recognizer: TapGestureRecognizer()
                           ..onTap = () async {
                             final uri = Uri.parse(
@@ -154,8 +150,7 @@ class DialogUtil {
                         ),
                       ),
                       TextSpan(
-                        text:
-                            t.dialogs.licenseDialog.licenseDialogContentSuffix,
+                        text: t.dialogs.license.contentSuffix,
                         style: TextStyle(
                           color: isDark ? Colors.white : primaryTextColor,
                           fontSize: 14,

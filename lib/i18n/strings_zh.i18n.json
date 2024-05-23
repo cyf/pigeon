@@ -1,24 +1,230 @@
 {
   "appName": "信鸽",
+  "common": {
+    "copied": "已复制",
+    "success": "成功啦\uD83D\uDE0A",
+    "failure": "失败啦\uD83D\uDE2D",
+    "noData": "没有数据, 点击以重新加载\uD83D\uDE2D"
+  },
   "pages": {
-    "homePage": {
-      "title": "信鸽"
+    "home": {
+      "primary": {
+        "title": "主要功能",
+        "rating": {
+          "title": "电影打分系统",
+          "description": "给看过的电影打个分吧~~"
+        },
+        "live": {
+          "title": "直播预告",
+          "description": "查看详情"
+        },
+        "settings": {
+          "title": "开播通知设置"
+        }
+      },
+      "other": {
+        "title": "其他功能",
+        "notifications": {
+          "title": "直播信息/提醒群",
+          "description": "直播平台、时间等"
+        },
+        "store": {
+          "title": "小德官方店: 喜瑞斯",
+          "description": "寒潮啦! 来件卫衣吧~~"
+        },
+        "emoji": {
+          "title": "小德表情包\uD83D\uDC31",
+          "description": "欢迎投稿~~"
+        },
+        "feedback": {
+          "title": "意见/建议",
+          "description": "无论您遇到任何问题、意见或建议, 均可反馈..."
+        },
+        "roadmap": {
+          "title": "路线图",
+          "description": "查看开发计划和进度\uD83D\uDE04"
+        }
+      },
+      "version": "版本号"
+    },
+    "emoji": {
+      "title": "表情库～",
+      "tips": {
+        "title": "欢迎投稿，嗷呜~",
+        "prefix": "欢迎",
+        "button": " [点击此处] ",
+        "suffix": "投稿，可以是表情包，可以是文案创意，也可以是一些令猫尴尬的图片或截图等~\uD83D\uDE04"
+      },
+      "dialogs": {
+        "upload": {
+          "buttons": {
+            "upload": "上传"
+          },
+          "header": "请选择要上传的表情",
+          "tips": {
+            "prefix": "您最多可以上传9张图片",
+            "suffix": "图片大小必须在50KB到15MB之间"
+          },
+          "form": {
+            "emojis": {
+              "errorText": "请选择要上传的表情"
+            }
+          },
+          "uploadFailed": "文件上传失败\uD83D\uDE2D"
+        }
+      }
+    },
+    "feedback": {
+      "title": "意见或建议",
+      "tips": {
+        "title": "欢迎提意见或建议，嗷呜~",
+        "prefix": "无论您遇到任何问题、意见或建议，均可",
+        "button": " [点击此处] ",
+        "suffix": "进行反馈."
+      },
+      "dialogs": {
+        "upload": {
+          "buttons": {
+            "upload": "提交"
+          },
+          "header": "请填写反馈内容",
+          "form": {
+            "title": {
+              "title": "标题",
+              "hintText": "请输入标题",
+              "errorText": "请输入标题"
+            },
+            "description": {
+              "title": "描述",
+              "hintText": "请输入描述",
+              "errorText": "请输入描述"
+            },
+            "assets": {
+              "title": "图片或视频",
+              "prefix": "您最多可以上传9张图片或视频",
+              "suffix": "图片大小必须在50KB到15MB之间, 视频大小必须在50KB到20MB之间"
+            }
+          },
+          "error": {
+            "image": "上传的图片必须在15KB至15MB之间",
+            "video": "上传的视频必须在15KB至20MB之间"
+          },
+          "uploadFailed": "文件上传失败\uD83D\uDE2D"
+        }
+      }
+    },
+    "feedbackDetail": {
+      "title": "反馈详情"
+    },
+    "live": {
+      "title": "直播～"
+    },
+    "movie": {
+      "title": "电影"
+    },
+    "roadmap": {
+      "title": "路线图"
+    },
+    "social": {
+      "title": "社交"
     }
   },
   "buttons": {
     "agree": "同意",
-    "cancel": "再想想"
+    "cancel": "再想想",
+    "login": "登录",
+    "signup": "注册",
+    "logout": "退出",
+    "ignore": "忽略",
+    "turnOn": "开启",
+    "turnOff": "关闭"
+  },
+  "bottomSheets": {
+    "login": {
+      "header": "请填写登录信息",
+      "form": {
+        "account": {
+          "title": "账号",
+          "hintText": "请输入账号",
+          "errorText": "请输入账号",
+          "errorText2": "请输入至少8个字符"
+        },
+        "password": {
+          "title": "密码",
+          "hintText": "请输入密码",
+          "errorText": "请输入密码",
+          "errorText2": "请输入至少8个字符"
+        },
+        "privacy": {
+          "title": "隐私协议",
+          "prefix": "我已仔细阅读并同意",
+          "privacy": "隐私政策",
+          "and": "以及",
+          "terms": "条款和条件",
+          "errorText": "请同意隐私协议"
+        }
+      },
+      "tips": {
+        "prefix": "已有账号, ",
+        "suffix": "去登录"
+      }
+    },
+    "signup": {
+      "header": "请填写注册信息",
+      "form": {
+        "account": {
+          "helperText": "只能包含英文, 数字或下划线, 且只能以字母开头, 至少8个字符",
+          "errorText2": "账号只能包含英文,数字或下划线, 且只能以字母开头, 至少8个字符"
+        },
+        "nickname": {
+          "title": "昵称",
+          "hintText": "请输入昵称",
+          "helperText": "不能多于20个字符",
+          "errorText": "昵称长度不能大于20"
+        },
+        "email": {
+          "title": "邮箱",
+          "hintText": "请输入邮箱",
+          "errorText": "请输入邮箱",
+          "errorText2": "邮箱格式错误"
+        },
+        "password": {
+          "helperText": "请输入至少8个字符"
+        },
+        "repeatPassword": {
+          "title": "账号",
+          "hintText": "请再次输入密码",
+          "errorText": "请再次输入密码",
+          "errorText2": "两次输入的密码不一样"
+        }
+      },
+      "tips": {
+        "prefix": "还没有账号, ",
+        "suffix": "去注册"
+      }
+    },
+    "store": {
+      "title": "请选择您的操作",
+      "code": {
+        "title": "复制淘口令",
+        "description": "直播平台、时间等"
+      },
+      "link": {
+        "title": "打开淘宝店地址",
+        "description": "寒潮啦! 来件卫衣吧~~"
+      }
+    }
   },
   "dialogs": {
-    "licenseDialog": {
-      "licenseDialogTitle": "隐私条款",
-      "licenseDialogContentContent": "信鸽 非常重视你的隐私保护和个人信息保护.",
-      "licenseDialogContentTip": "以下是该APP所需的权限列表:",
-      "licenseDialogContentPrefix": "在使用APP服务前，请认真阅读 ",
-      "licenseDialogContentUserAgreement": "《隐私政策》",
-      "licenseDialogContentAnd": "和",
-      "licenseDialogContentPrivacyAgreement": "《用户服务协议》",
-      "licenseDialogContentSuffix": ", 你同意并接受全部条款后开始使用我们的服务.",
+    "license": {
+      "title": "隐私条款",
+      "contentContent": "信鸽 非常重视你的隐私保护和个人信息保护.",
+      "contentTip": "以下是该APP所需的权限列表:",
+      "contentPrefix": "在使用APP服务前，请认真阅读 ",
+      "contentUserAgreement": "《隐私政策》",
+      "contentAnd": "和",
+      "contentPrivacyAgreement": "《用户服务协议》",
+      "contentSuffix": ", 你同意并接受全部条款后开始使用我们的服务.",
       "iosPermissions": [
         "为了让您拍摄照片, 信鸽 需要访问您的相机. (NSCameraUsageDescription)",
         "为了让您上传图片, 信鸽 需要访问您的照片. (NSPhotoLibraryUsageDescription)"
@@ -33,6 +239,10 @@
         "为了让您拍摄照片, 信鸽 需要访问您的相机. (android.permission.CAMERA)",
         "为了向您发送本地通知, 信鸽 需要访问您的权限. (android.permission.RECEIVE_BOOT_COMPLETED)"
       ]
+    },
+    "album": {
+      "title": "允许访问您的相册",
+      "description": "请前往您的手机设置授予信鸽访问您相册的权限."
     }
   },
   "locales(map)": {

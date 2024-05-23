@@ -3,11 +3,13 @@ import 'dart:async';
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:homing_pigeon/app/navigator.dart';
 import 'package:homing_pigeon/common/api/social_api.dart';
 import 'package:homing_pigeon/common/enums/enums.dart';
 import 'package:homing_pigeon/common/http/utils/handle_errors.dart';
 import 'package:homing_pigeon/common/models/models.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
+import 'package:homing_pigeon/i18n/i18n.dart';
 import 'package:homing_pigeon/modules/detail/detail.dart';
 import 'package:homing_pigeon/theme/colors.dart';
 
@@ -45,12 +47,13 @@ class _SocialViewState extends State<SocialView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bottom = MediaQuery.of(context).padding.bottom;
     return Scaffold(
       appBar: HpAppBar(
         isDark: isDark,
-        titleName: '社交',
+        titleName: t.pages.social.title,
       ),
       body: EasyRefresh(
         controller: _controller,
@@ -90,9 +93,9 @@ class _SocialViewState extends State<SocialView>
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                       onPressed: _load,
-                      child: const Text(
-                        '没有数据, 点击以重新加载',
-                        style: TextStyle(
+                      child: Text(
+                        t.common.noData,
+                        style: const TextStyle(
                           fontSize: 12,
                           color: placeholderTextColor,
                         ),
@@ -169,13 +172,15 @@ class _SocialViewState extends State<SocialView>
         }
       },
     ).onError<Exception>((error, stackTrace) {
+      final context = AppNavigator.key.currentContext!;
+      final t = Translations.of(context);
       ErrorHandler.handle(
         error,
         stackTrace: stackTrace,
         postProcessor: (_, msg) {
           if (operation == Operation.none) {
             setState(() => loading = false);
-            EasyLoading.showError(msg ?? 'Failure');
+            EasyLoading.showError(msg ?? t.common.failure);
           } else if (operation == Operation.refresh) {
             _controller.finishRefresh(IndicatorResult.fail);
           } else if (operation == Operation.load) {

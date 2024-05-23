@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:homing_pigeon/app/navigator.dart';
 import 'package:homing_pigeon/common/api/feedback_api.dart';
 import 'package:homing_pigeon/common/enums/enums.dart';
 import 'package:homing_pigeon/common/exception/exception.dart';
@@ -21,6 +22,7 @@ import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/common/utils/upload_util.dart';
 import 'package:homing_pigeon/common/widgets/header.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
+import 'package:homing_pigeon/i18n/i18n.dart';
 import 'package:homing_pigeon/modules/detail/detail.dart';
 import 'package:homing_pigeon/theme/colors.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
@@ -70,19 +72,20 @@ class _FeedbackViewState extends State<FeedbackView> {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bottom = MediaQuery.of(context).padding.bottom;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: HpAppBar(
         isDark: isDark,
-        titleName: '意见或建议',
+        titleName: t.pages.feedback.title,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '欢迎提意见或建议，嗷呜~',
+            t.pages.feedback.tips.title,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -94,16 +97,16 @@ class _FeedbackViewState extends State<FeedbackView> {
           Text.rich(
             TextSpan(
               children: [
-                const TextSpan(text: '无论您遇到任何问题、意见或建议，均可'),
+                TextSpan(text: t.pages.feedback.tips.prefix),
                 TextSpan(
-                  text: '[点击此处]',
+                  text: t.pages.feedback.tips.button,
                   style: const TextStyle(
                     color: primaryColor,
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = showUploadBottomSheet,
                 ),
-                const TextSpan(text: '进行反馈。'),
+                TextSpan(text: t.pages.feedback.tips.suffix),
               ],
             ),
             style: TextStyle(
@@ -172,6 +175,7 @@ class _FeedbackViewState extends State<FeedbackView> {
     }
 
     if (!loading && items.isEmpty) {
+      final t = Translations.of(context);
       final height = MediaQuery.sizeOf(context).height;
       return NoData(
         icon: IconButton.outlined(
@@ -194,9 +198,9 @@ class _FeedbackViewState extends State<FeedbackView> {
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
           onPressed: _load,
-          child: const Text(
-            '没有数据, 点击以重新加载',
-            style: TextStyle(
+          child: Text(
+            t.common.noData,
+            style: const TextStyle(
               fontSize: 12,
               color: placeholderTextColor,
             ),
@@ -211,6 +215,7 @@ class _FeedbackViewState extends State<FeedbackView> {
   void showUploadBottomSheet() {
     const spacing = 8.0;
     const padding = 10.0;
+    final t = Translations.of(context);
     final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
     final top = MediaQuery.of(context).padding.top;
@@ -295,15 +300,15 @@ class _FeedbackViewState extends State<FeedbackView> {
                   maxHeight: (height - top - bottom) * 0.7,
                 ),
                 callback: _submit,
-                buttonText: '提交',
-                header: const HpHeader(title: '请填写反馈内容'),
+                buttonText: t.pages.feedback.dialogs.upload.buttons.upload,
+                header: HpHeader(title: t.pages.feedback.dialogs.upload.header),
                 items: [
                   FormBuilder(
                     key: _formKey,
                     child: Column(
                       children: [
                         BaseFormItem(
-                          title: '标题',
+                          title: t.pages.feedback.dialogs.upload.form.title.title,
                           showTip: false,
                           padding: EdgeInsets.zero,
                           child: FormBuilderField<String>(
@@ -352,7 +357,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                                         ),
                                         gapPadding: 0,
                                       ),
-                                      hintText: '请输入标题',
+                                      hintText: t.pages.feedback.dialogs.upload.form.title.hintText,
                                       helperStyle: const TextStyle(
                                         color: secondaryTextColor,
                                         fontSize: 10,
@@ -390,7 +395,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                             },
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
-                                errorText: '请输入标题',
+                                errorText: t.pages.feedback.dialogs.upload.form.title.errorText,
                               ),
                             ]),
                             name: 'title',
@@ -399,7 +404,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                           ),
                         ),
                         BaseFormItem(
-                          title: '描述',
+                          title: t.pages.feedback.dialogs.upload.form.description.title,
                           showTip: false,
                           child: FormBuilderField<String>(
                             focusNode: descriptionFocusNode,
@@ -447,7 +452,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                                         ),
                                         gapPadding: 0,
                                       ),
-                                      hintText: '请输入描述',
+                                      hintText: t.pages.feedback.dialogs.upload.form.description.hintText,
                                       helperStyle: const TextStyle(
                                         color: secondaryTextColor,
                                         fontSize: 10,
@@ -485,7 +490,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                             },
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
-                                errorText: '请输入描述',
+                                errorText: t.pages.feedback.dialogs.upload.form.description.errorText,
                               ),
                             ]),
                             name: 'description',
@@ -503,26 +508,26 @@ class _FeedbackViewState extends State<FeedbackView> {
                     ),
                   ),
                   BaseFormItem(
-                    title: '图片或视频',
+                    title: t.pages.feedback.dialogs.upload.form.assets.title,
                     showTip: false,
                     required: false,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text.rich(
+                        Text.rich(
                           TextSpan(
                             children: [
-                              TextSpan(text: '您最多可以上传9张图片或视频('),
+                              TextSpan(text: '${t.pages.feedback.dialogs.upload.form.assets.prefix}('),
                               TextSpan(
-                                text: '图片大小必须在50KB到15MB之间, 视频大小必须在50KB到20MB之间',
-                                style: TextStyle(
+                                text: t.pages.feedback.dialogs.upload.form.assets.suffix,
+                                style: const TextStyle(
                                   color: warnTextColor,
                                 ),
                               ),
-                              TextSpan(text: ')'),
+                              const TextSpan(text: ')'),
                             ],
                           ),
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 12,
                             color: placeholderTextColor,
                           ),
@@ -585,12 +590,12 @@ class _FeedbackViewState extends State<FeedbackView> {
       ].contains(status),
     );
     if (denied) {
+      final t = Translations.of(AppNavigator.key.currentContext!);
       DialogUtil.showCustomDialog(
-        title: 'Allow access to your album',
-        content: 'Please go to your phone Settings to grant '
-            'Homing Pigeon the permission to visit your album.',
-        cancelText: 'Ignore',
-        okText: 'Turn On',
+        title: t.dialogs.album.title,
+        content: t.dialogs.album.description,
+        cancelText: t.buttons.ignore,
+        okText: t.buttons.turnOn,
         onOK: () async {
           NavigatorUtil.pop();
           await AppSettings.openAppSettings();
@@ -637,14 +642,15 @@ class _FeedbackViewState extends State<FeedbackView> {
             (await Future.wait(fileWrapperFutures)).whereNotNull().toList();
         final limiter = fileWrappers.firstWhereOrNull(tester);
         if (limiter != null) {
+          final t = Translations.of(AppNavigator.key.currentContext!);
           if (limiter.asset.type == AssetType.image) {
             await EasyLoading.showToast(
-              '上传的图片必须在15KB至15MB之间.',
+              t.pages.feedback.dialogs.upload.error.image,
             );
             return;
           } else if (limiter.asset.type == AssetType.video) {
             await EasyLoading.showToast(
-              '上传的视频必须在15KB至20MB之间.',
+              t.pages.feedback.dialogs.upload.error.video,
             );
             return;
           }
@@ -703,11 +709,12 @@ class _FeedbackViewState extends State<FeedbackView> {
           _load();
         }
       } on Exception catch (error, stackTrace) {
+        final t = Translations.of(AppNavigator.key.currentContext!);
         ErrorHandler.handle(
           error,
           stackTrace: stackTrace,
           postProcessor: (_, msg) {
-            EasyLoading.showError(msg ?? 'Failure');
+            EasyLoading.showError(msg ?? t.common.failure);
           },
         );
       }
@@ -764,13 +771,15 @@ class _FeedbackViewState extends State<FeedbackView> {
         }
       },
     ).onError<Exception>((error, stackTrace) {
+      final context = AppNavigator.key.currentContext!;
+      final t = Translations.of(context);
       ErrorHandler.handle(
         error,
         stackTrace: stackTrace,
         postProcessor: (_, msg) {
           if (operation == Operation.none) {
             setState(() => loading = false);
-            EasyLoading.showError(msg ?? 'Failure');
+            EasyLoading.showError(msg ?? t.common.failure);
           } else if (operation == Operation.refresh) {
             _controller.finishRefresh(IndicatorResult.fail);
           } else if (operation == Operation.load) {

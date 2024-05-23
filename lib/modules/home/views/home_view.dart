@@ -45,7 +45,7 @@ class HomeView extends StatefulWidget {
 const double carouselHeight = 250;
 
 class _HomeViewState extends State<HomeView>
-    with AutomaticKeepAliveClientMixin {
+    with SingleTickerProviderStateMixin {
   final _loginFormKey = GlobalKey<FormBuilderState>();
   final _signupFormKey = GlobalKey<FormBuilderState>();
   final ScrollController _scrollController = ScrollController();
@@ -88,7 +88,6 @@ class _HomeViewState extends State<HomeView>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: _buildScaffoldBody(),
@@ -130,6 +129,7 @@ class _HomeViewState extends State<HomeView>
   }
 
   Widget _buildScaffoldBody() {
+    final t = Translations.of(context);
     final configs = BlocProvider.of<AppCubit>(context).state.configs;
     final roadmapConfig =
         configs?.firstWhereOrNull((config) => config.key == 'roadmap');
@@ -146,56 +146,56 @@ class _HomeViewState extends State<HomeView>
         // Add the app bar to the CustomScrollView.
         _buildSliverAppBar(),
         Section(
-          title: '主要功能',
+          title: t.pages.home.primary.title,
           items: [
             SectionItem(
-              title: '电影打分系统',
-              tips: '给看过的电影打个分吧~~',
+              title: t.pages.home.primary.rating.title,
+              tips: t.pages.home.primary.rating.description,
               onTap: () => NavigatorUtil.push(const MovieView()),
             ),
             if (AppConfig.shared.isExternal)
               SectionItem(
-                title: '直播预告',
-                tips: '查看详情',
+                title: t.pages.home.primary.live.title,
+                tips: t.pages.home.primary.live.description,
                 onTap: () => NavigatorUtil.push(const LiveView()),
               ),
             SectionItem(
-              title: '开播通知设置',
+              title: t.pages.home.primary.settings.title,
               onTap: () => NavigatorUtil.push(const LiveView()),
               showBorder: false,
             ),
           ],
         ),
         Section(
-          title: '其他功能',
+          title: t.pages.home.other.title,
           items: [
             SectionItem(
-              title: '直播信息/提醒群',
-              tips: '直播平台、时间等',
+              title: t.pages.home.other.notifications.title,
+              tips: t.pages.home.other.notifications.title,
               onTap: () => NavigatorUtil.push(const SocialView()),
             ),
             SectionItem(
-              title: '小德官方店: 喜瑞斯',
-              tips: '寒潮啦! 来件卫衣吧~~',
+              title: t.pages.home.other.store.title,
+              tips: t.pages.home.other.store.title,
               tipsColor: errorTextColor,
               showBack: false,
               onTap: showShopModalBottomSheet,
             ),
             SectionItem(
-              title: '小德表情包🐱',
-              tips: '欢迎投稿~~',
+              title: t.pages.home.other.emoji.title,
+              tips: t.pages.home.other.emoji.description,
               onTap: () => NavigatorUtil.push(const EmojiView()),
             ),
             SectionItem(
-              title: '意见/建议',
-              tips: '无论您遇到任何问题、意见或建议, 均可反馈...',
+              title: t.pages.home.other.feedback.title,
+              tips: t.pages.home.other.feedback.description,
               onTap: () => NavigatorUtil.push(const FeedbackView()),
               showBorder: showRoadmap,
             ),
             if (showRoadmap)
               SectionItem(
-                title: '路线图',
-                tips: '查看开发计划或进度😄',
+                title: t.pages.home.other.roadmap.title,
+                tips: t.pages.home.other.roadmap.description,
                 onTap: () => NavigatorUtil.push(const RoadmapView()),
                 showBorder: false,
               ),
@@ -205,7 +205,7 @@ class _HomeViewState extends State<HomeView>
           SliverList.list(
             children: [
               Text(
-                '版本号: $version+$buildNumber($flavorName)',
+                '${t.pages.home.version}: $version+$buildNumber($flavorName)',
                 style: const TextStyle(fontSize: 12, color: secondaryTextColor),
                 textAlign: TextAlign.center,
               ).nestedPadding(
@@ -286,8 +286,9 @@ class _HomeViewState extends State<HomeView>
       stretch: true,
       // backgroundColor: Colors.white,
       expandedHeight: expandedHeight,
+      centerTitle: true,
       title: expandedHeight == null || isSliverAppBarExpanded
-          ? Text(t.pages.homePage.title)
+          ? Text(t.appName)
           : null,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -384,7 +385,184 @@ class _HomeViewState extends State<HomeView>
     );
   }
 
+  // 登录接口
+  void _login() {
+    final t = Translations.of(context);
+    if (_loginFormKey.currentState!.validate()) {
+      final fields = _loginFormKey.currentState!.instantValue;
+      final account = fields['account'] as String;
+      final password = fields['password'] as String;
+
+      EasyLoading.show();
+      AuthApi.login(account: account, password: password).then((value) {
+        if (value != null) {
+          NavigatorUtil.pop();
+          EasyLoading.showSuccess(t.common.success);
+          SpUtil.putString(
+            Keys.tokenKey,
+            StringUtil.getValue(value.accessToken),
+          );
+          SpUtil.putString(
+            Keys.userIdKey,
+            StringUtil.getValue(value.user?.id),
+          );
+          initJPush();
+          initFirebase();
+          BlocProvider.of<AppCubit>(context).addUser(value.user);
+          return;
+        }
+        EasyLoading.showError(t.common.failure);
+      }).onError<Exception>((error, stackTrace) {
+        ErrorHandler.handle(
+          error,
+          stackTrace: stackTrace,
+          postProcessor: (_, msg) {
+            EasyLoading.showError(msg ?? t.common.failure);
+          },
+        );
+      });
+    }
+  }
+
+  // 注册接口
+  void _register() {
+    final t = Translations.of(context);
+    if (_signupFormKey.currentState!.validate()) {
+      final fields = _signupFormKey.currentState!.instantValue;
+      final account = fields['account'] as String;
+      final nickname = fields['nickname'] as String?;
+      final email = fields['email'] as String;
+      final password = fields['password'] as String;
+
+      EasyLoading.show();
+      AuthApi.register(
+        username: account,
+        password: password,
+        email: email,
+        nickname: nickname,
+      ).then((value) {
+        if (value != null) {
+          NavigatorUtil.pop();
+          EasyLoading.showSuccess(t.common.success);
+          SpUtil.putString(
+            Keys.tokenKey,
+            StringUtil.getValue(value.accessToken),
+          );
+          SpUtil.putString(
+            Keys.userIdKey,
+            StringUtil.getValue(value.user?.id),
+          );
+          initJPush();
+          initFirebase();
+          BlocProvider.of<AppCubit>(context).addUser(value.user);
+          return;
+        }
+        EasyLoading.showError(t.common.failure);
+      }).onError<Exception>((error, stackTrace) {
+        ErrorHandler.handle(
+          error,
+          stackTrace: stackTrace,
+          postProcessor: (_, msg) {
+            EasyLoading.showError(msg ?? t.common.failure);
+          },
+        );
+      });
+    }
+  }
+
+  // 退出接口
+  void _logout() {
+    NavigatorUtil.pop();
+    BlocProvider.of<AppCubit>(context).addUser(null);
+    SpUtil.remove(Keys.tokenKey);
+    SpUtil.remove(Keys.userIdKey);
+  }
+
+  // 加载数据
+  void _load() {
+    final context = AppNavigator.key.currentContext!;
+    final t = Translations.of(context);
+    setState(() => _loading = true);
+    CarouselApi.getCarouselList().then((carousels) {
+      setState(() {
+        _loading = false;
+        _carousels = carousels;
+      });
+    }).onError<Exception>((error, stackTrace) {
+      ErrorHandler.handle(
+        error,
+        stackTrace: stackTrace,
+        postProcessor: (_, msg) {
+          setState(() {
+            _loading = false;
+            _error = msg ?? t.common.failure;
+          });
+        },
+      );
+    });
+  }
+
+  void showShopModalBottomSheet() {
+    final t = Translations.of(context);
+    final configs = BlocProvider.of<AppCubit>(context).state.configs;
+    final tbConfig =
+        configs?.firstWhereOrNull((config) => config.key == 'taobao');
+
+    const crossAxisAlignment = CrossAxisAlignment.center;
+    const padding = EdgeInsets.zero;
+    showModalBottomSheet<void>(
+      context: context,
+      isDismissible: false,
+      isScrollControlled: true,
+      enableDrag: false,
+      builder: (BuildContext context) => ModalBottomSheet(
+        buttonText: t.buttons.cancel,
+        callback: NavigatorUtil.pop,
+        header: HpHeader(
+          title: t.bottomSheets.store.title,
+          hideCancel: true,
+        ),
+        items: [
+          if (StringUtil.isNotBlank(tbConfig?.value))
+            SectionItem(
+              title: t.bottomSheets.store.code.title,
+              tips: t.bottomSheets.store.code.description,
+              showBack: false,
+              contentPadding: padding,
+              innerPadding: padding,
+              crossAxisAlignment: crossAxisAlignment,
+              onTap: () => FlutterClipboard.copy(tbConfig!.value!).then(
+                (value) {
+                  EasyLoading.showSuccess(t.common.copied);
+                  NavigatorUtil.pop();
+                },
+              ),
+            ),
+          SectionItem(
+            title: t.bottomSheets.store.link.title,
+            tips: t.bottomSheets.store.link.description,
+            tipsColor: errorTextColor,
+            showBack: false,
+            showBorder: false,
+            contentPadding: padding,
+            innerPadding: padding,
+            crossAxisAlignment: crossAxisAlignment,
+            onTap: () async {
+              NavigatorUtil.pop();
+              final uri = Uri.parse('https://chenyifaer.taobao.com');
+              if (await canLaunchUrl(uri)) {
+                await launchUrl(uri);
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 登录/注册弹窗
   void showLoginBottomSheet() {
+    final t = Translations.of(context);
     final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
     final top = MediaQuery.of(context).padding.top;
@@ -400,6 +578,7 @@ class _HomeViewState extends State<HomeView>
       enableDrag: false,
       builder: (BuildContext ctx) {
         final isDark = Theme.of(ctx).brightness == Brightness.dark;
+        final buttonText = !_isRegistered ? t.buttons.login : t.buttons.signup;
         return StatefulBuilder(
           builder: (BuildContext ctx1, StateSetter setInnerState) {
             return KeyboardDismisser(
@@ -408,16 +587,18 @@ class _HomeViewState extends State<HomeView>
                   maxHeight: height - top - buttonHeight - bottom,
                 ),
                 callback: !_isRegistered ? _login : _register,
-                buttonText: !_isRegistered ? '登录' : '注册',
+                buttonText: buttonText,
                 header: Row(
                   children: [
                     Text(
-                      '请填写${!_isRegistered ? '登录' : '注册'}信息',
+                      !_isRegistered
+                          ? t.bottomSheets.login.header
+                          : t.bottomSheets.signup.header,
                       style: TextStyle(
                         fontSize: 16,
                         color: isDark ? Colors.white : primaryTextColor,
                       ),
-                      maxLines: 1,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     )
                         .nestedPadding(
@@ -472,7 +653,7 @@ class _HomeViewState extends State<HomeView>
                     child: Column(
                       children: [
                         BaseFormItem(
-                          title: '账号',
+                          title: t.bottomSheets.login.form.account.title,
                           showTip: false,
                           padding: EdgeInsets.zero,
                           child: FormBuilderField<String>(
@@ -519,10 +700,13 @@ class _HomeViewState extends State<HomeView>
                                         ),
                                         gapPadding: 0,
                                       ),
-                                      hintText: '请输入账号',
+                                      hintText: t.bottomSheets.login.form
+                                          .account.hintText,
                                       helperText: _isRegistered
-                                          ? '只能包含英文, 数字或下划线, 且只能以字母开头, 至少8个字符'
+                                          ? t.bottomSheets.signup.form.account
+                                              .helperText
                                           : null,
+                                      helperMaxLines: 2,
                                       helperStyle: const TextStyle(
                                         color: secondaryTextColor,
                                         fontSize: 10,
@@ -556,13 +740,16 @@ class _HomeViewState extends State<HomeView>
                             },
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
-                                errorText: '请输入账号',
+                                errorText:
+                                    t.bottomSheets.login.form.account.errorText,
                               ),
                               FormBuilderValidators.match(
                                 r'^[a-zA-Z][a-zA-Z0-9_]{7,}$',
                                 errorText: _isRegistered
-                                    ? '账号只能包含英文,数字或下划线, 且只能以字母开头, 至少8个字符'
-                                    : '至少8个字符',
+                                    ? t.bottomSheets.signup.form.account
+                                        .errorText2
+                                    : t.bottomSheets.login.form.account
+                                        .errorText2,
                               ),
                               // TODO(kjxbyz): 与数据库联动，账号唯一
                             ]),
@@ -573,7 +760,7 @@ class _HomeViewState extends State<HomeView>
                         ),
                         if (_isRegistered) ...[
                           BaseFormItem(
-                            title: '昵称',
+                            title: t.bottomSheets.signup.form.nickname.title,
                             required: false,
                             showTip: false,
                             child: FormBuilderField<String>(
@@ -626,9 +813,13 @@ class _HomeViewState extends State<HomeView>
                                           ),
                                           gapPadding: 0,
                                         ),
-                                        hintText: '请输入昵称',
-                                        helperText:
-                                            _isRegistered ? '不能多于20个字符' : null,
+                                        hintText: t.bottomSheets.signup.form
+                                            .nickname.hintText,
+                                        helperText: _isRegistered
+                                            ? t.bottomSheets.signup.form
+                                                .nickname.helperText
+                                            : null,
+                                        helperMaxLines: 2,
                                         helperStyle: const TextStyle(
                                           color: secondaryTextColor,
                                           fontSize: 10,
@@ -666,7 +857,8 @@ class _HomeViewState extends State<HomeView>
                               validator: FormBuilderValidators.compose([
                                 FormBuilderValidators.maxLength(
                                   20,
-                                  errorText: '昵称长度不能大于20',
+                                  errorText: t.bottomSheets.signup.form.nickname
+                                      .errorText,
                                 ),
                               ]),
                               name: 'nickname',
@@ -675,7 +867,7 @@ class _HomeViewState extends State<HomeView>
                             ),
                           ),
                           BaseFormItem(
-                            title: '邮箱',
+                            title: t.bottomSheets.signup.form.email.title,
                             showTip: false,
                             child: FormBuilderField<String>(
                               focusNode: emailFocusNode,
@@ -724,7 +916,14 @@ class _HomeViewState extends State<HomeView>
                                           ),
                                           gapPadding: 0,
                                         ),
-                                        hintText: '请输入邮箱',
+                                        hintText: t.bottomSheets.signup.form
+                                            .email.hintText,
+                                        helperMaxLines: 2,
+                                        helperStyle: const TextStyle(
+                                          color: secondaryTextColor,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                         errorText: field.errorText,
                                         errorStyle: const TextStyle(
                                           fontSize: 12,
@@ -756,10 +955,12 @@ class _HomeViewState extends State<HomeView>
                               },
                               validator: FormBuilderValidators.compose([
                                 FormBuilderValidators.required(
-                                  errorText: '请输入邮箱',
+                                  errorText: t
+                                      .bottomSheets.signup.form.email.errorText,
                                 ),
                                 FormBuilderValidators.email(
-                                  errorText: '邮箱格式错误',
+                                  errorText: t.bottomSheets.signup.form.email
+                                      .errorText2,
                                 ),
                                 // TODO(kjxbyz): 与数据库联动，邮箱唯一
                               ]),
@@ -770,7 +971,7 @@ class _HomeViewState extends State<HomeView>
                           ),
                         ],
                         BaseFormItem(
-                          title: '密码',
+                          title: t.bottomSheets.login.form.password.title,
                           showTip: false,
                           child: FormBuilderField<String>(
                             focusNode: passwordFocusNode,
@@ -846,9 +1047,13 @@ class _HomeViewState extends State<HomeView>
                                           ),
                                           gapPadding: 0,
                                         ),
-                                        hintText: '请输入密码',
-                                        helperText:
-                                            _isRegistered ? '不能少于8个字符' : null,
+                                        hintText: t.bottomSheets.login.form
+                                            .password.hintText,
+                                        helperText: _isRegistered
+                                            ? t.bottomSheets.signup.form
+                                                .password.helperText
+                                            : null,
+                                        helperMaxLines: 2,
                                         helperStyle: const TextStyle(
                                           color: secondaryTextColor,
                                           fontSize: 10,
@@ -883,7 +1088,8 @@ class _HomeViewState extends State<HomeView>
                                   ),
                                   if (_isRegistered)
                                     BaseFormItem(
-                                      title: '重复密码',
+                                      title: t.bottomSheets.signup.form
+                                          .repeatPassword.title,
                                       showTip: false,
                                       child: FormBuilderField<String>(
                                         focusNode: repeatPasswordFocusNode,
@@ -982,7 +1188,13 @@ class _HomeViewState extends State<HomeView>
                                                       ),
                                                       gapPadding: 0,
                                                     ),
-                                                    hintText: '请再次输入密码',
+                                                    hintText: t
+                                                        .bottomSheets
+                                                        .signup
+                                                        .form
+                                                        .repeatPassword
+                                                        .hintText,
+                                                    helperMaxLines: 2,
                                                     errorText: repeatPwdField
                                                         .errorText,
                                                     errorStyle: const TextStyle(
@@ -1025,14 +1237,20 @@ class _HomeViewState extends State<HomeView>
                                         validator:
                                             FormBuilderValidators.compose([
                                           FormBuilderValidators.required(
-                                            errorText: '请再次输入密码',
+                                            errorText: t.bottomSheets.signup
+                                                .form.repeatPassword.errorText,
                                           ),
                                           if (StringUtil.isNotBlank(
                                             field.value,
                                           ))
                                             FormBuilderValidators.equal(
                                               field.value!,
-                                              errorText: '两次输入的密码不一样',
+                                              errorText: t
+                                                  .bottomSheets
+                                                  .signup
+                                                  .form
+                                                  .repeatPassword
+                                                  .errorText2,
                                             ),
                                         ]),
                                         name: 'repeatPassword',
@@ -1045,11 +1263,13 @@ class _HomeViewState extends State<HomeView>
                             },
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
-                                errorText: '请输入密码',
+                                errorText: t
+                                    .bottomSheets.login.form.password.errorText,
                               ),
                               FormBuilderValidators.minLength(
                                 8,
-                                errorText: '请至少输入8个字符',
+                                errorText: t.bottomSheets.login.form.password
+                                    .errorText2,
                               ),
                             ]),
                             name: 'password',
@@ -1059,13 +1279,14 @@ class _HomeViewState extends State<HomeView>
                         ),
                         BaseFormItem(
                           child: FormBuilderField<bool>(
-                            name: 'privacy',
+                            name: t.bottomSheets.login.form.privacy.title,
                             initialValue: false,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             validator: (value) {
                               if (!(value ?? false)) {
-                                return '请同意隐私协议';
+                                return t
+                                    .bottomSheets.login.form.privacy.errorText;
                               }
                               return null;
                             },
@@ -1104,11 +1325,13 @@ class _HomeViewState extends State<HomeView>
                                       RichText(
                                         text: TextSpan(
                                           children: [
-                                            const TextSpan(
-                                              text: '我已仔细阅读并同意',
+                                            TextSpan(
+                                              text: t.bottomSheets.login.form
+                                                  .privacy.prefix,
                                             ),
                                             TextSpan(
-                                              text: '隐私政策',
+                                              text: t.bottomSheets.login.form
+                                                  .privacy.privacy,
                                               recognizer: TapGestureRecognizer()
                                                 ..onTap = () async {
                                                   // https://www.chenyifaer.com/homing-pigeon/zh/legal/privacy/
@@ -1127,11 +1350,13 @@ class _HomeViewState extends State<HomeView>
                                                 fontWeight: FontWeight.w400,
                                               ),
                                             ),
-                                            const TextSpan(
-                                              text: '以及',
+                                            TextSpan(
+                                              text: t.bottomSheets.login.form
+                                                  .privacy.and,
                                             ),
                                             TextSpan(
-                                              text: '条款和条件',
+                                              text: t.bottomSheets.login.form
+                                                  .privacy.terms,
                                               recognizer: TapGestureRecognizer()
                                                 ..onTap = () async {
                                                   // https://www.chenyifaer.com/homing-pigeon/zh/legal/terms-of-use/
@@ -1197,7 +1422,9 @@ class _HomeViewState extends State<HomeView>
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: !_isRegistered ? '还没有账号, ' : '已有账号, ',
+                          text: !_isRegistered
+                              ? t.bottomSheets.signup.tips.prefix
+                              : t.bottomSheets.login.tips.prefix,
                           style: TextStyle(
                             color: isDark
                                 ? secondaryBorderColor
@@ -1207,7 +1434,9 @@ class _HomeViewState extends State<HomeView>
                           ),
                         ),
                         TextSpan(
-                          text: !_isRegistered ? '去注册' : '去登录',
+                          text: !_isRegistered
+                              ? t.bottomSheets.signup.tips.suffix
+                              : t.bottomSheets.login.tips.suffix,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () async {
                               setInnerState(() {
@@ -1242,13 +1471,15 @@ class _HomeViewState extends State<HomeView>
     );
   }
 
+  // 退出弹窗
   void showLogoutBottomSheet() {
+    final t = Translations.of(context);
     final height = MediaQuery.sizeOf(context).height;
     final top = MediaQuery.of(context).padding.top;
     final bottom = MediaQuery.of(context).padding.bottom;
 
     showModalBottomSheet<void>(
-      context: AppNavigator.key.currentContext!,
+      context: context,
       isScrollControlled: true,
       enableDrag: false,
       builder: (BuildContext ctx) => StatefulBuilder(
@@ -1257,180 +1488,11 @@ class _HomeViewState extends State<HomeView>
             child: ModalBottomSheet(
               constraints: BoxConstraints(maxHeight: height - top - bottom),
               callback: _logout,
-              buttonText: '退出',
+              buttonText: t.buttons.logout,
             ),
           );
         },
       ),
     );
   }
-
-  // 登录接口
-  void _login() {
-    if (_loginFormKey.currentState!.validate()) {
-      final fields = _loginFormKey.currentState!.instantValue;
-      final account = fields['account'] as String;
-      final password = fields['password'] as String;
-
-      EasyLoading.show();
-      AuthApi.login(account: account, password: password).then((value) {
-        if (value != null) {
-          NavigatorUtil.pop();
-          EasyLoading.showSuccess('Success');
-          SpUtil.putString(
-            Keys.tokenKey,
-            StringUtil.getValue(value.accessToken),
-          );
-          SpUtil.putString(
-            Keys.userIdKey,
-            StringUtil.getValue(value.user?.id),
-          );
-          initJPush();
-          initFirebase();
-          BlocProvider.of<AppCubit>(context).addUser(value.user);
-          return;
-        }
-        EasyLoading.showError('Failure');
-      }).onError<Exception>((error, stackTrace) {
-        ErrorHandler.handle(
-          error,
-          stackTrace: stackTrace,
-          postProcessor: (_, msg) {
-            EasyLoading.showError(msg ?? 'Failure');
-          },
-        );
-      });
-    }
-  }
-
-  // 注册接口
-  void _register() {
-    if (_signupFormKey.currentState!.validate()) {
-      final fields = _signupFormKey.currentState!.instantValue;
-      final account = fields['account'] as String;
-      final nickname = fields['nickname'] as String?;
-      final email = fields['email'] as String;
-      final password = fields['password'] as String;
-
-      EasyLoading.show();
-      AuthApi.register(
-        username: account,
-        password: password,
-        email: email,
-        nickname: nickname,
-      ).then((value) {
-        if (value != null) {
-          NavigatorUtil.pop();
-          EasyLoading.showSuccess('Success');
-          SpUtil.putString(
-            Keys.tokenKey,
-            StringUtil.getValue(value.accessToken),
-          );
-          SpUtil.putString(
-            Keys.userIdKey,
-            StringUtil.getValue(value.user?.id),
-          );
-          initJPush();
-          initFirebase();
-          BlocProvider.of<AppCubit>(context).addUser(value.user);
-          return;
-        }
-        EasyLoading.showError('Failure');
-      }).onError<Exception>((error, stackTrace) {
-        ErrorHandler.handle(
-          error,
-          stackTrace: stackTrace,
-          postProcessor: (_, msg) {
-            EasyLoading.showError(msg ?? 'Failure');
-          },
-        );
-      });
-    }
-  }
-
-  // 退出接口
-  void _logout() {
-    NavigatorUtil.pop();
-    BlocProvider.of<AppCubit>(context).addUser(null);
-    SpUtil.remove(Keys.tokenKey);
-    SpUtil.remove(Keys.userIdKey);
-  }
-
-  void showShopModalBottomSheet() {
-    final configs = BlocProvider.of<AppCubit>(context).state.configs;
-    final tbConfig =
-        configs?.firstWhereOrNull((config) => config.key == 'taobao');
-
-    const crossAxisAlignment = CrossAxisAlignment.center;
-    const padding = EdgeInsets.zero;
-    showModalBottomSheet<void>(
-      context: context,
-      isDismissible: false,
-      isScrollControlled: true,
-      enableDrag: false,
-      builder: (BuildContext context) => ModalBottomSheet(
-        buttonText: '取消',
-        callback: NavigatorUtil.pop,
-        header: const HpHeader(title: '请选择您的操作', hideCancel: true),
-        items: [
-          if (StringUtil.isNotBlank(tbConfig?.value))
-            SectionItem(
-              title: '复制淘口令',
-              tips: '直播平台、时间等',
-              showBack: false,
-              contentPadding: padding,
-              innerPadding: padding,
-              crossAxisAlignment: crossAxisAlignment,
-              onTap: () =>
-                  FlutterClipboard.copy(tbConfig!.value!).then((value) {
-                EasyLoading.showSuccess('Copied');
-                NavigatorUtil.pop();
-              }),
-            ),
-          SectionItem(
-            title: '打开淘宝店地址',
-            tips: '寒潮啦! 来件卫衣吧~~',
-            tipsColor: errorTextColor,
-            showBack: false,
-            showBorder: false,
-            contentPadding: padding,
-            innerPadding: padding,
-            crossAxisAlignment: crossAxisAlignment,
-            onTap: () async {
-              NavigatorUtil.pop();
-              final uri = Uri.parse('https://chenyifaer.taobao.com');
-              if (await canLaunchUrl(uri)) {
-                await launchUrl(uri);
-              }
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _load() async {
-    try {
-      setState(() => _loading = true);
-      final carousels = await CarouselApi.getCarouselList();
-      setState(() {
-        _loading = false;
-        _carousels = carousels;
-      });
-    } on Exception catch (error, stackTrace) {
-      ErrorHandler.handle(
-        error,
-        stackTrace: stackTrace,
-        postProcessor: (_, msg) {
-          setState(() {
-            _loading = false;
-            _error = msg ?? 'Failure';
-          });
-        },
-      );
-    }
-  }
-
-  @override
-  bool get wantKeepAlive => true;
 }
