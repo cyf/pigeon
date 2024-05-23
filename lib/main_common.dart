@@ -202,9 +202,6 @@ Future<void> runMainApp() async {
     );
   }
 
-  // initialize with the right locale
-  LocaleSettings.useDeviceLocale();
-
   // TODO(kjxbyz): FIXME: upgrade socket_io_client to 3.0.0
   final socket = socket_io.io(
     Constants.wsPrefix,
@@ -296,6 +293,9 @@ Future<void> runMainApp() async {
       ),
     );
   }
+
+  // initialize with the right locale
+  LocaleSettings.useDeviceLocale();
 
   runApp(TranslationProvider(child: child));
 }

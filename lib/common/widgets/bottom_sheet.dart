@@ -93,6 +93,7 @@ class ModalBottomSheet extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 18,
                       color: isDark ? Colors.white : primaryTextColor,
+                      fontWeight: FontWeight.w400,
                     ),
                     textAlign: TextAlign.center,
                     maxLines: 1,
@@ -123,6 +124,7 @@ class ModalBottomSheet extends StatelessWidget {
               style: TextStyle(
                 fontSize: 18,
                 color: isDark ? Colors.white : primaryTextColor,
+                fontWeight: FontWeight.w400,
               ),
               textAlign: TextAlign.center,
               maxLines: 1,

@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
+import 'package:homing_pigeon/app/navigator.dart';
 import 'package:homing_pigeon/common/enums/enums.dart';
 import 'package:homing_pigeon/common/extensions/single.dart';
 import 'package:homing_pigeon/common/http/utils/handle_errors.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
+import 'package:homing_pigeon/i18n/i18n.dart';
 import 'package:homing_pigeon/theme/colors.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -64,6 +66,7 @@ class _LiveViewState extends State<LiveView> {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
     final bottom = MediaQuery.of(context).padding.bottom;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return YoutubePlayerBuilder(
@@ -95,7 +98,7 @@ class _LiveViewState extends State<LiveView> {
             isDark: isDark,
             titleName: StringUtil.getValue(
               _videoMetaData?.title,
-              defaultVal: 'Live',
+              defaultVal: t.pages.live.title,
             ),
           ),
           body: EasyRefresh(
@@ -110,7 +113,10 @@ class _LiveViewState extends State<LiveView> {
                 //some other widgets
                 if (kDebugMode) ...[
                   const Gap(10),
-                  ElevatedButton(onPressed: _load, child: const Text('Login')),
+                  ElevatedButton(
+                    onPressed: _load,
+                    child: Text(t.buttons.login),
+                  ),
                 ],
               ],
             ),
@@ -138,16 +144,18 @@ class _LiveViewState extends State<LiveView> {
     }
   }
 
-  Future<void> _load({Operation operation = Operation.none}) async {
-    try {
-
-    } on Exception catch (error, stackTrace) {
+  Future<void> _load({
+    Operation operation = Operation.none,
+  }) async {
+    try {} on Exception catch (error, stackTrace) {
+      final context = AppNavigator.key.currentContext!;
+      final t = Translations.of(context);
       ErrorHandler.handle(
         error,
         stackTrace: stackTrace,
         postProcessor: (_, msg) {
           if (operation == Operation.none) {
-            EasyLoading.showError(msg ?? 'Failure');
+            EasyLoading.showError(msg ?? t.common.failure);
           } else if (operation == Operation.refresh) {
             _easyRefreshController.finishRefresh(IndicatorResult.fail);
           } else if (operation == Operation.load) {

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:homing_pigeon/app/navigator.dart';
 import 'package:homing_pigeon/common/api/emoji_api.dart';
 import 'package:homing_pigeon/common/enums/enums.dart';
 import 'package:homing_pigeon/common/exception/exception.dart';
@@ -21,6 +22,7 @@ import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/common/utils/upload_util.dart';
 import 'package:homing_pigeon/common/widgets/header.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
+import 'package:homing_pigeon/i18n/i18n.dart';
 import 'package:homing_pigeon/modules/detail/detail.dart';
 import 'package:homing_pigeon/theme/colors.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -62,18 +64,19 @@ class _EmojiViewState extends State<EmojiView> {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bottom = MediaQuery.of(context).padding.bottom;
     return Scaffold(
       appBar: HpAppBar(
         isDark: isDark,
-        titleName: '表情库～',
+        titleName: t.pages.emoji.title,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '欢迎投稿，嗷呜~',
+            t.pages.emoji.tips.title,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -89,14 +92,14 @@ class _EmojiViewState extends State<EmojiView> {
                 color: isDark ? Colors.white : primaryTextColor,
               ),
               children: [
-                const TextSpan(text: '欢迎'),
+                TextSpan(text: t.pages.emoji.tips.prefix),
                 TextSpan(
-                  text: ' [点击此处] ',
+                  text: t.pages.emoji.tips.button,
                   recognizer: TapGestureRecognizer()
                     ..onTap = showUploadBottomSheet,
                   style: const TextStyle(color: primaryColor),
                 ),
-                const TextSpan(text: '投稿，可以是表情包，可以是文案创意，也可以是一些令猫尴尬的图片或截图等~😄'),
+                TextSpan(text: t.pages.emoji.tips.suffix),
               ],
             ),
           ).nestedPadding(padding: const EdgeInsets.only(bottom: 10)),
@@ -120,6 +123,7 @@ class _EmojiViewState extends State<EmojiView> {
   }
 
   Widget _buildBody() {
+    final t = Translations.of(context);
     final bottom = MediaQuery.of(context).padding.bottom;
     if (!loading && items.isNotEmpty) {
       return MasonryGridView.count(
@@ -158,9 +162,9 @@ class _EmojiViewState extends State<EmojiView> {
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
           onPressed: _load,
-          child: const Text(
-            '没有数据, 点击以重新加载',
-            style: TextStyle(
+          child: Text(
+            t.common.noData,
+            style: const TextStyle(
               fontSize: 12,
               color: placeholderTextColor,
             ),
@@ -175,6 +179,7 @@ class _EmojiViewState extends State<EmojiView> {
   void showUploadBottomSheet() {
     const spacing = 8.0;
     const padding = 10.0;
+    final t = Translations.of(context);
     final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
     final top = MediaQuery.of(context).padding.top;
@@ -194,46 +199,46 @@ class _EmojiViewState extends State<EmojiView> {
             final items = _fileWrappers
                 .mapIndexed(
                   (index, element) {
-                if (kDebugMode) {
-                  print(element.file.path);
-                }
-                return Stack(
-                  children: [
-                    Image.file(
-                      element.file,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, url, error) => const Icon(
-                        Icons.error,
-                        color: errorTextColor,
-                        size: 24,
-                      ),
-                    ).nestedSizedBox(width: itemWidth, height: itemWidth),
-                    Positioned(
-                      top: 2,
-                      right: 2,
-                      child: const Icon(
-                        Icons.clear,
-                        color: warnTextColor,
-                        size: 14,
-                      )
-                          .nestedDecoratedBox(
-                        decoration: BoxDecoration(
-                          color: backgroundColor,
-                          borderRadius: BorderRadius.circular(9),
+                    if (kDebugMode) {
+                      print(element.file.path);
+                    }
+                    return Stack(
+                      children: [
+                        Image.file(
+                          element.file,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, url, error) => const Icon(
+                            Icons.error,
+                            color: errorTextColor,
+                            size: 24,
+                          ),
+                        ).nestedSizedBox(width: itemWidth, height: itemWidth),
+                        Positioned(
+                          top: 2,
+                          right: 2,
+                          child: const Icon(
+                            Icons.clear,
+                            color: warnTextColor,
+                            size: 14,
+                          )
+                              .nestedDecoratedBox(
+                                decoration: BoxDecoration(
+                                  color: backgroundColor,
+                                  borderRadius: BorderRadius.circular(9),
+                                ),
+                              )
+                              .nestedSizedBox(width: 18, height: 18)
+                              .nestedTap(
+                                () => setInnerState(
+                                  () => _fileWrappers = _fileWrappers
+                                    ..removeAt(index),
+                                ),
+                              ),
                         ),
-                      )
-                          .nestedSizedBox(width: 18, height: 18)
-                          .nestedTap(
-                            () => setInnerState(
-                              () => _fileWrappers = _fileWrappers
-                            ..removeAt(index),
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            )
+                      ],
+                    );
+                  },
+                )
                 .cast<Widget>()
                 .toList();
 
@@ -245,7 +250,9 @@ class _EmojiViewState extends State<EmojiView> {
                   color: primaryColor,
                 )
                     .nestedCenter()
-                    .nestedColoredBox(color: isDark ? secondaryTextColor : primaryGrayColor)
+                    .nestedColoredBox(
+                      color: isDark ? secondaryTextColor : primaryGrayColor,
+                    )
                     .nestedSizedBox(width: itemWidth, height: itemWidth)
                     .nestedInkWell(onTap: () => _pickImages(setInnerState)),
               );
@@ -253,27 +260,29 @@ class _EmojiViewState extends State<EmojiView> {
 
             return ModalBottomSheet(
               callback: _uploadFiles,
-              buttonText: '上传',
+              buttonText: t.pages.emoji.dialogs.upload.buttons.upload,
               constraints: BoxConstraints(
                 minHeight: 350,
                 maxHeight: (height - top - bottom) * 0.7,
               ),
-              header: const HpHeader(title: '请选择要上传的表情'),
+              header: HpHeader(title: t.pages.emoji.dialogs.upload.header),
               items: [
-                const Text.rich(
+                Text.rich(
                   TextSpan(
                     children: [
-                      TextSpan(text: '您最多可以上传9张图片('),
                       TextSpan(
-                        text: '图片大小必须在50KB到15MB之间',
-                        style: TextStyle(
+                        text: '${t.pages.emoji.dialogs.upload.tips.prefix}(',
+                      ),
+                      TextSpan(
+                        text: t.pages.emoji.dialogs.upload.tips.suffix,
+                        style: const TextStyle(
                           color: warnTextColor,
                         ),
                       ),
-                      TextSpan(text: ')'),
+                      const TextSpan(text: ')'),
                     ],
                   ),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 12,
                     color: placeholderTextColor,
                   ),
@@ -294,7 +303,8 @@ class _EmojiViewState extends State<EmojiView> {
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return '请选择上传的图片';
+                        return t
+                            .pages.emoji.dialogs.upload.form.emojis.errorText;
                       }
                       return null;
                     },
@@ -363,12 +373,12 @@ class _EmojiViewState extends State<EmojiView> {
           .contains(status),
     );
     if (denied) {
+      final t = Translations.of(AppNavigator.key.currentContext!);
       DialogUtil.showCustomDialog(
-        title: 'Allow access to your album',
-        content:
-            'Please go to your phone Settings to grant Homing Pigeon the permission to visit your album.',
-        cancelText: 'Ignore',
-        okText: 'Turn On',
+        title: t.dialogs.album.title,
+        content: t.dialogs.album.description,
+        cancelText: t.buttons.ignore,
+        okText: t.buttons.turnOn,
         onOK: () async {
           NavigatorUtil.pop();
           await AppSettings.openAppSettings();
@@ -408,8 +418,9 @@ class _EmojiViewState extends State<EmojiView> {
           },
         );
         if (limiter != null) {
+          final t = Translations.of(AppNavigator.key.currentContext!);
           await EasyLoading.showToast(
-            '上传的图片必须在15KB至15MB之间.',
+            t.pages.emoji.dialogs.upload.tips.suffix,
           );
           return;
         }
@@ -430,6 +441,7 @@ class _EmojiViewState extends State<EmojiView> {
 
   Future<void> _uploadFiles() async {
     if (_formKey.currentState!.validate()) {
+      final t = Translations.of(context);
       try {
         final uploadFileFutures = _fileWrappers
             .map(
@@ -441,7 +453,9 @@ class _EmojiViewState extends State<EmojiView> {
         final fileModels =
             (await Future.wait(uploadFileFutures)).whereNotNull().toList();
         if (fileModels.isEmpty) {
-          await EasyLoading.showToast('File upload failed');
+          await EasyLoading.showToast(
+            t.pages.emoji.dialogs.upload.uploadFailed,
+          );
           return;
         }
         final emojis = fileModels
@@ -455,7 +469,7 @@ class _EmojiViewState extends State<EmojiView> {
             )
             .toList();
         await EmojiApi.multiAddEmoji(emojis);
-        await EasyLoading.showSuccess('Success');
+        await EasyLoading.showSuccess(t.common.success);
         NavigatorUtil.pop();
         _load();
       } on Exception catch (error, stackTrace) {
@@ -463,7 +477,7 @@ class _EmojiViewState extends State<EmojiView> {
           error,
           stackTrace: stackTrace,
           postProcessor: (_, msg) {
-            EasyLoading.showError(msg ?? 'Failure');
+            EasyLoading.showError(msg ?? t.common.failure);
           },
         );
       }
@@ -514,13 +528,15 @@ class _EmojiViewState extends State<EmojiView> {
         }
       },
     ).onError<Exception>((error, stackTrace) {
+      final context = AppNavigator.key.currentContext!;
+      final t = Translations.of(context);
       ErrorHandler.handle(
         error,
         stackTrace: stackTrace,
         postProcessor: (_, msg) {
           if (operation == Operation.none) {
             setState(() => loading = false);
-            EasyLoading.showError(msg ?? 'Failure');
+            EasyLoading.showError(msg ?? t.common.failure);
           } else if (operation == Operation.refresh) {
             _controller.finishRefresh(IndicatorResult.fail);
           } else if (operation == Operation.load) {

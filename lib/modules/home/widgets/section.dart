@@ -101,6 +101,7 @@ class SectionItem extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 18,
                   color: isDark ? secondaryGrayColor : primaryTextColor,
+                  fontWeight: FontWeight.w400,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -108,7 +109,11 @@ class SectionItem extends StatelessWidget {
               if (tips != null)
                 Text(
                   tips!,
-                  style: TextStyle(fontSize: 12, color: tipsColor),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: tipsColor,
+                    fontWeight: FontWeight.w400,
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ).nestedPadding(padding: const EdgeInsets.only(top: 6)),

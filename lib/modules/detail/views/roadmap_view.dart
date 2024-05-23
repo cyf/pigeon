@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:homing_pigeon/app/navigator.dart';
 import 'package:homing_pigeon/common/api/roadmap_api.dart';
 import 'package:homing_pigeon/common/enums/enums.dart';
 import 'package:homing_pigeon/common/extensions/single.dart';
@@ -13,6 +14,7 @@ import 'package:homing_pigeon/common/utils/color_util.dart';
 import 'package:homing_pigeon/common/utils/navigator_util.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/common/widgets/widgets.dart';
+import 'package:homing_pigeon/i18n/i18n.dart';
 import 'package:homing_pigeon/theme/colors.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -89,13 +91,14 @@ class _RoadmapViewState extends State<RoadmapView> {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final height = MediaQuery.sizeOf(context).height;
     final top = MediaQuery.of(context).padding.top;
     return Scaffold(
       appBar: HpAppBar(
         isDark: isDark,
-        titleName: '路线图',
+        titleName: t.pages.roadmap.title,
       ),
       body: EasyRefresh(
         controller: _controller,
@@ -172,13 +175,15 @@ class _RoadmapViewState extends State<RoadmapView> {
         });
       },
     ).onError<Exception>((error, stackTrace) {
+      final context = AppNavigator.key.currentContext!;
+      final t = Translations.of(context);
       ErrorHandler.handle(
         error,
         stackTrace: stackTrace,
         postProcessor: (_, msg) {
           setState(() => _items = []);
           if (operation == Operation.none) {
-            EasyLoading.showError(msg ?? 'Failure');
+            EasyLoading.showError(msg ?? t.common.failure);
           } else if (operation == Operation.refresh) {
             _controller.finishRefresh(IndicatorResult.fail);
           }
@@ -188,13 +193,14 @@ class _RoadmapViewState extends State<RoadmapView> {
   }
 
   void showCalendarModalBottomSheet(RoadmapModel roadmap) {
+    final t = Translations.of(context);
     showModalBottomSheet<void>(
       context: context,
       isDismissible: false,
       isScrollControlled: true,
       enableDrag: false,
       builder: (BuildContext context) => ModalBottomSheet(
-        buttonText: '关闭',
+        buttonText: t.buttons.turnOff,
         contentPadding: const EdgeInsets.symmetric(horizontal: 10),
         margin: const EdgeInsets.symmetric(vertical: 10),
         callback: NavigatorUtil.pop,

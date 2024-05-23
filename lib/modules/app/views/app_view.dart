@@ -1,21 +1,26 @@
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:homing_pigeon/app/config.dart';
 import 'package:homing_pigeon/app/manager.dart';
 import 'package:homing_pigeon/app/navigator.dart';
-import 'package:homing_pigeon/common/api/auth_api.dart';
+// import 'package:homing_pigeon/common/api/auth_api.dart';
 import 'package:homing_pigeon/common/api/config_api.dart';
 import 'package:homing_pigeon/common/constants/constants.dart';
 import 'package:homing_pigeon/common/constants/keys.dart';
+import 'package:homing_pigeon/common/extensions/single.dart';
 import 'package:homing_pigeon/common/http/utils/handle_errors.dart';
 import 'package:homing_pigeon/common/utils/run_once.dart';
 import 'package:homing_pigeon/common/utils/sp_util.dart';
-import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:homing_pigeon/i18n/i18n.dart';
 import 'package:homing_pigeon/modules/app/app.dart';
 import 'package:homing_pigeon/modules/home/home.dart';
+import 'package:homing_pigeon/theme/colors.dart';
 import 'package:homing_pigeon/theme/theme.dart';
+import 'package:jpush_flutter2/jpush_flutter2.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -45,6 +50,9 @@ const double offset = 20;
 class _AppViewState extends State<AppView> {
   final easyLoading = EasyLoading.init();
 
+  final _memoizer = AsyncMemoizer<Widget>();
+  Future<Widget>? _future;
+
   @override
   void initState() {
     super.initState();
@@ -53,69 +61,90 @@ class _AppViewState extends State<AppView> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      navigatorKey: AppNavigator.key,
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
-      locale: TranslationProvider.of(context).flutterLocale,
-      supportedLocales: AppLocaleUtils.supportedLocales,
-      localizationsDelegates: GlobalMaterialLocalizations.delegates,
-      navigatorObservers: [
-        if (Constants.sentryEnabled) SentryNavigatorObserver(),
-      ],
-      home: UpgradeAlert(
+    return BlocBuilder<AppCubit, AppState>(
+      builder: (context, state) => MaterialApp(
+        debugShowCheckedModeBanner: false,
         navigatorKey: AppNavigator.key,
-        child: navigateToPage(context),
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        locale: TranslationProvider.of(context).flutterLocale,
+        supportedLocales: AppLocaleUtils.supportedLocales,
+        localizationsDelegates: GlobalMaterialLocalizations.delegates,
+        navigatorObservers: [
+          if (Constants.sentryEnabled) SentryNavigatorObserver(),
+        ],
+        home: FutureBuilder<Widget>(
+          future: _future ??= navigateToPage(),
+          builder: (
+            BuildContext context,
+            AsyncSnapshot<Widget> snapshot,
+          ) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              final child = snapshot.data;
+              return UpgradeAlert(child: child);
+            } else {
+              // 请求未结束，显示loading
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: primaryColor,
+                ),
+              ).nestedColoredBox(color: Colors.white);
+            }
+          },
+        ),
+        builder: (BuildContext context, Widget? child) {
+          final isDark = Theme.of(context).brightness == Brightness.dark;
+          EasyLoading.instance.loadingStyle =
+              isDark ? EasyLoadingStyle.light : EasyLoadingStyle.dark;
+          final newChild = easyLoading(context, child);
+          return MediaQuery(
+            /// 设置文字大小不随系统设置改变
+            data: MediaQuery.of(context).copyWith(
+              textScaler: TextScaler.noScaling,
+            ),
+            child: newChild,
+          );
+        },
       ),
-      builder: (BuildContext context, Widget? child) {
-        final isDark = Theme.of(context).brightness == Brightness.dark;
-        EasyLoading.instance.loadingStyle =
-            isDark ? EasyLoadingStyle.light : EasyLoadingStyle.dark;
-        final newChild = easyLoading(context, child);
-        return MediaQuery(
-          /// 设置文字大小不随系统设置改变
-          data:
-              MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
-          child: newChild,
-        );
-      },
     );
   }
 
-  Widget navigateToPage(BuildContext context) {
-    final user = BlocProvider.of<AppCubit>(context).state.user;
-    final token = SpUtil.getString(Keys.tokenKey);
+  Future<Widget> navigateToPage() async {
+    return _memoizer.runOnce(() async {
+      try {
+        // final res = await AuthApi.profile();
 
-    AppView.runOnce(() {
-      if (StringUtil.isNotBlank(token)) {
-        /// 设置消息推送收集开关
-        // if (Platform.isIOS ||
-        //     (Platform.isAndroid && AppConfig.shared.isInternal)) {
-        //   JPushFlutter.setAuth(auth: true);
-        // }
+        // remove the splash screen
+        FlutterNativeSplash.remove();
 
-        if (user == null) {
-          AuthApi.profile().then((value) {
-            if (value != null) {
-              BlocProvider.of<AppCubit>(context).addUser(value);
-
-              if (!AppManager.instance.jPushInitialized) {
-                initJPush();
-              }
-
-              if (!AppManager.instance.firebaseInitialized) {
-                initFirebase();
-              }
-            }
-          }).onError<Exception>((error, stackTrace) {
-            ErrorHandler.handle(error, stackTrace: stackTrace);
-          });
+        if (AppConfig.shared.isInternal) {
+          final licenseValue = SpUtil.getBool(Keys.licenseKey) ?? true;
+          await JPushFlutter.setAuth(auth: licenseValue);
         }
-      }
-    });
 
-    return const HomeView();
+        // if (res != null) {
+          // BlocProvider.of<AppCubit>(context).addUser(res);
+
+          AppView.runOnce(() {
+            if (AppConfig.shared.isInternal &&
+                !AppManager.instance.jPushInitialized) {
+              initJPush();
+            }
+
+            if (AppConfig.shared.isExternal &&
+                !AppManager.instance.firebaseInitialized) {
+              initFirebase();
+            }
+          });
+        // }
+      } on Exception catch (error, stackTrace) {
+        // remove the splash screen
+        FlutterNativeSplash.remove();
+        ErrorHandler.handle(error, stackTrace: stackTrace);
+      }
+
+      return const HomeView();
+    });
   }
 
   void _loadConfigs() {

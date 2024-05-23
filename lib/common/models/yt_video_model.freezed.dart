@@ -696,6 +696,7 @@ YTThumbnails _$YTThumbnailsFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$YTThumbnails {
+// ignore: invalid_annotation_target
   @JsonKey(name: 'default')
   YTThumbnail? get defaults => throw _privateConstructorUsedError;
   YTThumbnail? get medium => throw _privateConstructorUsedError;
@@ -855,6 +856,7 @@ class _$YTThumbnailsImpl implements _YTThumbnails {
   factory _$YTThumbnailsImpl.fromJson(Map<String, dynamic> json) =>
       _$$YTThumbnailsImplFromJson(json);
 
+// ignore: invalid_annotation_target
   @override
   @JsonKey(name: 'default')
   final YTThumbnail? defaults;
@@ -906,7 +908,7 @@ abstract class _YTThumbnails implements YTThumbnails {
   factory _YTThumbnails.fromJson(Map<String, dynamic> json) =
       _$YTThumbnailsImpl.fromJson;
 
-  @override
+  @override // ignore: invalid_annotation_target
   @JsonKey(name: 'default')
   YTThumbnail? get defaults;
   @override

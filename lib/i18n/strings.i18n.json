@@ -1,24 +1,230 @@
 {
   "appName": "Homing Pigeon",
+  "common": {
+    "copied": "Copied",
+    "success": "Succeeded\uD83D\uDE0A",
+    "failure": "Failed\uD83D\uDE2D",
+    "noData": "No data, click to reload\uD83D\uDE2D"
+  },
   "pages": {
-    "homePage": {
-      "title": "Homing Pigeon"
+    "home": {
+      "primary": {
+        "title": "Primary",
+        "rating": {
+          "title": "Movie rating",
+          "description": "Rate the movies you’ve watched~~"
+        },
+        "live": {
+          "title": "Live broadcast preview",
+          "description": "Go to the details"
+        },
+        "settings": {
+          "title": "Settings"
+        }
+      },
+      "other": {
+        "title": "Others",
+        "notifications": {
+          "title": "Reminders",
+          "description": "Get the live broadcast platform, time, etc."
+        },
+        "store": {
+          "title": "TAOBAO: Serious",
+          "description": "The cold wave is coming! Bring on a sweatshirt~~"
+        },
+        "emoji": {
+          "title": "Emojis\uD83D\uDC31",
+          "description": "Contributions welcome~~"
+        },
+        "feedback": {
+          "title": "Feedback",
+          "description": "No matter you encounter any questions, comments or suggestions, you can give us feedback..."
+        },
+        "roadmap": {
+          "title": "Roadmap",
+          "description": "View development plans and progress\uD83D\uDE04"
+        }
+      },
+      "version": "Version"
+    },
+    "emoji": {
+      "title": "Emojis～",
+      "tips": {
+        "title": "Contributions are welcome, Wow~",
+        "prefix": "Welcome",
+        "button": " [click here] ",
+        "suffix": "to contribute, it can be emoticons, creative copywriting, or some embarrassing pictures or screenshots of cats, etc.\uD83D\uDE04"
+      },
+      "dialogs": {
+        "upload": {
+          "buttons": {
+            "upload": "Upload"
+          },
+          "header": "Please select emojis you want to upload",
+          "tips": {
+            "prefix": "You can upload up to 9 images",
+            "suffix": "Image size must be between 50KB and 15MB"
+          },
+          "form": {
+            "emojis": {
+              "errorText": "Please select emojis you want to upload"
+            }
+          },
+          "uploadFailed": "File upload failed\uD83D\uDE2D"
+        }
+      }
+    },
+    "feedback": {
+      "title": "Feedback",
+      "tips": {
+        "title": "Comments or suggestions are welcome, wow~",
+        "prefix": "No matter you encounter any questions, comments or suggestions, you can",
+        "button": " [click here] ",
+        "suffix": "to give feedback."
+      },
+      "dialogs": {
+        "upload": {
+          "buttons": {
+            "upload": "Submit"
+          },
+          "header": "Please fill in the feedback info",
+          "form": {
+            "title": {
+              "title": "Title",
+              "hintText": "Please enter a title",
+              "errorText": "Please enter a title"
+            },
+            "description": {
+              "title": "Description",
+              "hintText": "Please enter a description",
+              "errorText": "Please enter a description"
+            },
+            "assets": {
+              "title": "Picture or video",
+              "prefix": "You can upload up to 9 pictures or videos",
+              "suffix": "Image size must be between 50KB and 15MB, video size must be between 50KB and 20MB"
+            }
+          },
+          "error": {
+            "image": "Uploaded images must be between 15KB and 15MB",
+            "video": "Uploaded videos must be between 15KB and 15MB"
+          },
+          "uploadFailed": "文件上传失败\uD83D\uDE2D"
+        }
+      }
+    },
+    "feedbackDetail": {
+      "title": "Feedback details"
+    },
+    "live": {
+      "title": "Live streaming～"
+    },
+    "movie": {
+      "title": "Movie"
+    },
+    "roadmap": {
+      "title": "Roadmap"
+    },
+    "social": {
+      "title": "Social"
     }
   },
   "buttons": {
     "agree": "Agree",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "login": "Login",
+    "signup": "Sign up",
+    "logout": "Logout",
+    "ignore": "Ignore",
+    "turnOn": "Turn on",
+    "turnOff": "Turn off"
+  },
+  "bottomSheets": {
+    "login": {
+      "header": "Please fill in your login information",
+      "form": {
+        "account": {
+          "title": "Account",
+          "hintText": "Please enter your account",
+          "errorText": "Please enter your account",
+          "errorText2": "Please enter at least 8 characters"
+        },
+        "password": {
+          "title": "Password",
+          "hintText": "Please enter your password",
+          "errorText": "Please enter your password",
+          "errorText2": "Please enter at least 8 characters"
+        },
+        "privacy": {
+          "title": "Privacy",
+          "prefix": "I have read carefully and agree",
+          "privacy": " Privacy Policy ",
+          "and": "&",
+          "terms": " terms and Conditions",
+          "errorText": "Please agree to the privacy agreement"
+        }
+      },
+      "tips": {
+        "prefix": "Already have an account, ",
+        "suffix": "go to login"
+      }
+    },
+    "signup": {
+      "header": "Please fill in the registration information",
+      "form": {
+        "account": {
+          "helperText": "The account number can only contain letters, numbers or underscores, and can only start with a letter and be at least 8 characters long.",
+          "errorText2": "The account number can only contain letters, numbers or underscores, and can only start with a letter and be at least 8 characters long."
+        },
+        "nickname": {
+          "title": "Nickname",
+          "hintText": "Please enter your nickname",
+          "helperText": "Nickname cannot be longer than 20 characters",
+          "errorText": "Nickname cannot be longer than 20 characters"
+        },
+        "email": {
+          "title": "Email",
+          "hintText": "Please enter your email",
+          "errorText": "Please enter your email",
+          "errorText2": "The email format you entered is wrong"
+        },
+        "password": {
+          "helperText": "Please enter at least 8 characters"
+        },
+        "repeatPassword": {
+          "title": "Repeat password",
+          "hintText": "Please enter your password again",
+          "errorText": "Please enter your password again",
+          "errorText2": "The passwords entered twice are different"
+        }
+      },
+      "tips": {
+        "prefix": "No account yet, ",
+        "suffix": "go to register"
+      }
+    },
+    "store": {
+      "title": "Please select to continue",
+      "code": {
+        "title": "Copy Taobao code",
+        "description": "Get the live broadcast platform, time, etc."
+      },
+      "link": {
+        "title": "Open store link",
+        "description": "The cold wave is coming! Bring on a sweatshirt~~"
+      }
+    }
   },
   "dialogs": {
-    "licenseDialog": {
-      "licenseDialogTitle": "Terms and Conditions",
-      "licenseDialogContentContent": "Protecting user's privacy and personal information is a fundamental principle of Homing Pigeon.",
-      "licenseDialogContentTip": "Below is a list of permissions required by this APP:",
-      "licenseDialogContentPrefix": "Before you use this APP's services, please carefully read and agree to the ",
-      "licenseDialogContentUserAgreement": "User Agreement",
-      "licenseDialogContentAnd": " and ",
-      "licenseDialogContentPrivacyAgreement": "Privacy Agreement",
-      "licenseDialogContentSuffix": ", start using our services after you agree and accept all terms.",
+    "license": {
+      "title": "Terms and Conditions",
+      "contentContent": "Protecting user's privacy and personal information is a fundamental principle of Homing Pigeon.",
+      "contentTip": "Below is a list of permissions required by this APP:",
+      "contentPrefix": "Before you use this APP's services, please carefully read and agree to the ",
+      "contentUserAgreement": "User Agreement",
+      "contentAnd": " and ",
+      "contentPrivacyAgreement": "Privacy Agreement",
+      "contentSuffix": ", start using our services after you agree and accept all terms.",
       "iosPermissions": [
         "For you to take pictures, Homing Pigeon needs access to your Camera. (NSCameraUsageDescription)",
         "For you to upload pictures, Homing Pigeon needs access to your Photos. (NSPhotoLibraryUsageDescription)"
@@ -33,6 +239,10 @@
         "For you to take pictures, Homing Pigeon needs access to your Camera. (android.permission.CAMERA)",
         "In order to send you local notifications, Homing Pigeon needs access to your permission. (android.permission.RECEIVE_BOOT_COMPLETED)"
       ]
+    },
+    "album": {
+      "title": "Allow access to your album",
+      "description": "Please go to your phone Settings to grant Homing Pigeon the permission to visit your album."
     }
   },
   "locales(map)": {
