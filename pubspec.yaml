@@ -75,7 +75,7 @@ dependencies:
   gap: ^3.0.1
   hcaptcha_flutter: ^0.0.1+1
   http_parser: ^4.0.2
-  image_picker: ^1.1.1
+  image_picker: ^1.1.2
   intl: ^0.18.1
   jpush_flutter2: ^0.0.1+4
   json_annotation: ^4.9.0
