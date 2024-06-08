@@ -80,10 +80,10 @@ class ModalBottomSheet extends StatelessWidget {
                 bottom: 0,
                 child: TextButton(
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
+                    backgroundColor: WidgetStateProperty.all(
                       isDark ? primaryTextColor : Colors.white,
                     ),
-                    shape: MaterialStateProperty.all(
+                    shape: WidgetStateProperty.all(
                       const RoundedRectangleBorder(),
                     ),
                   ),
@@ -111,10 +111,10 @@ class ModalBottomSheet extends StatelessWidget {
         else
           TextButton(
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(
+              backgroundColor: WidgetStateProperty.all(
                 isDark ? primaryTextColor : Colors.white,
               ),
-              shape: MaterialStateProperty.all(
+              shape: WidgetStateProperty.all(
                 const RoundedRectangleBorder(),
               ),
             ),

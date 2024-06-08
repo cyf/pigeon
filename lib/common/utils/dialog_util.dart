@@ -283,15 +283,15 @@ class DialogUtil {
                 TextButton(
                   onPressed: onCancel ?? NavigatorUtil.pop,
                   style: ButtonStyle(
-                    textStyle: MaterialStateProperty.all(
+                    textStyle: WidgetStateProperty.all(
                       const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                         height: 1.375,
                       ),
                     ),
-                    overlayColor: MaterialStateProperty.all(backgroundColor),
-                    shape: MaterialStateProperty.all(
+                    overlayColor: WidgetStateProperty.all(backgroundColor),
+                    shape: WidgetStateProperty.all(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(0),
                       ),
@@ -311,14 +311,14 @@ class DialogUtil {
               TextButton(
                 onPressed: onOK,
                 style: ButtonStyle(
-                  textStyle: MaterialStateProperty.all(
+                  textStyle: WidgetStateProperty.all(
                     const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                       height: 1.375,
                     ),
                   ),
-                  shape: MaterialStateProperty.all(
+                  shape: WidgetStateProperty.all(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(0),
                     ),

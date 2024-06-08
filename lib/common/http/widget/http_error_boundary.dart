@@ -210,8 +210,8 @@ class NetworkErrorAlertContainerState
     extends State<NetworkErrorAlertContainer> {
   /// 处理点击按钮背景颜色
   /// 设置当前按钮为不可点击时，设置onPressed回调为null。
-  MaterialStateProperty<Color> createTextBtnBgColor() {
-    return MaterialStateProperty.resolveWith((states) {
+  WidgetStateProperty<Color> createTextBtnBgColor() {
+    return WidgetStateProperty.resolveWith((states) {
       return primaryColor;
     });
   }

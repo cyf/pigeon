@@ -144,8 +144,8 @@ class _EmojiViewState extends State<EmojiView> {
       return NoData(
         icon: IconButton.outlined(
           style: ButtonStyle(
-            minimumSize: MaterialStateProperty.all(Size.zero),
-            padding: MaterialStateProperty.all(const EdgeInsets.all(4)),
+            minimumSize: WidgetStateProperty.all(Size.zero),
+            padding: WidgetStateProperty.all(const EdgeInsets.all(4)),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
           onPressed: _load,
@@ -156,9 +156,9 @@ class _EmojiViewState extends State<EmojiView> {
         ),
         title: TextButton(
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.transparent),
-            minimumSize: MaterialStateProperty.all(Size.zero),
-            padding: MaterialStateProperty.all(EdgeInsets.zero),
+            backgroundColor: WidgetStateProperty.all(Colors.transparent),
+            minimumSize: WidgetStateProperty.all(Size.zero),
+            padding: WidgetStateProperty.all(EdgeInsets.zero),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
           onPressed: _load,

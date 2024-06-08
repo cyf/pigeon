@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter_aliyun_oss/flutter_aliyun_oss.dart';
+import 'package:aliyun_oss/aliyun_oss.dart';
 import 'package:homing_pigeon/app/config.dart';
 import 'package:homing_pigeon/common/constants/constants.dart';
 import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:intl/intl.dart';
 import 'package:mime/mime.dart';
-import 'package:minio_flutter/minio.dart';
+import 'package:minio/minio.dart';
 import 'package:path/path.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';

@@ -98,8 +98,8 @@ class _HomeViewState extends State<HomeView>
                 ? showLoginBottomSheet
                 : showLogoutBottomSheet,
             style: ButtonStyle(
-              padding: MaterialStateProperty.all(EdgeInsets.zero),
-              backgroundColor: MaterialStateProperty.all(
+              padding: WidgetStateProperty.all(EdgeInsets.zero),
+              backgroundColor: WidgetStateProperty.all(
                 state.user == null ? primaryBackgroundColor : primaryGrayColor,
               ),
             ),
@@ -351,9 +351,9 @@ class _HomeViewState extends State<HomeView>
           bottom: 10,
           child: TextButton(
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.transparent),
-              minimumSize: MaterialStateProperty.all(Size.zero),
-              padding: MaterialStateProperty.all(EdgeInsets.zero),
+              backgroundColor: WidgetStateProperty.all(Colors.transparent),
+              minimumSize: WidgetStateProperty.all(Size.zero),
+              padding: WidgetStateProperty.all(EdgeInsets.zero),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               alignment: Alignment.centerRight,
             ),
@@ -607,15 +607,15 @@ class _HomeViewState extends State<HomeView>
                         .nestedExpanded(),
                     IconButton.outlined(
                       style: ButtonStyle(
-                        padding: MaterialStateProperty.all(
+                        padding: WidgetStateProperty.all(
                           const EdgeInsets.all(5),
                         ),
-                        side: MaterialStateProperty.all(BorderSide.none),
-                        backgroundColor: MaterialStateProperty.all(
+                        side: WidgetStateProperty.all(BorderSide.none),
+                        backgroundColor: WidgetStateProperty.all(
                           isDark ? borderColor : secondaryGrayColor,
                         ),
-                        elevation: MaterialStateProperty.all(0),
-                        minimumSize: MaterialStateProperty.all(Size.zero),
+                        elevation: WidgetStateProperty.all(0),
+                        minimumSize: WidgetStateProperty.all(Size.zero),
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                       onPressed: NavigatorUtil.pop,
@@ -1300,14 +1300,14 @@ class _HomeViewState extends State<HomeView>
                                         value: field.value ?? false,
                                         materialTapTargetSize:
                                             MaterialTapTargetSize.shrinkWrap,
-                                        fillColor: MaterialStateProperty.all(
+                                        fillColor: WidgetStateProperty.all(
                                           isDark
                                               ? primaryTextColor
                                               : Colors.white,
                                         ),
                                         checkColor: primaryColor,
                                         side:
-                                            MaterialStateBorderSide.resolveWith(
+                                            WidgetStateBorderSide.resolveWith(
                                           (states) => const BorderSide(
                                             color: borderColor,
                                           ),

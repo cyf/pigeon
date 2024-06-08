@@ -73,9 +73,9 @@ class _SocialViewState extends State<SocialView>
                 ? NoData(
                     icon: IconButton.outlined(
                       style: ButtonStyle(
-                        minimumSize: MaterialStateProperty.all(Size.zero),
+                        minimumSize: WidgetStateProperty.all(Size.zero),
                         padding:
-                            MaterialStateProperty.all(const EdgeInsets.all(4)),
+                            WidgetStateProperty.all(const EdgeInsets.all(4)),
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                       onPressed: _load,
@@ -87,9 +87,9 @@ class _SocialViewState extends State<SocialView>
                     title: TextButton(
                       style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all(Colors.transparent),
-                        minimumSize: MaterialStateProperty.all(Size.zero),
-                        padding: MaterialStateProperty.all(EdgeInsets.zero),
+                            WidgetStateProperty.all(Colors.transparent),
+                        minimumSize: WidgetStateProperty.all(Size.zero),
+                        padding: WidgetStateProperty.all(EdgeInsets.zero),
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                       onPressed: _load,

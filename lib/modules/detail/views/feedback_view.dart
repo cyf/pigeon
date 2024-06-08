@@ -118,10 +118,10 @@ class _FeedbackViewState extends State<FeedbackView> {
           ),
           // TextButton(
           //   style: ButtonStyle(
-          //     backgroundColor: MaterialStateProperty.all(primaryColor),
-          //     foregroundColor: MaterialStateProperty.all(Colors.white),
-          //     minimumSize: MaterialStateProperty.all(Size.zero),
-          //     padding: MaterialStateProperty.all(
+          //     backgroundColor: WidgetStateProperty.all(primaryColor),
+          //     foregroundColor: WidgetStateProperty.all(Colors.white),
+          //     minimumSize: WidgetStateProperty.all(Size.zero),
+          //     padding: WidgetStateProperty.all(
           //       const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
           //     ),
           //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -180,8 +180,8 @@ class _FeedbackViewState extends State<FeedbackView> {
       return NoData(
         icon: IconButton.outlined(
           style: ButtonStyle(
-            minimumSize: MaterialStateProperty.all(Size.zero),
-            padding: MaterialStateProperty.all(const EdgeInsets.all(4)),
+            minimumSize: WidgetStateProperty.all(Size.zero),
+            padding: WidgetStateProperty.all(const EdgeInsets.all(4)),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
           onPressed: _load,
@@ -192,9 +192,9 @@ class _FeedbackViewState extends State<FeedbackView> {
         ),
         title: TextButton(
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.transparent),
-            minimumSize: MaterialStateProperty.all(Size.zero),
-            padding: MaterialStateProperty.all(EdgeInsets.zero),
+            backgroundColor: WidgetStateProperty.all(Colors.transparent),
+            minimumSize: WidgetStateProperty.all(Size.zero),
+            padding: WidgetStateProperty.all(EdgeInsets.zero),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
           onPressed: _load,

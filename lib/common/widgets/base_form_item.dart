@@ -88,9 +88,9 @@ class BaseFormItem extends StatelessWidget {
   Widget get tips {
     return IconButton(
       style: ButtonStyle(
-        padding: MaterialStateProperty.all(EdgeInsets.zero),
-        elevation: MaterialStateProperty.all(0),
-        minimumSize: MaterialStateProperty.all(Size.zero),
+        padding: WidgetStateProperty.all(EdgeInsets.zero),
+        elevation: WidgetStateProperty.all(0),
+        minimumSize: WidgetStateProperty.all(Size.zero),
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
       onPressed: onTipTap,

@@ -37,15 +37,15 @@ class HpHeader extends StatelessWidget {
         if (!hideCancel)
           IconButton.outlined(
             style: ButtonStyle(
-              padding: MaterialStateProperty.all(
+              padding: WidgetStateProperty.all(
                 const EdgeInsets.all(5),
               ),
-              side: MaterialStateProperty.all(BorderSide.none),
-              backgroundColor: MaterialStateProperty.all(
+              side: WidgetStateProperty.all(BorderSide.none),
+              backgroundColor: WidgetStateProperty.all(
                 isDark ? borderColor : secondaryGrayColor,
               ),
-              elevation: MaterialStateProperty.all(0),
-              minimumSize: MaterialStateProperty.all(Size.zero),
+              elevation: WidgetStateProperty.all(0),
+              minimumSize: WidgetStateProperty.all(Size.zero),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
             onPressed: NavigatorUtil.pop,

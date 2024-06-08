@@ -73,13 +73,13 @@ class SocialCard extends StatelessWidget {
                     child = TextButton(
                       onPressed: () => _launchUri(tip),
                       style: ButtonStyle(
-                        minimumSize: MaterialStateProperty.all(Size.zero),
+                        minimumSize: WidgetStateProperty.all(Size.zero),
                         foregroundColor:
-                            MaterialStateProperty.all(primaryColor),
-                        padding: MaterialStateProperty.all(
+                            WidgetStateProperty.all(primaryColor),
+                        padding: WidgetStateProperty.all(
                           EdgeInsets.zero,
                         ),
-                        textStyle: MaterialStateProperty.all(
+                        textStyle: WidgetStateProperty.all(
                           const TextStyle(fontSize: 14),
                         ),
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -121,13 +121,13 @@ class SocialCard extends StatelessWidget {
                                   onPressed: () => _launchUri(link),
                                   style: ButtonStyle(
                                     minimumSize:
-                                        MaterialStateProperty.all(Size.zero),
+                                        WidgetStateProperty.all(Size.zero),
                                     foregroundColor:
-                                        MaterialStateProperty.all(primaryColor),
-                                    padding: MaterialStateProperty.all(
+                                        WidgetStateProperty.all(primaryColor),
+                                    padding: WidgetStateProperty.all(
                                       EdgeInsets.zero,
                                     ),
-                                    textStyle: MaterialStateProperty.all(
+                                    textStyle: WidgetStateProperty.all(
                                       const TextStyle(fontSize: 14),
                                     ),
                                     tapTargetSize:

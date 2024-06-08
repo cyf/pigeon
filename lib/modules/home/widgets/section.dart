@@ -82,12 +82,12 @@ class SectionItem extends StatelessWidget {
     return TextButton(
       onPressed: onTap,
       style: ButtonStyle(
-        shape: MaterialStateProperty.all(
+        shape: WidgetStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(0),
           ),
         ),
-        backgroundColor: MaterialStateProperty.all(Colors.transparent),
+        backgroundColor: WidgetStateProperty.all(Colors.transparent),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
