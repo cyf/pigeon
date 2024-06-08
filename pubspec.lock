@@ -2035,7 +2035,7 @@ packages:
     source: hosted
     version: "2.8.1"
   video_player_android:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: video_player_android
       sha256: "9529001630e42988f755772972d5014d30121610700e8e502278a245939f8fc8"
