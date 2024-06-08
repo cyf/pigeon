@@ -20,8 +20,8 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.4.1 <4.0.0'
-  flutter: '>=3.22.1'
+  sdk: '>=3.4.3 <4.0.0'
+  flutter: '>=3.22.2'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -110,6 +110,7 @@ dependencies:
   url_launcher: ^6.3.0
   uuid: ^4.4.0
   version: ^3.0.2
+  video_player_android: ^2.4.16 # AGP 8 compatibility
 #  watcher: ^1.1.0 # https://github.com/dart-lang/sdk/issues/52027
   wechat_assets_picker: ^9.0.4
   wechat_camera_picker: ^4.2.2
@@ -127,6 +128,14 @@ dev_dependencies:
   mocktail: ^1.0.3
   slang_build_runner: ^3.31.0
   very_good_analysis: ^5.1.0
+
+dependency_overrides:
+  # TODO: Recheck once flutter_inappwebview version >6.0.0 is released
+  flutter_inappwebview_android:
+    git:
+      url: https://github.com/holzgeist/flutter_inappwebview
+      path: flutter_inappwebview_android
+      ref: d89b1d32638b49dfc58c4b7c84153be0c269d057
 
 flutter_gen:
   output: lib/gen/ # Optional (default: lib/gen/)

@@ -33,8 +33,6 @@ xcrun simctl runtime add "~/iOS_17.0.1_Simulator_Runtime.dmg"
 
 ## Release
 
-app打包发生变化，这样发布到蒲公英的版本号，会带有commit信息，方便排查；发布到Google play或app store的版本号和之前一个样。
-
 以下脚本都在`Makefile`文件下，JetBrains / Android Studio可能需要安装`Makefile Language`插件。
 
 ### Flutter
@@ -49,7 +47,7 @@ app打包发生变化，这样发布到蒲公英的版本号，会带有commit�
 
 - 如果发布到测试环境, 运行
 ```shell
-make ENV=<development|staging|production> internal_apk
+make ENV=<dev|stg|prod> internal_apk
 ```
 
 - 如果发布到生产环境, 运行
@@ -61,7 +59,7 @@ make internal_appbundle
 
 - 如果发布到测试环境, 运行
 ```shell
-make ENV=<development|staging|production> external_apk
+make ENV=<dev|stg|prod> external_apk
 ```
 
 - 如果发布到生产环境, 运行
@@ -77,7 +75,7 @@ make external_appbundle
 
 - 如果发布到测试环境, 运行
 ```shell
-make ENV=<development|staging|production> internal_adhoc
+make ENV=<dev|stg|prod> internal_adhoc
 ```
 
 - 如果发布到生产环境, 运行
@@ -89,7 +87,7 @@ make internal_appstore
 
 - 如果发布到测试环境, 运行
 ```shell
-make ENV=<development|staging|production> external_adhoc
+make ENV=<dev|stg|prod> external_adhoc
 ```
 
 - 如果发布到生产环境, 运行
