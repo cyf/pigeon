@@ -71,7 +71,7 @@ class _FeedbackDetailViewState extends State<FeedbackDetailView> {
   Widget build(BuildContext context) {
     final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bottom = MediaQuery.of(context).padding.bottom;
+    final bottom = MediaQuery.paddingOf(context).bottom;
     return Scaffold(
       appBar: HpAppBar(
         isDark: isDark,
@@ -96,8 +96,8 @@ class _FeedbackDetailViewState extends State<FeedbackDetailView> {
     final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final height = MediaQuery.sizeOf(context).height;
-    final top = MediaQuery.of(context).padding.top;
-    final bottom = MediaQuery.of(context).padding.bottom;
+    final top = MediaQuery.paddingOf(context).top;
+    final bottom = MediaQuery.paddingOf(context).bottom;
     if (!_loading && _feedback != null) {
       const spacing = 8.0;
       final width = MediaQuery.sizeOf(context).width;

@@ -49,7 +49,7 @@ class _SocialViewState extends State<SocialView>
     super.build(context);
     final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bottom = MediaQuery.of(context).padding.bottom;
+    final bottom = MediaQuery.paddingOf(context).bottom;
     return Scaffold(
       appBar: HpAppBar(
         isDark: isDark,

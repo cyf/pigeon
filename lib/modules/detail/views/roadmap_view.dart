@@ -94,7 +94,7 @@ class _RoadmapViewState extends State<RoadmapView> {
     final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final height = MediaQuery.sizeOf(context).height;
-    final top = MediaQuery.of(context).padding.top;
+    final top = MediaQuery.paddingOf(context).top;
     return Scaffold(
       appBar: HpAppBar(
         isDark: isDark,

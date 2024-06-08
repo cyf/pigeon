@@ -67,7 +67,7 @@ class _LiveViewState extends State<LiveView> {
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
-    final bottom = MediaQuery.of(context).padding.bottom;
+    final bottom = MediaQuery.paddingOf(context).bottom;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return YoutubePlayerBuilder(
       onEnterFullScreen: () {

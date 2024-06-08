@@ -74,7 +74,7 @@ class _FeedbackViewState extends State<FeedbackView> {
   Widget build(BuildContext context) {
     final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bottom = MediaQuery.of(context).padding.bottom;
+    final bottom = MediaQuery.paddingOf(context).bottom;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: HpAppBar(
@@ -218,8 +218,8 @@ class _FeedbackViewState extends State<FeedbackView> {
     final t = Translations.of(context);
     final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
-    final top = MediaQuery.of(context).padding.top;
-    final bottom = MediaQuery.of(context).padding.bottom;
+    final top = MediaQuery.paddingOf(context).top;
+    final bottom = MediaQuery.paddingOf(context).bottom;
     final contentWidth = width - padding * 2;
     final itemWidth = ((contentWidth - spacing * 2) / 3).floorToDouble();
 

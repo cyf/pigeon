@@ -35,9 +35,9 @@ class ModalBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
-    final top = MediaQuery.of(context).padding.top;
-    final bottom = MediaQuery.of(context).padding.bottom;
-    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    final top = MediaQuery.paddingOf(context).top;
+    final bottom = MediaQuery.paddingOf(context).bottom;
+    final keyboardHeight = MediaQuery.viewInsetsOf(context).bottom;
     final marginBottom = keyboardHeight > 0 ? keyboardHeight : bottom;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 

@@ -133,7 +133,7 @@ class _HomeViewState extends State<HomeView>
     final configs = BlocProvider.of<AppCubit>(context).state.configs;
     final roadmapConfig =
         configs?.firstWhereOrNull((config) => config.key == 'roadmap');
-    final bottom = MediaQuery.of(context).padding.bottom;
+    final bottom = MediaQuery.paddingOf(context).bottom;
     final version = AppManager.instance.version;
     final buildNumber = AppManager.instance.buildNumber;
     final flavorName = AppConfig.shared.flavor.name;
@@ -223,7 +223,7 @@ class _HomeViewState extends State<HomeView>
   Widget _buildSliverAppBar() {
     final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final statusBarHeight = MediaQuery.of(context).padding.top;
+    final statusBarHeight = MediaQuery.paddingOf(context).top;
     Widget? flexibleSpace;
     double? expandedHeight = carouselHeight;
     if (!_loading) {
@@ -310,7 +310,7 @@ class _HomeViewState extends State<HomeView>
   }
 
   Widget _buildCarousel(CarouselModel carousel) {
-    final statusBarHeight = MediaQuery.of(context).padding.top;
+    final statusBarHeight = MediaQuery.paddingOf(context).top;
     final child = CachedNetworkImage(
       imageUrl: carousel.image,
       imageBuilder: (context, imageProvider) => Container(
@@ -565,8 +565,8 @@ class _HomeViewState extends State<HomeView>
     final t = Translations.of(context);
     final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
-    final top = MediaQuery.of(context).padding.top;
-    final bottom = MediaQuery.of(context).padding.bottom;
+    final top = MediaQuery.paddingOf(context).top;
+    final bottom = MediaQuery.paddingOf(context).bottom;
 
     final passwordNotifier = ValueNotifier<bool>(false);
     final repeatPasswordNotifier = ValueNotifier<bool>(false);
@@ -1475,8 +1475,8 @@ class _HomeViewState extends State<HomeView>
   void showLogoutBottomSheet() {
     final t = Translations.of(context);
     final height = MediaQuery.sizeOf(context).height;
-    final top = MediaQuery.of(context).padding.top;
-    final bottom = MediaQuery.of(context).padding.bottom;
+    final top = MediaQuery.paddingOf(context).top;
+    final bottom = MediaQuery.paddingOf(context).bottom;
 
     showModalBottomSheet<void>(
       context: context,

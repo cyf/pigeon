@@ -66,7 +66,7 @@ class _EmojiViewState extends State<EmojiView> {
   Widget build(BuildContext context) {
     final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bottom = MediaQuery.of(context).padding.bottom;
+    final bottom = MediaQuery.paddingOf(context).bottom;
     return Scaffold(
       appBar: HpAppBar(
         isDark: isDark,
@@ -124,7 +124,7 @@ class _EmojiViewState extends State<EmojiView> {
 
   Widget _buildBody() {
     final t = Translations.of(context);
-    final bottom = MediaQuery.of(context).padding.bottom;
+    final bottom = MediaQuery.paddingOf(context).bottom;
     if (!loading && items.isNotEmpty) {
       return MasonryGridView.count(
         padding: EdgeInsets.only(top: 20, bottom: bottom),
@@ -182,8 +182,8 @@ class _EmojiViewState extends State<EmojiView> {
     final t = Translations.of(context);
     final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
-    final top = MediaQuery.of(context).padding.top;
-    final bottom = MediaQuery.of(context).padding.bottom;
+    final top = MediaQuery.paddingOf(context).top;
+    final bottom = MediaQuery.paddingOf(context).bottom;
     final contentWidth = width - padding * 2;
     final itemWidth = ((contentWidth - spacing * 2) / 3).floorToDouble();
 
