@@ -76,7 +76,7 @@ dependencies:
   hcaptcha_flutter: ^0.0.1+1
   http_parser: ^4.0.2
   image_picker: ^1.1.2
-  intl: ^0.18.1
+  intl: ^0.19.0
   jpush_flutter2: ^0.0.1+4
   json_annotation: ^4.9.0
   keyboard_dismisser: ^3.0.0
