@@ -144,5 +144,5 @@ dependencies {
     implementation 'androidx.window:window:1.2.0'
     implementation 'androidx.window:window-java:1.2.0'
 
-    externalImplementation "com.google.android.gms:play-services-auth:21.1.1"
+    externalImplementation "com.google.android.gms:play-services-auth:21.2.0"
 }
