@@ -54,19 +54,19 @@ dependencies:
   encrypt: ^5.0.3
   equatable: ^2.0.5
   extended_text: ^13.0.2
-  file_picker: ^8.0.3
+  file_picker: ^8.0.4
   firebase_core: ^3.0.0
   firebase_messaging: ^15.0.0
   flutter:
     sdk: flutter
-  flutter_bloc: ^8.1.5
+  flutter_bloc: ^8.1.6
   flutter_easyloading: ^3.0.5
   flutter_form_builder: ^9.3.0
   flutter_intro: ^3.2.3
   flutter_local_notifications: ^17.1.2
   flutter_localizations:
     sdk: flutter
-  flutter_markdown: ^0.7.1
+  flutter_markdown: ^0.7.2
   flutter_native_splash: ^2.4.0
   flutter_staggered_grid_view: ^0.7.0
   flutter_sticky_header: ^0.6.5
