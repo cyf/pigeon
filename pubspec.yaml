@@ -54,9 +54,9 @@ dependencies:
   encrypt: ^5.0.3
   equatable: ^2.0.5
   extended_text: ^13.0.2
-  file_picker: ^8.0.4
-  firebase_core: ^3.0.0
-  firebase_messaging: ^15.0.0
+  file_picker: ^8.0.5
+  firebase_core: ^3.1.0
+  firebase_messaging: ^15.0.1
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.6
@@ -102,7 +102,7 @@ dependencies:
   slang_flutter: ^3.31.0
   socket_io_client: ^3.0.0-beta.2
   sortedmap: ^0.5.3
-  syncfusion_flutter_calendar: ^25.2.7+1
+  syncfusion_flutter_calendar: ^26.1.35
   synchronized: ^3.1.0+1
   timeago: ^3.6.1
   timezone: ^0.9.3
@@ -123,8 +123,6 @@ dev_dependencies:
     sdk: flutter
   freezed: ^2.5.2
   json_serializable: ^6.8.0
-  mockingjay: ^0.5.0
-  mocktail: ^1.0.3
   slang_build_runner: ^3.31.0
   very_good_analysis: ^5.1.0
 
