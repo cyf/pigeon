@@ -608,7 +608,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 43V9N6VW8L;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Internal.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Homing Pigeon";
+				INFOPLIST_KEY_CFBundleDisplayName = Pigeon;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -639,7 +639,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 43V9N6VW8L;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/External.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Homing Pigeon";
+				INFOPLIST_KEY_CFBundleDisplayName = Pigeon;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -671,7 +671,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 43V9N6VW8L;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/External.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Homing Pigeon";
+				INFOPLIST_KEY_CFBundleDisplayName = Pigeon;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -702,7 +702,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 43V9N6VW8L;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/External.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Homing Pigeon";
+				INFOPLIST_KEY_CFBundleDisplayName = Pigeon;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -788,7 +788,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 43V9N6VW8L;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Internal.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Homing Pigeon";
+				INFOPLIST_KEY_CFBundleDisplayName = Pigeon;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -820,7 +820,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 43V9N6VW8L;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/External.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Homing Pigeon";
+				INFOPLIST_KEY_CFBundleDisplayName = Pigeon;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -904,7 +904,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 43V9N6VW8L;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Internal.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Homing Pigeon";
+				INFOPLIST_KEY_CFBundleDisplayName = Pigeon;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -935,7 +935,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 43V9N6VW8L;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/External.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Homing Pigeon";
+				INFOPLIST_KEY_CFBundleDisplayName = Pigeon;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1016,7 +1016,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 43V9N6VW8L;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Internal.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Homing Pigeon";
+				INFOPLIST_KEY_CFBundleDisplayName = Pigeon;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1047,7 +1047,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 43V9N6VW8L;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/External.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Homing Pigeon";
+				INFOPLIST_KEY_CFBundleDisplayName = Pigeon;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1185,7 +1185,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 43V9N6VW8L;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Internal.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Homing Pigeon";
+				INFOPLIST_KEY_CFBundleDisplayName = Pigeon;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1217,7 +1217,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 43V9N6VW8L;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Internal.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Homing Pigeon";
+				INFOPLIST_KEY_CFBundleDisplayName = Pigeon;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
