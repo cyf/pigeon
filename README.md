@@ -2,38 +2,34 @@
 
 [![Test](https://github.com/cyf/homing-pigeon/actions/workflows/test.yml/badge.svg)](https://github.com/cyf/homing-pigeon/actions/workflows/test.yml)
 [![Release](https://github.com/cyf/homing-pigeon/actions/workflows/release.yml/badge.svg)](https://github.com/cyf/homing-pigeon/actions/workflows/release.yml)
+[![GitHub Release](https://img.shields.io/github/v/release/cyf/homing-pigeon)](https://github.com/cyf/homing-pigeon/releases/latest)
+[![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/cyf/homing-pigeon)](https://github.com/cyf/homing-pigeon/issues/new)
+[![GitHub License](https://img.shields.io/github/license/cyf/homing-pigeon)](https://raw.githubusercontent.com/cyf/homing-pigeon/main/LICENSE)
 
 ## Requirements
 
 ### iOS
 
-1. 导入证书
 ```shell
+# 1. 导入证书
 security import ./<name>.cer -P <password> -A -t cert
-```
 
-2. 导入.p12私钥
-```shell
+# 2. 导入.p12私钥
 security import ./<name>.p12 -P <password> -A -t cert -f pkcs12
+
+# 3. 双击导入mobileprovision文件
 ```
 
-3. 双击导入mobileprovision文件
-4. 手动安装模拟器运行时
-- 已安装列表
 ```shell
+# 手动安装模拟器运行时
+# 已安装列表
 xcrun simctl runtime list
-```
 
-- 安装
-```shell
+# 安装
 xcrun simctl runtime add "~/iOS_17.0.1_Simulator_Runtime.dmg"
 ```
 
-### Android
-
 ## Release
-
-以下脚本都在`Makefile`文件下，JetBrains / Android Studio可能需要安装`Makefile Language`插件。
 
 ### Flutter
 
@@ -45,25 +41,25 @@ xcrun simctl runtime add "~/iOS_17.0.1_Simulator_Runtime.dmg"
 
 #### 国内渠道
 
-- 如果发布到测试环境, 运行
 ```shell
+# 如果发布到测试环境
 make ENV=<dev|stg|prod> internal_apk
 ```
 
-- 如果发布到生产环境, 运行
 ```shell
+# 如果发布到生产环境
 make internal_appbundle
 ```
 
 #### 国外渠道
 
-- 如果发布到测试环境, 运行
 ```shell
+# 如果发布到测试环境
 make ENV=<dev|stg|prod> external_apk
 ```
 
-- 如果发布到生产环境, 运行
 ```shell
+# 如果发布到生产环境
 make external_appbundle
 ```
 
@@ -73,25 +69,25 @@ make external_appbundle
 
 #### 国内渠道
 
-- 如果发布到测试环境, 运行
 ```shell
+# 如果发布到测试环境
 make ENV=<dev|stg|prod> internal_adhoc
 ```
 
-- 如果发布到生产环境, 运行
 ```shell
+# 如果发布到生产环境
 make internal_appstore
 ```
 
 #### 国外渠道
 
-- 如果发布到测试环境, 运行
 ```shell
+# 如果发布到测试环境
 make ENV=<dev|stg|prod> external_adhoc
 ```
 
-- 如果发布到生产环境, 运行
 ```shell
+# 如果发布到生产环境
 make external_appstore
 ```
 
@@ -99,7 +95,7 @@ make external_appstore
 
 ### 极光推送测试
 
-Android点击通知打开
+>Android点击通知打开
 
 #### Debug on Android
 
