@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="android(internal)" type="FlutterRunConfigurationType" factoryName="Flutter">
-    <option name="additionalArgs" value="--dart-define-from-file=.env" />
+    <option name="additionalArgs" value="--dart-define-from-file=.env.dev.internal.local" />
     <option name="buildFlavor" value="internalStaging" />
     <option name="filePath" value="$PROJECT_DIR$/lib/main_internal.dart" />
     <method v="2" />

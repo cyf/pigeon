@@ -1,0 +1,56 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "android (external)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_external.dart",
+      "args": [
+        "--dart-define-from-file",
+        ".env.dev.external.local",
+        "--flavor",
+        "externalStaging"
+      ]
+    },
+    {
+      "name": "android (internal)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_internal.dart",
+      "args": [
+        "--dart-define-from-file",
+        ".env.dev.external.local",
+        "--flavor",
+        "internalStaging"
+      ]
+    },
+    {
+      "name": "ios (external)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_external.dart",
+      "args": [
+        "--dart-define-from-file",
+        ".env.dev.external.local",
+        "--flavor",
+        "external"
+      ]
+    },
+    {
+      "name": "ios (internal)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_internal.dart",
+      "args": [
+        "--dart-define-from-file",
+        ".env.dev.internal.local",
+        "--flavor",
+        "internal"
+      ]
+    }
+  ]
+}
