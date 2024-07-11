@@ -101,42 +101,42 @@ jobs:
           VERSION: ${{ steps.version_step.outputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
-  remove_release:
-      name: Remove release
-      if: ${{ cancelled() || failure() }}
-      runs-on: ubuntu-latest
-      needs:
-        - create_release
-        - internal_apk
-        - internal_aab
-        - internal_ios
-        - external_apk
-        - external_aab
-        - external_ios
-      steps:
-        - uses: actions/checkout@v4
+  # remove_release:
+  #     name: Remove release
+  #     if: ${{ cancelled() || failure() }}
+  #     runs-on: ubuntu-latest
+  #     needs:
+  #       - create_release
+  #       - internal_apk
+  #       - internal_aab
+  #       - internal_ios
+  #       - external_apk
+  #       - external_aab
+  #       - external_ios
+  #     steps:
+  #       - uses: actions/checkout@v4
 
-        - name: Install gh
-          run: |
-            if ! command -v gh >/dev/null 2>&1; then
-              echo "gh not exists"
-              brew install gh
-            fi
-            gh --version
+  #       - name: Install gh
+  #         run: |
+  #           if ! command -v gh >/dev/null 2>&1; then
+  #             echo "gh not exists"
+  #             brew install gh
+  #           fi
+  #           gh --version
 
-        - name: Remove a release
-          run: |
-            if [ "$ENV" == "production" ]; then
-              gh release delete -y --cleanup-tag "$VERSION_SUFFIX"
-            else
-              RELEASE="$([[ "$ENV" == "development" ]] && echo "$VERSION_SUFFIX.dev" || echo "$VERSION_SUFFIX.stg")"
-              gh release delete -y --cleanup-tag "$RELEASE"
-            fi
-          env:
-            ENV: ${{ github.event.inputs.env }}
-            VERSION_SUFFIX: "${{ needs.create_release.outputs.version }}+${{ needs.create_release.outputs.commit_count }}"
-            VERSION: ${{ needs.create_release.outputs.version }}
-            GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
+  #       - name: Remove a release
+  #         run: |
+  #           if [ "$ENV" == "production" ]; then
+  #             gh release delete -y --cleanup-tag "$VERSION_SUFFIX"
+  #           else
+  #             RELEASE="$([[ "$ENV" == "development" ]] && echo "$VERSION_SUFFIX.dev" || echo "$VERSION_SUFFIX.stg")"
+  #             gh release delete -y --cleanup-tag "$RELEASE"
+  #           fi
+  #         env:
+  #           ENV: ${{ github.event.inputs.env }}
+  #           VERSION_SUFFIX: "${{ needs.create_release.outputs.version }}+${{ needs.create_release.outputs.commit_count }}"
+  #           VERSION: ${{ needs.create_release.outputs.version }}
+  #           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
   internal_apk:
     name: Create apk (internal)
