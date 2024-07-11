@@ -48,31 +48,31 @@ dependencies:
   cupertino_icons: ^1.0.8
   deep_collection: ^1.0.2
   device_info_plus: ^10.1.0
-  dio: ^5.4.3+1
+  dio: ^5.5.0+1
   dxcaptcha_flutter: ^0.0.1+1
   easy_refresh: ^3.4.0
   encrypt: ^5.0.3
   equatable: ^2.0.5
   extended_text: ^13.0.2
-  file_picker: ^8.0.5
-  firebase_core: ^3.1.1
-  firebase_messaging: ^15.0.2
+  file_picker: ^8.0.6
+  firebase_core: ^3.2.0
+  firebase_messaging: ^15.0.3
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.6
   flutter_easyloading: ^3.0.5
   flutter_form_builder: ^9.3.0
   flutter_intro: ^3.2.3
-  flutter_local_notifications: ^17.2.1
+  flutter_local_notifications: ^17.2.1+1
   flutter_localizations:
     sdk: flutter
   flutter_markdown: ^0.7.3
-  flutter_native_splash: ^2.4.0
+  flutter_native_splash: ^2.4.1
   flutter_staggered_grid_view: ^0.7.0
   flutter_sticky_header: ^0.6.5
   fluttertoast: ^8.2.6
   form_builder_validators: ^10.0.1
-  freezed_annotation: ^2.4.1
+  freezed_annotation: ^2.4.3
   gap: ^3.0.1
   hcaptcha_flutter: ^0.0.1+1
   http_parser: ^4.0.2
@@ -101,10 +101,10 @@ dependencies:
   slang: ^3.31.1
   slang_flutter: ^3.31.0
   socket_io_client: ^3.0.0-beta.2
-  sortedmap: ^0.5.3
-  syncfusion_flutter_calendar: ^26.1.39
+  sortedmap: ^0.5.4
+  syncfusion_flutter_calendar: ^26.1.41
   synchronized: ^3.1.0+1
-  timeago: ^3.6.1
+  timeago: ^3.7.0
   timezone: ^0.9.3
   upgrader: ^10.3.0
   url_launcher: ^6.3.0
