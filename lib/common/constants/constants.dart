@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:homing_pigeon/common/utils/string_util.dart';
+import 'package:pigeon/common/utils/string_util.dart';
 
 /// Constants
 class Constants {

@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:homing_pigeon/common/models/models.dart';
+import 'package:pigeon/common/models/models.dart';
 
 part 'app_state.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-import 'package:homing_pigeon/common/extensions/extensions.dart';
-import 'package:homing_pigeon/theme/colors.dart';
+import 'package:pigeon/common/extensions/extensions.dart';
+import 'package:pigeon/theme/colors.dart';
 
 class Section extends StatelessWidget {
   const Section({

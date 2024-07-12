@@ -1,6 +1,6 @@
-import 'package:homing_pigeon/common/enums/enums.dart';
-import 'package:homing_pigeon/common/http/yt_http.dart';
-import 'package:homing_pigeon/common/models/models.dart';
+import 'package:pigeon/common/enums/enums.dart';
+import 'package:pigeon/common/http/yt_http.dart';
+import 'package:pigeon/common/models/models.dart';
 
 class LiveApi {
   /// 获取直播

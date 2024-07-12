@@ -1,4 +1,4 @@
-import 'package:homing_pigeon/i18n/i18n.dart';
+import 'package:pigeon/i18n/i18n.dart';
 
 class LocaleUtil {
   static String defaultLanguageCode = 'en';

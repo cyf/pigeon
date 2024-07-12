@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:homing_pigeon/common/constants/constants.dart';
-import 'package:homing_pigeon/common/http/interceptors/interceptors.dart';
+import 'package:pigeon/common/constants/constants.dart';
+import 'package:pigeon/common/http/interceptors/interceptors.dart';
 import 'package:sentry_dio/sentry_dio.dart';
 
 // 必须是顶层函数

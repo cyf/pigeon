@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:homing_pigeon/common/http/hp_http.dart';
-import 'package:homing_pigeon/common/models/models.dart';
+import 'package:pigeon/common/http/hp_http.dart';
+import 'package:pigeon/common/models/models.dart';
 
 class SocialApi {
   /// 直播信息/提醒群

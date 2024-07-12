@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:homing_pigeon/common/exception/exception.dart';
-import 'package:homing_pigeon/common/logger/logger.dart';
+import 'package:pigeon/common/exception/exception.dart';
+import 'package:pigeon/common/logger/logger.dart';
 
 typedef VoidRequestedExceptionCallback = void Function(
   String? code,

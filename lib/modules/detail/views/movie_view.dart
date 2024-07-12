@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:homing_pigeon/common/widgets/widgets.dart';
-import 'package:homing_pigeon/i18n/i18n.dart';
+import 'package:pigeon/common/widgets/widgets.dart';
+import 'package:pigeon/i18n/i18n.dart';
 
 class MovieView extends StatefulWidget {
   const MovieView({super.key});

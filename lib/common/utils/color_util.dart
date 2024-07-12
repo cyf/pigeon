@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:homing_pigeon/common/utils/string_util.dart';
+import 'package:pigeon/common/utils/string_util.dart';
 
 class ColorUtil {
   static Color stringToColor(String hexColor, Color defaultColor) {

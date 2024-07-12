@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart' hide Navigator;
 import 'package:flutter/scheduler.dart';
-import 'package:homing_pigeon/common/extensions/extensions.dart';
-import 'package:homing_pigeon/common/http/constants/code.dart';
-import 'package:homing_pigeon/common/http/event/http_error_event.dart';
-import 'package:homing_pigeon/common/utils/string_util.dart';
-import 'package:homing_pigeon/theme/colors.dart';
+import 'package:pigeon/common/extensions/extensions.dart';
+import 'package:pigeon/common/http/constants/code.dart';
+import 'package:pigeon/common/http/event/http_error_event.dart';
+import 'package:pigeon/common/utils/string_util.dart';
+import 'package:pigeon/theme/colors.dart';
 
 class HttpErrorBoundary {
   factory HttpErrorBoundary() => _instance;

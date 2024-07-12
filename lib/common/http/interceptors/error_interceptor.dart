@@ -1,6 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
-import 'package:homing_pigeon/common/http/constants/code.dart';
+import 'package:pigeon/common/http/constants/code.dart';
 
 class ErrorInterceptor extends InterceptorsWrapper {
   @override

@@ -1,10 +1,10 @@
-# Homing Pigeon
+# Pigeon
 
-[![Test](https://github.com/cyf/homing-pigeon/actions/workflows/test.yml/badge.svg)](https://github.com/cyf/homing-pigeon/actions/workflows/test.yml)
-[![Release](https://github.com/cyf/homing-pigeon/actions/workflows/release.yml/badge.svg)](https://github.com/cyf/homing-pigeon/actions/workflows/release.yml)
-[![GitHub Release](https://img.shields.io/github/v/release/cyf/homing-pigeon)](https://github.com/cyf/homing-pigeon/releases/latest)
-[![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/cyf/homing-pigeon)](https://github.com/cyf/homing-pigeon/issues/new)
-[![GitHub License](https://img.shields.io/github/license/cyf/homing-pigeon)](https://raw.githubusercontent.com/cyf/homing-pigeon/main/LICENSE)
+[![Test](https://github.com/cyf/pigeon/actions/workflows/test.yml/badge.svg)](https://github.com/cyf/pigeon/actions/workflows/test.yml)
+[![Release](https://github.com/cyf/pigeon/actions/workflows/release.yml/badge.svg)](https://github.com/cyf/pigeon/actions/workflows/release.yml)
+[![GitHub Release](https://img.shields.io/github/v/release/cyf/pigeon)](https://github.com/cyf/pigeon/releases/latest)
+[![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/cyf/pigeon)](https://github.com/cyf/pigeon/issues/new)
+[![GitHub License](https://img.shields.io/github/license/cyf/pigeon)](https://raw.githubusercontent.com/cyf/pigeon/main/LICENSE)
 
 ## Requirements
 
@@ -114,11 +114,11 @@ intent:#Intent;action=com.chenyifaer.homingpigeon/com.kjxbyz.plugins.jpush.OpenC
 #### Deep Links on Android
 
 ```shell
-adb shell am start -a android.intent.action.VIEW -d "hp://debug"
+adb shell am start -a android.intent.action.VIEW -d "pigeon://debug"
 ```
 
 #### Custom URL schemes on iOS
 
 ```shell
-/usr/bin/xcrun simctl openurl booted "hp://debug"
+/usr/bin/xcrun simctl openurl booted "pigeon://debug"
 ```

@@ -2,14 +2,14 @@ import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-import 'package:homing_pigeon/app/config.dart';
-import 'package:homing_pigeon/app/manager.dart';
-import 'package:homing_pigeon/common/constants/constants.dart';
-import 'package:homing_pigeon/common/constants/keys.dart';
-import 'package:homing_pigeon/common/logger/logger.dart';
-import 'package:homing_pigeon/common/utils/sp_util.dart';
-import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:jpush_flutter2/jpush_flutter2.dart';
+import 'package:pigeon/app/config.dart';
+import 'package:pigeon/app/manager.dart';
+import 'package:pigeon/common/constants/constants.dart';
+import 'package:pigeon/common/constants/keys.dart';
+import 'package:pigeon/common/logger/logger.dart';
+import 'package:pigeon/common/utils/sp_util.dart';
+import 'package:pigeon/common/utils/string_util.dart';
 
 void initJPush() {
   if (AppConfig.shared.isInternal) {

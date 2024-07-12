@@ -1,11 +1,11 @@
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:homing_pigeon/common/extensions/extensions.dart';
-import 'package:homing_pigeon/common/models/models.dart';
-import 'package:homing_pigeon/common/utils/color_util.dart';
-import 'package:homing_pigeon/common/utils/string_util.dart';
-import 'package:homing_pigeon/theme/colors.dart';
+import 'package:pigeon/common/extensions/extensions.dart';
+import 'package:pigeon/common/models/models.dart';
+import 'package:pigeon/common/utils/color_util.dart';
+import 'package:pigeon/common/utils/string_util.dart';
+import 'package:pigeon/theme/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SocialCard extends StatelessWidget {

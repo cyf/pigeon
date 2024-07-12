@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:homing_pigeon/app/navigator.dart';
+import 'package:pigeon/app/navigator.dart';
 
 ///
 class NavigatorUtil {

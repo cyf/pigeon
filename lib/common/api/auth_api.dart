@@ -1,6 +1,6 @@
-import 'package:homing_pigeon/common/http/hp_http.dart';
-import 'package:homing_pigeon/common/models/models.dart';
-import 'package:homing_pigeon/common/utils/string_util.dart';
+import 'package:pigeon/common/http/hp_http.dart';
+import 'package:pigeon/common/models/models.dart';
+import 'package:pigeon/common/utils/string_util.dart';
 
 class AuthApi {
   /// 登录

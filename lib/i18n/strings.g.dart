@@ -6,7 +6,7 @@
 /// Locales: 2
 /// Strings: 256 (128 per locale)
 ///
-/// Built on 2024-06-08 at 10:03 UTC
+/// Built on 2024-07-12 at 03:53 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -148,7 +148,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final Translations _root = this; // ignore: unused_field
 
 	// Translations
-	String get appName => 'Homing Pigeon';
+	String get appName => 'Pigeon';
 	late final _StringsCommonEn common = _StringsCommonEn._(_root);
 	late final _StringsPagesEn pages = _StringsPagesEn._(_root);
 	late final _StringsButtonsEn buttons = _StringsButtonsEn._(_root);
@@ -360,7 +360,7 @@ class _StringsDialogsLicenseEn {
 
 	// Translations
 	String get title => 'Terms and Conditions';
-	String get contentContent => 'Protecting user\'s privacy and personal information is a fundamental principle of Homing Pigeon.';
+	String get contentContent => 'Protecting user\'s privacy and personal information is a fundamental principle of Pigeon.';
 	String get contentTip => 'Below is a list of permissions required by this APP:';
 	String get contentPrefix => 'Before you use this APP\'s services, please carefully read and agree to the ';
 	String get contentUserAgreement => 'User Agreement';
@@ -368,18 +368,18 @@ class _StringsDialogsLicenseEn {
 	String get contentPrivacyAgreement => 'Privacy Agreement';
 	String get contentSuffix => ', start using our services after you agree and accept all terms.';
 	List<String> get iosPermissions => [
-		'For you to take pictures, Homing Pigeon needs access to your Camera. (NSCameraUsageDescription)',
-		'For you to upload pictures, Homing Pigeon needs access to your Photos. (NSPhotoLibraryUsageDescription)',
+		'For you to take pictures, Pigeon needs access to your Camera. (NSCameraUsageDescription)',
+		'For you to upload pictures, Pigeon needs access to your Photos. (NSPhotoLibraryUsageDescription)',
 	];
 	List<String> get androidPermissions => [
-		'Used for data interaction between the application and the server, Homing Pigeon needs access to your Internet. (android.permission.INTERNET)',
-		'In order to send you notifications, Homing Pigeon needs access to your permission. (android.permission.POST_NOTIFICATIONS)',
-		'For you to upload pictures, Homing Pigeon needs access to your Storage. (android.permission.READ_EXTERNAL_STORAGE)',
-		'For you to save pictures, Homing Pigeon needs access to your Storage. (android.permission.WRITE_EXTERNAL_STORAGE)',
-		'For you to upload pictures, Homing Pigeon needs access to your Photos. (android.permission.READ_MEDIA_IMAGES)',
-		'For you to upload videos, Homing Pigeon needs access to your Videos. (android.permission.READ_MEDIA_VIDEO)',
-		'For you to take pictures, Homing Pigeon needs access to your Camera. (android.permission.CAMERA)',
-		'In order to send you local notifications, Homing Pigeon needs access to your permission. (android.permission.RECEIVE_BOOT_COMPLETED)',
+		'Used for data interaction between the application and the server, Pigeon needs access to your Internet. (android.permission.INTERNET)',
+		'In order to send you notifications, Pigeon needs access to your permission. (android.permission.POST_NOTIFICATIONS)',
+		'For you to upload pictures, Pigeon needs access to your Storage. (android.permission.READ_EXTERNAL_STORAGE)',
+		'For you to save pictures, Pigeon needs access to your Storage. (android.permission.WRITE_EXTERNAL_STORAGE)',
+		'For you to upload pictures, Pigeon needs access to your Photos. (android.permission.READ_MEDIA_IMAGES)',
+		'For you to upload videos, Pigeon needs access to your Videos. (android.permission.READ_MEDIA_VIDEO)',
+		'For you to take pictures, Pigeon needs access to your Camera. (android.permission.CAMERA)',
+		'In order to send you local notifications, Pigeon needs access to your permission. (android.permission.RECEIVE_BOOT_COMPLETED)',
 	];
 }
 
@@ -391,7 +391,7 @@ class _StringsDialogsAlbumEn {
 
 	// Translations
 	String get title => 'Allow access to your album';
-	String get description => 'Please go to your phone Settings to grant Homing Pigeon the permission to visit your album.';
+	String get description => 'Please go to your phone Settings to grant Pigeon the permission to visit your album.';
 }
 
 // Path: pages.home.primary
@@ -888,7 +888,7 @@ class _StringsZh implements Translations {
 	@override late final _StringsZh _root = this; // ignore: unused_field
 
 	// Translations
-	@override String get appName => '信鸽';
+	@override String get appName => 'Pigeon';
 	@override late final _StringsCommonZh common = _StringsCommonZh._(_root);
 	@override late final _StringsPagesZh pages = _StringsPagesZh._(_root);
 	@override late final _StringsButtonsZh buttons = _StringsButtonsZh._(_root);
@@ -1100,26 +1100,26 @@ class _StringsDialogsLicenseZh implements _StringsDialogsLicenseEn {
 
 	// Translations
 	@override String get title => '隐私条款';
-	@override String get contentContent => '信鸽 非常重视你的隐私保护和个人信息保护.';
+	@override String get contentContent => 'Pigeon 非常重视你的隐私保护和个人信息保护.';
 	@override String get contentTip => '以下是该APP所需的权限列表:';
-	@override String get contentPrefix => '在使用APP服务前，请认真阅读 ';
+	@override String get contentPrefix => '在使用APP服务前, 请认真阅读 ';
 	@override String get contentUserAgreement => '《隐私政策》';
 	@override String get contentAnd => '和';
 	@override String get contentPrivacyAgreement => '《用户服务协议》';
 	@override String get contentSuffix => ', 你同意并接受全部条款后开始使用我们的服务.';
 	@override List<String> get iosPermissions => [
-		'为了让您拍摄照片, 信鸽 需要访问您的相机. (NSCameraUsageDescription)',
-		'为了让您上传图片, 信鸽 需要访问您的照片. (NSPhotoLibraryUsageDescription)',
+		'为了让您拍摄照片, Pigeon 需要访问您的相机. (NSCameraUsageDescription)',
+		'为了让您上传图片, Pigeon 需要访问您的照片. (NSPhotoLibraryUsageDescription)',
 	];
 	@override List<String> get androidPermissions => [
-		'用于应用程序和服务器之间的数据交互，信鸽 需要访问您的互联网. (android.permission.INTERNET)',
-		'为了给您发送通知, 信鸽 需要获取您的权限. (android.permission.POST_NOTIFICATIONS)',
-		'为了让您上传图片, 信鸽 需要访问您的存储. (android.permission.READ_EXTERNAL_STORAGE)',
-		'为了让您保存图片, 信鸽 需要访问您的存储. (android.permission.WRITE_EXTERNAL_STORAGE)',
-		'为了让您上传图片, 信鸽 需要访问您的照片. (android.permission.READ_MEDIA_IMAGES)',
-		'为了让您上传视频, 信鸽 需要访问您的视频. (android.permission.READ_MEDIA_VIDEO)',
-		'为了让您拍摄照片, 信鸽 需要访问您的相机. (android.permission.CAMERA)',
-		'为了向您发送本地通知, 信鸽 需要访问您的权限. (android.permission.RECEIVE_BOOT_COMPLETED)',
+		'用于应用程序和服务器之间的数据交互, Pigeon 需要访问您的互联网. (android.permission.INTERNET)',
+		'为了给您发送通知, Pigeon 需要获取您的权限. (android.permission.POST_NOTIFICATIONS)',
+		'为了让您上传图片, Pigeon 需要访问您的存储. (android.permission.READ_EXTERNAL_STORAGE)',
+		'为了让您保存图片, Pigeon 需要访问您的存储. (android.permission.WRITE_EXTERNAL_STORAGE)',
+		'为了让您上传图片, Pigeon 需要访问您的照片. (android.permission.READ_MEDIA_IMAGES)',
+		'为了让您上传视频, Pigeon 需要访问您的视频. (android.permission.READ_MEDIA_VIDEO)',
+		'为了让您拍摄照片, Pigeon 需要访问您的相机. (android.permission.CAMERA)',
+		'为了向您发送本地通知, Pigeon 需要访问您的权限. (android.permission.RECEIVE_BOOT_COMPLETED)',
 	];
 }
 
@@ -1131,7 +1131,7 @@ class _StringsDialogsAlbumZh implements _StringsDialogsAlbumEn {
 
 	// Translations
 	@override String get title => '允许访问您的相册';
-	@override String get description => '请前往您的手机设置授予信鸽访问您相册的权限.';
+	@override String get description => '请前往您的手机设置授予Pigeon访问您相册的权限.';
 }
 
 // Path: pages.home.primary
@@ -1610,7 +1610,7 @@ class _StringsPagesFeedbackDialogsUploadFormAssetsZh implements _StringsPagesFee
 extension on Translations {
 	dynamic _flatMapFunction(String path) {
 		switch (path) {
-			case 'appName': return 'Homing Pigeon';
+			case 'appName': return 'Pigeon';
 			case 'common.copied': return 'Copied';
 			case 'common.success': return 'Succeeded😊';
 			case 'common.failure': return 'Failed😭';
@@ -1717,25 +1717,25 @@ extension on Translations {
 			case 'bottomSheets.store.link.title': return 'Open store link';
 			case 'bottomSheets.store.link.description': return 'The cold wave is coming! Bring on a sweatshirt~~';
 			case 'dialogs.license.title': return 'Terms and Conditions';
-			case 'dialogs.license.contentContent': return 'Protecting user\'s privacy and personal information is a fundamental principle of Homing Pigeon.';
+			case 'dialogs.license.contentContent': return 'Protecting user\'s privacy and personal information is a fundamental principle of Pigeon.';
 			case 'dialogs.license.contentTip': return 'Below is a list of permissions required by this APP:';
 			case 'dialogs.license.contentPrefix': return 'Before you use this APP\'s services, please carefully read and agree to the ';
 			case 'dialogs.license.contentUserAgreement': return 'User Agreement';
 			case 'dialogs.license.contentAnd': return ' and ';
 			case 'dialogs.license.contentPrivacyAgreement': return 'Privacy Agreement';
 			case 'dialogs.license.contentSuffix': return ', start using our services after you agree and accept all terms.';
-			case 'dialogs.license.iosPermissions.0': return 'For you to take pictures, Homing Pigeon needs access to your Camera. (NSCameraUsageDescription)';
-			case 'dialogs.license.iosPermissions.1': return 'For you to upload pictures, Homing Pigeon needs access to your Photos. (NSPhotoLibraryUsageDescription)';
-			case 'dialogs.license.androidPermissions.0': return 'Used for data interaction between the application and the server, Homing Pigeon needs access to your Internet. (android.permission.INTERNET)';
-			case 'dialogs.license.androidPermissions.1': return 'In order to send you notifications, Homing Pigeon needs access to your permission. (android.permission.POST_NOTIFICATIONS)';
-			case 'dialogs.license.androidPermissions.2': return 'For you to upload pictures, Homing Pigeon needs access to your Storage. (android.permission.READ_EXTERNAL_STORAGE)';
-			case 'dialogs.license.androidPermissions.3': return 'For you to save pictures, Homing Pigeon needs access to your Storage. (android.permission.WRITE_EXTERNAL_STORAGE)';
-			case 'dialogs.license.androidPermissions.4': return 'For you to upload pictures, Homing Pigeon needs access to your Photos. (android.permission.READ_MEDIA_IMAGES)';
-			case 'dialogs.license.androidPermissions.5': return 'For you to upload videos, Homing Pigeon needs access to your Videos. (android.permission.READ_MEDIA_VIDEO)';
-			case 'dialogs.license.androidPermissions.6': return 'For you to take pictures, Homing Pigeon needs access to your Camera. (android.permission.CAMERA)';
-			case 'dialogs.license.androidPermissions.7': return 'In order to send you local notifications, Homing Pigeon needs access to your permission. (android.permission.RECEIVE_BOOT_COMPLETED)';
+			case 'dialogs.license.iosPermissions.0': return 'For you to take pictures, Pigeon needs access to your Camera. (NSCameraUsageDescription)';
+			case 'dialogs.license.iosPermissions.1': return 'For you to upload pictures, Pigeon needs access to your Photos. (NSPhotoLibraryUsageDescription)';
+			case 'dialogs.license.androidPermissions.0': return 'Used for data interaction between the application and the server, Pigeon needs access to your Internet. (android.permission.INTERNET)';
+			case 'dialogs.license.androidPermissions.1': return 'In order to send you notifications, Pigeon needs access to your permission. (android.permission.POST_NOTIFICATIONS)';
+			case 'dialogs.license.androidPermissions.2': return 'For you to upload pictures, Pigeon needs access to your Storage. (android.permission.READ_EXTERNAL_STORAGE)';
+			case 'dialogs.license.androidPermissions.3': return 'For you to save pictures, Pigeon needs access to your Storage. (android.permission.WRITE_EXTERNAL_STORAGE)';
+			case 'dialogs.license.androidPermissions.4': return 'For you to upload pictures, Pigeon needs access to your Photos. (android.permission.READ_MEDIA_IMAGES)';
+			case 'dialogs.license.androidPermissions.5': return 'For you to upload videos, Pigeon needs access to your Videos. (android.permission.READ_MEDIA_VIDEO)';
+			case 'dialogs.license.androidPermissions.6': return 'For you to take pictures, Pigeon needs access to your Camera. (android.permission.CAMERA)';
+			case 'dialogs.license.androidPermissions.7': return 'In order to send you local notifications, Pigeon needs access to your permission. (android.permission.RECEIVE_BOOT_COMPLETED)';
 			case 'dialogs.album.title': return 'Allow access to your album';
-			case 'dialogs.album.description': return 'Please go to your phone Settings to grant Homing Pigeon the permission to visit your album.';
+			case 'dialogs.album.description': return 'Please go to your phone Settings to grant Pigeon the permission to visit your album.';
 			case 'locales.en': return 'English';
 			case 'locales.zh': return '中文';
 			default: return null;
@@ -1746,7 +1746,7 @@ extension on Translations {
 extension on _StringsZh {
 	dynamic _flatMapFunction(String path) {
 		switch (path) {
-			case 'appName': return '信鸽';
+			case 'appName': return 'Pigeon';
 			case 'common.copied': return '已复制';
 			case 'common.success': return '成功啦😊';
 			case 'common.failure': return '失败啦😭';
@@ -1853,25 +1853,25 @@ extension on _StringsZh {
 			case 'bottomSheets.store.link.title': return '打开淘宝店地址';
 			case 'bottomSheets.store.link.description': return '寒潮啦! 来件卫衣吧~~';
 			case 'dialogs.license.title': return '隐私条款';
-			case 'dialogs.license.contentContent': return '信鸽 非常重视你的隐私保护和个人信息保护.';
+			case 'dialogs.license.contentContent': return 'Pigeon 非常重视你的隐私保护和个人信息保护.';
 			case 'dialogs.license.contentTip': return '以下是该APP所需的权限列表:';
-			case 'dialogs.license.contentPrefix': return '在使用APP服务前，请认真阅读 ';
+			case 'dialogs.license.contentPrefix': return '在使用APP服务前, 请认真阅读 ';
 			case 'dialogs.license.contentUserAgreement': return '《隐私政策》';
 			case 'dialogs.license.contentAnd': return '和';
 			case 'dialogs.license.contentPrivacyAgreement': return '《用户服务协议》';
 			case 'dialogs.license.contentSuffix': return ', 你同意并接受全部条款后开始使用我们的服务.';
-			case 'dialogs.license.iosPermissions.0': return '为了让您拍摄照片, 信鸽 需要访问您的相机. (NSCameraUsageDescription)';
-			case 'dialogs.license.iosPermissions.1': return '为了让您上传图片, 信鸽 需要访问您的照片. (NSPhotoLibraryUsageDescription)';
-			case 'dialogs.license.androidPermissions.0': return '用于应用程序和服务器之间的数据交互，信鸽 需要访问您的互联网. (android.permission.INTERNET)';
-			case 'dialogs.license.androidPermissions.1': return '为了给您发送通知, 信鸽 需要获取您的权限. (android.permission.POST_NOTIFICATIONS)';
-			case 'dialogs.license.androidPermissions.2': return '为了让您上传图片, 信鸽 需要访问您的存储. (android.permission.READ_EXTERNAL_STORAGE)';
-			case 'dialogs.license.androidPermissions.3': return '为了让您保存图片, 信鸽 需要访问您的存储. (android.permission.WRITE_EXTERNAL_STORAGE)';
-			case 'dialogs.license.androidPermissions.4': return '为了让您上传图片, 信鸽 需要访问您的照片. (android.permission.READ_MEDIA_IMAGES)';
-			case 'dialogs.license.androidPermissions.5': return '为了让您上传视频, 信鸽 需要访问您的视频. (android.permission.READ_MEDIA_VIDEO)';
-			case 'dialogs.license.androidPermissions.6': return '为了让您拍摄照片, 信鸽 需要访问您的相机. (android.permission.CAMERA)';
-			case 'dialogs.license.androidPermissions.7': return '为了向您发送本地通知, 信鸽 需要访问您的权限. (android.permission.RECEIVE_BOOT_COMPLETED)';
+			case 'dialogs.license.iosPermissions.0': return '为了让您拍摄照片, Pigeon 需要访问您的相机. (NSCameraUsageDescription)';
+			case 'dialogs.license.iosPermissions.1': return '为了让您上传图片, Pigeon 需要访问您的照片. (NSPhotoLibraryUsageDescription)';
+			case 'dialogs.license.androidPermissions.0': return '用于应用程序和服务器之间的数据交互, Pigeon 需要访问您的互联网. (android.permission.INTERNET)';
+			case 'dialogs.license.androidPermissions.1': return '为了给您发送通知, Pigeon 需要获取您的权限. (android.permission.POST_NOTIFICATIONS)';
+			case 'dialogs.license.androidPermissions.2': return '为了让您上传图片, Pigeon 需要访问您的存储. (android.permission.READ_EXTERNAL_STORAGE)';
+			case 'dialogs.license.androidPermissions.3': return '为了让您保存图片, Pigeon 需要访问您的存储. (android.permission.WRITE_EXTERNAL_STORAGE)';
+			case 'dialogs.license.androidPermissions.4': return '为了让您上传图片, Pigeon 需要访问您的照片. (android.permission.READ_MEDIA_IMAGES)';
+			case 'dialogs.license.androidPermissions.5': return '为了让您上传视频, Pigeon 需要访问您的视频. (android.permission.READ_MEDIA_VIDEO)';
+			case 'dialogs.license.androidPermissions.6': return '为了让您拍摄照片, Pigeon 需要访问您的相机. (android.permission.CAMERA)';
+			case 'dialogs.license.androidPermissions.7': return '为了向您发送本地通知, Pigeon 需要访问您的权限. (android.permission.RECEIVE_BOOT_COMPLETED)';
 			case 'dialogs.album.title': return '允许访问您的相册';
-			case 'dialogs.album.description': return '请前往您的手机设置授予信鸽访问您相册的权限.';
+			case 'dialogs.album.description': return '请前往您的手机设置授予Pigeon访问您相册的权限.';
 			case 'locales.en': return 'English';
 			case 'locales.zh': return '中文';
 			default: return null;

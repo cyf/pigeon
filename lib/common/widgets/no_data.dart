@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:homing_pigeon/common/extensions/extensions.dart';
+import 'package:pigeon/common/extensions/extensions.dart';
 
 class NoData extends StatelessWidget {
   const NoData({

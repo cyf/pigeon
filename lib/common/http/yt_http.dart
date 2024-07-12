@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:homing_pigeon/common/http/base_http.dart';
-import 'package:homing_pigeon/common/http/interceptors/interceptors.dart';
+import 'package:pigeon/common/http/base_http.dart';
+import 'package:pigeon/common/http/interceptors/interceptors.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 final ytHttp = YTHttp();

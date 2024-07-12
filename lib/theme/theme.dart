@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:homing_pigeon/theme/colors.dart';
+import 'package:pigeon/theme/colors.dart';
 
 ///
 class AppTheme {

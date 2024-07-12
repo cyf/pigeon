@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:homing_pigeon/common/constants/constants.dart';
-import 'package:homing_pigeon/common/http/constants/code.dart';
-import 'package:homing_pigeon/common/http/headers/headers.dart';
-import 'package:homing_pigeon/common/models/models.dart';
+import 'package:pigeon/common/constants/constants.dart';
+import 'package:pigeon/common/http/constants/code.dart';
+import 'package:pigeon/common/http/headers/headers.dart';
+import 'package:pigeon/common/models/models.dart';
 
 class BaseInterceptor extends InterceptorsWrapper {
   BaseInterceptor();

@@ -19,7 +19,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Homing Pigeon</string>
+	<string>Pigeon</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -46,9 +46,9 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>For you to take pictures, Homing Pigeon needs access to your Camera.</string>
+	<string>For you to take pictures, Pigeon needs access to your Camera.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>For you to upload pictures, Homing Pigeon needs access to your Photos.</string>
+	<string>For you to upload pictures, Pigeon needs access to your Photos.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

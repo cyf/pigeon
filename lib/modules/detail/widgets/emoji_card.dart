@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:homing_pigeon/common/extensions/extensions.dart';
-import 'package:homing_pigeon/common/models/models.dart';
-import 'package:homing_pigeon/common/utils/color_util.dart';
-import 'package:homing_pigeon/common/utils/dialog_util.dart';
-import 'package:homing_pigeon/common/utils/string_util.dart';
-import 'package:homing_pigeon/theme/colors.dart';
+import 'package:pigeon/common/extensions/extensions.dart';
+import 'package:pigeon/common/models/models.dart';
+import 'package:pigeon/common/utils/color_util.dart';
+import 'package:pigeon/common/utils/dialog_util.dart';
+import 'package:pigeon/common/utils/string_util.dart';
+import 'package:pigeon/theme/colors.dart';
 
 class EmojiCard extends StatelessWidget {
   const EmojiCard({

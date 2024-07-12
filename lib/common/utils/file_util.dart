@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:homing_pigeon/common/utils/string_util.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pigeon/common/utils/string_util.dart';
 
 class FileUtil {
   static String folder = 'expert-planet';

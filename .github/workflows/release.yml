@@ -214,7 +214,7 @@ jobs:
 
       # Package the build.
       - name: Copy build for Android
-        run: cp *.apk $GITHUB_WORKSPACE/HomingPigeon-internal.apk
+        run: cp *.apk $GITHUB_WORKSPACE/Pigeon-internal.apk
         working-directory: build/app/outputs/flutter-apk
 
       - name: Install gh
@@ -323,7 +323,7 @@ jobs:
 
       # Package the build.
       - name: Copy build for Android
-        run: cp *.apk $GITHUB_WORKSPACE/HomingPigeon-external.apk
+        run: cp *.apk $GITHUB_WORKSPACE/Pigeon-external.apk
         working-directory: build/app/outputs/flutter-apk
 
       - name: Install gh
@@ -458,12 +458,12 @@ jobs:
       # Package the build.
       - name: Copy build for Android
         if: ${{ github.event.inputs.env == 'development' || github.event.inputs.env == 'staging' }}
-        run: cp *.aab $GITHUB_WORKSPACE/HomingPigeon-internal.aab
+        run: cp *.aab $GITHUB_WORKSPACE/Pigeon-internal.aab
         working-directory: build/app/outputs/bundle/internalStagingRelease
 
       - name: Copy build for Android
         if: github.event.inputs.env == 'production'
-        run: cp *.aab $GITHUB_WORKSPACE/HomingPigeon-internal.aab
+        run: cp *.aab $GITHUB_WORKSPACE/Pigeon-internal.aab
         working-directory: build/app/outputs/bundle/internalProductionRelease
 
       - name: Install gh
@@ -573,12 +573,12 @@ jobs:
       # Package the build.
       - name: Copy build for Android
         if: ${{ github.event.inputs.env == 'development' || github.event.inputs.env == 'staging' }}
-        run: cp *.aab $GITHUB_WORKSPACE/HomingPigeon-external.aab
+        run: cp *.aab $GITHUB_WORKSPACE/Pigeon-external.aab
         working-directory: build/app/outputs/bundle/externalStagingRelease
 
       - name: Copy build for Android
         if: github.event.inputs.env == 'production'
-        run: cp *.aab $GITHUB_WORKSPACE/HomingPigeon-external.aab
+        run: cp *.aab $GITHUB_WORKSPACE/Pigeon-external.aab
         working-directory: build/app/outputs/bundle/externalProductionRelease
 
       - name: Install gh
@@ -737,7 +737,7 @@ jobs:
 
       # Package the build.
       - name: Copy build for iOS
-        run: cp *.ipa $GITHUB_WORKSPACE/HomingPigeon-internal.ipa
+        run: cp *.ipa $GITHUB_WORKSPACE/Pigeon-internal.ipa
         working-directory: build/ios/ipa
 
       - name: Install gh
@@ -899,7 +899,7 @@ jobs:
 
       # Package the build.
       - name: Copy build for iOS
-        run: cp *.ipa $GITHUB_WORKSPACE/HomingPigeon-external.ipa
+        run: cp *.ipa $GITHUB_WORKSPACE/Pigeon-external.ipa
         working-directory: build/ios/ipa
 
       - name: Install gh

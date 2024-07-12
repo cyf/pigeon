@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:homing_pigeon/common/utils/string_util.dart';
+import 'package:pigeon/common/utils/string_util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synchronized/synchronized.dart';
 

@@ -1,4 +1,4 @@
-import 'package:homing_pigeon/common/exception/requested_error.dart';
+import 'package:pigeon/common/exception/requested_error.dart';
 
 /// common exception
 class RequestedException implements Exception {

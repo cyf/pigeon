@@ -1,5 +1,5 @@
 {
-  "appName": "信鸽",
+  "appName": "Pigeon",
   "common": {
     "copied": "已复制",
     "success": "成功啦\uD83D\uDE0A",
@@ -218,31 +218,31 @@
   "dialogs": {
     "license": {
       "title": "隐私条款",
-      "contentContent": "信鸽 非常重视你的隐私保护和个人信息保护.",
+      "contentContent": "Pigeon 非常重视你的隐私保护和个人信息保护.",
       "contentTip": "以下是该APP所需的权限列表:",
-      "contentPrefix": "在使用APP服务前，请认真阅读 ",
+      "contentPrefix": "在使用APP服务前, 请认真阅读 ",
       "contentUserAgreement": "《隐私政策》",
       "contentAnd": "和",
       "contentPrivacyAgreement": "《用户服务协议》",
       "contentSuffix": ", 你同意并接受全部条款后开始使用我们的服务.",
       "iosPermissions": [
-        "为了让您拍摄照片, 信鸽 需要访问您的相机. (NSCameraUsageDescription)",
-        "为了让您上传图片, 信鸽 需要访问您的照片. (NSPhotoLibraryUsageDescription)"
+        "为了让您拍摄照片, Pigeon 需要访问您的相机. (NSCameraUsageDescription)",
+        "为了让您上传图片, Pigeon 需要访问您的照片. (NSPhotoLibraryUsageDescription)"
       ],
       "androidPermissions": [
-        "用于应用程序和服务器之间的数据交互，信鸽 需要访问您的互联网. (android.permission.INTERNET)",
-        "为了给您发送通知, 信鸽 需要获取您的权限. (android.permission.POST_NOTIFICATIONS)",
-        "为了让您上传图片, 信鸽 需要访问您的存储. (android.permission.READ_EXTERNAL_STORAGE)",
-        "为了让您保存图片, 信鸽 需要访问您的存储. (android.permission.WRITE_EXTERNAL_STORAGE)",
-        "为了让您上传图片, 信鸽 需要访问您的照片. (android.permission.READ_MEDIA_IMAGES)",
-        "为了让您上传视频, 信鸽 需要访问您的视频. (android.permission.READ_MEDIA_VIDEO)",
-        "为了让您拍摄照片, 信鸽 需要访问您的相机. (android.permission.CAMERA)",
-        "为了向您发送本地通知, 信鸽 需要访问您的权限. (android.permission.RECEIVE_BOOT_COMPLETED)"
+        "用于应用程序和服务器之间的数据交互, Pigeon 需要访问您的互联网. (android.permission.INTERNET)",
+        "为了给您发送通知, Pigeon 需要获取您的权限. (android.permission.POST_NOTIFICATIONS)",
+        "为了让您上传图片, Pigeon 需要访问您的存储. (android.permission.READ_EXTERNAL_STORAGE)",
+        "为了让您保存图片, Pigeon 需要访问您的存储. (android.permission.WRITE_EXTERNAL_STORAGE)",
+        "为了让您上传图片, Pigeon 需要访问您的照片. (android.permission.READ_MEDIA_IMAGES)",
+        "为了让您上传视频, Pigeon 需要访问您的视频. (android.permission.READ_MEDIA_VIDEO)",
+        "为了让您拍摄照片, Pigeon 需要访问您的相机. (android.permission.CAMERA)",
+        "为了向您发送本地通知, Pigeon 需要访问您的权限. (android.permission.RECEIVE_BOOT_COMPLETED)"
       ]
     },
     "album": {
       "title": "允许访问您的相册",
-      "description": "请前往您的手机设置授予信鸽访问您相册的权限."
+      "description": "请前往您的手机设置授予Pigeon访问您相册的权限."
     }
   },
   "locales(map)": {
