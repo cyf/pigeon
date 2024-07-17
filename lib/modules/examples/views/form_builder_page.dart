@@ -113,7 +113,7 @@ class _FormBuilderPageState extends State<FormBuilderPage> {
                         errorText: '请输入账号',
                       ),
                       FormBuilderValidators.match(
-                        r'^[a-zA-Z][a-zA-Z0-9_]{7,}$',
+                        RegExp('[a-zA-Z][a-zA-Z0-9_]{7,}', multiLine: true),
                         errorText: '账号只能包含英文,数字或下划线, 且只能以字母开头, 至少8个字符',
                       ),
                     ]),

@@ -744,7 +744,7 @@ class _HomeViewState extends State<HomeView>
                                     t.bottomSheets.login.form.account.errorText,
                               ),
                               FormBuilderValidators.match(
-                                r'^[a-zA-Z][a-zA-Z0-9_]{7,}$',
+                                RegExp('[a-zA-Z][a-zA-Z0-9_]{7,}', multiLine: true),
                                 errorText: _isRegistered
                                     ? t.bottomSheets.signup.form.account
                                         .errorText2
