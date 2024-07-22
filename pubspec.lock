@@ -755,10 +755,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_intro
-      sha256: c58f9151a68bc02e9f0ce6d849a1ce5edf145779b34fd391acb90ca650a0b896
+      sha256: f5411f3ddab945954959261cad38a087366dcd2bfeccfebb40b4e79c9983b7dc
       url: "https://pub.dev"
     source: hosted
-    version: "3.2.3"
+    version: "3.3.1"
   flutter_local_notifications:
     dependency: "direct main"
     description:
