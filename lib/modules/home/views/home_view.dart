@@ -1,16 +1,22 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:clipboard/clipboard.dart';
-import 'package:collection/collection.dart';
+// Flutter imports:
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:clipboard/clipboard.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+// Project imports:
 import 'package:pigeon/app/config.dart';
 import 'package:pigeon/app/manager.dart';
 import 'package:pigeon/app/navigator.dart';
@@ -33,7 +39,6 @@ import 'package:pigeon/modules/app/app.dart';
 import 'package:pigeon/modules/detail/detail.dart';
 import 'package:pigeon/modules/home/home.dart';
 import 'package:pigeon/theme/colors.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});

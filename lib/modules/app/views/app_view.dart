@@ -1,14 +1,20 @@
-import 'package:async/async.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:async/async.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:jpush_flutter2/jpush_flutter2.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:upgrader/upgrader.dart';
+
+// Project imports:
 import 'package:pigeon/app/config.dart';
 import 'package:pigeon/app/manager.dart';
 import 'package:pigeon/app/navigator.dart';
-// import 'package:pigeon/common/api/auth_api.dart';
 import 'package:pigeon/common/api/config_api.dart';
 import 'package:pigeon/common/constants/constants.dart';
 import 'package:pigeon/common/constants/keys.dart';
@@ -21,8 +27,8 @@ import 'package:pigeon/modules/app/app.dart';
 import 'package:pigeon/modules/home/home.dart';
 import 'package:pigeon/theme/colors.dart';
 import 'package:pigeon/theme/theme.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:upgrader/upgrader.dart';
+
+// import 'package:pigeon/common/api/auth_api.dart';
 
 class App extends StatelessWidget {
   const App({super.key});

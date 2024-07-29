@@ -1,4 +1,7 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:pigeon/common/widgets/widgets.dart';
 import 'package:pigeon/i18n/i18n.dart';
 

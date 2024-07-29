@@ -1,19 +1,23 @@
+// Dart imports:
 import 'dart:convert';
 import 'dart:io';
 
+// Package imports:
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 import 'package:deep_collection/deep_collection.dart';
 import 'package:dio/dio.dart';
 import 'package:encrypt/encrypt.dart';
+import 'package:sortedmap/sortedmap.dart';
+import 'package:uuid/uuid.dart';
+
+// Project imports:
 import 'package:pigeon/app/config.dart';
 import 'package:pigeon/app/manager.dart';
 import 'package:pigeon/common/constants/constants.dart';
 import 'package:pigeon/common/constants/keys.dart';
 import 'package:pigeon/common/utils/sp_util.dart';
 import 'package:pigeon/common/utils/string_util.dart';
-import 'package:sortedmap/sortedmap.dart';
-import 'package:uuid/uuid.dart';
 
 class HpHeaders {
   static const _uuid = Uuid();

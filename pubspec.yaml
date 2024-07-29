@@ -122,7 +122,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   freezed: ^2.5.2
+  husky: ^0.1.7
+  import_sorter: ^4.6.0
   json_serializable: ^6.8.0
+  lint_staged: ^0.5.1
   slang_build_runner: ^3.31.0
   very_good_analysis: ^6.0.0
 
@@ -187,3 +190,11 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+import_sorter:
+  ignored_files: # Optional, defaults to []
+    - \/lib\/gen\/*
+    - \/lib\/i18n\/*
+
+lint_staged:
+  'lib/**.dart': fvm dart run import_sorter:main lib\/* test\/* && git add --all

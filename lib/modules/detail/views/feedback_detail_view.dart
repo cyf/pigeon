@@ -1,7 +1,13 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_refresh/easy_refresh.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:reorderables/reorderables.dart';
+
+// Project imports:
 import 'package:pigeon/app/navigator.dart';
 import 'package:pigeon/common/api/feedback_api.dart';
 import 'package:pigeon/common/enums/enums.dart';
@@ -12,7 +18,6 @@ import 'package:pigeon/common/utils/string_util.dart';
 import 'package:pigeon/common/widgets/widgets.dart';
 import 'package:pigeon/i18n/i18n.dart';
 import 'package:pigeon/theme/colors.dart';
-import 'package:reorderables/reorderables.dart';
 
 class FeedbackDetailView extends StatefulWidget {
   const FeedbackDetailView({required this.id, super.key});

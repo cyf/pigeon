@@ -1,11 +1,15 @@
+// Dart imports:
 import 'dart:convert';
 import 'dart:developer';
 
+// Flutter imports:
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+
+// Package imports:
 import 'package:aliyun_oss/aliyun_oss.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -14,6 +18,12 @@ import 'package:jpush_flutter2/jpush_flutter2.dart';
 import 'package:logging/logging.dart';
 import 'package:minio/minio.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:sentry_logging/sentry_logging.dart';
+import 'package:socket_io_client/socket_io_client.dart' as socket_io;
+import 'package:timezone/data/latest_10y.dart' as tz;
+
+// Project imports:
 import 'package:pigeon/app/bloc_observer.dart';
 import 'package:pigeon/app/config.dart';
 import 'package:pigeon/app/manager.dart';
@@ -23,10 +33,6 @@ import 'package:pigeon/common/logger/logger.dart';
 import 'package:pigeon/common/utils/sp_util.dart';
 import 'package:pigeon/i18n/i18n.dart';
 import 'package:pigeon/modules/app/app.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:sentry_logging/sentry_logging.dart';
-import 'package:socket_io_client/socket_io_client.dart' as socket_io;
-import 'package:timezone/data/latest_10y.dart' as tz;
 
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {

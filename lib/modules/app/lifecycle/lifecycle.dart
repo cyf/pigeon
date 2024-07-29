@@ -1,8 +1,14 @@
+// Dart imports:
 import 'dart:io';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
+// Flutter imports:
 import 'package:flutter/foundation.dart';
+
+// Package imports:
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:jpush_flutter2/jpush_flutter2.dart';
+
+// Project imports:
 import 'package:pigeon/app/config.dart';
 import 'package:pigeon/app/manager.dart';
 import 'package:pigeon/common/constants/constants.dart';

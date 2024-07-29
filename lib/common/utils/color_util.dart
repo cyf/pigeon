@@ -1,4 +1,7 @@
+// Dart imports:
 import 'dart:ui';
+
+// Project imports:
 import 'package:pigeon/common/utils/string_util.dart';
 
 class ColorUtil {

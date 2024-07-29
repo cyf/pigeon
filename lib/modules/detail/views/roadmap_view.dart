@@ -1,9 +1,15 @@
-import 'package:easy_refresh/easy_refresh.dart';
+// Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:markdown/markdown.dart' as md;
+import 'package:syncfusion_flutter_calendar/calendar.dart';
+
+// Project imports:
 import 'package:pigeon/app/navigator.dart';
 import 'package:pigeon/common/api/roadmap_api.dart';
 import 'package:pigeon/common/enums/enums.dart';
@@ -17,7 +23,6 @@ import 'package:pigeon/common/utils/string_util.dart';
 import 'package:pigeon/common/widgets/widgets.dart';
 import 'package:pigeon/i18n/i18n.dart';
 import 'package:pigeon/theme/colors.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 const String _notes = """
 # Basic Markdown Demo

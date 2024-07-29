@@ -1,11 +1,18 @@
+// Dart imports:
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:collection/collection.dart';
+// Flutter imports:
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:collection/collection.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+// Project imports:
 import 'package:pigeon/app/navigator.dart';
 import 'package:pigeon/common/constants/keys.dart';
 import 'package:pigeon/common/extensions/single.dart';
@@ -14,7 +21,6 @@ import 'package:pigeon/common/utils/sp_util.dart';
 import 'package:pigeon/common/utils/string_util.dart';
 import 'package:pigeon/i18n/i18n.dart';
 import 'package:pigeon/theme/colors.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 const double _buttonHeight = 54;
 

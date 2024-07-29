@@ -1,16 +1,20 @@
+// Dart imports:
 import 'dart:async';
 import 'dart:io';
 
+// Package imports:
 import 'package:aliyun_oss/aliyun_oss.dart';
 import 'package:intl/intl.dart';
 import 'package:mime/mime.dart';
 import 'package:minio/minio.dart';
 import 'package:path/path.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
+
+// Project imports:
 import 'package:pigeon/app/config.dart';
 import 'package:pigeon/common/constants/constants.dart';
 import 'package:pigeon/common/utils/string_util.dart';
-import 'package:timezone/timezone.dart' as tz;
-import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class UploadUtil {
   static Future<FileModel?> upload({

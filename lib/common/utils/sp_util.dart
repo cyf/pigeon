@@ -1,8 +1,12 @@
+// Dart imports:
 import 'dart:async';
 
-import 'package:pigeon/common/utils/string_util.dart';
+// Package imports:
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synchronized/synchronized.dart';
+
+// Project imports:
+import 'package:pigeon/common/utils/string_util.dart';
 
 class SpUtil {
 

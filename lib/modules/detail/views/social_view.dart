@@ -1,8 +1,14 @@
+// Dart imports:
 import 'dart:async';
 
-import 'package:easy_refresh/easy_refresh.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+
+// Project imports:
 import 'package:pigeon/app/navigator.dart';
 import 'package:pigeon/common/api/social_api.dart';
 import 'package:pigeon/common/enums/enums.dart';

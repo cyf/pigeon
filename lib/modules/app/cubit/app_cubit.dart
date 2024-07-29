@@ -1,5 +1,8 @@
+// Package imports:
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+
+// Project imports:
 import 'package:pigeon/common/models/models.dart';
 
 part 'app_state.dart';

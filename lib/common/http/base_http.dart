@@ -1,7 +1,10 @@
+// Package imports:
 import 'package:dio/dio.dart';
+import 'package:sentry_dio/sentry_dio.dart';
+
+// Project imports:
 import 'package:pigeon/common/constants/constants.dart';
 import 'package:pigeon/common/http/interceptors/interceptors.dart';
-import 'package:sentry_dio/sentry_dio.dart';
 
 abstract class BaseHttp with DioMixin implements Dio {
   BaseHttp() {

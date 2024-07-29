@@ -1,12 +1,17 @@
-import 'package:clipboard/clipboard.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+// Project imports:
 import 'package:pigeon/common/extensions/extensions.dart';
 import 'package:pigeon/common/models/models.dart';
 import 'package:pigeon/common/utils/color_util.dart';
 import 'package:pigeon/common/utils/string_util.dart';
 import 'package:pigeon/theme/colors.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SocialCard extends StatelessWidget {
   const SocialCard({required this.item, super.key});

@@ -1,5 +1,8 @@
+// Flutter imports:
 import 'package:flutter/material.dart' hide Navigator;
 import 'package:flutter/scheduler.dart';
+
+// Project imports:
 import 'package:pigeon/common/extensions/extensions.dart';
 import 'package:pigeon/common/http/constants/code.dart';
 import 'package:pigeon/common/http/event/http_error_event.dart';

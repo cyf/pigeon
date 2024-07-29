@@ -1,5 +1,10 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+
+// Project imports:
 import 'package:pigeon/common/extensions/extensions.dart';
 import 'package:pigeon/theme/colors.dart';
 

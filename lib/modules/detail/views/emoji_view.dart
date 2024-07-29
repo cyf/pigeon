@@ -1,14 +1,21 @@
+// Flutter imports:
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:app_settings/app_settings.dart';
 import 'package:collection/collection.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_refresh/easy_refresh.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:reorderables/reorderables.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
+
+// Project imports:
 import 'package:pigeon/app/navigator.dart';
 import 'package:pigeon/common/api/emoji_api.dart';
 import 'package:pigeon/common/enums/enums.dart';
@@ -26,8 +33,6 @@ import 'package:pigeon/common/widgets/widgets.dart';
 import 'package:pigeon/i18n/i18n.dart';
 import 'package:pigeon/modules/detail/detail.dart';
 import 'package:pigeon/theme/colors.dart';
-import 'package:reorderables/reorderables.dart';
-import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class EmojiView extends StatefulWidget {
   const EmojiView({super.key});

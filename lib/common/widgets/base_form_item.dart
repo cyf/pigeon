@@ -1,4 +1,7 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:pigeon/common/extensions/extensions.dart';
 import 'package:pigeon/theme/colors.dart';
 

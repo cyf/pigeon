@@ -1,7 +1,12 @@
+// Flutter imports:
 import 'package:flutter/foundation.dart';
+
+// Package imports:
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+
+// Project imports:
 import 'package:pigeon/common/http/base_http.dart';
 import 'package:pigeon/common/http/interceptors/interceptors.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 final hpHttp = HpHttp();
 

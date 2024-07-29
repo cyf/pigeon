@@ -1,8 +1,14 @@
+// Dart imports:
 import 'dart:io';
 
+// Flutter imports:
+import 'package:flutter/foundation.dart';
+
+// Package imports:
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
+
+// Project imports:
 import 'package:pigeon/common/constants/constants.dart';
 import 'package:pigeon/common/http/constants/code.dart';
 import 'package:pigeon/common/http/headers/headers.dart';

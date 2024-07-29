@@ -1,5 +1,8 @@
+// Package imports:
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
+
+// Project imports:
 import 'package:pigeon/common/http/constants/code.dart';
 
 class ErrorInterceptor extends InterceptorsWrapper {

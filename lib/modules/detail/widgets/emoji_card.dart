@@ -1,5 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:cached_network_image/cached_network_image.dart';
+
+// Project imports:
 import 'package:pigeon/common/extensions/extensions.dart';
 import 'package:pigeon/common/models/models.dart';
 import 'package:pigeon/common/utils/color_util.dart';
