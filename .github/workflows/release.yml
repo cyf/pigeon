@@ -101,6 +101,73 @@ jobs:
           VERSION: ${{ steps.version_step.outputs.version }}
           GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
 
+  gen_shasum:
+    name: Gen Shasum
+    runs-on: ubuntu-latest
+    needs:
+      - create_release
+      - internal_apk
+      - internal_aab
+      - internal_ios
+      - external_apk
+      - external_aab
+      - external_ios
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install ts-shasum
+        run: pnpm add --global ts-shasum
+
+      - name: Download assets
+        uses: robinraju/release-downloader@v1
+        if: ${{ github.event.inputs.env == 'development' || github.event.inputs.env == 'staging' }}
+        with:
+          tag: "${{ needs.create_release.outputs.version }}+${{ needs.create_release.outputs.commit_count }}${{ github.event.inputs.env == 'development' && '.dev' || '.stg' }}"
+          fileName: '*'
+          tarBall: true
+          zipBall: true
+          out-file-path: 'pigeon-downloads'
+
+      - name: Download assets
+        uses: robinraju/release-downloader@v1
+        if: github.event.inputs.env == 'production'
+        with:
+          tag: "${{ needs.create_release.outputs.version }}+${{ needs.create_release.outputs.commit_count }}"
+          fileName: '*'
+          tarBall: true
+          zipBall: true
+          out-file-path: 'pigeon-downloads'
+      
+      - name: Gen SHASUMS256.txt
+        run: shasum create "$GITHUB_WORKSPACE/SHASUMS256.txt" *
+        working-directory: ${{ github.workspace }}/pigeon-downloads
+
+      - name: Show gh info
+        run: gh --version
+
+      - name: Upload assets
+        run: |
+          if [ "$ENV" == "production" ]; then
+            gh release upload "$VERSION_SUFFIX" ./SHASUMS256.txt
+          else
+            RELEASE="$([[ "$ENV" == "development" ]] && echo "$VERSION_SUFFIX.dev" || echo "$VERSION_SUFFIX.stg")"
+            gh release upload "$RELEASE" ./SHASUMS256.txt
+          fi
+        env:
+          ENV: ${{ github.event.inputs.env }}
+          VERSION_SUFFIX: "${{ needs.create_release.outputs.version }}+${{ needs.create_release.outputs.commit_count }}"
+          VERSION: ${{ needs.create_release.outputs.version }}
+          GH_TOKEN: ${{ secrets.CYF_RELEASE_TOKEN }}
+
   # remove_release:
   #     name: Remove release
   #     if: ${{ cancelled() || failure() }}
