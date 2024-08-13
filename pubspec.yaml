@@ -48,7 +48,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   deep_collection: ^1.0.2
   device_info_plus: ^10.1.2
-  dio: ^5.5.0+1
+  dio: ^5.6.0
   dxcaptcha_flutter: ^0.0.1+1
   easy_refresh: ^3.4.0
   encrypt: ^5.0.3
