@@ -44,7 +44,7 @@ dependencies:
   collection: ^1.18.0
   connectivity_plus: ^6.0.5
   convert: ^3.1.1
-  crypto: ^3.0.4
+  crypto: ^3.0.5
   cupertino_icons: ^1.0.8
   deep_collection: ^1.0.2
   device_info_plus: ^10.1.2
