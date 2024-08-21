@@ -2138,10 +2138,10 @@ packages:
     dependency: "direct main"
     description:
       name: wechat_camera_picker
-      sha256: "273912967f42c8e994e01efd73569bc4ff8d39b60484220863e099aaf86dd722"
+      sha256: "3ade7162fd510b2f5916f90b0fe6841e3b6f79a5fd70160ed949d2ccdec10eac"
       url: "https://pub.dev"
     source: hosted
-    version: "4.3.1"
+    version: "4.3.2"
   wechat_picker_library:
     dependency: transitive
     description:
