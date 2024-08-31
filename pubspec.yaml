@@ -55,8 +55,8 @@ dependencies:
   equatable: ^2.0.5
   extended_text: ^14.0.1
   file_picker: ^8.0.7
-  firebase_core: ^3.3.0
-  firebase_messaging: ^15.0.4
+  firebase_core: ^3.4.0
+  firebase_messaging: ^15.1.0
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.6
@@ -98,17 +98,17 @@ dependencies:
   sentry_flutter: ^8.8.0
   sentry_logging: ^8.8.0
   shared_preferences: ^2.3.2
-  slang: ^3.31.1
+  slang: ^3.31.2
   slang_flutter: ^3.31.0
   socket_io_client: ^3.0.0-beta.2
   sortedmap: ^0.5.4
-  syncfusion_flutter_calendar: ^26.2.11
+  syncfusion_flutter_calendar: ^26.2.11+1
   synchronized: ^3.2.0
   timeago: ^3.7.0
-  timezone: ^0.9.3
+  timezone: ^0.9.4
   upgrader: ^10.3.0
   url_launcher: ^6.3.0
-  uuid: ^4.4.2
+  uuid: ^4.5.0
   version: ^3.0.2
 #  watcher: ^1.1.0 # https://github.com/dart-lang/sdk/issues/52027
   wechat_assets_picker: ^9.2.1
@@ -117,7 +117,7 @@ dependencies:
 dev_dependencies:
   bloc_test: ^9.1.7
   build_runner: ^2.4.12
-  flutter_gen_runner: ^5.6.0
+  flutter_gen_runner: ^5.7.0
   flutter_test:
     sdk: flutter
   freezed: ^2.5.7
