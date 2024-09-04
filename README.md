@@ -60,21 +60,21 @@
         <tr>
         <td>iOS</td>
             <td>
-              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+423/Pigeon-internal.ipa"><img src="https://img.shields.io/badge/IPA-Internal-A3D9A5.svg?logo=ios"></a>
-              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+423/Pigeon-external.ipa"><img src="https://img.shields.io/badge/IPA-External-6CC2A8.svg?logo=ios"></a>
+              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+424/Pigeon-internal.ipa"><img src="https://img.shields.io/badge/IPA-Internal-A3D9A5.svg?logo=ios"></a>
+              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+424/Pigeon-external.ipa"><img src="https://img.shields.io/badge/IPA-External-6CC2A8.svg?logo=ios"></a>
             </td>
         </tr>
         <tr>
         <td>Android</td>
             <td>
-              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+404/Pigeon-internal_universal.apk"><img src="https://img.shields.io/badge/APK_(Internal)-Universal-FF0000.svg?logo=android"></a>
-              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+404/Pigeon-external_universal.apk"><img src="https://img.shields.io/badge/APK_(External)-Universal-FF0000.svg?logo=android"></a><br>
-              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+404/Pigeon-internal_arm64-v8a.apk"><img src="https://img.shields.io/badge/APK_(Internal)-ARMv8-FFA500.svg?logo=android"></a>
-              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+404/Pigeon-external_arm64-v8a.apk"><img src="https://img.shields.io/badge/APK_(External)-ARMv8-FFA500.svg?logo=android"></a><br>
-              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+404/Pigeon-internal_armeabi-v7a.apk"><img src="https://img.shields.io/badge/APK_(Internal)-ARMv7-00FF00.svg?logo=android"></a>
-              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+404/Pigeon-external_armeabi-v7a.apk"><img src="https://img.shields.io/badge/APK_(External)-ARMv7-00FF00.svg?logo=android"></a><br>
-              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+404/Pigeon-internal_x86_64.apk"><img src="https://img.shields.io/badge/APK_(Internal)-x64-0000FF.svg?logo=android"></a>
-              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+404/Pigeon-external_x86_64.apk"><img src="https://img.shields.io/badge/APK_(External)-x64-0000FF.svg?logo=android"></a>
+              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+424/Pigeon-internal_universal.apk"><img src="https://img.shields.io/badge/APK_(Internal)-Universal-FF0000.svg?logo=android"></a>
+              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+424/Pigeon-external_universal.apk"><img src="https://img.shields.io/badge/APK_(External)-Universal-FF0000.svg?logo=android"></a><br>
+              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+424/Pigeon-internal_arm64-v8a.apk"><img src="https://img.shields.io/badge/APK_(Internal)-ARMv8-FFA500.svg?logo=android"></a>
+              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+424/Pigeon-external_arm64-v8a.apk"><img src="https://img.shields.io/badge/APK_(External)-ARMv8-FFA500.svg?logo=android"></a><br>
+              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+424/Pigeon-internal_armeabi-v7a.apk"><img src="https://img.shields.io/badge/APK_(Internal)-ARMv7-00FF00.svg?logo=android"></a>
+              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+424/Pigeon-external_armeabi-v7a.apk"><img src="https://img.shields.io/badge/APK_(External)-ARMv7-00FF00.svg?logo=android"></a><br>
+              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+424/Pigeon-internal_x86_64.apk"><img src="https://img.shields.io/badge/APK_(Internal)-x64-0000FF.svg?logo=android"></a>
+              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+424/Pigeon-external_x86_64.apk"><img src="https://img.shields.io/badge/APK_(External)-x64-0000FF.svg?logo=android"></a>
             </td>
         </tr>
     </tbody>
