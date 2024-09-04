@@ -77,6 +77,16 @@ android {
         ]
     }
 
+    // https://developer.android.com/build/configure-apk-splits
+    splits {
+        abi {
+            enable true
+            reset()
+            universalApk true  // If true, also generate a universal APK
+            include "armeabi-v7a", "arm64-v8a", "x86_64"
+        }
+    }
+
     flavorDimensions "default", "env"
     productFlavors {
         // 国内分发
@@ -153,4 +163,17 @@ dependencies {
     implementation 'androidx.window:window-java:1.3.0'
 
     externalImplementation "com.google.android.gms:play-services-auth:21.2.0"
+}
+
+import com.android.build.OutputFile
+
+android.applicationVariants.all { variant ->
+  variant.outputs.each { output ->
+        def flavorName = variant.flavorName
+        def suffix = flavorName.contains("external") ? "external" : "internal"
+        def abi = output.getFilter(OutputFile.ABI)
+        def arch = abi == null ? "universal" : abi
+        def outputFileName = "Pigeon-${suffix}_${arch}.apk"
+        output.outputFileName = outputFileName
+    }
 }

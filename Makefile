@@ -2,7 +2,6 @@
 get:
 	echo "╠ Installing dependencies..."
 	fvm flutter pub get
-	make install
 
 outdated:
 	echo "╠ Resolving dependencies..."
@@ -58,22 +57,22 @@ internal_adhoc:
 	echo "╠ Removing build products and intermediate files from the build root..."
 	cd ios && xcodebuild clean && cd ..
 	echo "╠ Releasing to adhoc..."
-	fvm flutter build ipa --dart-define-from-file=".env.$(ENV).internal.local" --flavor internal --target lib/main_internal.dart --export-options-plist=ios/ExportOptions-internal-debug.plist
+	fvm flutter build ipa --dart-define-from-file=".env.$(ENV).internal.local" --flavor internal --target lib/main_internal.dart --export-options-plist=ios/ExportOptions/internal/debug.plist
 
 internal_appstore:
 	echo "╠ Removing build products and intermediate files from the build root..."
 	cd ios && xcodebuild clean && cd ..
 	echo "╠ Releasing to app store..."
-	fvm flutter build ipa --dart-define-from-file=".env.production.internal.local" --flavor internal --target lib/main_internal.dart --export-options-plist=ios/ExportOptions-internal-release.plist
+	fvm flutter build ipa --dart-define-from-file=".env.production.internal.local" --flavor internal --target lib/main_internal.dart --export-options-plist=ios/ExportOptions/internal/release.plist
 
 external_adhoc:
 	echo "╠ Removing build products and intermediate files from the build root..."
 	cd ios && xcodebuild clean && cd ..
 	echo "╠ Releasing to adhoc..."
-	fvm flutter build ipa --dart-define-from-file=".env.$(ENV).external.local" --flavor external --target lib/main_external.dart --export-options-plist=ios/ExportOptions-external-debug.plist
+	fvm flutter build ipa --dart-define-from-file=".env.$(ENV).external.local" --flavor external --target lib/main_external.dart --export-options-plist=ios/ExportOptions/external/debug.plist
 
 external_appstore:
 	echo "╠ Removing build products and intermediate files from the build root..."
 	cd ios && xcodebuild clean && cd ..
 	echo "╠ Releasing to app store..."
-	fvm flutter build ipa --dart-define-from-file=".env.production.external.local" --flavor external --target lib/main_external.dart --export-options-plist=ios/ExportOptions-external-release.plist
+	fvm flutter build ipa --dart-define-from-file=".env.production.external.local" --flavor external --target lib/main_external.dart --export-options-plist=ios/ExportOptions/external/release.plist

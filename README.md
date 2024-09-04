@@ -6,119 +6,82 @@
 [![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/cyf/pigeon)](https://github.com/cyf/pigeon/issues/new)
 [![GitHub License](https://img.shields.io/github/license/cyf/pigeon)](https://raw.githubusercontent.com/cyf/pigeon/main/LICENSE)
 
-## Requirements
+## 🛍️ Get It On Stores
 
-### iOS
+<table>
+  <tr>
+    <th>Platform</th>
+    <th colspan="2" style="text-align: center">App Store</th>
+  </tr>
+  <tr>
+    <th style="border-bottom: none;"></th>
+    <th style="text-align: center; border-bottom: none">Internal</th>
+    <th style="text-align: center; border-bottom: none">External</th>
+  </tr>
+  <tr>
+    <td>Android</td>
+    <td>
+      <a href="https://play.google.com/store/apps/details?id=com.chenyifaer.homingpigeon">
+        <img width="220" alt="Get it on Google Play" src="./docs/assets/Download_on_the_Google_Play.png">
+      </a>
+    </td>
+    <td>
+      <a href="https://play.google.com/store/apps/details?id=com.chenyifaer.homingpigeon">
+        <img width="220" alt="Get it on Google Play" src="./docs/assets/Download_on_the_Google_Play.png">
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td>iOS</td>
+    <td>
+      <a href="https://apps.apple.com/us/app/id6474651618">
+        <img width="220" alt="Get it on App Store" src="./docs/assets/Download_on_the_App_Store.svg">
+      </a>
+    </td>
+    <td>
+      <a href="https://apps.apple.com/us/app/id6470935922">
+        <img width="220" alt="Get it on App Store" src="./docs/assets/Download_on_the_App_Store.svg">
+      </a>
+    </td>
+  </tr>
+</table>
 
-```shell
-# 1. 导入证书
-security import ./<name>.cer -P <password> -A -t cert
+## 📥 Direct Download
 
-# 2. 导入.p12私钥
-security import ./<name>.p12 -P <password> -A -t cert -f pkcs12
+<div align=left>
+<table>
+    <thead align=left>
+        <tr>
+            <th>OS</th>
+            <th>Download</th>
+        </tr>
+    </thead>
+    <tbody align=left>
+        <tr>
+        <td>iOS</td>
+            <td>
+              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+423/Pigeon-internal.ipa"><img src="https://img.shields.io/badge/IPA-Internal-A3D9A5.svg?logo=ios"></a>
+              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+423/Pigeon-external.ipa"><img src="https://img.shields.io/badge/IPA-External-6CC2A8.svg?logo=ios"></a>
+            </td>
+        </tr>
+        <tr>
+        <td>Android</td>
+            <td>
+              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+404/Pigeon-internal_universal.apk"><img src="https://img.shields.io/badge/APK_(Internal)-Universal-FF0000.svg?logo=android"></a>
+              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+404/Pigeon-external_universal.apk"><img src="https://img.shields.io/badge/APK_(External)-Universal-FF0000.svg?logo=android"></a><br>
+              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+404/Pigeon-internal_arm64-v8a.apk"><img src="https://img.shields.io/badge/APK_(Internal)-ARMv8-FFA500.svg?logo=android"></a>
+              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+404/Pigeon-external_arm64-v8a.apk"><img src="https://img.shields.io/badge/APK_(External)-ARMv8-FFA500.svg?logo=android"></a><br>
+              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+404/Pigeon-internal_armeabi-v7a.apk"><img src="https://img.shields.io/badge/APK_(Internal)-ARMv7-00FF00.svg?logo=android"></a>
+              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+404/Pigeon-external_armeabi-v7a.apk"><img src="https://img.shields.io/badge/APK_(External)-ARMv7-00FF00.svg?logo=android"></a><br>
+              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+404/Pigeon-internal_x86_64.apk"><img src="https://img.shields.io/badge/APK_(Internal)-x64-0000FF.svg?logo=android"></a>
+              <a href="https://github.com/cyf/pigeon/releases/download/v1.0.0+404/Pigeon-external_x86_64.apk"><img src="https://img.shields.io/badge/APK_(External)-x64-0000FF.svg?logo=android"></a>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
-# 3. 双击导入mobileprovision文件
-```
+</div>
 
-```shell
-# 手动安装模拟器运行时
-# 已安装列表
-xcrun simctl runtime list
+## License
 
-# 安装
-xcrun simctl runtime add "~/iOS_17.0.1_Simulator_Runtime.dmg"
-```
-
-## Release
-
-### Flutter
-
->在`pubspec.yaml`文件修改`version: <new version>`
-
-### Android
-
->如果发布到生产环境, 请在`android/app/build.gradle`文件修改`versionCode`
-
-#### 国内渠道
-
-```shell
-# 如果发布到测试环境
-make ENV=<dev|stg|prod> internal_apk
-```
-
-```shell
-# 如果发布到生产环境
-make internal_appbundle
-```
-
-#### 国外渠道
-
-```shell
-# 如果发布到测试环境
-make ENV=<dev|stg|prod> external_apk
-```
-
-```shell
-# 如果发布到生产环境
-make external_appbundle
-```
-
-### iOS
-
->如果发布到生产环境, 请修改`build`号
-
-#### 国内渠道
-
-```shell
-# 如果发布到测试环境
-make ENV=<dev|stg|prod> internal_adhoc
-```
-
-```shell
-# 如果发布到生产环境
-make internal_appstore
-```
-
-#### 国外渠道
-
-```shell
-# 如果发布到测试环境
-make ENV=<dev|stg|prod> external_adhoc
-```
-
-```shell
-# 如果发布到生产环境
-make external_appstore
-```
-
-## Tests
-
-### 极光推送测试
-
->Android点击通知打开
-
-#### Debug on Android
-
-```text
-intent:#Intent;action=com.chenyifaer.homingpigeon.dev/com.kjxbyz.plugins.jpush.OpenClickActivity;component=com.chenyifaer.homingpigeon.dev/com.kjxbyz.plugins.jpush.OpenClickActivity;end
-```
-
-#### Release on Android
-
-```text
-intent:#Intent;action=com.chenyifaer.homingpigeon/com.kjxbyz.plugins.jpush.OpenClickActivity;component=com.chenyifaer.homingpigeon/com.kjxbyz.plugins.jpush.OpenClickActivity;end
-```
-
-### app links
-
-#### Deep Links on Android
-
-```shell
-adb shell am start -a android.intent.action.VIEW -d "pigeon://debug"
-```
-
-#### Custom URL schemes on iOS
-
-```shell
-/usr/bin/xcrun simctl openurl booted "pigeon://debug"
-```
+MIT
