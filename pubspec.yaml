@@ -52,7 +52,7 @@ dependencies:
   easy_refresh: ^3.4.0
   encrypt: ^5.0.3
   equatable: ^2.0.5
-  extended_text: ^14.0.1
+  extended_text: ^14.1.0
   file_picker: ^8.0.7
   firebase_core: ^3.4.0
   firebase_messaging: ^15.1.0

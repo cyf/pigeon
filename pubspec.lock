@@ -530,10 +530,10 @@ packages:
     dependency: "direct main"
     description:
       name: extended_text
-      sha256: a09e3db6b405457a5cd43d19e892dcb7ec9ae1f0b40d5e95d06fedc2d1c13bf7
+      sha256: b0cdd240b4ddf61d18d7e33e7775195971f2d033bd69706fa897446dc96c3b81
       url: "https://pub.dev"
     source: hosted
-    version: "14.0.1"
+    version: "14.1.0"
   extended_text_library:
     dependency: transitive
     description:
