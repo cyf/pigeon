@@ -19,28 +19,33 @@
     <th style="text-align: center; border-bottom: none">External</th>
   </tr>
   <tr>
-    <td>Android</td>
-    <td>
-      <a href="https://play.google.com/store/apps/details?id=com.chenyifaer.homingpigeon">
-        <img width="220" alt="Get it on Google Play" src="./docs/assets/Download_on_the_Google_Play.png">
-      </a>
-    </td>
-    <td>
-      <a href="https://play.google.com/store/apps/details?id=com.chenyifaer.homingpigeon">
-        <img width="220" alt="Get it on Google Play" src="./docs/assets/Download_on_the_Google_Play.png">
-      </a>
-    </td>
-  </tr>
-  <tr>
     <td>iOS</td>
     <td>
       <a href="https://apps.apple.com/us/app/id6474651618">
-        <img width="220" alt="Get it on App Store" src="./docs/assets/Download_on_the_App_Store.svg">
+        <img width="220" alt="Get it on App Store" src="./docs/assets/Download-on-the-App-Store.svg">
       </a>
     </td>
     <td>
       <a href="https://apps.apple.com/us/app/id6470935922">
-        <img width="220" alt="Get it on App Store" src="./docs/assets/Download_on_the_App_Store.svg">
+        <img width="220" alt="Get it on App Store" src="./docs/assets/Download-on-the-App-Store.svg">
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td>Android</td>
+    <td align="center" style="font-size: 16px">Not provided</td>
+    <td>
+      <a href="https://play.google.com/store/apps/details?id=com.chenyifaer.homingpigeon">
+        <img width="220" alt="Get it on Google Play" src="./docs/assets/Download-on-the-Google-Play.png">
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td>F-Droid (TODO)</td>
+    <td align="center" style="font-size: 16px">Not provided</td>
+    <td>
+      <a href="https://f-droid.org/packages/com.chenyifaer.homingpigeon">
+        <img width="220" alt="Get it on Google Play" src="./docs/assets/Download-on-the-F-Droid.svg">
       </a>
     </td>
   </tr>

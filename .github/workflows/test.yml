@@ -4,18 +4,22 @@ on:
   workflow_dispatch:
   pull_request:
     paths-ignore:
-      - 'node/**'
+      - '.github/FUNDING.yml'
+      - 'docs/**'
+      - 'CHANGELOG.md'
       - 'LICENSE'
-      - 'README.md'
       - 'Makefile'
+      - 'README.md'
     branches:
       - main
   push:
     paths-ignore:
-      - 'node/**'
+      - '.github/FUNDING.yml'
+      - 'docs/**'
+      - 'CHANGELOG.md'
       - 'LICENSE'
-      - 'README.md'
       - 'Makefile'
+      - 'README.md'
     branches:
       - main
 
