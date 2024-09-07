@@ -530,10 +530,10 @@ packages:
     dependency: "direct main"
     description:
       name: extended_text
-      sha256: a09e3db6b405457a5cd43d19e892dcb7ec9ae1f0b40d5e95d06fedc2d1c13bf7
+      sha256: b0cdd240b4ddf61d18d7e33e7775195971f2d033bd69706fa897446dc96c3b81
       url: "https://pub.dev"
     source: hosted
-    version: "14.0.1"
+    version: "14.1.0"
   extended_text_library:
     dependency: transitive
     description:
@@ -1621,10 +1621,10 @@ packages:
     dependency: transitive
     description:
       name: shelf_static
-      sha256: a41d3f53c4adf0f57480578c1d61d90342cd617de7fc8077b1304643c2d85c1e
+      sha256: c87c3875f91262785dade62d135760c2c69cb217ac759485334c5857ad89f6e3
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.2"
+    version: "1.1.3"
   shelf_web_socket:
     dependency: transitive
     description:
@@ -1786,26 +1786,26 @@ packages:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_calendar
-      sha256: "80636ec037e72051831ba7b1213a4fc413deff5f623c6a69a9328574ff2a3f88"
+      sha256: e4b26cd68204e1caaf0a02c5092b8bb3227e331deadbdb1e4a64ea4cfa8dc008
       url: "https://pub.dev"
     source: hosted
-    version: "26.2.12"
+    version: "26.2.13"
   syncfusion_flutter_core:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
-      sha256: "038390d6f633368dc306c250877f93d2e3932de58a781945a3b7ed10c4df5171"
+      sha256: "877411504a07c874970c361762c447081e6e13219a6bea6fc88fbb31c2aff4a4"
       url: "https://pub.dev"
     source: hosted
-    version: "26.2.12"
+    version: "26.2.13"
   syncfusion_flutter_datepicker:
     dependency: transitive
     description:
       name: syncfusion_flutter_datepicker
-      sha256: "914afc9748d1fb84fb1ee02895a0d313e2440523fbd80df3a5265d6c095e90bb"
+      sha256: "7989608f897edb61ea156d743ca31024eba688679a85f633f8203d17eafab83c"
       url: "https://pub.dev"
     source: hosted
-    version: "26.2.12"
+    version: "26.2.13"
   synchronized:
     dependency: "direct main"
     description:
