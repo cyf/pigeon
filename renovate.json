@@ -5,6 +5,7 @@
   ],
   "rangeStrategy": "bump",
   "prHourlyLimit": 0,
+  "ignorePaths": ["packages/**"],
   "ignoreDeps": [
     "flutter_localizations",
     "flutter_test"
