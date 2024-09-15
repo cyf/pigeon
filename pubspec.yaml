@@ -102,7 +102,7 @@ dependencies:
   socket_io_client: ^3.0.0-beta.2
   sortedmap: ^0.5.4
   syncfusion_flutter_calendar: ^26.2.14
-  synchronized: ^3.2.0
+  synchronized: ^3.3.0+2
   timeago: ^3.7.0
   timezone: ^0.9.4
   upgrader: ^11.1.0
