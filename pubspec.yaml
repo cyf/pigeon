@@ -54,7 +54,7 @@ dependencies:
   equatable: ^2.0.5
   extended_text: ^14.1.0
   file_picker: ^8.1.2
-  firebase_core: ^3.4.1
+  firebase_core: ^3.5.0
   firebase_messaging: ^15.1.1
   flutter:
     sdk: flutter
