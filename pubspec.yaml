@@ -32,9 +32,8 @@ environment:
 dependencies:
   aliyun_oss: # add dart 3.4.x support
     path: ./packages/aliyun_oss
-  app_settings: # add ios privacy manifest
-    git:
-      url: https://github.com/spencerccf/app_settings
+  app_settings: # e1d39e4ea052e9dd9a47fbab49737846d9b43264
+    path: ./plugins/app_settings
   args: ^2.5.0
   async: ^2.11.0
   bloc: ^8.1.4
@@ -54,8 +53,8 @@ dependencies:
   equatable: ^2.0.5
   extended_text: ^14.1.0
   file_picker: ^8.1.2
-  firebase_core: ^3.4.1
-  firebase_messaging: ^15.1.1
+  firebase_core: ^3.5.0
+  firebase_messaging: ^15.1.2
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.6
@@ -99,10 +98,10 @@ dependencies:
   shared_preferences: ^2.3.2
   slang: ^3.31.2
   slang_flutter: ^3.31.0
-  socket_io_client: ^3.0.0-beta.2
+  socket_io_client: ^3.0.0-beta.3
   sortedmap: ^0.5.4
-  syncfusion_flutter_calendar: ^26.2.14
-  synchronized: ^3.2.0
+  syncfusion_flutter_calendar: ^27.1.48
+  synchronized: ^3.3.0+2
   timeago: ^3.7.0
   timezone: ^0.9.4
   upgrader: ^11.1.0
@@ -110,7 +109,7 @@ dependencies:
   uuid: ^4.5.0
   version: ^3.0.2
 #  watcher: ^1.1.0 # https://github.com/dart-lang/sdk/issues/52027
-  wechat_assets_picker: ^9.2.1
+  wechat_assets_picker: ^9.2.2
   wechat_camera_picker: ^4.3.2
 
 dev_dependencies:
