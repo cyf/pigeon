@@ -104,7 +104,7 @@ dependencies:
   synchronized: ^3.3.0+2
   timeago: ^3.7.0
   timezone: ^0.9.4
-  upgrader: ^11.1.0
+  upgrader: ^11.2.0
   url_launcher: ^6.3.0
   uuid: ^4.5.0
   version: ^3.0.2
