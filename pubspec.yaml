@@ -106,7 +106,7 @@ dependencies:
   timezone: ^0.9.4
   upgrader: ^11.1.0
   url_launcher: ^6.3.0
-  uuid: ^4.5.0
+  uuid: ^4.5.1
   version: ^3.0.2
 #  watcher: ^1.1.0 # https://github.com/dart-lang/sdk/issues/52027
   wechat_assets_picker: ^9.2.2
