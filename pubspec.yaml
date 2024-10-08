@@ -100,22 +100,22 @@ dependencies:
   slang_flutter: ^3.32.0
   socket_io_client: ^3.0.0
   sortedmap: ^0.5.4
-  syncfusion_flutter_calendar: ^27.1.51
+  syncfusion_flutter_calendar: ^27.1.52
   synchronized: ^3.3.0+3
   timeago: ^3.7.0
   timezone: ^0.9.4
   upgrader: ^11.2.0
-  url_launcher: ^6.3.0
+  url_launcher: ^6.3.1
   uuid: ^4.5.1
   version: ^3.0.2
 #  watcher: ^1.1.0 # https://github.com/dart-lang/sdk/issues/52027
-  wechat_assets_picker: ^9.3.1
+  wechat_assets_picker: ^9.3.2
   wechat_camera_picker: ^4.3.2
 
 dev_dependencies:
   bloc_test: ^9.1.7
   build_runner: ^2.4.13
-  flutter_gen_runner: ^5.7.0
+  flutter_gen_runner: ^5.8.0
   flutter_test:
     sdk: flutter
   freezed: ^2.5.7
