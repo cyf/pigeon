@@ -34,7 +34,7 @@ dependencies:
     path: ./packages/aliyun_oss
   app_settings: # e1d39e4ea052e9dd9a47fbab49737846d9b43264
     path: ./plugins/app_settings
-  args: ^2.5.0
+  args: ^2.6.0
   async: ^2.11.0
   bloc: ^8.1.4
   cached_network_image: ^3.4.1
@@ -67,7 +67,7 @@ dependencies:
   flutter_markdown: ^0.7.4
   flutter_native_splash: ^2.4.1
   flutter_staggered_grid_view: ^0.7.0
-  flutter_sticky_header: ^0.6.5
+  flutter_sticky_header: ^0.7.0
   fluttertoast: ^8.2.8
   form_builder_validators: ^11.0.0
   freezed_annotation: ^2.4.4
@@ -100,7 +100,7 @@ dependencies:
   slang_flutter: ^3.32.0
   socket_io_client: ^3.0.0
   sortedmap: ^0.5.4
-  syncfusion_flutter_calendar: ^27.1.52
+  syncfusion_flutter_calendar: ^27.1.53
   synchronized: ^3.3.0+3
   timeago: ^3.7.0
   timezone: ^0.9.4
@@ -110,7 +110,7 @@ dependencies:
   version: ^3.0.2
 #  watcher: ^1.1.0 # https://github.com/dart-lang/sdk/issues/52027
   wechat_assets_picker: ^9.3.2
-  wechat_camera_picker: ^4.3.2
+  wechat_camera_picker: ^4.3.3
 
 dev_dependencies:
   bloc_test: ^9.1.7
