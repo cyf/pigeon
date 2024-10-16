@@ -35,7 +35,7 @@ dependencies:
   app_settings: # e1d39e4ea052e9dd9a47fbab49737846d9b43264
     path: ./plugins/app_settings
   args: ^2.6.0
-  async: ^2.11.0
+  async: ^2.12.0
   bloc: ^8.1.4
   cached_network_image: ^3.4.1
   carousel_slider: ^5.0.0
