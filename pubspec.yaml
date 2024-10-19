@@ -110,7 +110,7 @@ dependencies:
   version: ^3.0.2
 #  watcher: ^1.1.0 # https://github.com/dart-lang/sdk/issues/52027
   wechat_assets_picker: ^9.3.2
-  wechat_camera_picker: ^4.3.3
+  wechat_camera_picker: ^4.3.4
 
 dev_dependencies:
   bloc_test: ^9.1.7
