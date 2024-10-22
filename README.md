@@ -3,8 +3,6 @@
 [![Test](https://github.com/cyf/pigeon/actions/workflows/test.yml/badge.svg)](https://github.com/cyf/pigeon/actions/workflows/test.yml)
 [![Release](https://github.com/cyf/pigeon/actions/workflows/release.yml/badge.svg)](https://github.com/cyf/pigeon/actions/workflows/release.yml)
 [![GitHub Release](https://img.shields.io/github/v/release/cyf/pigeon)](https://github.com/cyf/pigeon/releases/latest)
-[![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/cyf/pigeon)](https://github.com/cyf/pigeon/issues/new)
-[![GitHub License](https://img.shields.io/github/license/cyf/pigeon)](https://raw.githubusercontent.com/cyf/pigeon/main/LICENSE)
 
 ## 🛍️ Get It On Stores
 
