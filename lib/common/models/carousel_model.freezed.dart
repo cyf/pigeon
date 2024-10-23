@@ -27,8 +27,12 @@ mixin _$CarouselModel {
   String? get color => throw _privateConstructorUsedError;
   String? get href => throw _privateConstructorUsedError;
 
+  /// Serializes this CarouselModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CarouselModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CarouselModelCopyWith<CarouselModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -58,6 +62,8 @@ class _$CarouselModelCopyWithImpl<$Res, $Val extends CarouselModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CarouselModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -122,6 +128,8 @@ class __$$CarouselModelImplCopyWithImpl<$Res>
       _$CarouselModelImpl _value, $Res Function(_$CarouselModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CarouselModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -208,12 +216,14 @@ class _$CarouselModelImpl implements _CarouselModel {
             (identical(other.href, href) || other.href == href));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, image, order, text, color, href);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CarouselModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CarouselModelImplCopyWith<_$CarouselModelImpl> get copyWith =>
@@ -251,8 +261,11 @@ abstract class _CarouselModel implements CarouselModel {
   String? get color;
   @override
   String? get href;
+
+  /// Create a copy of CarouselModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CarouselModelImplCopyWith<_$CarouselModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

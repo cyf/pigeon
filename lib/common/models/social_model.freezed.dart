@@ -25,8 +25,12 @@ mixin _$SocialModel {
   List<Link>? get tips => throw _privateConstructorUsedError;
   List<Description>? get descriptions => throw _privateConstructorUsedError;
 
+  /// Serializes this SocialModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SocialModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $SocialModelCopyWith<SocialModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -54,6 +58,8 @@ class _$SocialModelCopyWithImpl<$Res, $Val extends SocialModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of SocialModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -106,6 +112,8 @@ class __$$SocialModelImplCopyWithImpl<$Res>
       _$SocialModelImpl _value, $Res Function(_$SocialModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SocialModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -200,7 +208,7 @@ class _$SocialModelImpl implements _SocialModel {
                 .equals(other._descriptions, _descriptions));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -209,7 +217,9 @@ class _$SocialModelImpl implements _SocialModel {
       const DeepCollectionEquality().hash(_tips),
       const DeepCollectionEquality().hash(_descriptions));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SocialModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SocialModelImplCopyWith<_$SocialModelImpl> get copyWith =>
@@ -241,8 +251,11 @@ abstract class _SocialModel implements SocialModel {
   List<Link>? get tips;
   @override
   List<Description>? get descriptions;
+
+  /// Create a copy of SocialModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SocialModelImplCopyWith<_$SocialModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -256,8 +269,12 @@ mixin _$SubTitle {
   String? get title => throw _privateConstructorUsedError;
   String? get color => throw _privateConstructorUsedError;
 
+  /// Serializes this SubTitle to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SubTitle
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $SubTitleCopyWith<SubTitle> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -280,6 +297,8 @@ class _$SubTitleCopyWithImpl<$Res, $Val extends SubTitle>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of SubTitle
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -318,6 +337,8 @@ class __$$SubTitleImplCopyWithImpl<$Res>
       _$SubTitleImpl _value, $Res Function(_$SubTitleImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SubTitle
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -364,11 +385,13 @@ class _$SubTitleImpl implements _SubTitle {
             (identical(other.color, color) || other.color == color));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, title, color);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SubTitle
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SubTitleImplCopyWith<_$SubTitleImpl> get copyWith =>
@@ -393,8 +416,11 @@ abstract class _SubTitle implements SubTitle {
   String? get title;
   @override
   String? get color;
+
+  /// Create a copy of SubTitle
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SubTitleImplCopyWith<_$SubTitleImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -408,8 +434,12 @@ mixin _$Description {
   String? get name => throw _privateConstructorUsedError;
   List<Link>? get links => throw _privateConstructorUsedError;
 
+  /// Serializes this Description to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Description
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $DescriptionCopyWith<Description> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -433,6 +463,8 @@ class _$DescriptionCopyWithImpl<$Res, $Val extends Description>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Description
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -471,6 +503,8 @@ class __$$DescriptionImplCopyWithImpl<$Res>
       _$DescriptionImpl _value, $Res Function(_$DescriptionImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Description
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -525,12 +559,14 @@ class _$DescriptionImpl implements _Description {
             const DeepCollectionEquality().equals(other._links, _links));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, name, const DeepCollectionEquality().hash(_links));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Description
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DescriptionImplCopyWith<_$DescriptionImpl> get copyWith =>
@@ -555,8 +591,11 @@ abstract class _Description implements Description {
   String? get name;
   @override
   List<Link>? get links;
+
+  /// Create a copy of Description
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DescriptionImplCopyWith<_$DescriptionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -572,8 +611,12 @@ mixin _$Link {
   String? get href => throw _privateConstructorUsedError;
   String? get color => throw _privateConstructorUsedError;
 
+  /// Serializes this Link to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Link
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $LinkCopyWith<Link> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -595,6 +638,8 @@ class _$LinkCopyWithImpl<$Res, $Val extends Link>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Link
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -641,6 +686,8 @@ class __$$LinkImplCopyWithImpl<$Res>
   __$$LinkImplCopyWithImpl(_$LinkImpl _value, $Res Function(_$LinkImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Link
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -703,11 +750,13 @@ class _$LinkImpl implements _Link {
             (identical(other.color, color) || other.color == color));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, type, text, href, color);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Link
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$LinkImplCopyWith<_$LinkImpl> get copyWith =>
@@ -738,8 +787,11 @@ abstract class _Link implements Link {
   String? get href;
   @override
   String? get color;
+
+  /// Create a copy of Link
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LinkImplCopyWith<_$LinkImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -30,8 +30,12 @@ mixin _$ConfigModel {
   @JsonKey(name: 'end_date')
   DateTime? get endDate => throw _privateConstructorUsedError;
 
+  /// Serializes this ConfigModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ConfigModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ConfigModelCopyWith<ConfigModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -60,6 +64,8 @@ class _$ConfigModelCopyWithImpl<$Res, $Val extends ConfigModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ConfigModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -118,6 +124,8 @@ class __$$ConfigModelImplCopyWithImpl<$Res>
       _$ConfigModelImpl _value, $Res Function(_$ConfigModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ConfigModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -198,12 +206,14 @@ class _$ConfigModelImpl implements _ConfigModel {
             (identical(other.endDate, endDate) || other.endDate == endDate));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, key, value, startDate, endDate);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ConfigModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ConfigModelImplCopyWith<_$ConfigModelImpl> get copyWith =>
@@ -233,15 +243,18 @@ abstract class _ConfigModel implements ConfigModel {
   @override
   String? get key;
   @override
-  String? get value;
-  @override // ignore: invalid_annotation_target
+  String? get value; // ignore: invalid_annotation_target
+  @override
   @JsonKey(name: 'start_date')
-  DateTime? get startDate;
-  @override // ignore: invalid_annotation_target
+  DateTime? get startDate; // ignore: invalid_annotation_target
+  @override
   @JsonKey(name: 'end_date')
   DateTime? get endDate;
+
+  /// Create a copy of ConfigModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ConfigModelImplCopyWith<_$ConfigModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

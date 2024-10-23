@@ -26,8 +26,12 @@ mixin _$EmojiParam {
   String? get text => throw _privateConstructorUsedError;
   String? get color => throw _privateConstructorUsedError;
 
+  /// Serializes this EmojiParam to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of EmojiParam
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $EmojiParamCopyWith<EmojiParam> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -52,6 +56,8 @@ class _$EmojiParamCopyWithImpl<$Res, $Val extends EmojiParam>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of EmojiParam
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -106,6 +112,8 @@ class __$$EmojiParamImplCopyWithImpl<$Res>
       _$EmojiParamImpl _value, $Res Function(_$EmojiParamImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of EmojiParam
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -177,11 +185,13 @@ class _$EmojiParamImpl implements _EmojiParam {
             (identical(other.color, color) || other.color == color));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, image, type, size, text, color);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of EmojiParam
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$EmojiParamImplCopyWith<_$EmojiParamImpl> get copyWith =>
@@ -216,8 +226,11 @@ abstract class _EmojiParam implements EmojiParam {
   String? get text;
   @override
   String? get color;
+
+  /// Create a copy of EmojiParam
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$EmojiParamImplCopyWith<_$EmojiParamImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

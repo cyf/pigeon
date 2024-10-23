@@ -25,8 +25,12 @@ mixin _$YTVideoModel {
   YTVideoId? get id => throw _privateConstructorUsedError;
   YTSnippet? get snippet => throw _privateConstructorUsedError;
 
+  /// Serializes this YTVideoModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of YTVideoModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $YTVideoModelCopyWith<YTVideoModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -53,6 +57,8 @@ class _$YTVideoModelCopyWithImpl<$Res, $Val extends YTVideoModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of YTVideoModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -81,6 +87,8 @@ class _$YTVideoModelCopyWithImpl<$Res, $Val extends YTVideoModel>
     ) as $Val);
   }
 
+  /// Create a copy of YTVideoModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $YTVideoIdCopyWith<$Res>? get id {
@@ -93,6 +101,8 @@ class _$YTVideoModelCopyWithImpl<$Res, $Val extends YTVideoModel>
     });
   }
 
+  /// Create a copy of YTVideoModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $YTSnippetCopyWith<$Res>? get snippet {
@@ -130,6 +140,8 @@ class __$$YTVideoModelImplCopyWithImpl<$Res>
       _$YTVideoModelImpl _value, $Res Function(_$YTVideoModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of YTVideoModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -192,11 +204,13 @@ class _$YTVideoModelImpl implements _YTVideoModel {
             (identical(other.snippet, snippet) || other.snippet == snippet));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, kind, etag, id, snippet);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of YTVideoModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$YTVideoModelImplCopyWith<_$YTVideoModelImpl> get copyWith =>
@@ -228,8 +242,11 @@ abstract class _YTVideoModel implements YTVideoModel {
   YTVideoId? get id;
   @override
   YTSnippet? get snippet;
+
+  /// Create a copy of YTVideoModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$YTVideoModelImplCopyWith<_$YTVideoModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -243,8 +260,12 @@ mixin _$YTVideoId {
   String? get kind => throw _privateConstructorUsedError;
   String? get videoId => throw _privateConstructorUsedError;
 
+  /// Serializes this YTVideoId to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of YTVideoId
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $YTVideoIdCopyWith<YTVideoId> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -267,6 +288,8 @@ class _$YTVideoIdCopyWithImpl<$Res, $Val extends YTVideoId>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of YTVideoId
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -305,6 +328,8 @@ class __$$YTVideoIdImplCopyWithImpl<$Res>
       _$YTVideoIdImpl _value, $Res Function(_$YTVideoIdImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of YTVideoId
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -351,11 +376,13 @@ class _$YTVideoIdImpl implements _YTVideoId {
             (identical(other.videoId, videoId) || other.videoId == videoId));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, kind, videoId);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of YTVideoId
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$YTVideoIdImplCopyWith<_$YTVideoIdImpl> get copyWith =>
@@ -380,8 +407,11 @@ abstract class _YTVideoId implements YTVideoId {
   String? get kind;
   @override
   String? get videoId;
+
+  /// Create a copy of YTVideoId
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$YTVideoIdImplCopyWith<_$YTVideoIdImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -401,8 +431,12 @@ mixin _$YTSnippet {
   String? get liveBroadcastContent => throw _privateConstructorUsedError;
   String? get publishTime => throw _privateConstructorUsedError;
 
+  /// Serializes this YTSnippet to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of YTSnippet
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $YTSnippetCopyWith<YTSnippet> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -435,6 +469,8 @@ class _$YTSnippetCopyWithImpl<$Res, $Val extends YTSnippet>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of YTSnippet
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -483,6 +519,8 @@ class _$YTSnippetCopyWithImpl<$Res, $Val extends YTSnippet>
     ) as $Val);
   }
 
+  /// Create a copy of YTSnippet
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $YTThumbnailsCopyWith<$Res>? get thumbnails {
@@ -526,6 +564,8 @@ class __$$YTSnippetImplCopyWithImpl<$Res>
       _$YTSnippetImpl _value, $Res Function(_$YTSnippetImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of YTSnippet
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -635,12 +675,14 @@ class _$YTSnippetImpl implements _YTSnippet {
                 other.publishTime == publishTime));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, publishedAt, channelId, title,
       description, thumbnails, channelTitle, liveBroadcastContent, publishTime);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of YTSnippet
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$YTSnippetImplCopyWith<_$YTSnippetImpl> get copyWith =>
@@ -684,8 +726,11 @@ abstract class _YTSnippet implements YTSnippet {
   String? get liveBroadcastContent;
   @override
   String? get publishTime;
+
+  /// Create a copy of YTSnippet
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$YTSnippetImplCopyWith<_$YTSnippetImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -702,8 +747,12 @@ mixin _$YTThumbnails {
   YTThumbnail? get medium => throw _privateConstructorUsedError;
   YTThumbnail? get high => throw _privateConstructorUsedError;
 
+  /// Serializes this YTThumbnails to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of YTThumbnails
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $YTThumbnailsCopyWith<YTThumbnails> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -734,6 +783,8 @@ class _$YTThumbnailsCopyWithImpl<$Res, $Val extends YTThumbnails>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of YTThumbnails
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -757,6 +808,8 @@ class _$YTThumbnailsCopyWithImpl<$Res, $Val extends YTThumbnails>
     ) as $Val);
   }
 
+  /// Create a copy of YTThumbnails
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $YTThumbnailCopyWith<$Res>? get defaults {
@@ -769,6 +822,8 @@ class _$YTThumbnailsCopyWithImpl<$Res, $Val extends YTThumbnails>
     });
   }
 
+  /// Create a copy of YTThumbnails
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $YTThumbnailCopyWith<$Res>? get medium {
@@ -781,6 +836,8 @@ class _$YTThumbnailsCopyWithImpl<$Res, $Val extends YTThumbnails>
     });
   }
 
+  /// Create a copy of YTThumbnails
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $YTThumbnailCopyWith<$Res>? get high {
@@ -823,6 +880,8 @@ class __$$YTThumbnailsImplCopyWithImpl<$Res>
       _$YTThumbnailsImpl _value, $Res Function(_$YTThumbnailsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of YTThumbnails
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -881,11 +940,13 @@ class _$YTThumbnailsImpl implements _YTThumbnails {
             (identical(other.high, high) || other.high == high));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, defaults, medium, high);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of YTThumbnails
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$YTThumbnailsImplCopyWith<_$YTThumbnailsImpl> get copyWith =>
@@ -908,15 +969,19 @@ abstract class _YTThumbnails implements YTThumbnails {
   factory _YTThumbnails.fromJson(Map<String, dynamic> json) =
       _$YTThumbnailsImpl.fromJson;
 
-  @override // ignore: invalid_annotation_target
+// ignore: invalid_annotation_target
+  @override
   @JsonKey(name: 'default')
   YTThumbnail? get defaults;
   @override
   YTThumbnail? get medium;
   @override
   YTThumbnail? get high;
+
+  /// Create a copy of YTThumbnails
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$YTThumbnailsImplCopyWith<_$YTThumbnailsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -931,8 +996,12 @@ mixin _$YTThumbnail {
   int? get width => throw _privateConstructorUsedError;
   int? get height => throw _privateConstructorUsedError;
 
+  /// Serializes this YTThumbnail to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of YTThumbnail
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $YTThumbnailCopyWith<YTThumbnail> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -956,6 +1025,8 @@ class _$YTThumbnailCopyWithImpl<$Res, $Val extends YTThumbnail>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of YTThumbnail
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -999,6 +1070,8 @@ class __$$YTThumbnailImplCopyWithImpl<$Res>
       _$YTThumbnailImpl _value, $Res Function(_$YTThumbnailImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of YTThumbnail
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1053,11 +1126,13 @@ class _$YTThumbnailImpl implements _YTThumbnail {
             (identical(other.height, height) || other.height == height));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, url, width, height);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of YTThumbnail
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$YTThumbnailImplCopyWith<_$YTThumbnailImpl> get copyWith =>
@@ -1086,8 +1161,11 @@ abstract class _YTThumbnail implements YTThumbnail {
   int? get width;
   @override
   int? get height;
+
+  /// Create a copy of YTThumbnail
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$YTThumbnailImplCopyWith<_$YTThumbnailImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -37,8 +37,12 @@ mixin _$FeedbackModel {
   @JsonKey(name: 'update_date')
   DateTime? get updateDate => throw _privateConstructorUsedError;
 
+  /// Serializes this FeedbackModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of FeedbackModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $FeedbackModelCopyWith<FeedbackModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -70,6 +74,8 @@ class _$FeedbackModelCopyWithImpl<$Res, $Val extends FeedbackModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of FeedbackModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -146,6 +152,8 @@ class __$$FeedbackModelImplCopyWithImpl<$Res>
       _$FeedbackModelImpl _value, $Res Function(_$FeedbackModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of FeedbackModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -270,7 +278,7 @@ class _$FeedbackModelImpl implements _FeedbackModel {
                 other.updateDate == updateDate));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -283,7 +291,9 @@ class _$FeedbackModelImpl implements _FeedbackModel {
       updateBy,
       updateDate);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of FeedbackModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FeedbackModelImplCopyWith<_$FeedbackModelImpl> get copyWith =>
@@ -319,21 +329,24 @@ abstract class _FeedbackModel implements FeedbackModel {
   @override
   String? get description;
   @override
-  List<FeedbackFileModel>? get files;
-  @override // ignore: invalid_annotation_target
+  List<FeedbackFileModel>? get files; // ignore: invalid_annotation_target
+  @override
   @JsonKey(name: 'create_by')
-  String? get createBy;
-  @override // ignore: invalid_annotation_target
+  String? get createBy; // ignore: invalid_annotation_target
+  @override
   @JsonKey(name: 'create_date')
-  DateTime? get createDate;
-  @override // ignore: invalid_annotation_target
+  DateTime? get createDate; // ignore: invalid_annotation_target
+  @override
   @JsonKey(name: 'update_by')
-  String? get updateBy;
-  @override // ignore: invalid_annotation_target
+  String? get updateBy; // ignore: invalid_annotation_target
+  @override
   @JsonKey(name: 'update_date')
   DateTime? get updateDate;
+
+  /// Create a copy of FeedbackModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FeedbackModelImplCopyWith<_$FeedbackModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -365,8 +378,12 @@ mixin _$FeedbackFileModel {
   @JsonKey(name: 'update_date')
   DateTime? get updateDate => throw _privateConstructorUsedError;
 
+  /// Serializes this FeedbackFileModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of FeedbackFileModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $FeedbackFileModelCopyWith<FeedbackFileModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -400,6 +417,8 @@ class _$FeedbackFileModelCopyWithImpl<$Res, $Val extends FeedbackFileModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of FeedbackFileModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -488,6 +507,8 @@ class __$$FeedbackFileModelImplCopyWithImpl<$Res>
       $Res Function(_$FeedbackFileModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of FeedbackFileModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -623,12 +644,14 @@ class _$FeedbackFileModelImpl implements _FeedbackFileModel {
                 other.updateDate == updateDate));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, feedbackId, url, type, size,
       title, createBy, createDate, updateBy, updateDate);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of FeedbackFileModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FeedbackFileModelImplCopyWith<_$FeedbackFileModelImpl> get copyWith =>
@@ -661,8 +684,8 @@ abstract class _FeedbackFileModel implements FeedbackFileModel {
       _$FeedbackFileModelImpl.fromJson;
 
   @override
-  String? get id;
-  @override // ignore: invalid_annotation_target
+  String? get id; // ignore: invalid_annotation_target
+  @override
   @JsonKey(name: 'feedback_id')
   String? get feedbackId;
   @override
@@ -672,21 +695,24 @@ abstract class _FeedbackFileModel implements FeedbackFileModel {
   @override
   int? get size;
   @override
-  String? get title;
-  @override // ignore: invalid_annotation_target
+  String? get title; // ignore: invalid_annotation_target
+  @override
   @JsonKey(name: 'create_by')
-  String? get createBy;
-  @override // ignore: invalid_annotation_target
+  String? get createBy; // ignore: invalid_annotation_target
+  @override
   @JsonKey(name: 'create_date')
-  DateTime? get createDate;
-  @override // ignore: invalid_annotation_target
+  DateTime? get createDate; // ignore: invalid_annotation_target
+  @override
   @JsonKey(name: 'update_by')
-  String? get updateBy;
-  @override // ignore: invalid_annotation_target
+  String? get updateBy; // ignore: invalid_annotation_target
+  @override
   @JsonKey(name: 'update_date')
   DateTime? get updateDate;
+
+  /// Create a copy of FeedbackFileModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FeedbackFileModelImplCopyWith<_$FeedbackFileModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
